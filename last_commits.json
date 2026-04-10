@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "type": "core",
+      "repo": "NorlamRS17/OpenbravoEstandar18Q3.5CoreMarlon",
+      "sha": "cc9b2401d221ca2ba405d83731d8ac7d73c47bc5"
+    },
+    {
+      "type": "layer",
+      "repo": "NorlamRS17/CarnidemCore",
+      "sha": "e1d0a48ff30170ddb73458688dc5087b6c242c8f"
+    },
+    {
+      "type": "module",
+      "repo": "NorlamRS17/Estandar24Q1",
+      "sha": "3575bb38af86956175407dc6de319bdcec0a6ccb"
+    },
+    {
+      "type": "module",
+      "repo": "NorlamRS17/SidesoftProfesionalProduccion",
+      "sha": "73c6e6672f1abbfbb03090aeeeb46f2e7e73bcaf"
+    },
+    {
+      "type": "module",
+      "repo": "NorlamRS17/Carnidem_Marlon",
+      "sha": "6d70f994f96c4c75792d12fbf58e6dccb350402d"
+    }
+  ]
+}
