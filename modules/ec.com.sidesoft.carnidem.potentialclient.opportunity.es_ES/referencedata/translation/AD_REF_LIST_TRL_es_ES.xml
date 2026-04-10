@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="28A07C81AD2945B99F8881E40AF73DD9" trl="Y">
+    <value column="Name" isTrl="Y" original="Call">Llamada</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="325362EAB6BD4EEBBFC6EACE5186EF5D" trl="Y">
+    <value column="Name" isTrl="Y" original="Email">Correo electrónico</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="5537F109C8DF4F4EAA33E79EFA71232A" trl="Y">
+    <value column="Name" isTrl="Y" original="Opportunity">Oportunidad</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="70F6F043A70A47CABB1EF251C3FD74C7" trl="Y">
+    <value column="Name" isTrl="Y" original="Sample Delivery">Entrega de Muestra al Cliente</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7FEF94C136194EADBB9FA8C25BAB7EE1" trl="Y">
+    <value column="Name" isTrl="Y" original="Task">Tarea</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B97AF35B0CE2438B93D66213D0EE0472" trl="Y">
+    <value column="Name" isTrl="Y" original="Sample Approval"> Aprobación de la Muestra</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E15DE2493D4345BA8EB4D73843989064" trl="Y">
+    <value column="Name" isTrl="Y" original="Meeting">Reunión</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E46E1BB1D3094B7FB169B03034D68193" trl="Y">
+    <value column="Name" isTrl="Y" original="Sample Delivery">Entrega de Muestra al Cliente</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="FBE04D0CD82C4D249C831EC36BA4C2E4" trl="Y">
+    <value column="Name" isTrl="Y" original="Sample Approval"> Aprobación de la Muestra</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION EEI_INVOICE_RET_DATE_VALID">
+    <function name="EEI_INVOICE_RET_DATE_VALID" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[Cur_invoice         RECORD;
+    cur_params          RECORD;
+    p_record_id         VARCHAR(60);        
+    p_docaction         VARCHAR(60);        
+    v_ResultStr         VARCHAR2(2000) := '';
+    v_InvoiceRetentionDate       DATE;
+    v_CurrentDate       DATE;
+BEGIN
+
+	-- 1. Obtener parámetros
+    FOR Cur_Params IN (
+      SELECT *
+      FROM ad_ep_instance_para 
+      WHERE ad_ep_instance_id = p_ep_instance
+      ) LOOP
+      IF (cur_params.parametername = 'DocAction') THEN
+        p_docaction := Cur_Params.p_string;
+      ELSIF (cur_params.parametername = 'Record_ID') THEN
+        p_record_id := cur_params.p_string;
+      END IF;
+    END LOOP;
+
+	IF p_docaction='CO' THEN
+		
+        FOR Cur_invoice IN (
+        SELECT i.EM_Sswh_Datewithhold, 
+                COALESCE(dt_ret.em_eei_is_edoc, 'N') AS is_edoc_retencion, 
+                COALESCE(i.EM_Eei_Status) AS edoc_status, 
+                COALESCE(i.em_sswh_c_doctype_id)AS ret_doc_id, 
+                dt.name AS doctypename,
+                dt_ret.name AS retdoctypename,
+                i.docstatus,
+                dt_ret.EM_Sswh_Iswithholding,
+                dt.c_doctype_id AS dt_id -- Debug para ver el ID
+        FROM c_invoice i
+        JOIN c_doctype dt ON i.c_doctypetarget_id = dt.c_doctype_id
+        LEFT JOIN c_doctype dt_ret ON i.em_sswh_c_doctype_id = dt_ret.c_doctype_id
+        WHERE i.c_invoice_id = p_record_id 
+        )
+        LOOP
+            
+			-- Preparar fechas sin horas
+			v_InvoiceRetentionDate := Cur_invoice.EM_Sswh_Datewithhold::date;
+			v_CurrentDate := now()::date;
+
+            -- DEBUG 
+            /*
+            RAISE EXCEPTION 'DEBUG: DocName: % (ID Retencion: %) | EDOC: % | Estado Documento Electronico: % | Fecha Retencion: %', 
+                            Cur_invoice.retdoctypename,
+                            Cur_invoice.ret_doc_id,
+                            Cur_invoice.is_edoc_retencion, 
+                            Cur_invoice.edoc_status,
+                            v_InvoiceRetentionDate;
+            */
+			
+            -- 3. Lógica de comparación
+            IF ( Cur_invoice.is_edoc_retencion = 'Y' AND (Cur_invoice.edoc_status in ('NR','NA','RE','PP','GE','NG') or Cur_invoice.edoc_status IS NULL ) 
+            and Cur_invoice.EM_Sswh_Iswithholding = 'Y') THEN  
+
+                    IF (v_InvoiceRetentionDate < v_CurrentDate) THEN
+
+                        update C_invoice set EM_Sswh_Datewithhold=now() 
+                        WHERE C_invoice_ID=p_record_id;
+                    
+                    END IF;
+
+            END IF;
+
+        END LOOP;
+    END IF;
+    
+EXCEPTION
+    WHEN OTHERS THEN
+        v_ResultStr := '@ERROR=' || SQLERRM;
+        
+        RAISE v_ResultStr;
+END EEI_INVOICE_RET_DATE_VALID
+]]></body>
+    </function>
+  </database>

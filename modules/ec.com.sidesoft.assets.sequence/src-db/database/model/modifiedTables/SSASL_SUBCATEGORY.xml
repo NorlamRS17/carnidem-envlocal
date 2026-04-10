@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SSASL_SUBCATEGORY">
+    <table name="SSASL_SUBCATEGORY" primaryKey="SSASL_SUBCATEGORY_KEY">
+      <column name="EM_SSASEQ_SEQUENCE_PREFIX" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSASEQ_CURRENT_VALUE" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSASEQ_CURRENT_VALUE_PE" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSASEQ_SEQUENCE_PREFIX_PE" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

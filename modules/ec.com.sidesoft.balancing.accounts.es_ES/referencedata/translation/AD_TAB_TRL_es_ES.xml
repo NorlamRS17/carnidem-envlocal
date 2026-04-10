@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="16E0C30131F34AC69BF14D3D8354EB00" trl="Y">
+    <value column="Name" isTrl="Y" original="Accounting Accounts">Cuentas Contables</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2E1C4327BC09469EA83AA1FB14313E2D" trl="Y">
+    <value column="Name" isTrl="Y" original="Module">Modulo</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="62141057E210493BB0F035A9509A1970" trl="Y">
+    <value column="Name" isTrl="Y" original="Accounting Account Parameterization">Parametrización Cuentas Contables</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DCDBDC26AB184068954E7E97553BD071" trl="Y">
+    <value column="Name" isTrl="Y" original="Breakdown">Desglose Cuadre</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="EBE464C38B2B4F6F9D9CA2C312CAF579" trl="Y">
+    <value column="Name" isTrl="Y" original="Breakdown of Balance">Desglose de Cuadre</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

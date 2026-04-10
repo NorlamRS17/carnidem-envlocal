@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="02758CE2F3B3441E956DDA724635B808" trl="Y">
+    <value column="Name" isTrl="Y" original="Asset Revaluation Report">Reporte de Revalorización de Activos</value>
+    <value column="Description" isTrl="Y" original="Asset Revaluation Report">Reporte de Revalorización de Activos</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="60B20166BD984E8EBCB9ABCA90329BCA" trl="Y">
+    <value column="Name" isTrl="Y" original="Create Depreciation Plan">Crear Plan de Depreciación</value>
+    <value column="Description" isTrl="Y" original="Create Depreciation Plan">Crear Plan de Depreciación</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

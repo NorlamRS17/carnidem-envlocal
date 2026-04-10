@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+  <database name="TABLE SSPCH_POSTDATED_CHECKS">
+    <table name="SSPCH_POSTDATED_CHECKS" primaryKey="SSPCH_POSTD_CHK_KEY">
+      <column name="SSPCH_POSTDATED_CHECKS_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="CHECK_FROM" primaryKey="false" required="true" type="VARCHAR" size="200" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="CHECK_UP" primaryKey="false" required="true" type="VARCHAR" size="200" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_DOCTYPE_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="PAYMENT_DATE" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISDATEPAYMENTPLAN" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="C_BPARTNER_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SSFI_BANKTRANSFER_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ACCOUNT" primaryKey="false" required="true" type="VARCHAR" size="200" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ACCOUNT_HOLDER" primaryKey="false" required="true" type="VARCHAR" size="300" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="FIN_FINANCIAL_ACCOUNT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="FIN_PAYMENTMETHOD_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="LOAD_LINES" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="PROCESS" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISMANUALREG" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="ISSUMMARY" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="FIN_DOCTYPE_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DOCUMENTNO" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="TOTAL_CHECKS" primaryKey="false" required="true" type="DECIMAL" size="15,5" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="PAYMENT_DAY" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="AD_CLIENT" name="SSPCH_POSTD_CHK_AD_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="SSPCH_POSTD_CHK_AD_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SSFI_BANKTRANSFER" name="SSPCH_POSTD_CHK_BANKTRANSFER">
+        <reference local="SSFI_BANKTRANSFER_ID" foreign="SSFI_BANKTRANSFER_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_BPARTNER" name="SSPCH_POSTD_CHK_C_BPARTNER">
+        <reference local="C_BPARTNER_ID" foreign="C_BPARTNER_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_DOCTYPE" name="SSPCH_POSTD_CHK_C_DOCTYPE">
+        <reference local="C_DOCTYPE_ID" foreign="C_DOCTYPE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_DOCTYPE" name="SSPCH_POSTD_CHK_FIN_DOCTYPE">
+        <reference local="FIN_DOCTYPE_ID" foreign="C_DOCTYPE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="FIN_FINANCIAL_ACCOUNT" name="SSPCH_POSTD_CHK_FINANC_ACCOUNT">
+        <reference local="FIN_FINANCIAL_ACCOUNT_ID" foreign="FIN_FINANCIAL_ACCOUNT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="FIN_PAYMENTMETHOD" name="SSPCH_POSTD_CHK_PAYMENTMETHOD">
+        <reference local="FIN_PAYMENTMETHOD_ID" foreign="FIN_PAYMENTMETHOD_ID"/>
+      </foreign-key>
+      <check name="SSPCH_POSTD_CHK_ISACTIVE_CHK"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
+      <check name="SSPCH_POSTD_CHK_ISDATEPP_CHK"><![CDATA[ISDATEPAYMENTPLAN IN ('Y', 'N')]]></check>
+      <check name="SSPCH_POSTD_CHK_ISMANUALR_CHK"><![CDATA[ISMANUALREG IN ('Y', 'N')]]></check>
+      <check name="SSPCH_POSTD_CHK_ISSUMMARY_CHK"><![CDATA[ISSUMMARY IN ('Y', 'N')]]></check>
+    </table>
+  </database>

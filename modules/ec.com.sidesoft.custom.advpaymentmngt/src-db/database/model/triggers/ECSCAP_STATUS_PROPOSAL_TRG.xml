@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ECSCAP_STATUS_PROPOSAL_TRG">
+    <trigger name="ECSCAP_STATUS_PROPOSAL_TRG" table="FIN_PAYMENT" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[vCountLines NUMBER;
+vProposalID VARCHAR(32);
+vCountStatus NUMBER;
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF UPDATING AND :NEW.isreceipt = 'N' THEN
+	
+		
+		SELECT fin_payment_proposal_id INTO vProposalID
+		FROM fin_payment_prop_detail_v
+		WHERE fin_payment_id = :NEW.fin_payment_id;
+		
+		
+		IF vProposalID IS NOT NULL THEN
+		
+			SELECT COUNT(fin_payment_proposal_id) INTO vCountLines
+			FROM fin_payment_prop_detail_v
+			WHERE fin_payment_proposal_id = vProposalID;
+		
+			
+			SELECT COUNT(fin_payment_proposal_id) INTO vCountStatus
+			FROM fin_payment_prop_detail_v pd
+				JOIN fin_payment pa ON pa.fin_payment_id = pd.fin_payment_id
+			WHERE pd.fin_payment_proposal_id = vProposalID AND pa.status = :NEW.status;
+			
+			IF vCountLines = vCountStatus THEN
+				UPDATE fin_payment_proposal SET status = :NEW.status
+				WHERE fin_payment_proposal_id = vProposalID;
+			ELSE
+				
+			END IF;		
+		END IF;
+		
+		
+
+		
+	END IF;
+
+	END ECSCAP_STATUS_PROPOSAL_TRG
+]]></body>
+    </trigger>
+  </database>

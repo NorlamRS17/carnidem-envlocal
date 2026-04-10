@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="1BF5BC6A1A8B42768D6FD81A9468A7BE" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Generate Credit Note: %1 - %2 - %3">Nota de Credito Generada: %1 - %2 - %3</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="63D17A7B853F47FC81C1ABA779275E65" trl="Y">
+    <value column="MsgText" isTrl="Y" original="The selected record is related to another NC whose doc. status is Draft or Completed, to identify Validate the relationship in Related Items in the Credit Note Num: %1">El registro seleccionado esta relacionado con otra NC cuyo Estado doc. es Borrador o Completado, para identificar Validar la relación en Items relacionados en la Nota de Credito Num: %1</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="709CF47ABBE94CC1A77AC1BB9A0A9F82" trl="Y">
+    <value column="MsgText" isTrl="Y" original="The document type of the original transaction does not meet the initial setting in the document category">El tipo de documento de la transacción original no cumpla con la parametrización inicial en el tipo de documento.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="C805B0A87E87440A96DF1523B161ED07" trl="N">
+    <value column="MsgText" isTrl="Y" original="Error in the automatic Financial NC generation. There are Warehoused-Inventoried products. Perform a NC for return.">Error en la generación de NC Financiera automática. Existen productos Almacenables-Inventariados. Realizar una NC por devolución.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="CB535DDEDC464000BD8C7B9703DFB91E" trl="Y">
+    <value column="MsgText" isTrl="Y" original="The automatic NC document type is not configured for the original invoice.">El tipo de documento NC automático no está configurado para la factura original.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

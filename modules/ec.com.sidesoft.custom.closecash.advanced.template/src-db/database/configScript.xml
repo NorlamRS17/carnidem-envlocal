@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="17A28DEAECBF4D40A5DA63A2DCCEF88D">
+      <oldValue><![CDATA[@DocStatus@='SCCC_RG' | @DocStatus@='SCCC_PR' ]]></oldValue>
+      <newValue><![CDATA[@DocStatus@='SCCC_PR' | (@DocStatus@='SCCC_RG' & @Scca_Cashier@='Y' & @Scca_Admin@='N')]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="967B0DF56D3844B18535B0C301D59DEE">
+      <oldValue><![CDATA[@DocStatus@='SCCC_RG' | @DocStatus@='SCCC_PR' ]]></oldValue>
+      <newValue><![CDATA[@DocStatus@='SCCC_PR' | (@DocStatus@='SCCC_RG' & @Scca_Cashier@='Y' & @Scca_Admin@='N')]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="BD3584EB636248EEAE721E5D24D1E97E">
+      <oldValue><![CDATA[@DocStatus@='SCCC_RG' | @DocStatus@='SCCC_PR' ]]></oldValue>
+      <newValue><![CDATA[@DocStatus@='SCCC_PR' | (@DocStatus@='SCCC_RG' & @Scca_Cashier@='Y' & @Scca_Admin@='N')]]></newValue>
+    </columnDataChange>
+	<columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="BD3584EB636248EEAE721E5D24D1E97E">
+      <oldValue/>
+      <newValue><![CDATA[AE15D474DC584246801C41D69E49E4D5]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="BFA878D8A9214DF0A70C6FE3C872FE53">
+      <oldValue><![CDATA[@DocStatus@='SCCC_RG' | @DocStatus@='SCCC_PR' ]]></oldValue>
+      <newValue><![CDATA[@DocStatus@='SCCC_PR' | (@DocStatus@='SCCC_RG' & @Scca_Cashier@='Y' & @Scca_Admin@='N')]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="E2EF8B7AB94F4A41BE052538B58ECD97">
+      <oldValue><![CDATA[@DocStatus@='SCCC_RG' | @DocStatus@='SCCC_PR' ]]></oldValue>
+      <newValue><![CDATA[@DocStatus@='SCCC_PR' | (@DocStatus@='SCCC_RG' & @Scca_Cashier@='Y' & @Scca_Admin@='N')]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="8D98C25B79FE4F3384E51389A4D32A77">
+      <oldValue><![CDATA[@docstatus@!'SCCC_PR']]></oldValue>
+      <newValue><![CDATA[@docstatus@!'SCCC_PR' & @docstatus@!'SCCC_RG']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="AD_PROCESS_ID" pkRow="3EC5BA28381C413390A9B3CEA3190B56">
+      <oldValue/>
+      <newValue><![CDATA[71FAC6D22B5C4019AEC672462946F02B]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="AD_PROCESS_ID" pkRow="60B6BA2648A3480CAECCB2F17471B5C5">
+      <oldValue/>
+      <newValue><![CDATA[223E7FAC741242E8B03F17A2BF66B7EF]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="AD_PROCESS_ID" pkRow="C894BC783AEF4272810459B4DA0B5D3D">
+      <oldValue/>
+      <newValue><![CDATA[443C457166B44993ADC9AFB22FEB38DF]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="AD_PROCESS_ID" pkRow="E8A4F14D7FD94D678CCE89B1A1C52F09">
+      <oldValue/>
+      <newValue><![CDATA[3CD599821E7C4883AAC8534835720A96]]></newValue>
+    </columnDataChange>
+  </vector>

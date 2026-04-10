@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="DocSswhWithhCardCreditData" package="com.sidesoft.localization.ecuador.withholdings.accounting">
+  <SqlClassComment></SqlClassComment>
+  <SqlMethod name="selectRecord" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        SELECT posted, c_doctype_id, dateacct as datedoc, ad_org_id, documentno, ad_client_id
+	, '100' AS C_CURRENCY_ID, 0 AS VALUE
+        FROM sswh_withh_card_credit
+        WHERE ad_client_id = ?
+        AND sswh_withh_card_credit_id = ?
+      ]]>
+     </Sql>
+     <Parameter name="client"/>
+     <Parameter name="id"/>
+   </SqlMethod>
+</SqlClass>

@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSCCR_DIV_RECAP">
+    <function name="SSCCR_DIV_RECAP" type="NULL">
+      <parameter name="p_transaction" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_n_cuotas" type="NUMERIC" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[t record;
+v_monto NUMBER;
+i NUMBER;   
+v_monto_tmp NUMBER;
+linea NUMBER;
+BEGIN
+
+
+   
+    BEGIN 
+
+        select max(line) into linea from fin_finacc_transaction;
+        FOR t IN
+          (
+            select * 
+            from fin_finacc_transaction 
+            where fin_finacc_transaction_id=p_transaction
+          )
+        LOOP
+            i:=1;
+            linea:=linea+1;
+            while(i<=p_n_cuotas) loop
+                if i=p_n_cuotas then
+                    v_monto_tmp:=round(t.depositamt/p_n_cuotas,2);
+                    v_monto_tmp:=round(v_monto_tmp*(p_n_cuotas-1),2);
+                    v_monto:=round(t.depositamt-v_monto_tmp,2);
+                    update fin_finacc_transaction set processed='N'
+                    where fin_finacc_transaction_id=p_transaction
+                    ;
+                    update fin_finacc_transaction set depositamt=v_monto 
+                    where fin_finacc_transaction_id=p_transaction
+                    ;
+                    update fin_finacc_transaction set processed='Y'
+                    where fin_finacc_transaction_id=p_transaction
+                    ;
+					
+                else
+                    v_monto:=round(t.depositamt/p_n_cuotas,2);
+                    insert into fin_finacc_transaction
+                    (
+                        fin_finacc_transaction_id,
+                        ad_client_id,
+                        ad_org_id,
+                        created,
+                        createdby,
+                        updated,
+                        updatedby,
+                        isactive,
+                        c_currency_id,
+                        fin_financial_account_id,
+                        line,
+                        fin_payment_id,
+                        dateacct,
+                        c_glitem_id,
+                        status,
+                        paymentamt,
+                        depositamt,
+                        processed,
+                        processing,
+                        posted,
+                        c_project_id,
+                        c_campaign_id,
+                        c_activity_id,
+                        user1_id,
+                        user2_id,
+                        trxtype,
+                        statementdate,
+                        description,
+                        fin_reconciliation_id,
+                        createdbyalgorithm,
+                        foreign_currency_id,
+                        foreign_convert_rate,
+                        foreign_amount,
+                        c_bpartner_id,
+                        m_product_id,
+                        c_salesregion_id,
+                        c_costcenter_id,
+                        em_aprm_delete,
+                        em_aprm_modify,
+                        em_aprm_processed,
+                        em_aprm_finacc_trans_origin,
+                        em_sccc_iscashclousure,
+                        em_sccc_cash_clousure_id,
+                        em_spev_isprocessed,
+                        em_ssccr_c_invoice_id,
+                        em_ssccr_c_order_id,
+                        em_ssccr_lot,
+                        em_ssccr_reconciled,
+                        em_ssccr_processor_banck_id,
+                        em_ssccr_types_of_credit_id,
+                        em_ssccr_ssfi_banktransfer_id,
+                        em_ssccr_cards_types_id,
+                        em_ssccr_expiration_date,
+                        em_ssccr_recapno,
+                        em_sscccin_reference,
+                        em_ssccr_reconciliation_no,
+                        em_ssccr_rec_sum_line
+
+                    )
+                    values
+                    (
+                        get_uuid(),
+                        t.ad_client_id,
+                        t.ad_org_id,
+                        now(),
+                        t.createdby,
+                        now(),
+                        t.updatedby,
+                        t.isactive,
+                        t.c_currency_id,
+                        t.fin_financial_account_id,
+                        linea,
+                        null,
+                        t.dateacct,
+                        'D6111CB0774048A59FFD2C35431E1C43',
+                        t.status,
+                        t.paymentamt,
+                        v_monto,
+                        t.processed,
+                        t.processing,
+                        t.posted,
+                        t.c_project_id,
+                        t.c_campaign_id,
+                        t.c_activity_id,
+                        t.user1_id,
+                        t.user2_id,
+                        t.trxtype,
+                        t.statementdate,
+                        t.description,
+                        t.fin_reconciliation_id,
+                        t.createdbyalgorithm,
+                        t.foreign_currency_id,
+                        t.foreign_convert_rate,
+                        t.foreign_amount,
+                        t.c_bpartner_id,
+                        t.m_product_id,
+                        t.c_salesregion_id,
+                        t.c_costcenter_id,
+                        t.em_aprm_delete,
+                        t.em_aprm_modify,
+                        t.em_aprm_processed,
+                        t.em_aprm_finacc_trans_origin,
+                        t.em_sccc_iscashclousure,
+                        t.em_sccc_cash_clousure_id,
+                        t.em_spev_isprocessed,
+                        t.em_ssccr_c_invoice_id,
+                        t.em_ssccr_c_order_id,
+                        t.em_ssccr_lot,
+                        'N',
+                        t.em_ssccr_processor_banck_id,
+                        t.em_ssccr_types_of_credit_id,
+                        t.em_ssccr_ssfi_banktransfer_id,
+                        t.em_ssccr_cards_types_id,
+                        t.em_ssccr_expiration_date,
+                        t.em_ssccr_recapno,
+                          t.em_sscccin_reference,
+                        t.em_ssccr_reconciliation_no,
+                        t.em_ssccr_rec_sum_line
+
+                    )
+                     ;
+                end if;
+
+                 i:=i+1;
+            END LOOP;
+        END LOOP;
+
+     
+    END;
+    RETURN;
+END SSCCR_DIV_RECAP
+]]></body>
+    </function>
+  </database>

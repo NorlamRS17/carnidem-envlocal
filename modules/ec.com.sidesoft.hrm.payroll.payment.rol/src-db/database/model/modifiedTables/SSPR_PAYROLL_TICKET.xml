@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SSPR_PAYROLL_TICKET">
+    <table name="SSPR_PAYROLL_TICKET" primaryKey="SSPR_PAYROLL_TICKET_KEY">
+      <column name="EM_SSPRPR_ISSENDED" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSPRPR_EMAILLOG" primaryKey="false" required="false" type="VARCHAR" size="2000" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <check name="EM_SSPRPR_ISSENDED_CHK"><![CDATA[EM_SSPRPR_ISSENDED IN ('Y', 'N')]]></check>
+    </table>
+  </database>

@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+  <database name="TABLE SSCCR_CARDMATCHINGCONFLINE">
+    <table name="SSCCR_CARDMATCHINGCONFLINE" primaryKey="SSCCR_CARDMCONFL_KEY">
+      <column name="SSCCR_CARDMATCHINGCONFLINE_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SSCCR_CARDS_TYPES_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SSCCR_CARDMATCHINGCONF_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="INCOME_WITHHOLDING" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="WITHHOLDING_TAX" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SSCCR_TYPES_OF_CREDIT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_PAYMENTTERM_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="COMITION" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="FROM_VALIDITY" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="VALID_UP" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISSUMMARY" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="SSCCR_CARDMATCHINGCONF" name="SSCCR_CARDMATCHINGCONF_ID">
+        <reference local="SSCCR_CARDMATCHINGCONF_ID" foreign="SSCCR_CARDMATCHINGCONF_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_CLIENT" name="SSCCR_CARDMCONFL_AD_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="SSCCR_CARDMCONFL_AD_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_PAYMENTTERM" name="SSCCR_CARDMCONFL_C_PAYMENTTERM">
+        <reference local="C_PAYMENTTERM_ID" foreign="C_PAYMENTTERM_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SSCCR_CARDS_TYPES" name="SSCCR_CARDMCONFL_CARDS_TYPES">
+        <reference local="SSCCR_CARDS_TYPES_ID" foreign="SSCCR_CARDS_TYPES_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SSCCR_TYPES_OF_CREDIT" name="SSCCR_CARDMCONFL_TYPESOFCREDIT">
+        <reference local="SSCCR_TYPES_OF_CREDIT_ID" foreign="SSCCR_TYPES_OF_CREDIT_ID"/>
+      </foreign-key>
+      <check name="SSCCR_CARDMCONFL_ISACTIVE_CHK"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
+      <check name="SSCCR_CARDMCONFL_ISSUMMARY_CHK"><![CDATA[ISSUMMARY IN ('Y', 'N')]]></check>
+    </table>
+  </database>

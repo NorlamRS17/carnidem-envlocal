@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<REPORT>
+  <template file="BatchPaymentGrid.srpt"/>
+  <structure name="structure">
+    <FIELD id="fieldRownum1">rowkey</FIELD>
+    <FIELD id="fieldSelectedTransactionId" attribute="value">markSelectedId</FIELD>
+
+    <FIELD id="fieldid">idpayment</FIELD>
+    <FIELD id="fieldDocumentno">documentno</FIELD>
+    <FIELD id="fieldBusinessPartner">businesspartner</FIELD>
+    <FIELD id="fieldDescription">description</FIELD>
+    <FIELD id="fieldDueDate">duedate</FIELD>
+    <FIELD id="fieldAmount" format="euroEdition">amount</FIELD>
+
+    <FIELD id="fieldTransactionId_xx" boolean="checked" withId="fieldSelectedTransactionId">idpayment</FIELD>
+    <FIELD id="fieldTransactionId_xx" attribute="value">idpayment</FIELD>
+    <FIELD id="fieldTransactionId_xx" attribute="id">idpayment</FIELD>
+    <FIELD id="fieldTransactionId_xx" attribute="onclick" replace="xx">idpayment</FIELD>
+    <SECTION id="sectionLinesDetail"/>
+  </structure>
+
+</REPORT>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="0B1CEF053F5A47D3AA1F04E5A004FAD7" trl="N">
+    <value column="Name" isTrl="N" original="Remesas del exterior">Remesas del exterior</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="146461E00D794A53A0F0DF60E3A311ED" trl="N">
+    <value column="Name" isTrl="Y" original="Natural Person">Persona Natural</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1BDE30773930444EB16EC2694CABA7C6" trl="N">
+    <value column="Name" isTrl="Y" original="Widower">Viudo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="2B9B5CAB833B4A238AF70150CD59595F" trl="N">
+    <value column="Name" isTrl="N" original="Jubilado">Jubilado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3F2B0CC56BC843DBA11F87D80E9632D0" trl="N">
+    <value column="Name" isTrl="Y" original="Legal Person">Persona Jurídica</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="45944E3765F24625BE05B77EE4E36EED" trl="N">
+    <value column="Name" isTrl="Y" original="Public Employee">Empleado Publico</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="4E9CB8FFDD6E4A98A1CD6A92EA6FB995" trl="N">
+    <value column="Name" isTrl="Y" original="Independent">Independiente</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="848B6483EE5D4EA1A309F739E438101E" trl="N">
+    <value column="Name" isTrl="Y" original="Divorced">Divorciado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="84A17C96B14A440FBBDB600FB95FA745" trl="N">
+    <value column="Name" isTrl="Y" original="Single">Soltero</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="93781561FADB4FEB9489BAB75C021E20" trl="N">
+    <value column="Name" isTrl="Y" original="Private Employee">Empleado Privado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D96B9F8358C34EA1AF245D34FB649784" trl="N">
+    <value column="Name" isTrl="Y" original="Married">Casado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E8B129D344AC42BBB6940C21DD937CA7" trl="N">
+    <value column="Name" isTrl="N" original="Ama de casa o estudiante">Ama de casa o estudiante</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F9E9A18BEB4F414DB18118C502566E49" trl="N">
+    <value column="Name" isTrl="N" original="Rentista">Rentista</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="FF78FF357FAC4A82AC9D183AF8A126A6" trl="N">
+    <value column="Name" isTrl="Y" original="Free union">Union Libre</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

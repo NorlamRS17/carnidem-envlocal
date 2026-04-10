@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FACT_ACCT">
+    <table name="FACT_ACCT" primaryKey="FACT_ACCT_KEY">
+      <index name="EM_SBPRF_FACTACCT_FASTREPORT" unique="false">
+        <index-column name="C_ACCTSCHEMA_ID"/>
+        <index-column name="AD_CLIENT_ID"/>
+        <index-column name="AD_ORG_ID"/>
+        <index-column name="DATEACCT"/>
+        <whereClause><![CDATA[ISACTIVE='Y']]></whereClause>
+      </index>
+    </table>
+  </database>

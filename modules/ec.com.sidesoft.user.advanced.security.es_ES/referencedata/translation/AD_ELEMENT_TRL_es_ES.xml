@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="136B7BF64AE343BBA8A052FBEB37CD97" trl="N">
+    <value column="Name" isTrl="N" original="Ssuas_Excluded_User_ID">Ssuas_Excluded_User_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssuas_Excluded_User_ID">Ssuas_Excluded_User_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1DABF387C03C4741B13E7509AC08A6EC" trl="Y">
+    <value column="Name" isTrl="Y" original="Validity">Días Vigencia</value>
+    <value column="PrintName" isTrl="Y" original="Validity">Días Vigencia</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="27A0C21B2DEF4301A6B25A0C9FFF2050" trl="N">
+    <value column="Name" isTrl="N" original="Ssuas_Security_Config_ID">Ssuas_Security_Config_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssuas_Security_Config_ID">Ssuas_Security_Config_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="35605B566D43407097DE879D50CE0261" trl="N">
+    <value column="Name" isTrl="Y" original="Password Length">Longitud de contraseña</value>
+    <value column="PrintName" isTrl="Y" original="Password Length">Longitud de contraseña</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="456B44C7BB1442ED93C70904397DA4BF" trl="N">
+    <value column="Name" isTrl="Y" original="Password Complexity">Complejidad de contraseña</value>
+    <value column="PrintName" isTrl="Y" original="Password Complexity">Complejidad de contraseña</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="AEC7326D19B84A258F414FDCA24A246F" trl="N">
+    <value column="Name" isTrl="Y" original="Inactivity Days">N° dias inactividad</value>
+    <value column="PrintName" isTrl="Y" original="Inactivity Days">N° dias inactividad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E8151E3365E84BA39BCE288E55865BC9" trl="N">
+    <value column="Name" isTrl="Y" original="Notification Email">Correo electrónico de notificación</value>
+    <value column="PrintName" isTrl="Y" original="Notification Email">Correo electrónico de notificación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EA0C42CAC8134BFAB7409B5F18CAFA13" trl="Y">
+    <value column="Name" isTrl="Y" original="Attempts">Intentos</value>
+    <value column="PrintName" isTrl="Y" original="Attempts">Intentos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

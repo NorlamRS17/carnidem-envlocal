@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPCH_VAL_SHARE_SECUENCE_TRG">
+    <trigger name="SSPCH_VAL_SHARE_SECUENCE_TRG" table="FIN_PAYMENT_SCHEDULEDETAIL" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+    v_DateNA DATE := TO_DATE('31-12-9999','DD-MM-YYYY');
+    v_LiquidateProjectsID VARCHAR2(32);
+    v_DocStatus 	  VARCHAR2(60);
+    v_FinPaymentID 	  VARCHAR2(32);
+    v_FinPaymenScheduleDetailID 	  VARCHAR2(32);
+    v_SstpcLiquidationProjectsID VARCHAR2(32);
+    v_C_CostCenterID VARCHAR2(32);
+    v_C_CostCenterNewID VARCHAR2(32);
+    v_MSG 	  VARCHAR2(60);
+    v_shareno  	  VARCHAR2(60);
+    v_next_shareno VARCHAR2(60);
+    v_Count  	  NUMBER; --OBTG:NUMBER--
+    v_outstandingamt NUMBER; --OBTG:NUMBER--
+    v_amount_to_execute NUMBER; --OBTG:NUMBER--
+    v_postdated_checks_count NUMBER; --OBTG:NUMBER--
+    v_quotation NUMBER;
+    v_issotrx VARCHAR2(1);
+    v_isPostdatecheck NUMBER:=0;
+	v_fin_payment_id VARCHAR2(32);
+	vPaymentAmount NUMBER;
+	vNoPostedAmount NUMBER;
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+    IF (UPDATING AND :NEW.fin_payment_detail_id IS NOT NULL AND :OLD.fin_payment_detail_id IS NULL)
+        OR (INSERTING AND :NEW.fin_payment_detail_id IS NOT NULL) THEN
+        select issotrx into v_issotrx from c_invoice where c_invoice_id = (select c_invoice_id from fin_payment_schedule where fin_payment_schedule_id = :NEW.fin_payment_schedule_invoice);
+        IF v_issotrx = 'Y' THEN
+            Select em_ssppi_shareno, outstandingamt 
+                    Into v_shareno, v_outstandingamt 
+            From fin_payment_schedule 
+            Where fin_payment_schedule_id = :NEW.fin_payment_schedule_invoice;
+
+			Select fin_payment_id 
+				Into v_fin_payment_id
+			From fin_payment_detail 
+			Where fin_payment_detail_id = :NEW.fin_payment_detail_id;
+
+            If(v_shareno is not null and v_fin_payment_id <> '11111111111111111111111111111111')Then
+                If(:NEW.em_sspch_postdated_checks_id IS NULL)Then
+					SELECT amount INTO vPaymentAmount FROM fin_payment WHERE fin_payment_id=v_fin_payment_id;
+					SELECT SUM(amount) INTO vNoPostedAmount
+                    FROM fin_payment_scheduledetail AS psd
+                    WHERE psd.fin_payment_schedule_invoice=:NEW.fin_payment_schedule_invoice
+						AND psd.em_sspch_postdated_checks_id IS NULL;
+					
+                    Select COUNT(*)
+                        Into v_postdated_checks_count
+                    From fin_payment_scheduledetail fpsd
+                    Where fpsd.fin_payment_schedule_invoice = :NEW.fin_payment_schedule_invoice
+                        And fpsd.em_sspch_postdated_checks_id is not null;
+
+					--RAISE EXCEPTION '% | % ', vPaymentAmount, vNoPostedAmount;
+                    If(coalesce(v_postdated_checks_count,0) > 0 AND vPaymentAmount>vNoPostedAmount)Then
+                        RAISE_APPLICATION_ERROR(-20000,'@Sspch_RelatedPostDatedCheck@');
+                    End If;
+                End If;
+                
+                Select  MIN(em_ssppi_shareno)
+                    Into v_next_shareno
+                From fin_payment_schedule ps	
+                Where ps.c_invoice_id = (
+                        Select tps.c_invoice_id
+                        From fin_payment_schedule tps 
+                        Where tps.fin_payment_schedule_id = :NEW.fin_payment_schedule_invoice
+                    )
+                    --Excluir los registros ya cargados y sin saldo pendiente
+                    AND NOT EXISTS (
+                        Select 1
+                        From fin_payment_scheduledetail spsd
+                        Where spsd.fin_payment_schedule_invoice = ps.fin_payment_schedule_id
+                            AND fin_payment_detail_id is not null
+                        Group By spsd.fin_payment_schedule_invoice
+                        Having SUM(spsd.amount) = ps.amount
+                    )
+                    --Excluir las cuotas cargadas por la misma transaccion Y sin saldo pendiente de CH-P
+                    And NOT EXISTS (
+                        Select 1 
+                        From fin_payment_scheduledetail xfpsd
+                        Where xfpsd.em_sspch_postdated_checks_id = :NEW.em_sspch_postdated_checks_id
+                            And xfpsd.fin_payment_schedule_invoice = ps.fin_payment_schedule_id
+                        Having SUM(xfpsd.amount) = ps.amount
+
+                    );
+                
+                --VALIDAR SOLO SI SE ESTA TRABAJANDO CON SECUENCIAS
+				/*
+                If(v_next_shareno is not null AND v_shareno<>v_next_shareno)Then
+                    RAISE_APPLICATION_ERROR(-20000, '@Sspch_Secuence@');
+                End IF;
+				*/
+            End IF;
+            If(:NEW.fin_payment_schedule_invoice IS NOT NULL)Then
+            
+				Select	Count(*)
+					Into v_isPostdatecheck
+                From fin_payment_scheduledetail fpsd
+                Where fpsd.fin_payment_schedule_invoice = :NEW.fin_payment_schedule_invoice
+					And fpsd.em_sspch_postdated_checks_id is not null;
+				If(COALESCE(v_isPostdatecheck,0)>0 or :NEW.em_sspch_postdated_checks_id IS NOT NULL )Then
+
+					Select SUM(amount) 
+						Into v_amount_to_execute
+					From fin_payment_scheduledetail fpsd
+					Where fpsd.fin_payment_schedule_invoice = :NEW.fin_payment_schedule_invoice
+						And EXISTS (Select 1 
+							From fin_payment_detail fpd
+								Join fin_payment fp on fp.fin_payment_id = fpd.fin_payment_id And fp.status = 'RPAE'
+							Where fpd.fin_payment_detail_id = fpsd.fin_payment_detail_id);
+				
+					If(coalesce(v_amount_to_execute,0)+:NEW.amount > v_outstandingamt)Then
+						RAISE_APPLICATION_ERROR(-20000, '@Sspch_InsufficientValue@');
+					End If;
+				End If;
+            End IF;
+        END IF;
+    END IF;
+    
+    END SSPCH_VAL_SHARE_SECUENCE_TRG
+]]></body>
+    </trigger>
+  </database>

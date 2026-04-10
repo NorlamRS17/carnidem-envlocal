@@ -1,0 +1,401 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSXML_TEMP_DATA_XML_IBP">
+    <function name="SSXML_TEMP_DATA_XML_IBP" type="VARCHAR">
+      <parameter name="p_group" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_initdate" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_enddate" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_codeimp" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_codecountry" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult VARCHAR2(2000) := '';
+    Cur_Data RECORD;
+    Cur_Boom RECORD;
+    Cur_Temp_IBP RECORD;
+
+    v_movementqty NUMBER;
+    v_code_ibp NVARCHAR2(100);
+    v_existSubProduct NUMBER;
+    v_salesqty NUMBER;
+    v_qtyldm  NUMBER;
+    v_devqty NUMBER;
+    v_qty_dev_ldm NUMBER;
+    v_baja_qty NUMBER;
+
+	BEGIN
+    
+    DELETE FROM ssxml_data_xml_ibp;
+
+    IF(p_group = 'PI') THEN 
+
+        FOR Cur_Data IN ( 
+            select mp.name, mp.M_PRODUCT_ID,
+            mp.Em_Slplag_Prodclasif , mp.Em_Slplag_Brand , mp.Em_Slplag_Prodcap,
+            mp.Em_Slplag_Irbpunit , mp.Em_Slplag_Galcohol , mp.EM_Slplag_Mantainpackage_ID,
+            mpm.Presirbp , mp.IsBOM
+            from m_transaction mt 
+            JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+            LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+            JOIN m_inoutline mil ON mil.m_inoutline_id = mt.m_inoutline_id
+            JOIN m_inout mi ON mi.m_inout_ID = mil.m_inout_ID
+            JOIN c_invoiceline cil ON cil.m_inoutline_id = mt.m_inoutline_id --cil.m_inoutline_id = mil.m_inoutline_id
+            JOIN c_invoice ci on ci.c_invoice_id = cil.c_invoice_id
+            JOIN c_doctype dt ON dt.c_doctype_id = ci.c_doctypetarget_id
+            JOIN GL_Category glc ON glc.GL_Category_ID = dt.GL_Category_ID
+            where ci.dateinvoiced >= TO_DATE(p_initDate,  'YYYY-MM-DD') and ci.dateinvoiced < TO_DATE(p_endDate , 'YYYY-MM-DD')
+            AND mpm.em_ssxml_xml_ats = 'Y'
+            AND mt.movementtype in ( 'I+', 'C-', 'P+' )
+            AND ci.docstatus  ='CO'
+           -- AND mp.m_product_Id = '3EAAC2F9A6B842529649A24D73F9A964'
+            GROUP BY 1,2,3,4,5,6,7,8,9
+            ORDER BY mp.IsBOM
+
+        )LOOP
+        -- Order by toma primero productos que no son LDM Ingrese esos productos a la tabla
+        -- consulte embotellamiento en el Plan de produccion
+            IF(Cur_Data.IsBOM = 'N')  THEN
+                -- v_movementqty = CAST((SELECT ssxml_emb_ibp(p_initDate,p_endDate, Cur_Data.m_product_id, p_group, p_codeImp, p_codeCountry)) AS INTEGER);
+                v_salesqty = CAST((SELECT ssxml_sales_qty_ibp(p_initDate,p_endDate, Cur_Data.m_product_id, null, p_group , p_codeImp, p_codeCountry)) AS INTEGER);
+                v_devqty = CAST((SELECT ssxml_dev_qty_ibp(p_initDate,p_endDate, Cur_Data.m_product_id, null, p_group , p_codeImp, p_codeCountry)) AS INTEGER);
+                v_baja_qty = CAST((SELECT ssxml_baja_ibp(p_initDate,p_endDate, Cur_Data.m_product_id, p_group, p_codeImp, p_codeCountry)) AS INTEGER);
+
+                INSERT INTO ssxml_data_xml_ibp(
+                    ssxml_data_xml_ibp_id, ad_client_id, ad_org_id, isactive, created, 
+                    createdby, updated, updatedby, m_product_id, codeibp, isbom
+                    , embIBP , sale , dev, baja
+                    )
+                VALUES (get_uuid(), '0', '0', 'Y', now(), 
+                    '100', now(), '100', Cur_Data.m_product_id, (p_codeImp|| '-'|| Cur_Data.Em_Slplag_Prodclasif || '-'|| Cur_Data.Em_Slplag_Brand || '-'|| Cur_Data.Presirbp 
+                    || '-'|| Cur_Data.Em_Slplag_Prodcap || '-'|| Cur_Data.Em_Slplag_Irbpunit || '-'|| p_codeCountry|| '-'|| Cur_Data.Em_Slplag_Galcohol ) 
+                    , Cur_Data.IsBOM  ,  0 /* COALESCE(v_movementqty , 0)  */, v_salesqty ,v_devqty , v_baja_qty ) ;
+
+            END IF;
+
+            -- Si es producto de tipo COMBO LDM entonces busca sus subproductos 
+            IF(Cur_Data.IsBOM = 'Y')  THEN
+                -- NO APLICA EMBOTELLAMIENTO EN XML 
+                -- SI APLICA TAG VENTAS EN XML ( de subproductos ) * CANTIDAD LDM por ser subproducto
+                -- SI APLICA TAG DEVOLUCIONES EN XML ( de subproductos )
+                FOR Cur_Boom IN (
+                    select m_productbom_id as subproducto_ID, bomqty
+                    FROM M_Product_BOM mpb 
+                    LEFT JOIN m_product mp ON mp.m_product_id = mpb.m_productbom_id
+                    LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+                    WHERE mpb.m_product_id = Cur_Data.m_product_id
+                    AND mpm.em_ssxml_xml_ats = 'Y'
+
+                ) LOOP
+                    -- Determinar si el subprodcuto ya existe en la tabla ssxml_data_xml_ibp
+                    -- Si existe ya no agregar al embotellamiento
+                    
+                    SELECT COALESCE(count(*) , 0)
+                    into v_existSubProduct
+                    FROM ssxml_data_xml_ibp 
+                    WHERE m_product_id = Cur_Boom.subproducto_ID;
+                    
+                    IF( v_existSubProduct = 0) THEN
+                        -- Si no existe crea el registro
+                        v_code_ibp = ( SELECT ssxml_code_prod_ibp(p_codeImp,p_codeCountry, Cur_Boom.subproducto_ID ) );
+                        v_movementqty = 0; -- NO APLICA MBOTELLAMIENTO  POR SER LDM
+                        -- Ventas del subproducto
+                        v_salesqty =  CAST( (SELECT ssxml_sales_qty_ibp(p_initDate,p_endDate, Cur_Boom.subproducto_ID, null , p_group , p_codeImp, p_codeCountry))  AS INTEGER);
+                        -- Ventas del producto LDM
+                        v_qtyldm =  CAST( (SELECT ssxml_sales_qty_ibp(p_initDate,p_endDate, Cur_Boom.subproducto_ID, Cur_Data.M_PRODUCT_ID , p_group, p_codeImp, p_codeCountry))  AS INTEGER) ;
+                        v_devqty =  CAST( (SELECT ssxml_dev_qty_ibp(p_initDate,p_endDate, Cur_Boom.subproducto_ID, null, p_group))  AS INTEGER);
+                        v_qty_dev_ldm =  CAST( (SELECT ssxml_dev_qty_ibp(p_initDate,p_endDate, Cur_Boom.subproducto_ID, Cur_Data.M_PRODUCT_ID , p_group, p_codeImp, p_codeCountry))  AS INTEGER);
+                        --v_baja_qty = (SELECT ssxml_baja_ibp(p_initDate,p_endDate, Cur_Boom.subproducto_ID));
+
+                        INSERT INTO ssxml_data_xml_ibp(
+                        ssxml_data_xml_ibp_id, ad_client_id, ad_org_id, isactive, created, 
+                        createdby, updated, updatedby, m_product_id, codeibp, isbom
+                        , embIBP , sale , dev, baja
+                        )
+                        VALUES (get_uuid(), '0', '0', 'Y', now(), 
+                        '100', now(), '100', Cur_Boom.subproducto_ID, v_code_ibp
+                        , Cur_Data.name  ,  COALESCE(v_movementqty , 0), coalesce(v_salesqty,0) + coalesce(v_qtyldm,0) ,coalesce(v_devqty,0) + coalesce(v_qty_dev_ldm,0) , v_baja_qty ) ;
+            
+                    END IF;
+
+                    IF( v_existSubProduct > 0) THEN
+                        -- Ventas del subproducto  
+                        v_salesqty =  CAST( (SELECT ssxml_sales_qty_ibp(p_initDate,p_endDate, Cur_Boom.subproducto_ID, null , p_group, p_codeImp, p_codeCountry))  AS INTEGER);
+                        -- Ventas del producto LDM
+                        v_qtyldm =  CAST( (SELECT ssxml_sales_qty_ibp(p_initDate,p_endDate, Cur_Boom.subproducto_ID, Cur_Data.M_PRODUCT_ID , p_group, p_codeImp, p_codeCountry))  AS INTEGER);
+                        v_devqty =  CAST( (SELECT ssxml_dev_qty_ibp(p_initDate,p_endDate, Cur_Boom.subproducto_ID, null, p_group , p_codeImp, p_codeCountry))  AS INTEGER);
+                        v_qty_dev_ldm =  CAST( (SELECT ssxml_dev_qty_ibp(p_initDate,p_endDate, Cur_Boom.subproducto_ID, Cur_Data.M_PRODUCT_ID , p_group, p_codeImp, p_codeCountry ))  AS INTEGER);
+                        --v_baja_qty = (SELECT ssxml_baja_ibp(p_initDate,p_endDate, Cur_Boom.subproducto_ID));
+
+                        -- Si ya existe el producto actualiza cantidades
+                        UPDATE ssxml_data_xml_ibp SET sale = sale + v_qtyldm
+                        ,isbom = COALESCE(isbom, '') || ' ;; '||( Cur_Data.name )
+                        , dev =  dev + v_qty_dev_ldm
+                        , baja = baja + v_baja_qty
+                        WHERE m_product_id = Cur_Boom.subproducto_ID;
+
+                    END IF;
+
+                END LOOP;
+
+            END IF;
+
+        END LOOP;
+
+        -- CALCULO DEL TAG embIBP 
+        -- Si existe el producto en la tabla actualiza sus valores caso contrario crea otra con valores en 0 para los demas tags
+
+        FOR Cur_Temp_IBP IN (
+            select  mt.m_product_id , mp.Em_Slplag_Prodclasif , mp.Em_Slplag_Brand , mp.Em_Slplag_Prodcap,
+            mp.Em_Slplag_Irbpunit , mp.Em_Slplag_Galcohol , mp.EM_Slplag_Mantainpackage_ID ,  mpm.Presirbp , mp.IsBOM
+            from m_transaction mt 
+            LEFT JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+            LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+            LEFT JOIN M_ProductionLine mpl ON mpl.M_ProductionLine_ID = mt.M_ProductionLine_ID 
+            LEFT JOIN M_ProductionPlan mpp ON mpp.M_ProductionPlan_ID = mpl.M_ProductionPlan_ID
+            JOIN M_Production mpr ON mpr.M_Production_ID = mpp.M_Production_ID
+            where mpr.movementdate >= TO_DATE(p_initDate,  'YYYY-MM-DD') and mpr.movementdate < TO_DATE(p_endDate, 'YYYY-MM-DD')
+            AND mpm.em_ssxml_xml_ats = 'Y'
+            AND mt.movementtype = 'P+'
+            AND mpr.issotrx = 'N'
+            AND mpp.processed = 'Y'
+            -- AND mt.m_product_id = 'E5C7386AD2DA47248B828008990C4603'
+            GROUP BY mt.m_product_id , mp.Em_Slplag_Prodclasif , mp.Em_Slplag_Brand , mp.Em_Slplag_Prodcap,
+            mp.Em_Slplag_Irbpunit , mp.Em_Slplag_Galcohol , mp.EM_Slplag_Mantainpackage_ID ,  mpm.Presirbp , mp.IsBOM
+           
+        ) LOOP
+
+           --  RAISE Cur_Temp_IBP.m_product_id;
+            -- Por todos los productos de la parte de fabricacion se calculará el
+            v_movementqty = CAST((SELECT ssxml_emb_ibp(p_initDate,p_endDate, Cur_Temp_IBP.m_product_id, p_group, p_codeImp, p_codeCountry)) AS INTEGER);
+            -- RAISE COALESCE(v_movementqty, 11);
+                    SELECT COALESCE(count(*) , 0)
+                    into v_existSubProduct
+                    FROM ssxml_data_xml_ibp 
+                    WHERE m_product_id = Cur_Temp_IBP.m_product_id;
+                    
+                    IF( v_existSubProduct = 0) THEN
+                        
+                        INSERT INTO ssxml_data_xml_ibp(
+                            ssxml_data_xml_ibp_id, ad_client_id, ad_org_id, isactive, created, 
+                            createdby, updated, updatedby, m_product_id, codeibp, isbom
+                            , embIBP , sale , dev, baja
+                            )
+                        VALUES (get_uuid(), '0', '0', 'Y', now(), 
+                            '100', now(), '100', Cur_Temp_IBP.m_product_id, (p_codeImp|| '-'|| Cur_Temp_IBP.Em_Slplag_Prodclasif || '-'|| Cur_Temp_IBP.Em_Slplag_Brand || '-'|| Cur_Temp_IBP.Presirbp 
+                            || '-'|| Cur_Temp_IBP.Em_Slplag_Prodcap || '-'|| Cur_Temp_IBP.Em_Slplag_Irbpunit || '-'|| p_codeCountry|| '-'|| Cur_Temp_IBP.Em_Slplag_Galcohol ) 
+                            , Cur_Temp_IBP.IsBOM  , COALESCE(v_movementqty , 0)  , 0 , 0 , 0 ) ;
+
+                        
+                    END IF;
+
+                    IF( v_existSubProduct > 0) THEN
+                        
+                        -- Si ya existe el producto actualiza cantidades
+                        UPDATE ssxml_data_xml_ibp SET embIBP = v_movementqty
+                        WHERE m_product_id = Cur_Temp_IBP.m_product_id;
+
+                    END IF;
+
+
+        END LOOP;
+
+
+    END IF;
+
+    IF(p_group = 'PC') THEN 
+
+        FOR Cur_Data IN ( 
+            select
+            CASE wheN mp.Em_Slplag_Prodclasif IS NOT NULL AND  mp.Em_Slplag_Brand  IS NOT NULL AND mp.Em_Slplag_Prodcap IS NOT NULL THEN 
+            ( p_codeImp ||'-'||mp.Em_Slplag_Prodclasif ||'-'|| mp.Em_Slplag_Brand ||'-'||  mpm.Presirbp||'-'|| mp.Em_Slplag_Prodcap||'-'||
+            mp.Em_Slplag_Irbpunit ||'-'|| p_codeCountry ||'-'|| mp.Em_Slplag_Galcohol ) 
+	        ELSE mp.m_product_id  END as m_product_id,  mp.IsBOM
+            from m_transaction mt 
+            JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+            LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+            JOIN m_inoutline mil ON mil.m_inoutline_id = mt.m_inoutline_id
+            JOIN m_inout mi ON mi.m_inout_ID = mil.m_inout_ID
+            JOIN c_invoiceline cil ON cil.m_inoutline_id = mt.m_inoutline_id --cil.m_inoutline_id = mil.m_inoutline_id
+            JOIN c_invoice ci on ci.c_invoice_id = cil.c_invoice_id
+            JOIN c_doctype dt ON dt.c_doctype_id = ci.c_doctypetarget_id
+            JOIN GL_Category glc ON glc.GL_Category_ID = dt.GL_Category_ID
+            where ci.dateinvoiced >= TO_DATE(p_initDate,  'YYYY-MM-DD') and ci.dateinvoiced < TO_DATE(p_endDate , 'YYYY-MM-DD')
+            AND mpm.em_ssxml_xml_ats = 'Y'
+            AND mt.movementtype in ( 'I+', 'C-', 'P+' )
+            AND ci.docstatus  ='CO'
+            GROUP BY 1,2
+            ORDER BY mp.IsBOM
+
+        )LOOP
+            -- Order by toma primero productos que no son LDM Ingrese esos productos a la tabla
+            -- consulte embotellamiento en el Plan de produccion
+            IF(Cur_Data.IsBOM = 'N')  THEN
+               -- v_movementqty = CAST( (SELECT ssxml_emb_ibp(p_initDate,p_endDate, Cur_Data.m_product_id, p_group,p_codeImp, p_codeCountry))  AS INTEGER);
+                v_salesqty = CAST( (SELECT ssxml_sales_qty_ibp(p_initDate,p_endDate, Cur_Data.m_product_id, null, p_group, p_codeImp, p_codeCountry))  AS INTEGER);
+                v_devqty = CAST( (SELECT ssxml_dev_qty_ibp(p_initDate,p_endDate, Cur_Data.m_product_id, null, p_group, p_codeImp, p_codeCountry))  AS INTEGER);
+                v_baja_qty = CAST( (SELECT ssxml_baja_ibp(p_initDate,p_endDate, Cur_Data.m_product_id, p_group, p_codeImp, p_codeCountry))  AS INTEGER);
+
+                INSERT INTO ssxml_data_xml_ibp(
+                    ssxml_data_xml_ibp_id, ad_client_id, ad_org_id, isactive, created, 
+                    createdby, updated, updatedby, m_product_id, codeibp, isbom
+                    , embIBP , sale , dev, baja
+                    )
+                VALUES (get_uuid(), '0', '0', 'Y', now(), 
+                    '100', now(), '100', NULL, Cur_Data.m_product_id
+                    , Cur_Data.IsBOM  , 0 /* ABS(COALESCE(v_movementqty , 0)) */, ABS(v_salesqty) ,ABS(v_devqty) , ABS(v_baja_qty) ) ;
+        
+            END IF;
+
+            -- Si es producto de tipo COMBO LDM entonces busca sus subproductos 
+            IF(Cur_Data.IsBOM = 'Y')  THEN
+                -- NO APLICA EMBOTELLAMIENTO EN XML 
+                -- SI APLICA TAG VENTAS EN XML ( de subproductos ) * CANTIDAD LDM por ser subproducto
+                -- SI APLICA TAG DEVOLUCIONES EN XML ( de subproductos )                
+                FOR Cur_Boom IN (
+                    select m_productbom_id as subproducto_ID, bomqty
+                    , ( SELECT ( p_codeImp ||'-'||Em_Slplag_Prodclasif ||'-'|| Em_Slplag_Brand ||'-'||  pri.Presirbp||'-'|| Em_Slplag_Prodcap||'-'||
+                        Em_Slplag_Irbpunit ||'-'|| p_codeCountry ||'-'|| Em_Slplag_Galcohol ) 
+                    FROM m_product 
+                    LEFT JOIN Slplag_Kindpackage pri ON pri.Slplag_Kindpackage_id = m_product.EM_Slplag_Mantainpackage_ID
+                    WHERE m_product_id = m_productbom_id
+                    )  as code_ibp
+                    FROM M_Product_BOM mpb 
+                    LEFT JOIN m_product mp ON mp.m_product_id = mpb.m_productbom_id
+                    LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+                    WHERE mpb.m_product_id =  Cur_Data.m_product_id
+                    AND mpm.em_ssxml_xml_ats = 'Y'
+                ) LOOP
+                    -- verificar si el codigoibp de los subproductos ya existen en la tabla temporal
+
+                    SELECT COALESCE(count(*) , 0)
+                    into v_existSubProduct
+                    FROM ssxml_data_xml_ibp 
+                    WHERE codeibp = Cur_Boom.code_ibp;
+
+                    IF( v_existSubProduct = 0) THEN
+                        -- Agrupe por codigo de producto los productos con el mismo codigo
+                                                -- Si no existe crea el registro
+                        v_code_ibp = Cur_Boom.code_ibp; --( SELECT ssxml_code_prod_ibp(p_codeImp,p_codeCountry, Cur_Boom.subproducto_ID ) );
+                        v_movementqty = 0; -- NO APLICA MBOTELLAMIENTO  POR SER LDM
+                        -- Ventas del subproducto agrupado por codigo ibp
+                        v_salesqty = CAST((SELECT ssxml_sales_qty_ibp(p_initDate,p_endDate, v_code_ibp, null, p_group , p_codeImp, p_codeCountry))  AS INTEGER) ;
+                        -- Ventas del producto LDM
+                        v_qtyldm = CAST((SELECT ssxml_sales_qty_ibp(p_initDate,p_endDate, v_code_ibp, Cur_Data.M_PRODUCT_ID , p_group, p_codeImp, p_codeCountry))  AS INTEGER) ;
+                        v_devqty = CAST((SELECT ssxml_dev_qty_ibp(p_initDate,p_endDate, v_code_ibp, null, p_group))  AS INTEGER) ;
+                        v_qty_dev_ldm = CAST((SELECT ssxml_dev_qty_ibp(p_initDate,p_endDate, v_code_ibp, Cur_Data.M_PRODUCT_ID , p_group, p_codeImp, p_codeCountry))  AS INTEGER) ;
+
+                        INSERT INTO ssxml_data_xml_ibp(
+                        ssxml_data_xml_ibp_id, ad_client_id, ad_org_id, isactive, created, 
+                        createdby, updated, updatedby, m_product_id, codeibp, isbom
+                        , embIBP , sale , dev, baja
+                        )
+                        VALUES (get_uuid(), '0', '0', 'Y', now(), 
+                        '100', now(), '100', NULL, v_code_ibp
+                        , NULL  ,  ABS(COALESCE(v_movementqty , 0)), ABS(coalesce(v_salesqty,0)) + ABS(coalesce(v_qtyldm,0)) ,ABS(coalesce(v_devqty,0)) + ABS(coalesce(v_qty_dev_ldm,0)) , ABS(v_baja_qty) ) ;
+            
+
+                    END IF;
+
+                    IF( v_existSubProduct > 0) THEN
+                        v_code_ibp = Cur_Boom.code_ibp; 
+                                                -- Ventas del subproducto  
+                        v_salesqty = CAST((SELECT ssxml_sales_qty_ibp(p_initDate,p_endDate, v_code_ibp, null , p_group, p_codeImp, p_codeCountry))  AS INTEGER) ;
+                        -- Ventas del producto LDM
+                        v_qtyldm = CAST((SELECT ssxml_sales_qty_ibp(p_initDate,p_endDate, v_code_ibp, Cur_Data.M_PRODUCT_ID , p_group, p_codeImp, p_codeCountry))  AS INTEGER) ;
+
+                        v_devqty = CAST((SELECT ssxml_dev_qty_ibp(p_initDate,p_endDate, v_code_ibp, null, p_group , p_codeImp, p_codeCountry))  AS INTEGER) ;
+                        v_qty_dev_ldm = CAST((SELECT ssxml_dev_qty_ibp(p_initDate,p_endDate, v_code_ibp, Cur_Data.M_PRODUCT_ID , p_group, p_codeImp, p_codeCountry )) AS INTEGER) ;
+                        --v_baja_qty = (SELECT ssxml_baja_ibp(p_initDate,p_endDate, Cur_Boom.subproducto_ID));
+
+                        -- Si ya existe el producto actualiza cantidades
+                        UPDATE ssxml_data_xml_ibp SET sale = sale + v_qtyldm
+                        , isbom = 'Y'
+                        , dev = dev + v_qty_dev_ldm
+                        , baja = baja + v_baja_qty
+                        WHERE codeibp = v_code_ibp;
+
+
+                    END IF;
+
+                END LOOP;
+
+            END IF;
+
+        END LOOP;
+        -- CALCULO DEL TAG embIBP 
+        -- Si existe el producto en la tabla actualiza sus valores caso contrario crea otra con valores en 0 para los demas tags
+
+        FOR Cur_Temp_IBP IN (
+           
+            select   CASE wheN mp.Em_Slplag_Prodclasif IS NOT NULL AND  mp.Em_Slplag_Brand  IS NOT NULL AND mp.Em_Slplag_Prodcap IS NOT NULL THEN 
+            ( p_codeImp ||'-'||mp.Em_Slplag_Prodclasif ||'-'|| mp.Em_Slplag_Brand ||'-'||  mpm.Presirbp||'-'|| mp.Em_Slplag_Prodcap||'-'||
+            mp.Em_Slplag_Irbpunit ||'-'|| p_codeCountry ||'-'|| mp.Em_Slplag_Galcohol ) 
+	        ELSE mp.m_product_id  END as m_product_id,
+            mp.Em_Slplag_Prodclasif , mp.Em_Slplag_Brand , mp.Em_Slplag_Prodcap,
+            mp.Em_Slplag_Irbpunit , mp.Em_Slplag_Galcohol , mp.EM_Slplag_Mantainpackage_ID ,  mpm.Presirbp , mp.IsBOM
+            from m_transaction mt 
+            LEFT JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+            LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+            LEFT JOIN M_ProductionLine mpl ON mpl.M_ProductionLine_ID = mt.M_ProductionLine_ID 
+            LEFT JOIN M_ProductionPlan mpp ON mpp.M_ProductionPlan_ID = mpl.M_ProductionPlan_ID
+            JOIN M_Production mpr ON mpr.M_Production_ID = mpp.M_Production_ID
+            where mpr.movementdate >= TO_DATE(p_initDate,  'YYYY-MM-DD') and mpr.movementdate < TO_DATE(p_endDate, 'YYYY-MM-DD')
+            AND mpm.em_ssxml_xml_ats = 'Y'
+            AND mt.movementtype = 'P+'
+            AND mpr.issotrx = 'N'
+            AND mpp.processed = 'Y'
+            -- AND mt.m_product_id = 'E5C7386AD2DA47248B828008990C4603'
+            /*
+            GROUP BY mp.m_product_id , mp.Em_Slplag_Prodclasif , mp.Em_Slplag_Brand , mp.Em_Slplag_Prodcap,
+            mp.Em_Slplag_Irbpunit , mp.Em_Slplag_Galcohol , mp.EM_Slplag_Mantainpackage_ID ,  mpm.Presirbp , mp.IsBOM
+            */
+
+        ) LOOP
+
+           --  RAISE Cur_Temp_IBP.m_product_id;
+            -- Por todos los productos de la parte de fabricacion se calculará el
+            v_movementqty = CAST((SELECT ssxml_emb_ibp(p_initDate,p_endDate, Cur_Temp_IBP.m_product_id, p_group, p_codeImp, p_codeCountry)) AS INTEGER);
+            -- RAISE COALESCE(v_movementqty, 11);
+                    SELECT COALESCE(count(*) , 0)
+                    into v_existSubProduct
+                    FROM ssxml_data_xml_ibp 
+                    WHERE codeibp = Cur_Temp_IBP.m_product_id;
+                    
+                    IF( v_existSubProduct = 0) THEN
+                        
+                         INSERT INTO ssxml_data_xml_ibp(
+                            ssxml_data_xml_ibp_id, ad_client_id, ad_org_id, isactive, created, 
+                            createdby, updated, updatedby, m_product_id, codeibp, isbom
+                            , embIBP , sale , dev, baja
+                            )
+                        VALUES (get_uuid(), '0', '0', 'Y', now(), 
+                            '100', now(), '100', NULL, Cur_Temp_IBP.m_product_id
+                            , Cur_Temp_IBP.IsBOM  , ABS(COALESCE(v_movementqty , 0)) , 0 , 0 , 0 ) ;
+    
+
+                    END IF;
+
+                    IF( v_existSubProduct > 0) THEN
+                        
+                        -- Si ya existe el producto actualiza cantidades
+                        UPDATE ssxml_data_xml_ibp SET embIBP = v_movementqty
+                        WHERE codeibp = Cur_Temp_IBP.m_product_id;
+
+                    END IF;
+
+
+        END LOOP;
+    END IF;
+	
+    RETURN 'OK';
+END SSXML_TEMP_DATA_XML_IBP
+]]></body>
+    </function>
+  </database>

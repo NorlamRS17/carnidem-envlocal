@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSCCSO_REMOVE_RELATIONS_TRG">
+    <trigger name="SSCCSO_REMOVE_RELATIONS_TRG" table="SCCC_CASH_CLOUSURELINE" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[
+BEGIN
+    
+ IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+	
+
+      
+  IF (INSERTING OR UPDATING OR DELETING ) THEN
+	IF (DELETING) THEN
+		-- Quita la relacion de ese cierre de caja y ese método de pago
+		Update ssccso_cash_inc_exp set 
+			sccc_cash_clousure_id = null
+			, isreconciled = 'N'
+		Where fin_paymentmethod_id = :OlD.fin_paymentmethod_id
+			And sccc_cash_clousure_id  = :OLD.sccc_cash_clousure_id;
+	END IF;
+  END IF;
+
+
+  END SSCCSO_REMOVE_RELATIONS_TRG
+]]></body>
+    </trigger>
+  </database>

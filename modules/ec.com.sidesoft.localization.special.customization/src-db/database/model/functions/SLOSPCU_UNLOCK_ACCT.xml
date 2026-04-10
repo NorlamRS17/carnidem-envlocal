@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SLOSPCU_UNLOCK_ACCT">
+    <function name="SLOSPCU_UNLOCK_ACCT" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[TYPE RECORD IS REF CURSOR;
+Cur_Parameter RECORD;
+v_record_id VARCHAR2(32);
+v_ad_user_id VARCHAR2(32);
+v_ad_org_id VARCHAR2(32);
+
+v_ResultStr VARCHAR2(2000):='';
+v_Message VARCHAR2(2000):='';
+v_Result NUMBER:=1; -- 0=failure
+v_isacctle AD_OrgType.IsAcctLegalEntity%TYPE;
+v_available_period NUMBER:=0; 
+v_date DATE;
+v_DocType_ID VARCHAR2(32);
+
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || pinstance_id);
+	v_ResultStr:='PInstanceNotFound';
+ AD_UPDATE_PINSTANCE(pinstance_id, NULL, 'Y', NULL, NULL);
+
+	BEGIN --BODY
+		-- Get Parameters
+		v_ResultStr:='ReadingParameters';
+
+
+	FOR Cur_Parameter IN
+	(SELECT i.Record_ID,
+	i.AD_User_ID, 
+	i.AD_Client_ID,
+	i.AD_Org_ID                    
+	FROM AD_PInstance i      
+	WHERE i.AD_PInstance_ID = PInstance_ID      
+	)
+	LOOP
+		v_record_id := Cur_Parameter.Record_ID;
+		v_ad_user_id := Cur_Parameter.AD_User_ID;	
+	END LOOP;
+
+	SELECT AD_ORG_ID, dateacct, C_DocTypeTarget_ID
+	INTO v_ad_org_id, v_date, v_DocType_ID 
+	FROM c_invoice
+	WHERE c_invoice_id = v_record_id;
+	
+        SELECT C_CHK_OPEN_PERIOD(v_ad_org_id, v_date, NULL, v_DocType_ID) 
+        INTO v_available_period
+        FROM DUAL;
+
+        IF (v_available_period<>1) THEN
+			RAISE_APPLICATION_ERROR(-20000, '@PeriodNotAvailable@') ;
+        END IF;
+
+  	UPDATE c_invoice SET posted='N', updatedby = v_ad_user_id, updated = now()
+	WHERE c_invoice_id = v_record_id;
+	
+
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message);
+	 AD_UPDATE_PINSTANCE(pinstance_id, NULL, 'N', v_Result, v_Message);
+
+		RETURN;
+	END; --BODY
+
+	EXCEPTION WHEN OTHERS THEN
+		v_ResultStr:= '@ERROR=' || SQLERRM;
+		DBMS_OUTPUT.PUT_LINE( v_ResultStr) ;
+		ROLLBACK;
+	 AD_UPDATE_PINSTANCE(pinstance_id, NULL, 'N', 0, v_ResultStr);
+END SLOSPCU_UNLOCK_ACCT
+]]></body>
+    </function>
+  </database>

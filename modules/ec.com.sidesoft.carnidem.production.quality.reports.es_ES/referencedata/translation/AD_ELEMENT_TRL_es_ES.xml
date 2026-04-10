@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="111C4B3F0AE145D696AF2DBFC22C4F32" trl="Y">
+    <value column="Name" isTrl="Y" original="Business partner">Tercero</value>
+    <value column="PrintName" isTrl="Y" original="Business partner">Tercero</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1D9A93A6F611454EB66069353F615337" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprqr_TypeQuality">Tipo de monitoreo de seguridad y calidad</value>
+    <value column="PrintName" isTrl="Y" original="Type of safety and quality monitoring">Tipo de monitoreo de seguridad y calidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="28E4333B1838457E997675A882D22F5A" trl="Y">
+    <value column="Name" isTrl="Y" original="Monitoring type">Tipo monitoreo</value>
+    <value column="PrintName" isTrl="Y" original="Monitoring type">Tipo monitoreo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="652B47AAED264B4F8B4949D90F6CD100" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_CRPRQR_Report_Material">REPORTE DE SEGURIDAD Y CALIDAD EN MATERIA PRIMA</value>
+    <value column="PrintName" isTrl="Y" original="RAW MATERIAL SAFETY AND QUALITY REPORT">REPORTE DE SEGURIDAD Y CALIDAD EN MATERIA PRIMA</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9AC8B80321DA4F84B3CEA394A34DDF05" trl="Y">
+    <value column="Name" isTrl="Y" original="Average">Promedio</value>
+    <value column="PrintName" isTrl="Y" original="Average">Promedio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A40460564F554C059561BF095B20F8B3" trl="Y">
+    <value column="Name" isTrl="Y" original="CRPRQR_DateFrom">Fecha Desde</value>
+    <value column="PrintName" isTrl="Y" original="Date From">Fecha Desde</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="AC1688FC4E284055A5AB45B294D3C51E" trl="Y">
+    <value column="Name" isTrl="Y" original="Summation">Sumatoria</value>
+    <value column="PrintName" isTrl="Y" original="Summation">Sumatoria</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="AD315FCF1C584B0A8073B46A6B985DD4" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprqr_Approvedby">Generado por</value>
+    <value column="PrintName" isTrl="Y" original="Approved by">Generado por</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C2192491560544998A737B7BE64C59F4" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_CRPRQR_TypeMonitor">Tipo de monitoreo</value>
+    <value column="PrintName" isTrl="Y" original="Type Monitor">Tipo de monitoreo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C58FC3472160437DA0EC5FAF67CBBC53" trl="Y">
+    <value column="Name" isTrl="Y" original="CRPRQR_DateTo">Fecha Hasta</value>
+    <value column="PrintName" isTrl="Y" original="Date To">Fecha Hasta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

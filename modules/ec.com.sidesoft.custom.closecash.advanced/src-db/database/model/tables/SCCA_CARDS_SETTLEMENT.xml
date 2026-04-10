@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+  <database name="TABLE SCCA_CARDS_SETTLEMENT">
+    <table name="SCCA_CARDS_SETTLEMENT" primaryKey="SCCA_CSETTLEMENT_KEY">
+      <column name="SCCA_CARDS_SETTLEMENT_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_USER_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="FIN_PAYMENTMETHOD_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="CARD_TYPE" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="LOT" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DATE_TRANSACTION" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RECEIVED_AMOUNT" primaryKey="false" required="true" type="DECIMAL" size="12,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="BONDED_AMOUNT" primaryKey="false" required="true" type="DECIMAL" size="12,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="COMMISSION_AMOUNT" primaryKey="false" required="true" type="DECIMAL" size="12,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="IVA_RETENTION" primaryKey="false" required="true" type="DECIMAL" size="12,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="RENT_RETENTION" primaryKey="false" required="true" type="DECIMAL" size="12,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="AD_CLIENT" name="SCCA_CSETTLEMENT_AD_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="SCCA_CSETTLEMENT_AD_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_USER" name="SCCA_CSETTLEMENT_AD_USER">
+        <reference local="AD_USER_ID" foreign="AD_USER_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="FIN_PAYMENTMETHOD" name="SCCA_CSETTLEMENT_FPYMNTMETHOD">
+        <reference local="FIN_PAYMENTMETHOD_ID" foreign="FIN_PAYMENTMETHOD_ID"/>
+      </foreign-key>
+      <check name="SCCA_CSETTL_ISACTIVE_CHECK"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
+    </table>
+  </database>

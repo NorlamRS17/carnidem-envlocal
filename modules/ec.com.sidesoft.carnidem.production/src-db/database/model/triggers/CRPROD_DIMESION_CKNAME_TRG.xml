@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER CRPROD_DIMESION_CKNAME_TRG">
+    <trigger name="CRPROD_DIMESION_CKNAME_TRG" table="CRPROD_DIMENSION" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+/********************************************************************************** 
+ * Copyright (C) 2009 Openbravo S.L.U. 
+ * Licensed under the Openbravo Commercial License version 1.0 
+ * You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html 
+ **********************************************************************************
+ * Contributor(s):  ______________________________________.
+ **********************************************************************************/
+BEGIN
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+	-- Verificar registros duplciados
+	IF INSERTING THEN
+    -- Validación al insertar: no debe existir otra línea con el mismo nombre en el mismo padre
+    IF EXISTS (
+      SELECT 1
+      FROM public.crprod_dimension
+      WHERE UPPER(name) = UPPER(:NEW.name)
+        AND ma_ccp_group_id = :NEW.ma_ccp_group_id
+    ) THEN
+			RAISE_APPLICATION_ERROR(-20000, '@scft_duplicatetrg@');
+    END IF;
+
+  ELSIF UPDATING THEN
+    -- Validación al actualizar: tampoco puede quedar duplicado dentro del mismo padre
+    IF EXISTS (
+      SELECT 1
+      FROM public.crprod_dimension
+      WHERE UPPER(name) = UPPER(:NEW.name)
+        AND ma_ccp_group_id = :NEW.ma_ccp_group_id
+        AND crprod_dimension_id <> :NEW.crprod_dimension_id
+    ) THEN
+			RAISE_APPLICATION_ERROR(-20000, '@scft_duplicatetrg@');
+    END IF;
+  END IF;
+END CRPROD_DIMESION_CKNAME_TRG
+]]></body>
+    </trigger>
+  </database>

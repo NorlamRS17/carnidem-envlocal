@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_FINANCIAL_ACCOUNT">
+    <table name="FIN_FINANCIAL_ACCOUNT" primaryKey="FIN_FINANCIAL_ACCOUNT_KEY">
+      <column name="EM_SSCCR_ISPROCESSORBANCK" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <check name="EM_SSCCR_ISPROCESSORBNCK_CHECK"><![CDATA[EM_SSCCR_ISPROCESSORBANCK IN ('Y', 'N')]]></check>
+    </table>
+  </database>

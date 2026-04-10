@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE A_ASSET">
+    <table name="A_ASSET" primaryKey="A_ASSET_KEY">
+      <column name="EM_SSATAX_C_TAXCATEGORY_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSATAX_TAXAMT" primaryKey="false" required="false" type="DECIMAL" size="10,2" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSATAX_TOTALPURCHASEAMT" primaryKey="false" required="false" type="DECIMAL" size="10,2" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="C_TAXCATEGORY" name="EM_SSATAX_TAXCATEGORY_FK">
+        <reference local="EM_SSATAX_C_TAXCATEGORY_ID" foreign="C_TAXCATEGORY_ID"/>
+      </foreign-key>
+    </table>
+  </database>

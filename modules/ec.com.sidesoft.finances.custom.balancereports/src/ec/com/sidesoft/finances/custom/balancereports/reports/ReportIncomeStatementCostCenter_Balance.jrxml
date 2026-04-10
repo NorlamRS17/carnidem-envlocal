@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportIncomeStatementCostCenter_Balance" columnCount="20" printOrder="Horizontal" pageWidth="1760" pageHeight="16" columnWidth="88" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" uuid="692b39a1-c18d-4482-abc6-33842b7e7ea6">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.pdf.size.page.to.content" value="true"/>
+	<parameter name="ad_org_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AD_USER_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_Costcenter_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="datefrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateto" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nivel" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sfcbr_accountlevel" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sfcbr_showzeroaccount" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="User1_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_DESIGN" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="account_name" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH movs AS (
+    SELECT
+        COALESCE(SUM(fa.amtacctdr - fa.amtacctcr), 0.00) AS amount,
+        CASE
+            WHEN cos.name IS NULL OR cos.name = 'NA'
+                THEN 'X-' || COALESCE(cos.name, 'NA')
+            ELSE cos.name
+        END AS costcenter
+    FROM fact_acct fa
+    LEFT JOIN c_elementvalue ev
+        ON ev.c_elementvalue_id = fa.account_id
+    LEFT JOIN mv_tree_acct ta
+        ON ta.id = ev.c_elementvalue_id
+    LEFT JOIN c_costcenter cos
+        ON cos.c_costcenter_id = fa.c_costcenter_id
+    WHERE
+        -- FILTRO ÁRBOL CONTABLE
+        ta.p1name = $P{account_name}
+
+        -- FECHAS
+        AND fa.dateacct BETWEEN $P{datefrom} AND $P{dateto}
+
+        -- FACTACCTTYPE
+        AND fa.factaccttype = 'N'
+
+        -- ACTIVO
+        AND fa.isactive = 'Y'
+
+        -- ORGANIZACIÓN
+        AND (
+            $P{ad_org_id} = '0'
+            OR fa.ad_org_id = $P{ad_org_id}
+        )
+
+        -- FILTRO CENTRO DE COSTO
+        AND (
+            $P{C_Costcenter_ID} IS NULL
+            OR fa.c_costcenter_id = $P{C_Costcenter_ID}
+        )
+
+        -- NO PERMITIR NULL SI C_Costcenter_ID ≠ NULL
+        AND NOT (
+            $P{C_Costcenter_ID} IS NOT NULL
+            AND fa.c_costcenter_id IS NULL
+        )
+
+    GROUP BY cos.name
+),
+
+centers AS (
+    SELECT DISTINCT
+        CASE
+            WHEN cos.name IS NULL OR cos.name = 'NA'
+                THEN 'X-' || COALESCE(cos.name, 'NA')
+            ELSE cos.name
+        END AS costcenter
+    FROM c_costcenter cos
+)
+
+SELECT
+    SUM(COALESCE(m.amount, 0)) AS amount,
+    REPLACE(c.costcenter, 'X-', '') AS costcenter
+FROM centers c
+LEFT JOIN movs m
+       ON m.costcenter = c.costcenter
+GROUP BY c.costcenter
+ORDER BY c.costcenter desc;]]>
+	</queryString>
+	<field name="amount" class="java.math.BigDecimal"/>
+	<field name="costcenter" class="java.lang.String"/>
+	<variable name="total" class="java.math.BigDecimal" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="0" width="88" height="16" isPrintWhenDetailOverflows="true" uuid="70eb35b8-6ba8-4028-8f28-837f3017aa1b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+</jasperReport>

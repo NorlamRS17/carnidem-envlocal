@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="113F7A8E1EE2404A8230DE92631A3271" trl="N">
+    <value column="MsgText" isTrl="N" original="Ya se ha creado un socio comercial a partir de este contacto principal">Ya se ha creado un socio comercial a partir de este contacto principal</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="91E05B1F386844F6A8D4B038032924D8" trl="N">
+    <value column="MsgText" isTrl="N" original="Por favor, configure el grupo de socios comerciales en la ventana de &quot;Configuracion&quot; del modulo CRM">Por favor, configure el grupo de socios comerciales en la ventana de "Configuracion" del modulo CRM</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="B76033E4B7D74B6D8B0C04971429973A" trl="N">
+    <value column="MsgText" isTrl="N" original="Por favor, configure el nombre comercial de su cliente potencial antes de convertirlo en socio comercial">Por favor, configure el nombre comercial de su cliente potencial antes de convertirlo en socio comercial</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="C5BFE76E038642269FC8063DDACDEEFF" trl="N">
+    <value column="MsgText" isTrl="N" original="Socio comercial creado exitosamente a partir de cliente potencial">Socio comercial creado exitosamente a partir de cliente potencial</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

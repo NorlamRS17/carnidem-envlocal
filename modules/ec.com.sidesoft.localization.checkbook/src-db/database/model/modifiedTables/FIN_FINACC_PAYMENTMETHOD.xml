@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_FINACC_PAYMENTMETHOD">
+    <table name="FIN_FINACC_PAYMENTMETHOD" primaryKey="FIN_FINACC_PAYMETHOD_KEY">
+      <column name="EM_SLCB_ISGENERATECHECK" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <index name="EM_SLCB_IDX_PAYMETH_ML" unique="false">
+        <index-column name="FIN_FINANCIAL_ACCOUNT_ID"/>
+        <index-column name="FIN_PAYMENTMETHOD_ID"/>
+        <whereClause><![CDATA[ISACTIVE='Y' AND PAYIN_ALLOW='Y' AND PAYIN_ISMULTICURRENCY='Y']]></whereClause>
+      </index>
+    </table>
+  </database>

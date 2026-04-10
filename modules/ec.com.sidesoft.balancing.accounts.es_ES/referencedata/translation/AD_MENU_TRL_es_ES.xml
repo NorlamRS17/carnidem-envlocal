@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="193FEAAE550341B1A18B20D0C1B43CB4" trl="N">
+    <value column="Name" isTrl="Y" original="Configuration">Configuración</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="9624F65BD8AA4F55B76DDA2AE8A17B03" trl="N">
+    <value column="Name" isTrl="Y" original="Reconciliation Module vs. Accounting">Cuadre Módulo vs Contabilidad</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="98D5A4BDFFA74841ADE3FF68F2FAB320" trl="Y">
+    <value column="Name" isTrl="Y" original="Module">Módulo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F4767D5419EC4CBA83FF13B5643ABFC7" trl="Y">
+    <value column="Name" isTrl="Y" original="Accounting Account Parameterization">Parametrización Cuentas Contables</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

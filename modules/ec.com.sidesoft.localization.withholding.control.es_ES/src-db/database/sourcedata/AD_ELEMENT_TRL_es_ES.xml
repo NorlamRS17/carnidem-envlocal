@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="23C61E31096A442BB4A82E66E8473D98" trl="N">
+    <value column="Name" isTrl="Y" original="documentno">N° Retención</value>
+    <value column="PrintName" isTrl="Y" original="documentno">N° Retención</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="36A4F03526674C17BA047B2FF88B0748" trl="Y">
+    <value column="Name" isTrl="Y" original="KEY_Access_Auth">Clave de acceso autorizada</value>
+    <value column="PrintName" isTrl="Y" original="KEY_Access_Auth">Clave de acceso autorizada</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4E5F3B3C018C4E55979BFAC2110306CC" trl="Y">
+    <value column="Name" isTrl="Y" original="Urlxml">URL XML</value>
+    <value column="PrintName" isTrl="Y" original="Urlxml">URL XML</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="553358D7DE2B4898A048C9AA7A6CD917" trl="Y">
+    <value column="Name" isTrl="Y" original="KEY_Access">Clave de acceso</value>
+    <value column="PrintName" isTrl="Y" original="KEY_Access">Clave de acceso</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="567DDC14B33544CA948CA2CBF4B86304" trl="N">
+    <value column="Name" isTrl="N" original="Ecswc_Withholding_Cancel_ID">Ecswc_Withholding_Cancel_ID</value>
+    <value column="PrintName" isTrl="N" original="Ecswc_Withholding_Cancel_ID">Ecswc_Withholding_Cancel_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="827624AD2B7246B0A676BB4CF04FE3D3" trl="Y">
+    <value column="Name" isTrl="Y" original="Urlxml_Ride">URL RIDE</value>
+    <value column="PrintName" isTrl="Y" original="Urlxml_Ride">URL RIDE</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="900158165D794DBF97EECA3047374E09" trl="Y">
+    <value column="Name" isTrl="Y" original="Withholding_Date">Fecha Retención</value>
+    <value column="PrintName" isTrl="Y" original="Withholding_Date">Fecha Retención</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B69182C407184382AEFB63DA7182EAF0" trl="Y">
+    <value column="Name" isTrl="Y" original="Status_Doc">Estado doc.</value>
+    <value column="PrintName" isTrl="Y" original="Status_Doc">Estado doc.</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E906465100F64931B5BEDF13AA3F84EE" trl="Y">
+    <value column="Name" isTrl="Y" original="Withholding_Date_Cancel">Fecha de Anulación</value>
+    <value column="PrintName" isTrl="Y" original="Withholding_Date_Cancel">Fecha de Anulación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

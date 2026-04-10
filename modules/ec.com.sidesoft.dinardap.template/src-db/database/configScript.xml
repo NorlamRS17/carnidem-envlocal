@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.31111"/>
+    <columnDataChange tablename="AD_REF_LIST" columnname="ISACTIVE" pkRow="CD1EA5E550964FF2A3D8F3F2316FD116">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="94D4B12EAD114CE88C60295CB71BF4BA">
+      <oldValue><![CDATA[140]]></oldValue>
+      <newValue><![CDATA[90]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="AA09EC3CA2814101A6B8E85C2358F7E0">
+      <oldValue><![CDATA[150]]></oldValue>
+      <newValue><![CDATA[100]]></newValue>
+    </columnDataChange>
+  </vector>

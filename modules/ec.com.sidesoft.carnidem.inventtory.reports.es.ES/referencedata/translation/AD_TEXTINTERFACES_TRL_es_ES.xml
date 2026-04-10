@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="0A1A8A78A6E64486A4979181EF7E7F31" trl="N">
+    <value column="Text" isTrl="N" original="Salidas">Salidas</value>
+  </row>
+  <row id="0BC12630DD374FFDB54E273D5BF425F9" trl="N">
+    <value column="Text" isTrl="N" original="com.sidesoft.hrm.payroll/src/com/sidesoft/hrm/payroll/ad_Reports/Rpt_FinalSettlement.jrxml">com.sidesoft.hrm.payroll/src/com/sidesoft/hrm/payroll/ad_Reports/Rpt_FinalSettlement.jrxml</value>
+  </row>
+  <row id="11C16BB01C60444598D0C551E263A047" trl="N">
+    <value column="Text" isTrl="N" original="AL">AL</value>
+  </row>
+  <row id="1ABC95BF04B04D4AA7E4BABB234A343C" trl="N">
+    <value column="Text" isTrl="N" original="Porcentaje">Porcentaje</value>
+  </row>
+  <row id="1F13C23A636942CEA9EB8A7F05C68D1B" trl="N">
+    <value column="Text" isTrl="N" original="Código">Código</value>
+  </row>
+  <row id="4349498BA3AD4158AA643E294EC35820" trl="N">
+    <value column="Text" isTrl="N" original="Saldo inicial">Saldo inicial</value>
+  </row>
+  <row id="51E6AA8BAA6A4B7080131003F3328547" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de Impresión:">Fecha de Impresión:</value>
+  </row>
+  <row id="5CAA02E1304444CBAE624658AAE57C74" trl="N">
+    <value column="Text" isTrl="N" original="El reporte no cuenta con informacion">El reporte no cuenta con informacion</value>
+  </row>
+  <row id="71093915383E43F4989BF48A490B083A" trl="N">
+    <value column="Text" isTrl="N" original="Categoría">Categoría</value>
+  </row>
+  <row id="73ECA29B5FA1484D8F5C14B2E9263E1B" trl="N">
+    <value column="Text" isTrl="N" original="Entradas">Entradas</value>
+  </row>
+  <row id="77A09CC5CA69449AA47599CC1D5FE569" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad teórica">Cantidad teórica</value>
+  </row>
+  <row id="8038BC7C82F14A799B503281E63A48F9" trl="N">
+    <value column="Text" isTrl="N" original="Diferencia">Diferencia</value>
+  </row>
+  <row id="872F48A380454B62B31FFD2B23851407" trl="N">
+    <value column="Text" isTrl="N" original="PAG.">PAG.</value>
+  </row>
+  <row id="AACCFD417663471F81F895F9819767E1" trl="N">
+    <value column="Text" isTrl="N" original="TOTAL GENERAL">TOTAL GENERAL</value>
+  </row>
+  <row id="AAF7A909517E493EAB94F66FBA0B5A46" trl="N">
+    <value column="Text" isTrl="N" original="Usuario:">Usuario:</value>
+  </row>
+  <row id="BCEE60F70B9C42C4A2E0037BC986C161" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad total">Cantidad total</value>
+  </row>
+  <row id="CBD6807AE2AE480986029F119F99CFE8" trl="N">
+    <value column="Text" isTrl="N" original="Artículo">Artículo</value>
+  </row>
+  <row id="ED1A0E9187C74BF48CC58D81D1DB042C" trl="N">
+    <value column="Text" isTrl="N" original="REPORTE DE MOVIMIENTOS DE INVENTARIO">REPORTE DE MOVIMIENTOS DE INVENTARIO</value>
+  </row>
+  <row id="F2DAC1B581E94B92B466FFE60D2B7F8B" trl="N">
+    <value column="Text" isTrl="N" original="DEL">DEL</value>
+  </row>
+</compiereTrl>

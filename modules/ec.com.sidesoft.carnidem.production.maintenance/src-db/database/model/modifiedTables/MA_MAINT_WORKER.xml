@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE MA_MAINT_WORKER">
+    <table name="MA_MAINT_WORKER" primaryKey="MA_MAINT_WORKER_KEY">
+      <column name="EM_SCMA_APPLICANT" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCMA_SECTION_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="C_BPARTNER" name="EM_SCMA_APPLICANT_FK">
+        <reference local="EM_SCMA_APPLICANT" foreign="C_BPARTNER_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="MA_SECTION" name="EM_SCMA_SECCION_FK">
+        <reference local="EM_SCMA_SECTION_ID" foreign="MA_SECTION_ID"/>
+      </foreign-key>
+    </table>
+  </database>

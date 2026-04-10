@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <removeTriggerChange triggerName="SFGP_PRODUCT_GIFT_ORDER_TRG"/>
+    <columnRequiredChange tableName="MA_PC_TEST" columnName="EM_SLQS_TYPE_VALUE">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="PROCEDURENAME" pkRow="69AADF0AEB704D5B86A892FED02C8190">
+      <oldValue><![CDATA[opcrm_case_from_activity]]></oldValue>
+      <newValue><![CDATA[sscces_creat_custom]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REFERENCE" columnname="NAME" pkRow="87E0C42F360E480C8BB01AE7B40B066D">
+      <oldValue><![CDATA[ssccesCasePriority]]></oldValue>
+      <newValue><![CDATA[ssccesCasePrority]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="069BB3C3F56F4713B62273C1BF53B891">
+      <oldValue/>
+      <newValue><![CDATA[11]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="181351F8ED324BF29EBCBAF219670716">
+      <oldValue/>
+      <newValue><![CDATA[3]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="53E8DF3E0C6D4D1295A5EE11856D2F49">
+      <oldValue/>
+      <newValue><![CDATA[7]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="6AD8CC4A9E03460B87576C1B50547376">
+      <oldValue><![CDATA[3]]></oldValue>
+      <newValue><![CDATA[10]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="7F41987F21BF4AE5B080807434F6BF47">
+      <oldValue/>
+      <newValue><![CDATA[5]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="8913F0B9CCC34E2189FEC5729E5E218A">
+      <oldValue><![CDATA[0]]></oldValue>
+      <newValue><![CDATA[1]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="9DDE9F3C358443FD93F844F12A399EDE">
+      <oldValue/>
+      <newValue><![CDATA[4]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="A0ACD5A914674EE384C7386839BD198A">
+      <oldValue><![CDATA[1]]></oldValue>
+      <newValue><![CDATA[12]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="B38CE6490766424291A0ED5337823C86">
+      <oldValue/>
+      <newValue><![CDATA[9]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="B7A0C2D501E64A28BE2E6DD529316177">
+      <oldValue/>
+      <newValue><![CDATA[6]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="BEEC00568BF84F58A481C7CE71B87513">
+      <oldValue/>
+      <newValue><![CDATA[2]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="C5E39319677D47C884C33F6271A6BFF5">
+      <oldValue><![CDATA[2]]></oldValue>
+      <newValue><![CDATA[13]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="F1720ED9F0DC4D1B9B924E6204A1EFBD">
+      <oldValue/>
+      <newValue><![CDATA[8]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="F8C310A3F52A4E68B4E453CC2568F47B">
+      <oldValue><![CDATA[4]]></oldValue>
+      <newValue><![CDATA[0]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="A6871284383F45E7BA9100F55D266A06">
+      <oldValue><![CDATA[6623E3D107EF47BDB0577A1AF0FA59AF]]></oldValue>
+      <newValue><![CDATA[87E0C42F360E480C8BB01AE7B40B066D]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_ELEMENT_ID" pkRow="F2B96248FBB84D08A3912C1D953C8CA7">
+      <oldValue><![CDATA[D0A49EAA627F48C08F932FA33D0FAC1D]]></oldValue>
+      <newValue><![CDATA[C1AAD50FCC704ECE90F308AF0D1457F0]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="AD_PROCESS_ID" pkRow="5C51F39D358F4244B99CC76A0332F892">
+      <oldValue/>
+      <newValue><![CDATA[E3D970FA2AE444F1B3D2DB8289C15408]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="AD_FIELDGROUP_ID" pkRow="66B4C451EF39443896A31CDAECBC993E">
+      <oldValue><![CDATA[33B3AF756954439DB749DD738DCFE8C0]]></oldValue>
+      <newValue><![CDATA[80DD58C8267B4542B902F25EA1530648]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="AD_FIELDGROUP_ID" pkRow="B501E0A297CD4090911A9CD2525FFA88">
+      <oldValue><![CDATA[33B3AF756954439DB749DD738DCFE8C0]]></oldValue>
+      <newValue><![CDATA[80DD58C8267B4542B902F25EA1530648]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="AD_FIELDGROUP_ID" pkRow="C56C2901C3244E11AF8AF2F71C273423">
+      <oldValue><![CDATA[33B3AF756954439DB749DD738DCFE8C0]]></oldValue>
+      <newValue><![CDATA[80DD58C8267B4542B902F25EA1530648]]></newValue>
+    </columnDataChange>
+  </vector>

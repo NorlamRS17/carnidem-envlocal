@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCCC_UNIQUE_ORG_TRG">
+    <trigger name="SCCC_UNIQUE_ORG_TRG" table="SCCC_SETUP" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+ v_value VARCHAR2(60);
+ v_count NUMBER;
+
+BEGIN
+    
+ IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+	
+      
+  IF (INSERTING OR UPDATING OR DELETING ) THEN
+
+
+    SELECT COALESCE(( 	SELECT value
+                        FROM ad_preference
+                        WHERE property = 'Sccc_CloseCashDoctype'
+                        AND created = ( SELECT MAX(created) FROM ad_preference 
+                        WHERE property = 'Sccc_CloseCashDoctype')
+                ),'N')
+    INTO v_value
+    FROM DUAL;      
+
+	IF (v_value = 'N') THEN
+
+		SELECT count(*) INTO v_count FROM sccc_setup WHERE ad_org_id = :new.ad_org_id AND sccc_setup_id <> :new.sccc_setup_id;
+
+		IF (v_count>0) THEN
+			RAISE_APPLICATION_ERROR(-20000, '@Sccc_UniqueOrg@');
+		END IF;
+				
+	END IF;
+	
+  END IF;
+
+
+  END SCCC_UNIQUE_ORG_TRG
+]]></body>
+    </trigger>
+  </database>

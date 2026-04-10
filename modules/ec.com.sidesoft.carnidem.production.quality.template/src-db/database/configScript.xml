@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="D401945E62F2472A98FF1FE3364FEEF4">
+      <oldValue/>
+      <newValue><![CDATA[10]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="DE7CE6A51A094F1CB465F9A8E521F2D0">
+      <oldValue/>
+      <newValue><![CDATA[20]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="9DEE93E24D32460F884A1A1BDC2C4471">
+      <oldValue><![CDATA[209EBF768B314A8D86D78725A82D7F46]]></oldValue>
+      <newValue><![CDATA[6B8AF41C5C624034840F993F342D321B]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="9F5CC922BEA74E509FD31AE90BF7A45A">
+      <oldValue><![CDATA[@EM_Ssfdc_Status@='CP']]></oldValue>
+      <newValue><![CDATA[@EM_Ssfdc_Status@='CP' | @EM_Spquly_Qualitycontroltype@='FSQ']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="FF0AF10C4B1549F39C011EA0BCD6E78E">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Spquly_Qualitycontroltype@='FSQ']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBUIAPP_REPORT" columnname="PDF_TEMPLATE" pkRow="8B324197DAF747319A9DBCD43E438A80">
+      <oldValue><![CDATA[src-loc/design/ec/com/sidesoft/production/quality/reports/ad_Reports/Rpt_Quality.jrxml]]></oldValue>
+      <newValue><![CDATA[src-loc/design/ec/com/sidesoft/carnidem/production/quality/reports/ad_Reports/Rpt_Quality.jrxml]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MODULE" columnname="LICENSE" pkRow="6133C2BE8743429D8852115E70B008EE">
+      <oldValue/>
+      <newValue><![CDATA["Commons Clause" License Condition v1.0
+
+The Software is provided under the Apache License 2.0.
+However, the rights granted under this license do not include, and the licensee shall not have the right to sell. lease, or distribute for a fee without explicit permission from the author.]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MODULE" columnname="LICENSETYPE" pkRow="6133C2BE8743429D8852115E70B008EE">
+      <oldValue/>
+      <newValue><![CDATA[Apache2.0]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MODULE" columnname="AUTHOR" pkRow="6133C2BE8743429D8852115E70B008EE">
+      <oldValue/>
+      <newValue><![CDATA[Sidesoft Cia. Ltda.]]></newValue>
+    </columnDataChange>
+  </vector>

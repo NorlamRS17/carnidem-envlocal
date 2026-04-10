@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+  <database name="TABLE SSPPINV_SELECTEDINVOICES">
+    <table name="SSPPINV_SELECTEDINVOICES" primaryKey="SSPPINV_SI_KEY">
+      <column name="SSPPINV_SELECTEDINVOICES_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_INVOICE_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_BPARTNER_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="GRANDTOTAL" primaryKey="false" required="true" type="DECIMAL" size="10,2" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="TOTALPAID" primaryKey="false" required="true" type="DECIMAL" size="10,2" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="OUTSTANDINGAMT" primaryKey="false" required="true" type="DECIMAL" size="10,2" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AMOUNT" primaryKey="false" required="true" type="DECIMAL" size="10,2" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="C_INVOICE" name="SSPPINV_SI_BP">
+        <reference local="C_INVOICE_ID" foreign="C_INVOICE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_CLIENT" name="SSPPINV_SI_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_BPARTNER" name="SSPPINV_SI_I">
+        <reference local="C_BPARTNER_ID" foreign="C_BPARTNER_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="SSPPINV_SI_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <check name="SSPPINV_SI_ISACTIVE"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
+    </table>
+  </database>

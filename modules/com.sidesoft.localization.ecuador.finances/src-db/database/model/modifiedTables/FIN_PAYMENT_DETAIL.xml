@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_PAYMENT_DETAIL">
+    <table name="FIN_PAYMENT_DETAIL" primaryKey="FIN_PAYMENT_DETAIL_KEY">
+      <index name="EM_SSFI_FIN_PYMT_ANTICIPO" unique="false">
+        <index-column name="FIN_PAYMENT_ID"/>
+        <index-column name="C_GLITEM_ID"/>
+        <index-column name="ISPREPAYMENT"/>
+      </index>
+      <index name="EM_SSFI_FIN_PYMT_DET_JOIN" unique="false">
+        <index-column name="FIN_PAYMENT_ID"/>
+        <index-column name="ISPREPAYMENT"/>
+        <index-column name="C_GLITEM_ID"/>
+      </index>
+    </table>
+  </database>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="16A7E39896BC42E59024A3B55DFE1F86" trl="Y">
+    <value column="Name" isTrl="Y" original="Financial Account">Cuenta financiera</value>
+    <value column="PrintName" isTrl="Y" original="Financial Account">Cuenta financiera</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5654BD2B7CC14E70ADD8739F8DDCA999" trl="N">
+    <value column="Name" isTrl="Y" original="Startdate">Fecha desde</value>
+    <value column="PrintName" isTrl="Y" original="Startdate">Fecha desde</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="651477DBC22B41EA8EFC930E510AEF5E" trl="Y">
+    <value column="Name" isTrl="Y" original="outputType">Formato de salida</value>
+    <value column="PrintName" isTrl="Y" original="outputType">Formato de salida</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="663F33A21AE14850AD0B6A78D6AB7F08" trl="Y">
+    <value column="Name" isTrl="Y" original="Initial_Balance">Saldo Inicial</value>
+    <value column="PrintName" isTrl="Y" original="Initial Balance">Saldo Inicial</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8287C7F256C94891823C8899489F4148" trl="Y">
+    <value column="Name" isTrl="Y" original="Enddate">Fecha hasta</value>
+    <value column="PrintName" isTrl="Y" original="Enddate">Fecha hasta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CA4143626AD44452A0D9029C613E3070" trl="Y">
+    <value column="Name" isTrl="Y" original="Bank_Balance">Saldo Banco</value>
+    <value column="PrintName" isTrl="Y" original="Bank_Balance">Saldo Banco</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

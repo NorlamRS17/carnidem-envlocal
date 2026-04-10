@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCCRT_VALIDATETYPE_TRG">
+    <trigger name="SCCRT_VALIDATETYPE_TRG" table="SSCCR_WITHHOLDINGS" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+existing_count NUMBER;
+
+BEGIN
+
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+
+	IF INSERTING OR UPDATING THEN
+	
+		SELECT COUNT(*) INTO existing_count
+		FROM ssccr_withholdings
+		WHERE type = :NEW.type
+		AND ssccr_CardMatchingConfLine_id = :NEW.ssccr_CardMatchingConfLine_id
+		AND ssccr_withholdings_id <> :NEW.ssccr_withholdings_id;
+
+        IF existing_count > 0 THEN
+            RAISE_APPLICATION_ERROR(-20000, '@No se permite duplicar el tipo de Retencion@');
+        END IF;
+		
+    END IF;
+
+	
+  END SCCRT_VALIDATETYPE_TRG
+]]></body>
+    </trigger>
+  </database>

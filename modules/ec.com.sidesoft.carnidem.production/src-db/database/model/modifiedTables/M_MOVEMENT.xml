@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_MOVEMENT">
+    <table name="M_MOVEMENT" primaryKey="M_MOVEMENT_KEY">
+      <column name="EM_CRPROD_PRODPLAN_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_CRPROD_LABEL" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="M_PRODUCTIONPLAN" name="EM_CRPROD_PR_FK">
+        <reference local="EM_CRPROD_PRODPLAN_ID" foreign="M_PRODUCTIONPLAN_ID"/>
+      </foreign-key>
+    </table>
+  </database>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="5D37280EAE9F43638B6B78383045502A" trl="N">
+    <value column="Name" isTrl="N" original="reference_area">reference_area</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5D943D04535A4D15811E8931E426960F" trl="N">
+    <value column="Name" isTrl="N" original="em_scma_status">em_scma_status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

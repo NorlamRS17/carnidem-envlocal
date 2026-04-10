@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+  <database name="VIEW SSCCR_CARD_REC_SUMMARY_V">
+    <view name="SSCCR_CARD_REC_SUMMARY_V"><![CDATA[SELECT get_uuid() AS ssccr_card_rec_summary_v_id, '0' AS ad_client_id, '0' AS ad_org_id, now() AS created, '100' AS createdby, now() AS updated, '100' AS updatedby, 'Y' AS isactive, pcrl.group_id AS fin_finacc_transaction_id, pcrl.type, ft.depositamt AS total, pcrl.amount, sum(pcrl.deposit_amount) AS deposit_amount FROM ssccr_pos_card_rec_line pcrl JOIN ssccr_pos_card_rec pcr ON pcr.ssccr_pos_card_rec_id = pcrl.ssccr_pos_card_rec_id JOIN fin_finacc_transaction ft ON ft.fin_finacc_transaction_id = pcrl.group_id WHERE pcrl.reconciled = 'Y' AND pcr.status = 'RE' GROUP BY pcrl.group_id, pcrl.type, pcrl.amount, ft.depositamt ORDER BY pcrl.group_id, pcrl.type]]></view>
+  </database>

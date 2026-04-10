@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_PAYMENT">
+    <table name="FIN_PAYMENT" primaryKey="FIN_PAYMENT_KEY">
+      <column name="EM_SRCP_TARJETA" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SRCP_TYPECREDIT" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPR_PAYROLL_AUT_CREATE_TRG">
+    <trigger name="SSPR_PAYROLL_AUT_CREATE_TRG" table="SSPR_PAYROLL_AUT" fires="before" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[  v_exists BOOLEAN;
+  v_period_id varchar(32);
+  v_periodo_name varchar(32);
+BEGIN
+  -- Verifica si ya existe otro registro con el mismo C_Period_ID
+  SELECT true,c_period_id INTO v_exists,v_period_id
+  FROM sspr_payroll_aut
+  WHERE c_period_id = :NEW.c_period_id
+  LIMIT 1;
+
+  -- Obtener el nombre del periodo
+  SELECT name INTO v_periodo_name
+  FROM c_period
+  WHERE c_period_id = v_period_id;
+
+
+  IF v_exists THEN
+    RAISE_APPLICATION_ERROR(-20000, '@SSPR_DuplicatePeriod@'||': '||v_periodo_name);
+  END IF;
+
+  RETURN NEW;
+END SSPR_PAYROLL_AUT_CREATE_TRG
+]]></body>
+    </trigger>
+  </database>

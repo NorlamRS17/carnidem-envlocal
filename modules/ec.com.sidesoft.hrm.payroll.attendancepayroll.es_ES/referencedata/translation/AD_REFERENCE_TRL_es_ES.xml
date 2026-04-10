@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="3FA87B0413B2493BB25EED2D4705CB7A" trl="N">
+    <value column="Name" isTrl="N" original="SHPAPR_UserContact">SHPAPR_UserContact</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="98A1134A222F415D828BC2B8E876CD85" trl="N">
+    <value column="Name" isTrl="N" original="SHPAPR_Partner">SHPAPR_Partner</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B215A8AB600F493FB768FEF3E144C7CA" trl="N">
+    <value column="Name" isTrl="N" original="SHPAPR_PERIOD">SHPAPR_PERIOD</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

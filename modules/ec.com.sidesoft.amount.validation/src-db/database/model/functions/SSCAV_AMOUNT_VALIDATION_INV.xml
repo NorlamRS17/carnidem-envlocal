@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSCAV_AMOUNT_VALIDATION_INV">
+    <function name="SSCAV_AMOUNT_VALIDATION_INV" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[p_record_id VARCHAR(60);
+    p_docAction VARCHAR(60);
+    p_user VARCHAR(60);
+    v_ResultStr VARCHAR2(2000):='';
+    Cur_Params RECORD;
+    rInvoice RECORD;
+    vDescription VARCHAR(255):='';
+
+BEGIN
+
+    FOR Cur_Params IN (
+        SELECT *
+        FROM ad_ep_instance_para
+        WHERE ad_ep_instance_id = p_ep_instance
+    ) LOOP
+        IF cur_params.parametername = 'DocAction' THEN
+            p_docaction := Cur_Params.p_string;
+        ELSIF (cur_params.parametername = 'Record_ID') THEN
+            p_record_id := cur_params.p_string;
+        ELSIF (cur_params.parametername = 'User') THEN
+            p_user := cur_params.p_string;
+        END IF;
+    END LOOP;
+    
+    SELECT c_invoice_id, issotrx, grandtotal, documentno INTO rInvoice FROM c_invoice  WHERE c_invoice_id = p_record_id;
+    
+    IF rInvoice.issotrx = 'Y' AND p_docaction = 'CO' AND rInvoice.grandtotal = 0 THEN
+        vDescription := 'La Factura: '||rInvoice.documentno||' no se puede completar por un valor total de 0.';
+        RAISE_APPLICATION_ERROR(-20000,vDescription);
+    END IF;
+    
+    EXCEPTION WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('sscav_amount_validation_inv exception: '|| v_ResultStr);
+    RAISE;
+END SSCAV_AMOUNT_VALIDATION_INV
+]]></body>
+    </function>
+  </database>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSWH_DIVIDENS_YEAR_TRG">
+    <trigger name="SSWH_DIVIDENS_YEAR_TRG" table="C_INVOICE" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[ v_EM_SSWH_DIVIDENDS  CHAR(1);
+
+BEGIN
+    
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF; 
+
+  IF (INSERTING OR  UPDATING )THEN
+	  
+    IF (:NEW.issotrx = 'N') THEN 
+      v_EM_SSWH_DIVIDENDS = (SELECT COALESCE( EM_SSWH_DIVIDENDS, 'N') FROM c_doctype WHERE EM_SSWH_DIVIDENDS = 'Y' AND c_doctype_id = :NEW.c_doctypetarget_id );
+      	IF(v_EM_SSWH_DIVIDENDS = 'Y' AND COALESCE(:NEW.EM_SSWH_DIVIDEND_YEAR, 'ND') = 'ND' ) THEN
+          RAISE_APPLICATION_ERROR(-20000, 'El campo Año declaración de dividendo no debe estar vacío cuando el tipo de documento es dividendo.');
+        END IF;
+    END IF;
+
+
+  END IF;
+
+  END SSWH_DIVIDENS_YEAR_TRG
+]]></body>
+    </trigger>
+  </database>

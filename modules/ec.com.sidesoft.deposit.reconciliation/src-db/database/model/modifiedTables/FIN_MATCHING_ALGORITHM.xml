@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_MATCHING_ALGORITHM">
+    <table name="FIN_MATCHING_ALGORITHM" primaryKey="FIN_MATCH_ALGORITHM_KEY">
+      <column name="EM_SSDR_MATCHCONFIRMDATE" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

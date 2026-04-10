@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportIncomeStatementCostCenter_CostC" columnCount="20" printOrder="Horizontal" pageWidth="1760" pageHeight="15" columnWidth="88" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" uuid="9f305262-8c0d-4cc5-b1ad-dea086bb8e62">
+	<property name="ireport.zoom" value="3.452271214393108"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="account_name" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ad_org_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AD_USER_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_DESIGN" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_Costcenter_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="datefrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateto" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="nivel" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sfcbr_accountlevel" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sfcbr_showzeroaccount" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="User1_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT REPLACE(sq2.Costcenter,'X-','') AS costcenter FROM (SELECT DISTINCT (CASE WHEN COALESCE(cos.name,'NA') = 'NA' THEN CONCAT('X-',COALESCE(cos.name,'NA')) ELSE COALESCE(cos.name,'NA') END) AS Costcenter
+            FROM fact_acct fa
+            LEFT JOIN c_costcenter cos ON fa.c_costcenter_id = cos.c_costcenter_id
+	WHERE (cos.c_costcenter_id IS NULL OR cos.c_costcenter_id =(CASE WHEN $P{C_Costcenter_ID} IS NULL THEN cos.c_costcenter_id ELSE $P{C_Costcenter_ID} END ))
+AND (CASE WHEN ($P{C_Costcenter_ID} IS NOT NULL AND cos.c_costcenter_id IS NULL) THEN FALSE ELSE TRUE END) order by costcenter desc ) AS sq2]]>
+	</queryString>
+	<field name="costcenter" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="88" height="15" isPrintWhenDetailOverflows="true" uuid="f9ac9e19-3a3f-45d0-9fda-c8642fe839b6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costcenter}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

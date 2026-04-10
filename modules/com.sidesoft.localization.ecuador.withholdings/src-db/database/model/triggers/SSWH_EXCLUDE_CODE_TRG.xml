@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSWH_EXCLUDE_CODE_TRG">
+    <trigger name="SSWH_EXCLUDE_CODE_TRG" table="C_TAX" fires="before" insert="false" update="true" delete="true" foreach="row">
+      <body><![CDATA[    exclude_tax_count NUMBER;
+BEGIN
+    IF AD_isTriggerEnabled() = 'N' THEN 
+        IF DELETING THEN 
+            RETURN OLD; 
+        ELSE 
+            RETURN NEW; 
+        END IF; 
+    END IF;
+
+
+    IF UPDATING THEN
+        IF :NEW.EM_Sswh_Exclude_Tax = 'Y' THEN
+
+            SELECT COUNT(*) INTO exclude_tax_count
+            FROM c_tax
+            WHERE EM_Sswh_Exclude_Tax = 'Y'
+              AND c_tax.c_tax_id <> :NEW.c_tax_id; 
+
+            IF exclude_tax_count > 0 THEN
+                RAISE_APPLICATION_ERROR(-20000,'@sswh_error_code_exclude@');
+            END IF;
+        END IF;
+    END IF;
+
+    IF DELETING THEN 
+        RETURN OLD; 
+    ELSE 
+        RETURN NEW; 
+    END IF; 
+END SSWH_EXCLUDE_CODE_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSASEQ_VALUE_SEQUENCE_TRG">
+    <trigger name="SSASEQ_VALUE_SEQUENCE_TRG" table="A_ASSET" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+v_value_sequence NUMBER;
+v_value_sequence_pe NUMBER;
+
+BEGIN
+
+    SELECT coalesce(em_ssaseq_current_value,0),coalesce(em_ssaseq_current_value_pe,0) INTO v_value_sequence, v_value_sequence_pe
+    FROM ssasl_subcategory WHERE ssasl_subcategory_id=:NEW.em_ssasl_subcategory_id;
+
+
+    if (UPDATING AND :NEW.value!=:OLD.value) then
+            if ( :NEW.em_ssam_assettype::varchar='AA' OR :NEW.em_ssam_assettype::varchar='SSCMU_AAC')  THEN 
+                UPDATE ssasl_subcategory SET em_ssaseq_current_value_pe = v_value_sequence_pe+1 WHERE ssasl_subcategory_id = :NEW.em_ssasl_subcategory_id;
+
+            elsif (:NEW.em_ssam_assettype::varchar='AC' OR :NEW.em_ssam_assettype::varchar='SSCMU_ACC')  THEN  
+            UPDATE ssasl_subcategory SET em_ssaseq_current_value = v_value_sequence+1 WHERE ssasl_subcategory_id = :NEW.em_ssasl_subcategory_id;
+
+            end if;
+        RETURN NEW;
+  
+    elsif (INSERTING) then    
+            if ( :NEW.em_ssam_assettype::varchar='AA' OR :NEW.em_ssam_assettype::varchar='SSCMU_AAC')  THEN 
+                UPDATE ssasl_subcategory SET em_ssaseq_current_value_pe = v_value_sequence_pe+1 WHERE ssasl_subcategory_id = :NEW.em_ssasl_subcategory_id;
+
+            elsif (:NEW.em_ssam_assettype::varchar='AC' OR :NEW.em_ssam_assettype::varchar='SSCMU_ACC')  THEN  
+            UPDATE ssasl_subcategory SET em_ssaseq_current_value = v_value_sequence+1 WHERE ssasl_subcategory_id = :NEW.em_ssasl_subcategory_id;
+
+            end if;
+        RETURN NEW;
+    end if;
+
+END SSASEQ_VALUE_SEQUENCE_TRG
+]]></body>
+    </trigger>
+  </database>

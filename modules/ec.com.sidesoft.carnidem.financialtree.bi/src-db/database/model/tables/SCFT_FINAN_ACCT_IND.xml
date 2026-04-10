@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+  <database name="TABLE SCFT_FINAN_ACCT_IND">
+    <table name="SCFT_FINAN_ACCT_IND" primaryKey="SCFT_FIN_ACCT_IND_KEY">
+      <column name="SCFT_FINAN_ACCT_IND_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DESCRIPTION" primaryKey="false" required="false" type="VARCHAR" size="120" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SCFT_INDICATORACCT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SCFT_INDICATORACCTLINE_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SCFT_PARAMACCT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="BULK_UPLOAD_ACCTACCOUNT" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_ELEMENTVALUE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="AD_ORG" name="SCFT_FIN_ACCT_IND_AD_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_CLIENT" name="SCFT_FIN_ACCT_IND_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SCFT_INDICATORACCT" name="SCFT_FIN_ACCT_INDRACCT">
+        <reference local="SCFT_INDICATORACCT_ID" foreign="SCFT_INDICATORACCT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SCFT_INDICATORACCTLINE" name="SCFT_FIN_ACCT_INDRACCTLN">
+        <reference local="SCFT_INDICATORACCTLINE_ID" foreign="SCFT_INDICATORACCTLINE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SCFT_PARAMACCT" name="SCFT_PARAMACCT_FK">
+        <reference local="SCFT_PARAMACCT_ID" foreign="SCFT_PARAMACCT_ID"/>
+      </foreign-key>
+      <check name="SCFT_FIN_ACCT_IND_ISACTIVE_CH"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
+    </table>
+  </database>

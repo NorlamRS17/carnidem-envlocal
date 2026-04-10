@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_PAYMENT_SCHEDULE">
+    <table name="FIN_PAYMENT_SCHEDULE" primaryKey="FIN_PAYMENT_SCHEDULE_KEY">
+      <column name="EM_SSPPI_SHARENO" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSPPI_CAPITAL" primaryKey="false" required="false" type="DECIMAL" size="10,5" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSPPI_INTEREST" primaryKey="false" required="false" type="DECIMAL" size="10,5" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSPPI_MONTHLY_SURCHARGE" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

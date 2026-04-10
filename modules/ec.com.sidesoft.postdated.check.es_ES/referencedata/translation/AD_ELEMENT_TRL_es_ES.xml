@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="18C07E6121FF487FB03BF2EBE4DC0176" trl="N">
+    <value column="Name" isTrl="Y" original="Date based  on payment plan">Fecha en base al plan de pagos</value>
+    <value column="PrintName" isTrl="Y" original="Date based  on payment plan">Fecha en base al plan de pagos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1A40CD593AE049A19673259C5DED8D62" trl="N">
+    <value column="Name" isTrl="Y" original="Pos dated check">Cheque Posfechado</value>
+    <value column="PrintName" isTrl="Y" original="Pos dated check">Cheque Posfechado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1AC412FB6368449BA852EA39A41AC9CD" trl="N">
+    <value column="Name" isTrl="Y" original="Check">N° Cheque </value>
+    <value column="PrintName" isTrl="Y" original="Check">N° Cheque </value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1D5EBC1FA2964BC983A6D4E50EC28FA6" trl="N">
+    <value column="Name" isTrl="N" original="Sspch_Invoice_ID">Sspch_Invoice_ID</value>
+    <value column="PrintName" isTrl="N" original="Sspch_Invoice_ID">Sspch_Invoice_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1EBA0D0EE85C416B80BDDB5C9D44A707" trl="Y">
+    <value column="Name" isTrl="Y" original="Payment Date">Fecha de Esperada</value>
+    <value column="PrintName" isTrl="Y" original="Payment Date">Fecha de Esperada</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2319A07BC54D40E18E8C35AFB8397152" trl="N">
+    <value column="Name" isTrl="Y" original="Client">Cliente</value>
+    <value column="PrintName" isTrl="Y" original="Client">Cliente</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2433CDE8950F48A888746BB256F6EEDA" trl="N">
+    <value column="Name" isTrl="Y" original="Bill of sale">Factura de Venta</value>
+    <value column="PrintName" isTrl="Y" original="Bill of sale">Factura de Venta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2DCC175744854AE0A2295D35CBF041C2" trl="N">
+    <value column="Name" isTrl="Y" original="Advance Value">Valor de Anticipo</value>
+    <value column="PrintName" isTrl="Y" original="Advance Value">Valor de Anticipo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3289CCC1043545FD85569138F383B811" trl="N">
+    <value column="Name" isTrl="Y" original="Accoun Holder">Titular de la Cuenta</value>
+    <value column="PrintName" isTrl="Y" original="Accoun Holder">Titular de la Cuenta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="405EDA27358A455FAA1999820F69BECD" trl="Y">
+    <value column="Name" isTrl="Y" original="Payment_Day">Día de cobro</value>
+    <value column="PrintName" isTrl="Y" original="Payment_Day">Día de cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4BEBB86D160A43C7A4C6D8D495AB802A" trl="N">
+    <value column="Name" isTrl="Y" original="Sequence">Secuencia</value>
+    <value column="PrintName" isTrl="Y" original="Sequence">Secuencia</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4DE293D9BCC643068FA23E584049B26A" trl="N">
+    <value column="Name" isTrl="Y" original="Account holder">Titular de la cuenta</value>
+    <value column="PrintName" isTrl="Y" original="Account holder">Titular de la cuenta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4EF30C2EBC4A47D280F62E66ACEAEA5A" trl="N">
+    <value column="Name" isTrl="Y" original="Check From">N° Cheque desde</value>
+    <value column="PrintName" isTrl="Y" original="Check From">N° Cheque desde</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="633267FA5D27403A85D2EAFE7501A3B5" trl="N">
+    <value column="Name" isTrl="Y" original="Deposit in financial account">Depositar en Cuenta Financiera</value>
+    <value column="PrintName" isTrl="Y" original="Deposit in financial account">Depositar en Cuenta Financiera</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6A3DA832B41C4505AAAF72518B2FBC95" trl="N">
+    <value column="Name" isTrl="Y" original="Document No">N° de documento</value>
+    <value column="PrintName" isTrl="Y" original="Document No">N° de documento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="74E845315C3B4E3EA7BFD1C3949831C8" trl="N">
+    <value column="Name" isTrl="Y" original="Advance">Anticipo</value>
+    <value column="PrintName" isTrl="Y" original="Advance">Anticipo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7AD205301C8840D49EE96CEA626B8705" trl="N">
+    <value column="Name" isTrl="Y" original="Total Checks">Total Cheques</value>
+    <value column="PrintName" isTrl="Y" original="Total Checks">Total Cheques</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8FE7CAA4E1EA47C683885868AE792F1D" trl="N">
+    <value column="Name" isTrl="Y" original="Share No">N° de cuota</value>
+    <value column="PrintName" isTrl="Y" original="Share No">N° de cuota</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="95CF5DBD5DBF4DF3B7AB5F86DEBBFB4F" trl="N">
+    <value column="Name" isTrl="Y" original="Quota value">Valor de cuota</value>
+    <value column="PrintName" isTrl="Y" original="Quota value">Valor de cuota</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9D4995565BA64204A61A6A8886ABD16D" trl="N">
+    <value column="Name" isTrl="Y" original="Check Up">N° Cheque hasta</value>
+    <value column="PrintName" isTrl="Y" original="Check Up">N° Cheque hasta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="AD629C1960B144FA8C790F557A6D2A12" trl="N">
+    <value column="Name" isTrl="Y" original="Manual registration">Registro Manual</value>
+    <value column="PrintName" isTrl="Y" original="Manual registration">Registro Manual</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BDEC4387CA394A8DBCACF24378292100" trl="N">
+    <value column="Name" isTrl="Y" original="Document Type Payment">Tipo de documento cobros</value>
+    <value column="PrintName" isTrl="Y" original="Document Type Payment">Tipo de documento cobros</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C418B36453284FB8ABEBD460AC9D5325" trl="N">
+    <value column="Name" isTrl="Y" original="Client bank">Banco Cliente</value>
+    <value column="PrintName" isTrl="Y" original="Client bank">Banco Cliente</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C80F7B2630CA4007B69423C5421DBD11" trl="N">
+    <value column="Name" isTrl="Y" original="Amount Payment">Monto de Cobro</value>
+    <value column="PrintName" isTrl="Y" original="Amount Payment">Monto de Cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D2C781F3238D4947BB94427EAAC893A3" trl="N">
+    <value column="Name" isTrl="Y" original="Account">N° de Cuenta</value>
+    <value column="PrintName" isTrl="Y" original="Account">N° de Cuenta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D5D0D5870AB64299A8A5DE8AF35DF513" trl="N">
+    <value column="Name" isTrl="N" original="Sspch_Payment_Plan_ID">Sspch_Payment_Plan_ID</value>
+    <value column="PrintName" isTrl="N" original="Sspch_Payment_Plan_ID">Sspch_Payment_Plan_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D6EFE5F0800444F99C3B215ABF239541" trl="N">
+    <value column="Name" isTrl="N" original="Sspch_Postdated_Checks_ID">Sspch_Postdated_Checks_ID</value>
+    <value column="PrintName" isTrl="N" original="Sspch_Postdated_Checks_ID">Sspch_Postdated_Checks_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DFDC27FD5E994B38A60307CCFD81617B" trl="N">
+    <value column="Name" isTrl="Y" original="Check No">N° de cheque</value>
+    <value column="PrintName" isTrl="Y" original="Check No">N° de cheque</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E3F97743FA3F40FE9C3BB4A65ABB55BA" trl="N">
+    <value column="Name" isTrl="Y" original="Load Lines">Cargar Líneas</value>
+    <value column="PrintName" isTrl="Y" original="Load Lines">Cargar Líneas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FAA16714B0324C19A19A4A1D016BFDA6" trl="Y">
+    <value column="Name" isTrl="Y" original="General_Payment_Date">Fecha de Cobro</value>
+    <value column="PrintName" isTrl="Y" original="General_Payment_Date">Fecha de Cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

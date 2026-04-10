@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="27EDFE45E5074546AE6DE4C0332B0360" trl="N">
+    <value column="Name" isTrl="Y" original="Bank processed Selector">Selector Banco Procesador</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5D8641F665AA452EAF053E2203F8E1F6" trl="N">
+    <value column="Name" isTrl="Y" original="Issuing Bank Selector">Selector Banco Emisor</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8478154F79F145FFBFE9F25CFB07A471" trl="N">
+    <value column="Name" isTrl="Y" original="Card Selector">Selector Tarjeta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C9973111DAEA47D29E7C8084B08447A9" trl="N">
+    <value column="Name" isTrl="Y" original="Type of credit Selector">Selector Tipo de Crédito</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F502A1012AA046818AC935FA8622EC18" trl="N">
+    <value column="Name" isTrl="N" original="Selector Finnancial Account">Selector Finnancial Account</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

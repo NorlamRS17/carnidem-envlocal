@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER IMDLV_PURCHASE_INVOICE_TRG">
+    <trigger name="IMDLV_PURCHASE_INVOICE_TRG" table="IMDLV_PURCHASE_INVOICE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[    v_duplicados_count integer;
+BEGIN
+    IF AD_isTriggerEnabled()='N' THEN 
+        RETURN;
+    END IF;
+
+    IF (INSERTING OR UPDATING) THEN
+        IF (:NEW.isactive = 'Y') THEN
+            SELECT COUNT(*) INTO v_duplicados_count
+            FROM imdlv_purchase_invoice
+            WHERE ad_org_id = :NEW.ad_org_id
+              AND typetrxxml = :NEW.typetrxxml
+              AND isactive = 'Y'
+              AND (INSERTING OR imdlv_purchase_invoice_id <> :NEW.imdlv_purchase_invoice_id);
+
+            IF v_duplicados_count > 0 THEN
+                RAISE_APPLICATION_ERROR(-20000, '@imdlv_duplicate_config_error@') ;
+            END IF;
+        END IF;
+    END IF;
+
+    END IMDLV_PURCHASE_INVOICE_TRG
+]]></body>
+    </trigger>
+  </database>

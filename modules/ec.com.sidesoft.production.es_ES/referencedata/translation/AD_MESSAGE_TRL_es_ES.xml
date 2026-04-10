@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="53BB637B594A4365AA8C09E5E5C4F25F" trl="Y">
+    <value column="MsgText" isTrl="Y" original="The document type does not have an assigned sequence. Set a sequence to the selected document type.">El tipo de documento no tiene una secuencia asignada. Configure una secuencia en el tipo de documento seleccionado</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="98EF41CC7E72477DA3FE71785775EE18" trl="Y">
+    <value column="MsgText" isTrl="Y" original="The start time can not be longer than the end time.">La hora de inicio no puede ser mayor a la hora fin.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="9D5A94FDCB7349618447811474E4B181" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Start date and end date must be equal.">La fecha inicio y fecha fin deben ser iguales.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

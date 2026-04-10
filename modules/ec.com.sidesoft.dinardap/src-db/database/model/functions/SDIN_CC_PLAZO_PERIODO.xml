@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SDIN_CC_PLAZO_PERIODO">
+    <function name="SDIN_CC_PLAZO_PERIODO" type="VARCHAR">
+      <parameter name="an_plazo" type="NUMERIC" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vn_plazo varchar2(32);
+begin
+  if an_plazo  <= 30 then
+                vn_plazo := 'HASTA 30';
+            end if;
+            if an_plazo  > 30 and an_plazo <= 60 then
+                vn_plazo := '31 A 60';
+            end if;
+              if an_plazo  > 60 and an_plazo <= 90 then
+                vn_plazo := '61 A 90';
+            end if;
+            if an_plazo  > 90 and an_plazo <= 180 then
+                vn_plazo := '91 A 180';
+            end if;
+            if an_plazo  > 180 then
+                vn_plazo := 'MAYOR 180';
+            end if;
+            
+            return vn_plazo;
+end
+]]></body>
+    </function>
+  </database>

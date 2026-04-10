@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="10E6A533507F41569C8DCF19A3BD972B" trl="Y">
+    <value column="Name" isTrl="Y" original="Code Product">Agrupación por cód. de anexo IRBP</value>
+    <value column="Description" isTrl="N" original="">Agrupación por cód. de anexo IRBP</value>
+  </row>
+  <row id="DBADDB2557844B66A8176099EE1B1637" trl="Y">
+    <value column="Name" isTrl="Y" original="Product ID">Agrupación por producto</value>
+    <value column="Description" isTrl="N" original="">Agrupación por producto</value>
+  </row>
+</compiereTrl>

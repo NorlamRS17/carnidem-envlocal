@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="ConceptInfoData" package="com.sidesoft.localization.ecuador.withholdings.accounting;
+">
+  <SqlClassComment></SqlClassComment>
+  <SqlMethod name="selectDefaultAcct" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        SELECT em_sswh_wh_income_acct as C_withhRent, em_sswh_wh_iva_acct as C_withhVat, em_sswh_wh_transit_acct as C_Closing
+        FROM c_acctschema_default
+        WHERE C_AcctSchema_ID=?
+      ]]>
+    </Sql>
+    <Parameter name="AcctSchema"/>
+  </SqlMethod>
+</SqlClass>

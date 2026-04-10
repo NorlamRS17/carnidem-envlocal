@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="AF8946A984B74395BA222A0BE272A4DC" trl="N">
+    <value column="Name" isTrl="Y" original="Process">Procesar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E050383B9F25465787037977A5BEAE8D" trl="N">
+    <value column="Name" isTrl="Y" original="Load Lines">Cargar Líneas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

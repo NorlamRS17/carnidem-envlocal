@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION EEI_INVOICE_DATE_VALID">
+    <function name="EEI_INVOICE_DATE_VALID" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[Cur_invoice RECORD;
+    cur_params RECORD;
+    p_record_id varchar(60);
+    p_docaction varchar(60);
+    v_ResultStr varchar(2000) := '';
+    --OBTG:VARCHAR2--
+    v_InvoiceDate DATE;
+    v_CurrentDate DATE;
+BEGIN
+    -- 1. Obtener parámetros
+    FOR Cur_Params IN (
+        SELECT
+            *
+        FROM
+            ad_ep_instance_para
+        WHERE
+            ad_ep_instance_id = p_ep_instance)
+        LOOP
+            IF (cur_params.parametername = 'DocAction') THEN
+                p_docaction := Cur_Params.p_string;
+            ELSIF (cur_params.parametername = 'Record_ID') THEN
+                p_record_id := cur_params.p_string;
+            END IF;
+        END LOOP;
+    
+	IF p_docaction = 'CO' THEN
+        -- 2. Loop principal
+        FOR Cur_invoice IN (
+            SELECT
+                i.dateinvoiced,
+                COALESCE(dt.em_eei_is_edoc, 'N') AS is_edoc,
+                COALESCE(dt.em_sswh_implementautoriza, 'N') AS is_impl_auth,
+				i.IsSOTrx, 
+				i.EM_Eei_Status,
+				i.EM_Eei_Status_2,
+                dt.name AS doctypename,
+                dt.c_doctype_id AS dt_id -- Debug para ver el ID
+            FROM
+                c_invoice i
+                JOIN c_doctype dt ON i.c_doctypetarget_id = dt.c_doctype_id
+            WHERE
+                i.c_invoice_id = p_record_id)
+            LOOP
+                -- Preparar fechas sin horas
+                v_InvoiceDate := Cur_invoice.dateinvoiced::date;
+                v_CurrentDate := now()::date;
+                -- DEBUG
+
+                 /*
+				RAISE EXCEPTION 'DEBUG: DocName: % (ID: %) | EDOC: % | AUTH: % | FechaFac: % | TIPO FACTURA (CLIENTE=Y/PROV=N): % | ESTADO EDOC: %', 
+                Cur_invoice.doctypename,
+                Cur_invoice.dt_id,
+                Cur_invoice.is_edoc, 
+                Cur_invoice.is_impl_auth, 
+                v_InvoiceDate,
+				Cur_invoice.IsSOTrx,
+				Cur_invoice.EM_Eei_Status;
+                 */
+				 
+                -- 3. Lógica de comparación
+				
+                IF (Cur_invoice.is_edoc = 'Y' AND Cur_invoice.is_impl_auth = 'Y') THEN
+                    IF (Cur_invoice.IsSOTrx = 'Y')  THEN -- Facturas cliente
+						IF (Cur_invoice.EM_Eei_Status in('NR','NA','RE','PP','GE','NG') or Cur_invoice.EM_Eei_Status IS NULL ) AND (v_InvoiceDate != v_CurrentDate ) THEN
+							v_ResultStr := 'LA FECHA DE LA TRANSACCION NO PUEDE SER DIFERENTE A LA FECHA DE HOY YA QUE ES UN DOCUMENTO ELECTRONICO';
+							RAISE_APPLICATION_ERROR(-20000,v_ResultStr);
+						END IF;
+					END IF;
+					
+					IF (Cur_invoice.IsSOTrx = 'N') THEN -- Facturas proveedor
+						IF (Cur_invoice.EM_Eei_Status_2 in('NR','NA','RE','PP','GE','NG') or Cur_invoice.EM_Eei_Status_2 IS NULL ) AND (v_InvoiceDate != v_CurrentDate ) THEN
+							v_ResultStr := 'LA FECHA DE LA TRANSACCION NO PUEDE SER DIFERENTE A LA FECHA DE HOY YA QUE ES UN DOCUMENTO ELECTRONICO';
+							RAISE_APPLICATION_ERROR(-20000,v_ResultStr);
+						END IF;
+					END IF;
+					--v_ResultStr := 'LA FECHA DE LA TRANSACCION NO PUEDE SER DIFERENTE A LA FECHA DE HOY YA QUE ES UN DOCUMENTO ELECTRONICO';
+					--RAISE_APPLICATION_ERROR(-20000,v_ResultStr);
+				END IF;
+        END LOOP;
+  END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        v_ResultStr := '@ERROR=' || SQLERRM;
+        RAISE v_ResultStr;
+END EEI_INVOICE_DATE_VALID
+]]></body>
+    </function>
+  </database>

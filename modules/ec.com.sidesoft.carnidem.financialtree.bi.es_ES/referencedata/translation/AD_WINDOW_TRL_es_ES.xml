@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="1CB6E4B9F2524B9198B1B50DD201F0D0" trl="Y">
+    <value column="Name" isTrl="Y" original="Parameterization of Financial/Accounting Indicators">Parametrización Indicadores Financieros/Contables</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="48A4D582556B489FAB25650C97C7B145" trl="Y">
+    <value column="Name" isTrl="Y" original="Type of Accounting Financial Indicator">Tipo de Indicador Financiero Contable</value>
+    <value column="Description" isTrl="Y" original="Type of Accounting Financial Indicator">Tipo de Indicador Financiero Contable</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B0C28F186EFC47D2A14C2948D30F4003" trl="Y">
+    <value column="Name" isTrl="Y" original="Accounting Account Classification">Clasificación Cuenta Contable</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

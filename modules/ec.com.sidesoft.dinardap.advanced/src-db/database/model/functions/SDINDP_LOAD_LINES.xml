@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SDINDP_LOAD_LINES">
+    <function name="SDINDP_LOAD_LINES" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[TYPE RECORD IS REF CURSOR;
+	cPar				RECORD;
+	vRecord				RECORD;
+	cCur				RECORD;
+	vConfig				RECORD;
+	TYPE_REF			REF CURSOR;
+
+	vResult				VARCHAR2(2000);
+	vMessage			VARCHAR2(2000);
+	
+	vRecordID			VARCHAR2(32);
+	vClientID			VARCHAR2(32);
+	vOrgID				VARCHAR2(32);
+	vUserID				VARCHAR2(32);
+	
+	vCheck        NUMBER;
+
+	vSQL          TEXT;
+	rQuery        TYPE_REF;
+	vDate         VARCHAR2(10);
+	
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID) ;
+	vResult := 'PInstanceNotFound';
+ AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+	BEGIN
+
+		vResult := 'ReadingParameters';
+		FOR cPar IN (
+			SELECT i.Record_ID,
+				i.AD_User_ID,
+				i.AD_Client_ID,
+				i.AD_Org_ID,
+				pa.ParameterName,
+				pa.P_String,
+				pa.P_Number,
+				pa.P_Date
+			FROM AD_PInstance i
+				LEFT JOIN AD_PInstance_Para AS pa ON pa.AD_PInstance_ID = i.AD_PInstance_ID
+			WHERE i.AD_PInstance_ID = PInstance_ID
+		) LOOP
+			vRecordID := cPar.Record_ID;
+			vClientID := cPar.AD_Client_ID;
+			vOrgID := cPar.AD_Org_ID;
+			vUserID := cPar.AD_User_ID;
+			/*
+			IF cPar.ParameterName = 'AD_Org_ID' THEN
+				pOrgID := cPar.P_String;
+			END IF;
+			*/
+		END LOOP;
+		
+		SELECT * INTO vRecord FROM sdindp_dinardap WHERE sdindp_dinardap_id = vRecordID;
+		IF vRecord.processing = 'Y' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@DocBeingProcessed@');
+		END IF;
+		
+		UPDATE sdindp_dinardap SET processing = 'Y' WHERE sdindp_dinardap_id = vRecordID;
+		
+		SELECT * INTO vConfig FROM (
+			SELECT ROW_NUMBER() OVER (ORDER BY ad_org_id, created DESC) rowNo, *
+			FROM sdindp_dinardap_config
+			WHERE isactive = 'Y' AND ad_org_id IN ('0', vRecord.AD_Org_ID)
+			ORDER BY ad_org_id, created DESC
+		) tmp WHERE rowNo = 1;
+		
+		IF vConfig.sdindp_dinardap_config_id IS NULL THEN
+			RAISE_APPLICATION_ERROR(-20000, 'No se encontro configuración de parámetros generales Dinardap');
+		END IF;
+		
+		
+        vSQL := vConfig.sql;
+        IF vRecord.date_from IS NOT NULL THEN
+		    SELECT REPLACE(vSQL, ':DATE_FROM:', TO_CHAR(vRecord.date_from::DATE, 'DD/MM/YYYY')) INTO vSQL;
+        END IF;
+        SELECT REPLACE(vSQL, ':DATE_TO:', TO_CHAR(vRecord.date_to::DATE, 'DD/MM/YYYY')) INTO vSQL;
+
+        SELECT REPLACE(vSQL, ':ENTITYCODE:', vConfig.codigoentidad) INTO vSQL;
+
+		UPDATE sdindp_dinardap_line SET removable = 'Y' WHERE sdindp_dinardap_id = vRecordID;
+		DELETE FROM sdindp_dinardap_line WHERE sdindp_dinardap_id = vRecordID;
+		UPDATE sdindp_dinardap_discard SET removable = 'Y' WHERE sdindp_dinardap_id = vRecordID;
+		DELETE FROM sdindp_dinardap_discard WHERE sdindp_dinardap_id = vRecordID;
+
+		OPENrQueryFORvSQL;
+		LOOP FETCH rQuery INTO cCur;
+		EXIT WHEN NOT FOUND;
+			IF COALESCE(cCur.valoroperacion,0) >= COALESCE(vConfig.min_trade_value,0) 
+				AND COALESCE(cCur.saldooperacion,0) >= COALESCE(vConfig.min_value_balance_operation,0) THEN 
+				INSERT INTO sdindp_dinardap_line (
+					sdindp_dinardap_line_id, ad_client_id, ad_org_id, createdby, updatedby,
+					sdindp_dinardap_id, codigoentidad, fecha, tipoidentificacion, identificacionsujeto,
+					nombresujeto, clasesujeto, provincia, canton, parroquia,
+					sexo, estadocivil, origeningresos, numerooperacion, valoroperacion,
+					saldooperacion, fechaconcesion, fechavencimiento, fechaexigible, plazooperacion,
+					periodicidadpagos, diasmorosidad, montomorosidad, montointeresenmora, valorxvencer1a30,
+					valorxvencer31a90, valorxvencer91a180, valorxvencer181a360, valorxvencermas360, valorvencido1a30,
+					valorvencidog31a90, valorvencido91a180, valorvencido181a360, valorvencidomas360, valorendemandajudicial,
+					carteracastigada, cuotacredito, fechacancelacion, formacancelacion
+				) VALUES (
+					get_uuid(), vRecord.ad_client_id, vRecord.ad_org_id, vRecord.createdby, vRecord.updatedby,
+					vRecord.sdindp_dinardap_id, vConfig.codigoentidad, TO_DATE(cCur.fecha), cCur.tipoidentificacion, cCur.identificacionsujeto,
+					cCur.nombresujeto, cCur.clasesujeto, cCur.provincia, cCur.canton, cCur.parroquia,
+					cCur.sexo, cCur.estadocivil, cCur.origeningresos, cCur.numerooperacion, cCur.valoroperacion,
+					cCur.saldooperacion, TO_DATE(cCur.fechaconcesion), TO_DATE(cCur.fechavencimiento), TO_DATE(cCur.fechaexigible), ABS(TO_NUMBER(TO_DATE(cCur.fechaconcesion) - TO_DATE(cCur.fechavencimiento) )),
+					cCur.periodicidadpagos, cCur.diasmorosidad, cCur.montomorosidad, cCur.montointeresenmora, cCur.valorxvencer1a30,
+					cCur.valorxvencer31a90, cCur.valorxvencer91a180, cCur.valorxvencer181a360, cCur.valorxvencermas360, cCur.valorvencido1a30,
+					cCur.valorvencidog31a90, cCur.valorvencido91a180, cCur.valorvencido181a360, cCur.valorvencidomas360, cCur.valorendemandajudicial,
+					cCur.carteracastigada, cCur.cuotacredito, CASE WHEN COALESCE(cCur.fechacancelacion,'') = '' THEN NULL ELSE TO_DATE(cCur.fechacancelacion) END, cCur.formacancelacion
+				);
+			END IF;
+		
+		END LOOP;
+		CLOSE rQuery;
+		
+		UPDATE sdindp_dinardap SET processing = 'N' WHERE sdindp_dinardap_id = vRecordID;
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage) ;
+		AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, vMessage);
+		RETURN;
+		
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+    vResult := '@ERROR='||SQLERRM;
+    DBMS_OUTPUT.PUT_LINE( vResult) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, vResult) ;
+
+    RETURN;
+END SDINDP_LOAD_LINES
+]]></body>
+    </function>
+  </database>

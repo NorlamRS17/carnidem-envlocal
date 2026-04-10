@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_INVOICE">
+    <table name="C_INVOICE" primaryKey="C_INVOICE_KEY">
+      <index name="EM_SFIAC_INVOICE_POSTED" unique="false">
+        <index-column name="AD_CLIENT_ID"/>
+        <index-column name="POSTED"/>
+      </index>
+      <index name="EM_SFIAC_INVOICE_STATUS" unique="false">
+        <index-column name="AD_CLIENT_ID"/>
+        <index-column name="PROCESSED"/>
+        <index-column name="DOCSTATUS"/>
+      </index>
+    </table>
+  </database>

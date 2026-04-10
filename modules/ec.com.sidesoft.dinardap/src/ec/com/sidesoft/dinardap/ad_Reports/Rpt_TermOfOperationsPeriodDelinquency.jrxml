@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_CreditInformationSuperCompañias" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DateFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+dias_mora as "dias_mora",
+count(distinct clientes ) as "clientes",
+sum(monto_pendiente) as "monto_pendiente"
+ from (
+select sdin_cc_plazo_periodo(  to_number( ($P{DateTo} - to_date(SDIN_DUE_INVOICE(a.INVOICE))   ))) dias_mora,
+b.C_BPARTNER_ID clientes,
+a.grandtotal monto_pendiente
+from sswh_acct_receivab_payab_v a , c_invoice b
+where a.INVOICE = b.DOCUMENTNO AND b.ISSOTRX = 'Y'
+and b.C_BPARTNER_ID = a.C_BPARTNER_ID
+and    DOC_CODE IN ('FC', 'CC', 'AC', 'RC')
+and a.doctype <>'PLANILLA DE  GASTOS'
+and DOCUMENTDATE <= $P{DateTo}  -- fecha saldo
+and DATEINVOICED >= $P{DateFrom}
+and DATEINVOICED < $P{DateTo}
+and ( to_number( $P{DateTo} - to_date(SDIN_DUE_INVOICE(a.INVOICE))  ) ) >0
+)  REP group by dias_mora]]>
+	</queryString>
+	<field name="dias_mora" class="java.lang.String"/>
+	<field name="clientes" class="java.math.BigDecimal"/>
+	<field name="monto_pendiente" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="67" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="11" width="555" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PLAZO DE OPERACIONES MOROSIDAD DE PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="47" width="185" height="20"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="47" width="48" height="20"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[HASTA:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement x="336" y="47" width="219" height="20"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{DateTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement x="185" y="47" width="103" height="20"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{DateFrom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="18" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO PENDIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DÍAS MORA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{monto_pendiente}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="185" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{clientes}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="370" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{dias_mora}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

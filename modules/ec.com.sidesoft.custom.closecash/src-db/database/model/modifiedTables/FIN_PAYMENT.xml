@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_PAYMENT">
+    <table name="FIN_PAYMENT" primaryKey="FIN_PAYMENT_KEY">
+      <index name="EM_SCCC_FINPDATE_IDX" unique="false">
+        <index-column name="PAYMENTDATE"/>
+        <index-column name="STATUS"/>
+      </index>
+      <index name="EM_SCCC_FINPDOCTYPE_IDX" unique="false">
+        <index-column name="C_DOCTYPE_ID"/>
+        <index-column name="PAYMENTDATE"/>
+      </index>
+      <index name="EM_SCCC_FINPMETHOD_IDX" unique="false">
+        <index-column name="FIN_PAYMENTMETHOD_ID"/>
+        <index-column name="STATUS"/>
+      </index>
+      <index name="EM_SCCC_PAYMENT_BPARTNER_IDX" unique="false">
+        <index-column name="C_BPARTNER_ID"/>
+      </index>
+      <index name="EM_SCCC_PAYMENT_DOCTYPE_IDX" unique="false">
+        <index-column name="C_DOCTYPE_ID"/>
+      </index>
+      <index name="EM_SCCC_PAYMENT_STATUS_IDX" unique="false">
+        <index-column name="STATUS"/>
+        <index-column name="PAYMENTDATE"/>
+      </index>
+    </table>
+  </database>

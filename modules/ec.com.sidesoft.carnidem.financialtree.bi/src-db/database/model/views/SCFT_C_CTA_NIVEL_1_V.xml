@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+  <database name="VIEW SCFT_C_CTA_NIVEL_1_V">
+    <view name="SCFT_C_CTA_NIVEL_1_V"><![CDATA[SELECT c_elementvalue.elementlevel, c_elementvalue.c_elementvalue_id AS cta_nivel_1, c_elementvalue.name AS name_1, c_elementvalue.value AS nivel_1 FROM c_elementvalue WHERE c_elementvalue.elementlevel = 'E']]></view>
+  </database>

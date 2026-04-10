@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPROD_COSTCENTERUSE_TRG">
+    <trigger name="SSPROD_COSTCENTERUSE_TRG" table="M_PRODUCTIONPLAN" fires="before" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[  hours_diff NUMBER;
+BEGIN
+  IF :NEW.processed <> 'Y' THEN
+    RETURN NEW;
+  END IF;
+  IF (:NEW.starttime IS DISTINCT FROM :OLD.starttime OR :NEW.endtime IS DISTINCT FROM :OLD.endtime) THEN
+    IF :NEW.starttime IS NULL OR :NEW.endtime IS NULL THEN
+      RETURN NEW;
+    END IF;
+    hours_diff := ROUND((EXTRACT(EPOCH FROM (:NEW.endtime - :NEW.starttime)) / 3600)::NUMERIC, 2);
+    :NEW.ma_costcenteruse := hours_diff;
+    UPDATE m_production
+    SET
+      movementdate = date_trunc('day', :NEW.starttime),
+      starttime = date_trunc('day', :NEW.starttime) + (:NEW.starttime::time),
+      endtime = date_trunc('day', :NEW.starttime) + (:NEW.endtime::time),
+      updated = now()
+    WHERE m_production_id = :NEW.m_production_id;
+  END IF;
+
+  RETURN NEW;
+END SSPROD_COSTCENTERUSE_TRG
+]]></body>
+    </trigger>
+  </database>

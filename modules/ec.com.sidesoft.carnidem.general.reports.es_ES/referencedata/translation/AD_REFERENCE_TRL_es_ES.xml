@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="5DE4D666A9784485BE6A66E56693C71F" trl="N">
+    <value column="Name" isTrl="N" original="SscgrAttributeIns">SscgrAttributeIns</value>
+    <value column="Description" isTrl="N" original="SscgrAttributeIns">SscgrAttributeIns</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="86B65AC5B9A04347BE19265305C3BB49" trl="N">
+    <value column="Name" isTrl="N" original="SscgrProductCatId">SscgrProductCatId</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

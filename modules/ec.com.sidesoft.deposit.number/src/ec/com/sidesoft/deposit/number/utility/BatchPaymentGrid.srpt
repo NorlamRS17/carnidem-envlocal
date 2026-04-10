@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<span id="sectionLinesDetail">
+  <tr class="DataGrid_Body_Row DataGrid_Body_Row_yy">
+    <td class="DataGrid_Body_Cell">
+      <input type="checkbox" name="inpTransactionId" value="" id="fieldTransactionId_xx" onclick="updateTotal(this.checked, 'xx'); return true;"/>
+    </td>
+    <td class="DataGrid_Body_Cell" id="fieldRownum1">xx1</td>
+    <td class="DataGrid_Body_Cell" id="fieldDocumentno">xx1</td>
+    <td class="DataGrid_Body_Cell" id="fieldBusinessPartner">xx1</td>
+    <td class="DataGrid_Body_Cell" id="fieldDescription">xx1</td>
+    <td class="DataGrid_Body_Cell" id="fieldDueDate">xx1</td>
+    <td class="DataGrid_Body_Cell_Amount" id="fieldAmount" >xx1</td>
+  </tr>
+</span>

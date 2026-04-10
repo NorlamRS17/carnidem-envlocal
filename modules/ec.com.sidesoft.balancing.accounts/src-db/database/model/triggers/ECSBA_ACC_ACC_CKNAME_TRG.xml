@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ECSBA_ACC_ACC_CKNAME_TRG">
+    <trigger name="ECSBA_ACC_ACC_CKNAME_TRG" table="ECSBA_ACCOUNTING_ACCOUNTS" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[    v_count integer;
+BEGIN
+    IF AD_isTriggerEnabled () = 'N' THEN
+        IF DELETING THEN
+            RETURN OLD;
+        ELSE
+            RETURN NEW;
+        END IF;
+    END IF;
+    -- Verificar registros Nombres duplicados
+    -- Validación en INSERT
+    IF(INSERTING OR UPDATING) THEN
+        SELECT
+            count(*) INTO v_count
+        FROM
+            ecsba_accounting_accounts
+        WHERE
+            c_elementvalue_id = :NEW.c_elementvalue_id
+            AND ecsba_breakdown_balance_id = :NEW.ecsba_breakdown_balance_id
+	    AND ecsba_accounting_accounts_ID <> :NEW.ecsba_accounting_accounts_ID;
+        IF (v_count > 0) THEN
+            RAISE_APPLICATION_ERROR(-20000, '@ECSBA_DuplicateName@');
+        END IF;
+    END IF;
+    END ECSBA_ACC_ACC_CKNAME_TRG
+]]></body>
+    </trigger>
+  </database>

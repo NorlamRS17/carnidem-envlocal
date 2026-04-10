@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="4F4A41F1331142F1A6E8CCC60F0BAFF6" trl="Y">
+    <value column="Name" isTrl="Y" original=" Food safety and quality">Seguridad y calidad alimentaria</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="BBF9B95A78D7412FBE87B6326B237781" trl="Y">
+    <value column="Name" isTrl="Y" original="Critical Control Point data collection.">Toma de datos de Punto de Control Crítico</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D401945E62F2472A98FF1FE3364FEEF4" trl="Y">
+    <value column="Name" isTrl="Y" original="Finished Product Quality">Seguridad y Calidad en Producto Terminado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="DE7CE6A51A094F1CB465F9A8E521F2D0" trl="Y">
+    <value column="Name" isTrl="Y" original="Safety and Quality in Raw Materials">Seguridad y Calidad en Materia Prima</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="DEB4085D199A4E008686742BEFEBCFAF" trl="Y">
+    <value column="Name" isTrl="Y" original="Periodic Quality Control Data">Datos de Control de Calidad Periódico</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="ECAAC7B9FCC24DCDA023F56D45B02924" trl="Y">
+    <value column="Name" isTrl="Y" original="Maintenance">Mantenimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

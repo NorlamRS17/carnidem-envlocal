@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><ob:Openbravo xmlns:ob="http://www.openbravo.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <DocumentType id="20D5319C58774A918CC12335C1942039" identifier="Cobro Cierre Diario">
+    <table id="85C3F09140EE430399EB08049A037A84" entity-name="ADTable" identifier="sdcc_daily_clossing"/>
+    <documentSequence id="DED2537302E34CABBDF6076C4600F850" entity-name="ADSequence" identifier="DocumentNo_sdcc_daily_clossing"/>
+    <printText>Cobro Cierre Diario</printText>
+    <name>Cobro Cierre Diario</name>
+    <documentCategory>SDCC_APP</documentCategory>
+    <gLCategory id="0" entity-name="FinancialMgmtGLCategory" identifier="None of System"/>
+  </DocumentType>
+  <ADSequence id="DED2537302E34CABBDF6076C4600F850" identifier="DocumentNo_sdcc_daily_clossing">
+    <id>DED2537302E34CABBDF6076C4600F850</id>
+    <active>true</active>
+    <creationDate transient="true">2025-02-20T16:07:10.134Z</creationDate>
+    <createdBy transient="true" id="0" entity-name="ADUser" identifier="System - "/>
+    <updated transient="true">2025-02-21T11:11:36.318Z</updated>
+    <updatedBy transient="true" id="100" entity-name="ADUser" identifier="Openbravo - "/>
+    <name>DocumentNo_sdcc_daily_clossing</name>
+    <description xsi:nil="true"/>
+    <valueFormat xsi:nil="true"/>
+    <autoNumbering>true</autoNumbering>
+    <incrementBy>1</incrementBy>
+    <startingNo>1000000</startingNo>
+    <nextAssignedNumber>1000000</nextAssignedNumber>
+    <currentNextSystem>100</currentNextSystem>
+    <usedForRecordID>false</usedForRecordID>
+    <prefix xsi:nil="true"/>
+    <suffix xsi:nil="true"/>
+    <restartSequenceEveryYear>false</restartSequenceEveryYear>
+  </ADSequence>
+</ob:Openbravo>

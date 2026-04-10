@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="0A7F7E3611864ED58874461143D7576A" trl="N">
+    <value column="Name" isTrl="N" original="crprqr_MSCSafetyMonitoring">crprqr_MSCSafetyMonitoring</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B3171E0800FE43D1B8AA4760ED9DC5A6" trl="Y">
+    <value column="Name" isTrl="Y" original="MSC Safety and Quality Monitoring">Monitoreo de Seguridad y Calidad MSC</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

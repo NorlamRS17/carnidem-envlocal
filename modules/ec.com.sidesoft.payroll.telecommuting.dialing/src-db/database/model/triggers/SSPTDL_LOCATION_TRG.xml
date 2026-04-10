@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPTDL_LOCATION_TRG">
+    <trigger name="SSPTDL_LOCATION_TRG" table="SSPTDL_TELECOMM_DIALING" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[     v_newLocation NUMBER;
+	 v_oldLocation NUMBER;
+BEGIN
+    
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+	
+  IF INSERTING THEN
+  	v_newLocation := COALESCE(LENGTH(:new.Location_Marking),0);
+	IF (:new.isactionbuttom = 'N' AND v_newLocation <> 0) THEN
+		RAISE_APPLICATION_ERROR(-20000, '@SSPTDL_Manual_Location@');
+	END IF;
+  END IF;
+  
+  IF UPDATING THEN  
+   --OBTENEMOS LONGITUD
+	v_newLocation := COALESCE(LENGTH(:new.Location_Marking),0);
+  	v_oldLocation := COALESCE(LENGTH(:old.Location_Marking),0);
+	  
+  	-- SE ACTUALIZA LA UBICACION DESDE EL CAMPO EN OPENBRAVO
+	IF (:new.isactionbuttom = 'N' AND ((COALESCE(:old.Location_Marking,'') <> COALESCE(:new.Location_Marking,''))) OR v_newLocation = 0) THEN
+		RAISE_APPLICATION_ERROR(-20000, '@SSPTDL_Manual_Location@');
+	END IF;
+	
+	-- SE ACTUALIZA LA UBICACION DESDE EL BOTON EN OPENBRAVO
+	IF ((v_newLocation = 0 OR (COALESCE(:old.Location_Marking,'') <> COALESCE(:new.Location_Marking,''))) AND :new.isactionbuttom = 'Y') THEN
+		UPDATE ssptdl_telecomm_dialing SET isactionbuttom = 'N' WHERE ssptdl_telecomm_dialing_id = :new.ssptdl_telecomm_dialing_id;
+		RETURN NEW;
+	END IF;
+	
+  	-- DOCUMENTO YA PROCESADO
+	IF ((v_newLocation = 0 OR (:old.Location_Marking <> :new.Location_Marking)) AND :old.state = 'PR') THEN
+	 	RAISE_APPLICATION_ERROR(-20000, '@SSPTDL_Status_Validation@');	
+	END IF;
+  END IF;
+     
+  END SSPTDL_LOCATION_TRG
+]]></body>
+    </trigger>
+  </database>

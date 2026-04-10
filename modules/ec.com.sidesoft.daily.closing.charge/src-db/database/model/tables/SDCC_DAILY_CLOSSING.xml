@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+  <database name="TABLE SDCC_DAILY_CLOSSING">
+    <table name="SDCC_DAILY_CLOSSING" primaryKey="SDCC_DC_KEY">
+      <column name="SDCC_DAILY_CLOSSING_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_DOCTYPE_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DOCUMENTNO" primaryKey="false" required="true" type="VARCHAR" size="30" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="PAYMENTDATE" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_BPARTNER_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DESCRIPTION" primaryKey="false" required="false" type="VARCHAR" size="255" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="FIN_PAYMENTMETHOD_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="FIN_FINANCIAL_ACCOUNT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="STATUS" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default><![CDATA[DR]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="GENERATED_CREDIT" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="USED_CREDIT" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="WRITEOFFAMT" primaryKey="false" required="true" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EXECUTEPAYMENT" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default><![CDATA[LL]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="DATEFROM" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="DATETO" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="VALUEFROM" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="VALUETO" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="C_GLITEM_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_COSTCENTER_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_DOCTYPE_PAYMENT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="USER1_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="REFERENCENO" primaryKey="false" required="false" type="VARCHAR" size="120" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="READYTOPROCESS" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="C_BPARTNER" name="SDCC_BPARTNER">
+        <reference local="C_BPARTNER_ID" foreign="C_BPARTNER_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_COSTCENTER" name="SDCC_COSTCENTER">
+        <reference local="C_COSTCENTER_ID" foreign="C_COSTCENTER_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_CLIENT" name="SDCC_DC_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_DOCTYPE" name="SDCC_DC_DOCTYPE">
+        <reference local="C_DOCTYPE_ID" foreign="C_DOCTYPE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="SDCC_DC_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_DOCTYPE" name="SDCC_DC_PMT">
+        <reference local="C_DOCTYPE_PAYMENT_ID" foreign="C_DOCTYPE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="FIN_FINANCIAL_ACCOUNT" name="SDCC_FINANCIAL_ACCOUNT">
+        <reference local="FIN_FINANCIAL_ACCOUNT_ID" foreign="FIN_FINANCIAL_ACCOUNT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_GLITEM" name="SDCC_GLINTEM">
+        <reference local="C_GLITEM_ID" foreign="C_GLITEM_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="FIN_PAYMENTMETHOD" name="SDCC_PAYMENTMETHOD">
+        <reference local="FIN_PAYMENTMETHOD_ID" foreign="FIN_PAYMENTMETHOD_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="USER1" name="SDCC_USER1">
+        <reference local="USER1_ID" foreign="USER1_ID"/>
+      </foreign-key>
+      <check name="SDCC_DC_ISACTIVE_CHECK"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
+    </table>
+  </database>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MODULE" version="">
+  <row id="6FC7BEFF500840D8919938BB0FB21FFA" trl="N">
+    <value column="Description" isTrl="N" original="Mass loading of data into accounting entries">Mass loading of data into accounting entries</value>
+    <value column="Help" isTrl="N" original="This module was created for ticket 12105 where it is responsible for the massive data loading process for the manual entries window.">This module was created for ticket 12105 where it is responsible for the massive data loading process for the manual entries window.</value>
+    <value column="License" isTrl="N" original=""/>
+    <value column="Updateinfo" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

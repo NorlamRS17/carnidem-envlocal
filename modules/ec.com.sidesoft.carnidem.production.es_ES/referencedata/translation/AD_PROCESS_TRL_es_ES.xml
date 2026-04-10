@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="9C4187630C0A44B3829B2A9120B3EBC8" trl="Y">
+    <value column="Name" isTrl="Y" original="Change To Complete">Completar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C14ACFDEF17E458E90AD6072C93D78D8" trl="Y">
+    <value column="Name" isTrl="Y" original="CRPRODChangeToCompleteFPQ">Completar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CA21963C478B4C40ACEDD491BE38283D" trl="Y">
+    <value column="Name" isTrl="Y" original=" Shrinkage and packaging waste">Mermas y desperdicio de empaque</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E3EBFAC5F4824810B8246183C08395BC" trl="N">
+    <value column="Name" isTrl="N" original="imprimir etiqueta">imprimir etiqueta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,1100 @@
+<?xml version="1.0" encoding="UTF-8"?><ob:Openbravo xmlns:ob="http://www.openbravo.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <cslrnp_sql_trx_notposted id="1050A9391B74404D96D7DF9806F9E1BC" identifier="fin_finacc_transaction">
+    <id>1050A9391B74404D96D7DF9806F9E1BC</id>
+    <active>true</active>
+    <name>fin_finacc_transaction</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, 'Line: ' || to_char(line) AS DOCUMENTNO, 
+dateacct, 'FIN_FINANCIAL_ACCOUNT' as tablename, fin_financial_account_id as id, depositamt-paymentamt as GRANDTOTAL, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='FAT') 
+and ad_language=to_char(':plang')  
+and ad_client_id=to_char(':pclient'))), 'Financial Account Transaction') as document, '23691259D1BD4496BCC5F32645BCA4B9' as tab_id, 'FAT' as docbasetype,
+fin_finacc_transaction_id as record_id
+,to_char(':process') as process
+from fin_finacc_transaction
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='4D8C3B3C31D1410DA046140C9F024D17' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="14B1C91AB62D4DED9DD420777AB975A3" identifier="c_Settlement">
+    <id>14B1C91AB62D4DED9DD420777AB975A3</id>
+    <active>true</active>
+    <name>c_Settlement</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'C_Settlement' as tablename, C_Settlement_id as id, generatedamt, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=c_Settlement.c_doctype_id 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Settlements') as document, '800025' as tab_id, 'STT' as docbasetype,
+c_Settlement_id as record_id
+,to_char(':process') as process
+from c_Settlement
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and settlementtype &lt;&gt; 'I'
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='800019' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="1D058E97D95E4A98B3076B69FA9DB5AC" identifier="m_inventory">
+    <id>1D058E97D95E4A98B3076B69FA9DB5AC</id>
+    <active>true</active>
+    <name>m_inventory</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(name) AS DOCUMENTNO, movementdate , 'M_INVENTORY' as tablename, m_inventory_id as id, 0 as GRANDTOTAL, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='MMI') 
+and ad_language=to_char(':plang') 
+and ad_client_id=to_char(':pclient'))), 'Physical Inventory') as document, '255' as tab_id, 'MMI' as docbasetype,
+m_inventory_id as record_id
+,to_char(':process') as process
+from m_inventory
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='321' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="1D8760D05BA3449490BB68B76F27B749" identifier="GL_Journal">
+    <id>1D8760D05BA3449490BB68B76F27B749</id>
+    <active>true</active>
+    <name>GL_Journal</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'GL_Journal' as tablename, GL_Journal_id as id, totaldr, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=GL_Journal.c_doctype_id 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'GL Journal') as document, '160' as tab_id, (select docbasetype from c_doctype where c_doctype_id=GL_Journal.c_doctype_id) as docbasetype,
+GL_Journal_id as record_id
+,to_char(':process') as process
+from GL_Journal
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='224' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="21F1A7AA362B4A1499EC00A13994B636" identifier="FIN_Doubtful_Debt">
+    <id>21F1A7AA362B4A1499EC00A13994B636</id>
+    <active>true</active>
+    <name>FIN_Doubtful_Debt</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'FIN_Doubtful_Debt' as tablename, FIN_Doubtful_Debt_id as id, (amount) as grandtotal, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='LQF') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Dudoso Cobro') as document, '9D859A2A50F44562AFA21AAF2DF91B8A' as tab_id, 'LQF' as docbasetype,
+FIN_Doubtful_Debt_id as record_id
+,to_char(':process') as process
+from FIN_Doubtful_Debt
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='30721072789F410E9606D2235CB2A226' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="26072AB437CA424CA183945035FAF1C2" identifier="m_movement">
+    <id>26072AB437CA424CA183945035FAF1C2</id>
+    <active>true</active>
+    <name>m_movement</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(name) AS DOCUMENTNO, movementdate , 'M_MOVEMENT' as tablename, m_movement_id as id, 0 as GRANDTOTAL,
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='MMM') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Goods Movement')  as document, '259' as tab_id, 'MMM' as docbasetype,
+m_movement_id as record_id
+,to_char(':process') as process
+from m_movement
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='323' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="3164F37B04D74B839D1A1DDE33882C19" identifier="sswh_withh_card_credit">
+    <id>3164F37B04D74B839D1A1DDE33882C19</id>
+    <active>true</active>
+    <name>sswh_withh_card_credit</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'sswh_withh_card_credit' as tablename, sswh_withh_card_credit_id as id, (withh_vat + withh_rent) as grandtotal, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='WHC') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Retencion Tarjetas') as document, '26723DEBE7BA4570ADF0AE5C2D3846DC' as tab_id, 'WHC' as docbasetype,
+sswh_withh_card_credit_id as record_id
+,to_char(':process') as process
+from sswh_withh_card_credit
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='610D781C7DE142108BDBBBF84107C394' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="4B00466262164EFBBFAF5EFA4B146C71" identifier="SSPICS_Sale_Bid">
+    <id>4B00466262164EFBBFAF5EFA4B146C71</id>
+    <active>true</active>
+    <name>SSPICS_Sale_Bid</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, date_process, 'SSPICS_Sale_Bid' as tablename, SSPICS_Sale_Bid_id as id, (total_portfolio) as grandtotal, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='LVC') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Licitación Venta de Cartera') as document, '48BB8E9411714CAA8950BD9BA713ED73' as tab_id, 'LVC' as docbasetype,
+SSPICS_Sale_Bid_id as record_id
+,to_char(':process') as process
+from SSPICS_Sale_Bid
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='552B3617C181420EA04AA76A0452D806' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="65509592C3B8478081489739235F7F5E" identifier="m_inout so trx">
+    <id>65509592C3B8478081489739235F7F5E</id>
+    <active>true</active>
+    <name>m_inout so trx</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select  get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'M_InOut' as tablename, m_inout_id as id, 0 as GRANDTOTAL, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=m_inout.c_doctype_id 
+and ad_language=to_char(':plang') 
+and ad_client_id=to_char(':pclient'))), 'Goods Shipments') as document, '257' as tab_id, (select docbasetype from c_doctype where c_doctype_id=m_inout.c_doctype_id) as docbasetype,
+m_inout_id as record_id
+,to_char(':process')
+from m_inout
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and issotrx = 'Y'
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='319' and ad_client_id=to_char(':pclient')
+)</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="74E3144162CA4392A98E0FF4EB095528" identifier="SSPR_Payroll">
+    <id>74E3144162CA4392A98E0FF4EB095528</id>
+    <active>true</active>
+    <name>SSPR_Payroll</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id,  'Line: ' || to_char(documentno) AS DOCUMENTNO, 
+datedoc, 'SSPR_Payroll' as tablename, SSPR_Payroll_id as id, 0.00 as GRANDTOTAL, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='NOM') 
+and ad_language=to_char(':plang')  
+and ad_client_id=to_char(':pclient'))), 'Nomina') as document, '746B6484EF2F4B7F9F4733CFE9638C41' as tab_id, 'NOM' as docbasetype,
+SSPR_Payroll_id as record_id
+,to_char(':process') as process
+from SSPR_Payroll
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='BCEEDEC4FE2B4B3FAEA32084BB88AD95' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="7E08FA10E1F749CE84B84C28B762C79D" identifier="C_Cash">
+    <id>7E08FA10E1F749CE84B84C28B762C79D</id>
+    <active>true</active>
+    <name>C_Cash</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(name) AS DOCUMENTNO, dateacct, 'C_Cash' as tablename, C_Cash_id as id, c_cash.STATEMENTDIFFERENCE, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient') 
+    and docbasetype='CMC') 
+and ad_language=to_char(':plang')  
+and ad_client_id=to_char(':pclient'))), 'Cash Journal') as document, '338' as tab_id, 'CMC' as docbasetype,
+c_cash_id as record_id
+,to_char(':process') as process
+from C_Cash
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='407' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="852458385F3849D4BBDFFBD19FE33061" identifier="c_bankstatement">
+    <id>852458385F3849D4BBDFFBD19FE33061</id>
+    <active>true</active>
+    <name>c_bankstatement</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(name) AS DOCUMENTNO, statementdate, 'C_Bankstatement' as tablename, C_bankstatement_id as id, STATEMENTDIFFERENCE, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='CMB') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Bank Statements') as document, '328' as tab_id, 'CMB' as docbasetype,
+c_bankstatement_id as record_id
+,to_char(':process') as process
+from c_bankstatement
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='392' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="871CEFA036F349758892DC826D8BB84B" identifier="SSWS_WithholdingSale">
+    <id>871CEFA036F349758892DC826D8BB84B</id>
+    <active>true</active>
+    <name>SSWS_WithholdingSale</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'SSWS_WithholdingSale' as tablename, SSWS_WithholdingSale_id as id, (totalwhrentalamttmp+totalwhivaamttmp) as grandtotal, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='LQF') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Comprobante de Retención') as document, '81C6304D07B04F7692B57D4BCB6B3CDE' as tab_id, 'LQF' as docbasetype,
+SSWS_WithholdingSale_id as record_id
+,to_char(':process') as process
+from SSWS_WithholdingSale
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='211492B753264EAEBE328BA4FED1F066' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="8E045AF55CC642A98539F3E59216C4A0" identifier="fin_reconciliation">
+    <id>8E045AF55CC642A98539F3E59216C4A0</id>
+    <active>true</active>
+    <name>fin_reconciliation</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, statementdate, 'FIN_FINANCIAL_ACCOUNT' as talename, fin_financial_account_id as id, endingbalance - startingbalance as GRANDTOTAL, 
+''  as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='REC') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'RECONCILIATION') as document, 'C095D2CC39704DBE8B906B7CD7710968' as tab_id, 'REC' as docbasetype,
+fin_reconciliation_id as record_id
+,to_char(':process') as process
+from fin_reconciliation
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='B1B7075C46934F0A9FD4C4D0F1457B42' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="95568916E2A94247ACCD71214D03521A" identifier="fin_payment receipt">
+    <id>95568916E2A94247ACCD71214D03521A</id>
+    <active>true</active>
+    <name>fin_payment receipt</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, paymentdate , 'C_Bpartner' as tablename, c_bpartner_id as id, amount as GRANDTOTAL, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient') 
+    and docbasetype='ARR') 
+and ad_language=to_char(':plang') 
+and ad_client_id=to_char(':pclient'))), 'Payment In') as document, 'C4B6506838E14A349D6717D6856F1B56' as tab_id, 'ARR' as docbasetype,
+fin_payment_id as record_id
+,to_char(':process') as process
+from fin_payment
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and isreceipt='Y'
+and status &lt;&gt; 'RPVOID'
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='D1A97202E832470285C9B1EB026D54E2' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="9A74F930D129460D90AFDD54D6061482" identifier="c_invoice not so trx">
+    <id>9A74F930D129460D90AFDD54D6061482</id>
+    <active>true</active>
+    <name>c_invoice not so trx</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'C_Bpartner' as tablename, C_bpartner_id as id, GRANDTOTAL, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=c_invoice.c_doctype_id 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Purchase Invoices') as document, '290' as tab_id, (select docbasetype from c_doctype where c_doctype_id=c_invoice.c_doctype_id) as docbasetype,
+c_invoice_id as record_id
+,to_char(':process')
+from c_invoice
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and issotrx = 'N'
+and docstatus &lt;&gt; 'VO'
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='318' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="9F7ADE142410437A8012F0E1EF43FE89" identifier="c_invoice so trx">
+    <id>9F7ADE142410437A8012F0E1EF43FE89</id>
+    <active>true</active>
+    <name>c_invoice so trx</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'C_Bpartner' as tablename, C_bpartner_id as id, GRANDTOTAL,
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=c_invoice.c_doctype_id 
+and ad_language=to_char(':plang') 
+and ad_client_id=to_char(':pclient'))), 'Sales Invoices') as document, '263' as tab_id, (select docbasetype from c_doctype where c_doctype_id=c_invoice.c_doctype_id) as docbasetype,
+c_invoice_id as record_id 
+,to_char(':process')
+from c_invoice
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and issotrx = 'Y'
+and docstatus &lt;&gt; 'VO'
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='318' and ad_client_id=to_char(':pclient')
+)</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="B8BF779B67E14561BA5F043938F3227A" identifier="A_Amortization">
+    <id>B8BF779B67E14561BA5F043938F3227A</id>
+    <active>true</active>
+    <name>A_Amortization</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'A_Amortization' as tablename, A_Amortization_id as id, (totalamortization) as grandtotal, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='AMZ') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Amortizacion') as document, '800076' as tab_id, 'AMZ' as docbasetype,
+A_Amortization_id as record_id
+,to_char(':process') as process
+from A_Amortization
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='800060' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="BEBE43383A474936902EB4F7A855BD2F" identifier="FIN_BankStatement">
+    <id>BEBE43383A474936902EB4F7A855BD2F</id>
+    <active>true</active>
+    <name>FIN_BankStatement</name>
+    <script>Insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, statementdate, 'SSWS_WithholdingSale' as tablename, FIN_BankStatement_id as id, (0.00) as grandtotal, 
+to_char(filename) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='ACF') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Cuenta Financiera') as document, 'C56E698100314ABBBBD3A89626CA551C' as tab_id, 'ACF' as docbasetype,
+FIN_BankStatement_id as record_id
+,to_char(':process') as process
+from FIN_BankStatement
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='D4C23A17190649E7B78F55A05AF3438C' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="CD7A84DF83E44AF3A7A43197247EAF60" identifier="M_Production">
+    <id>CD7A84DF83E44AF3A7A43197247EAF60</id>
+    <active>true</active>
+    <name>M_Production</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, movementdate, 'M_Production' as tablename, M_Production_ID as id, (0.00) as grandtotal, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='MPL') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Producción LDM') as document, '319' as tab_id, 'MPL' as docbasetype,
+M_Production_ID as record_id
+,to_char(':process') as process
+from M_Production
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='325' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="D21C3F88F19146D5BCF6869BA620D0C7" identifier="m_inout not trx">
+    <id>D21C3F88F19146D5BCF6869BA620D0C7</id>
+    <active>true</active>
+    <name>m_inout not trx</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select  get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'M_InOut' as tablename, m_inout_id as id, 0 as GRANDTOTAL, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=m_inout.c_doctype_id 
+and ad_language=to_char(':plang')  
+and ad_client_id=to_char(':pclient'))), 'Goods Receipts') as document, '296' as tab_id, (select docbasetype from c_doctype where c_doctype_id=m_inout.c_doctype_id) as docbasetype,
+m_inout_id as record_id
+,to_char(':process')
+from m_inout
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and issotrx = 'N'
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='319' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="DCC6BF1BD3EE4116AB767EEC994F695D" identifier="sspr_settlement">
+    <id>DCC6BF1BD3EE4116AB767EEC994F695D</id>
+    <active>true</active>
+    <name>sspr_settlement</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentnonew) AS DOCUMENTNO, movementdate, 'sspr_settlement' as tablename, sspr_settlement_id as id, (0.00) as grandtotal, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='LQF') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Liquidacion Final') as document, '7837F89A03FC4386AA01A2447ECBC848' as tab_id, 'LQF' as docbasetype,
+sspr_settlement_id as record_id
+,to_char(':process') as process
+from sspr_settlement
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='DC962E28F8E2426DB8C0AD4BF8744B8D' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="E7ADEE8B18CD4B1581F50023A6F8413D" identifier="fin_payment not receipt">
+    <id>E7ADEE8B18CD4B1581F50023A6F8413D</id>
+    <active>true</active>
+    <name>fin_payment not receipt</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, paymentdate , 'C_Bpartner', c_bpartner_id as id, amount as GRANDTOTAL, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='APP') and ad_language=to_char(':plang')  
+and ad_client_id=to_char(':pclient'))), 'Payment Out') as document, 'F7A52FDAAA0346EFA07D53C125B40404' as tab_id, 'APP' as docbasetype,
+fin_payment_id as record_id
+,to_char(':process') as process
+from fin_payment
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and isreceipt='N'
+and status &lt;&gt; 'RPVOID'
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='D1A97202E832470285C9B1EB026D54E2' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="EC4A9005A6434A47B728CDB6C244EF7A" identifier="c_Settlement">
+    <id>EC4A9005A6434A47B728CDB6C244EF7A</id>
+    <active>true</active>
+    <name>c_Settlement</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'C_Settlement' as tablename, C_Settlement_id as id, generatedamt, 
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=s.c_doctype_id 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Manual Settlements') as document, '800029' as tab_id, 'STM' as docbasetype,
+c_Settlement_id as record_id
+,to_char(':process') as process
+from c_Settlement s
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and settlementtype = 'I'
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='800019' and ad_client_id=to_char(':pclient'))
+and exists (select 1
+	    from c_debt_payment p
+	    where p.c_settlement_generate_id = s.c_settlement_id
+	    and p.isdirectposting='Y')</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+  <cslrnp_sql_trx_notposted id="F2B3339212DB494BAF95682F9864863F" identifier="c_dp_management">
+    <id>F2B3339212DB494BAF95682F9864863F</id>
+    <active>true</active>
+    <name>c_dp_management</name>
+    <script>insert into cslrnp_data_notposted(
+  cslrnp_data_notposted_id,
+  ad_org_id,
+  created,
+  createdby,
+  updated,
+  updatedby,
+  isactive,
+  ad_client_id,
+  documentno,
+  dateacct,
+  tablename,
+  cbpid ,
+  grandtotal,
+  description,
+  documentno2,
+  tab_id,
+  docbasetype ,
+  record_id ,
+  processid )
+select get_uuid() as recordid ,ad_org_id,now() as created , to_char('100') as createdby,
+now() as updated, to_char('100') as updatedby, to_char('Y') as isactive
+,ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct , 'C_DP_MANAGEMENT' as tablename, c_dp_management_id as id, 0 as GRANDTOTAL,
+to_char(description) as description,  
+coalesce(to_char((select printname 
+from c_doctype_trl 
+where c_doctype_id=(select min(c_doctype_id) 
+    from c_doctype 
+    where ad_client_id=to_char(':pclient')
+    and docbasetype='DPM') 
+and ad_language=to_char(':plang')
+and ad_client_id=to_char(':pclient'))), 'Debt Payment Management')  as document, '800209' as tab_id, 'DPM' as docbasetype,
+c_dp_management_id as record_id
+,to_char(':process') as process
+from c_dp_management
+where processed = 'Y'
+and COALESCE(posted,'') NOT IN ('Y','D')
+and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='800176' and ad_client_id=to_char(':pclient'))</script>
+    <description xsi:nil="true"/>
+  </cslrnp_sql_trx_notposted>
+</ob:Openbravo>

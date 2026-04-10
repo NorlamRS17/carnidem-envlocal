@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="87E0C42F360E480C8BB01AE7B40B066D" trl="N">
+    <value column="Name" isTrl="Y" original="ssccesCasePrority">Lista de prioridad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DB35EC5C4E85487380BED5342741B4C3" trl="Y">
+    <value column="Name" isTrl="Y" original="sscces_AuditNcTypeList">Tipo de no conformidad</value>
+    <value column="Description" isTrl="N" original="">Tipo de no conformidad</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

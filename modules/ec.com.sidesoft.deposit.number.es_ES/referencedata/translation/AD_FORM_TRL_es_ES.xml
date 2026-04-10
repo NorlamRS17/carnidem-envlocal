@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_FORM" version="">
+  <row id="169AD4B5D4E349A69767B50E167CCF52" trl="N">
+    <value column="Name" isTrl="Y" original="Payment Execution">Ejecución de Pagos/Cobros</value>
+    <value column="Description" isTrl="Y" original="This window allows payment execution management for payments in status &quot;awaiting execution&quot;.">Esta ventana permite la gestión de ejecución de pagos/cobros en estado "pendientes de ejecución"</value>
+    <value column="Help" isTrl="Y" original="Payment Execution form allows to massively execute deferred payments in an &quot;Awaiting Execution&quot; status.">Los usuarios pueden gestionar las ejecuciones de los pagos aplazados y los pagos que fallaron durante la ejecución (atasco del papel, problemas con la conexión). Se permiten varias opciones de filtrado (método de pago, cuenta financiera, propuesta de pago, flag de ejecutado) y se muestra un grid con los pago que tienen que ser ejecutados. Una vez que se selecciona el conjunto de pagos y se pulsa en el botón de ejecutar, el sistema mostrará una ventana para que el usuario introduzca los parámetros que haya configurado.</value>
+  </row>
+</compiereTrl>

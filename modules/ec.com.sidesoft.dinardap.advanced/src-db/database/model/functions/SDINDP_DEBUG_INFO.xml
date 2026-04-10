@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SDINDP_DEBUG_INFO">
+    <function name="SDINDP_DEBUG_INFO" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult				VARCHAR2(2000);
+	vMessage			VARCHAR2(2000);
+	
+	cPar				RECORD;
+	vRecord				RECORD;
+	vRecordID			VARCHAR2(32);
+	vClientID			VARCHAR2(32);
+	vOrgID				VARCHAR2(32);
+	vUserID				VARCHAR2(32);
+	
+	vCheck			 NUMBER;
+	
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID) ;
+	vResult := 'PInstanceNotFound';
+	AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+	BEGIN
+
+		vResult := 'ReadingParameters';
+		FOR cPar IN (
+			SELECT i.Record_ID,
+				i.AD_User_ID,
+				i.AD_Client_ID,
+				i.AD_Org_ID,
+				pa.ParameterName,
+				pa.P_String,
+				pa.P_Number,
+				pa.P_Date
+			FROM AD_PInstance i
+				LEFT JOIN AD_PInstance_Para AS pa ON pa.AD_PInstance_ID = i.AD_PInstance_ID
+			WHERE i.AD_PInstance_ID = PInstance_ID
+		) LOOP
+			vRecordID := cPar.Record_ID;
+			vClientID := cPar.AD_Client_ID;
+			vOrgID := cPar.AD_Org_ID;
+			vUserID := cPar.AD_User_ID;
+			/*
+			IF cPar.ParameterName = 'AD_Org_ID' THEN
+				pOrgID := cPar.P_String;
+			END IF;
+			*/
+		END LOOP;
+		
+		SELECT * INTO vRecord FROM sdindp_dinardap WHERE sdindp_dinardap_id = vRecordID;
+		IF vRecord.processing = 'Y' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@DocBeingProcessed@');
+		END IF;
+		
+		UPDATE sdindp_dinardap SET processing = 'Y' WHERE sdindp_dinardap_id = vRecordID;
+		
+		SELECT COUNT(*) INTO vCheck FROM sdindp_dinardap_line WHERE sdindp_dinardap_id = vRecordID;
+		IF vCheck = 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, 'No existen líneas');
+		END IF;
+		
+		CREATE EXTENSION IF NOT EXISTS UNACCENT;
+		UPDATE sdindp_dinardap_line SET
+			codigoentidad = TRIM(codigoentidad),
+			tipoidentificacion = TRIM(tipoidentificacion),
+			identificacionsujeto = TRIM(identificacionsujeto),
+			nombresujeto = REPLACE(TRIM(UNACCENT(nombresujeto)),',',''),
+			clasesujeto = TRIM(clasesujeto),
+			provincia = TRIM(provincia),
+			canton = TRIM(canton),
+			parroquia = TRIM(parroquia),
+			sexo = TRIM(sexo),
+			estadocivil = TRIM(estadocivil),
+			origeningresos = TRIM(origeningresos),
+			numerooperacion = TRIM(numerooperacion),
+			valoroperacion = CASE WHEN ROUND(valoroperacion,2) < ROUND(saldooperacion,2) THEN ROUND(saldooperacion,2) ELSE ROUND(valoroperacion,2) END ,
+			saldooperacion = ROUND(saldooperacion,2),
+			montomorosidad = ROUND(montomorosidad,2),
+			montointeresenmora = ROUND(montointeresenmora,2),
+			valorxvencer1a30 = ROUND(valorxvencer1a30,2),
+			valorxvencer31a90 = ROUND(valorxvencer31a90,2),
+			valorxvencer91a180 = ROUND(valorxvencer91a180,2),
+			valorxvencer181a360 = ROUND(valorxvencer181a360,2),
+			valorxvencermas360 = ROUND(valorxvencermas360,2),
+			valorvencido1a30 = ROUND(valorvencido1a30,2),
+			valorvencidog31a90 = ROUND(valorvencidog31a90,2),
+			valorvencido91a180 = ROUND(valorvencido91a180,2),
+			valorvencido181a360 = ROUND(valorvencido181a360,2),
+			valorvencidomas360 = ROUND(valorvencidomas360,2),
+			valorendemandajudicial = ROUND(valorendemandajudicial,2),
+			carteracastigada = ROUND(carteracastigada,2),
+			cuotacredito = ROUND(cuotacredito,2),
+			formacancelacion = TRIM(formacancelacion)
+		WHERE sdindp_dinardap_id = vRecordID;
+		
+		UPDATE sdindp_dinardap SET processing = 'N' WHERE sdindp_dinardap_id = vRecordID;
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage) ;
+		AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, vMessage);
+		RETURN;
+		
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+    vResult := '@ERROR='||SQLERRM;
+    DBMS_OUTPUT.PUT_LINE( vResult) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, vResult) ;
+
+    RETURN;
+END SDINDP_DEBUG_INFO
+]]></body>
+    </function>
+  </database>

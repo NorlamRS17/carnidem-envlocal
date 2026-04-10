@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="1F309EB9BDF14F4198D93C0ACBED9A8B" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crpco_Activitytime_ID">Tiempo de Actividad del Negocio</value>
+    <value column="PrintName" isTrl="Y" original="Business Activity Time">Tiempo de Actividad del Negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="32580FEF6EA04FFABB9DAF1A8C45C0E3" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crpco_Locstatus_ID">Estado del Local</value>
+    <value column="PrintName" isTrl="Y" original="Location Status">Estado del Local</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3A067C35ED10469E9D236CC137F4B539" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_crpco_OpDescription">Descripción o Novedades</value>
+    <value column="PrintName" isTrl="Y" original="Description or News">Descripción o Novedades</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4E81A9127773492093004937E773523E" trl="Y">
+    <value column="Name" isTrl="Y" original="Businesslinename">Línea de Negocio</value>
+    <value column="PrintName" isTrl="Y" original="Business Line">Línea de Negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="502900316E81436DA82CD75B3EDB60C8" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_CRPCO_clientID">ID</value>
+    <value column="PrintName" isTrl="N" original="ID">ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5821798B7D624867A783BC8D8A9F34C2" trl="N">
+    <value column="Name" isTrl="N" original="Crpco_Businesactivitytime_ID">Crpco_Businesactivitytime_ID</value>
+    <value column="PrintName" isTrl="N" original="Crpco_Businesactivitytime_ID">Crpco_Businesactivitytime_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6692DC3E90274F888E5484D65F5EEF26" trl="N">
+    <value column="Name" isTrl="N" original="Crpco_Businessline_ID">Crpco_Businessline_ID</value>
+    <value column="PrintName" isTrl="N" original="Crpco_Businessline_ID">Crpco_Businessline_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="713EFF58941C4F9692BB0E5FF96F0341" trl="Y">
+    <value column="Name" isTrl="Y" original="BusinessType">Tipo de Negocio</value>
+    <value column="PrintName" isTrl="Y" original="Business Type">Tipo de Negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7D9EA171C73447F6A804C63A8C93063C" trl="Y">
+    <value column="Name" isTrl="Y" original="Timename"> Tiempo de Actividad del negocio</value>
+    <value column="PrintName" isTrl="Y" original="Business Activity Time"> Tiempo de Actividad del negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="81B94E4A76804AA7AA47287A5276D93F" trl="N">
+    <value column="Name" isTrl="N" original="Crpco_Locationstatus_ID">Crpco_Locationstatus_ID</value>
+    <value column="PrintName" isTrl="N" original="Crpco_Locationstatus_ID">Crpco_Locationstatus_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A4CD57FB31AE4D518515AC660CCF108D" trl="N">
+    <value column="Name" isTrl="Y" original="EM_Crpco_Idtaype">Tipo Identificación</value>
+    <value column="PrintName" isTrl="Y" original="EM_Crpco_Idtaype">Tipo Identificación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A979C76C7F0E4C1EA217FBAC5DC8ED4E" trl="Y">
+    <value column="Name" isTrl="Y" original="Locstatusname">Estado del Local</value>
+    <value column="PrintName" isTrl="Y" original="Location Status">Estado del Local</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B355A0E91F3A4B3C99470DB3D403E35C" trl="Y">
+    <value column="Name" isTrl="Y" original="Business Type">Tipo de Negocio</value>
+    <value column="PrintName" isTrl="Y" original="Business Type">Tipo de Negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BA8CBF340B14493DB677872A15A28B5C" trl="Y">
+    <value column="Name" isTrl="Y" original="Customer or Supplier">Cliente o Proveedor</value>
+    <value column="PrintName" isTrl="Y" original="Customer or Supplier">Cliente o Proveedor</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CAAE815F99314913ABD395D3D8DAD158" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crpco_Businessline_ID">Línea de Negocio</value>
+    <value column="PrintName" isTrl="Y" original="Business Line">Línea de Negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

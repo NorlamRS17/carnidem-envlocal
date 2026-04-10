@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="0316D77DFC25409CA732C410BC284CC9" trl="N">
+    <value column="Text" isTrl="N" original="Banco">Banco</value>
+  </row>
+  <row id="036987231A7747C0B76D4686AE296281" trl="N">
+    <value column="Text" isTrl="N" original="Ret. IVA">Ret. IVA</value>
+  </row>
+  <row id="078E16D4C22A4B0591F9D767A58B1B3D" trl="N">
+    <value column="Text" isTrl="N" original="Valor Acreditado">Valor Acreditado</value>
+  </row>
+  <row id="11D1DB042AAC4EAC91872567DD7A81ED" trl="N">
+    <value column="Text" isTrl="N" original="&lt;br&gt;&lt;b&gt;Usuario: &lt;/b&gt;&lt;br&gt;">&lt;br&gt;&lt;b&gt;Usuario: &lt;/b&gt;&lt;br&gt;</value>
+  </row>
+  <row id="16A25CC34999478CA6580FAC57B4288B" trl="N">
+    <value column="Text" isTrl="N" original="Ret. Renta">Ret. Renta</value>
+  </row>
+  <row id="1713FE083F01420F9DE252E690920B72" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Seleccionada:">Fecha Seleccionada:</value>
+  </row>
+  <row id="2470527883E64A849C9F244A3F52EDF5" trl="N">
+    <value column="Text" isTrl="N" original="IVA">IVA</value>
+  </row>
+  <row id="315FDDBD6A0A44EC988E47A1DF65C4CD" trl="N">
+    <value column="Text" isTrl="N" original="Lote">Lote</value>
+  </row>
+  <row id="37F86A20B2A54FFC8D8AAF0C3A3460C9" trl="N">
+    <value column="Text" isTrl="N" original="Tipo">Tipo</value>
+  </row>
+  <row id="3AFDB946E7B3483AB4BC3F2EC22DBDC2" trl="N">
+    <value column="Text" isTrl="N" original="Recap">Recap</value>
+  </row>
+  <row id="409AB7B7137A4EA79E32819003A90291" trl="N">
+    <value column="Text" isTrl="N" original="DETALLE DE CONCILIACIONES TARJETAS">DETALLE DE CONCILIACIONES TARJETAS</value>
+  </row>
+  <row id="40BE8BAC26344753870B72045014E203" trl="N">
+    <value column="Text" isTrl="N" original="Documento">Documento</value>
+  </row>
+  <row id="5C51D95C2316468F9C63AF448637B087" trl="N">
+    <value column="Text" isTrl="N" original="Ret. IVA">Ret. IVA</value>
+  </row>
+  <row id="6343B8B59BC64DE08281BFFD661B7050" trl="N">
+    <value column="Text" isTrl="N" original="Ret. Renta">Ret. Renta</value>
+  </row>
+  <row id="635EDC170687477789ED72C6F57B7EF8" trl="N">
+    <value column="Text" isTrl="N" original="Lote">Lote</value>
+  </row>
+  <row id="75CC65905C1241C7BAFF46E04CACC2F0" trl="N">
+    <value column="Text" isTrl="N" original="Comisión">Comisión</value>
+  </row>
+  <row id="833BC391824E4A8EA4A43A942416FC08" trl="N">
+    <value column="Text" isTrl="N" original="Recap">Recap</value>
+  </row>
+  <row id="9905206702EB45CF96051E1C87A5961E" trl="N">
+    <value column="Text" isTrl="N" original="&lt;br&gt;&lt;b&gt;Usuario: &lt;/b&gt;&lt;br&gt;">&lt;br&gt;&lt;b&gt;Usuario: &lt;/b&gt;&lt;br&gt;</value>
+  </row>
+  <row id="A3400B324C894287BE68C65D84A1EEE1" trl="N">
+    <value column="Text" isTrl="N" original="&lt;b&gt;Fecha: &lt;/b&gt;&lt;br&gt;">&lt;b&gt;Fecha: &lt;/b&gt;&lt;br&gt;</value>
+  </row>
+  <row id="A54B466486174D9396290424C05592C6" trl="N">
+    <value column="Text" isTrl="N" original="IVA">IVA</value>
+  </row>
+  <row id="B8C6CA464D3048ABBEA3193E9ED31F45" trl="N">
+    <value column="Text" isTrl="N" original="Comisión">Comisión</value>
+  </row>
+  <row id="BDEEC0CB048A4BECB1F1698880BF502D" trl="N">
+    <value column="Text" isTrl="N" original="&lt;b&gt;Fecha de Impresión: &lt;/b&gt;&lt;br&gt;">&lt;b&gt;Fecha de Impresión: &lt;/b&gt;&lt;br&gt;</value>
+  </row>
+  <row id="C454272E684C4CBA8AF0180DE1597844" trl="N">
+    <value column="Text" isTrl="N" original="REPORTE LIQUIDACIÓN TARJETAS POS">REPORTE LIQUIDACIÓN TARJETAS POS</value>
+  </row>
+  <row id="D91E449AC5254BE3BD4CD88D301AF2EE" trl="N">
+    <value column="Text" isTrl="N" original="Liquidado">Liquidado</value>
+  </row>
+  <row id="E63FB0FAF8E342E198454CB630B5AF57" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Deposito Banco">Fecha Deposito Banco</value>
+  </row>
+  <row id="F89A2D65EA1B47DC8E92D2A49BF3D61E" trl="N">
+    <value column="Text" isTrl="N" original="Referencia Deposito">Referencia Deposito</value>
+  </row>
+</compiereTrl>

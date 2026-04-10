@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSXML_CODE_PROD_IBP">
+    <function name="SSXML_CODE_PROD_IBP" type="VARCHAR">
+      <parameter name="p_codeimp" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_codecountry" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_m_product_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_code_ibp NVARCHAR2(100);
+
+BEGIN
+
+  -- Determinar presirbp
+
+  SELECT 
+  ( COALESCE(p_codeImp, '') || 
+  '-'|| COALESCE(mp.Em_Slplag_Prodclasif , '') || 
+  '-'|| COALESCE(mp.Em_Slplag_Brand , '')|| 
+  '-'|| COALESCE(mpm.Presirbp , '') || 
+  '-'|| COALESCE(mp.Em_Slplag_Prodcap , '') || 
+  '-'|| COALESCE(mp.Em_Slplag_Irbpunit , '') || 
+  '-'|| COALESCE(p_codeCountry , '') ||
+  '-'|| COALESCE(mp.Em_Slplag_Galcohol, '') )
+  INTO v_code_ibp
+  FROM m_product mp
+  LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+  WHERE mp.m_product_id = p_m_product_id;
+
+  return v_code_ibp;
+END SSXML_CODE_PROD_IBP
+]]></body>
+    </function>
+  </database>

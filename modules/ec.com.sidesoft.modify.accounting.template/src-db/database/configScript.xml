@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="ISMANDATORY" pkRow="EC9EAD40499A41E6956E7A0DC9269E0A">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="ISMANDATORY" pkRow="F6B5EF335B25411CA5499D224BA4C3F3">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="SEQNO" pkRow="3754425FEBD3407FAAE48E832F330E5A">
+      <oldValue><![CDATA[100]]></oldValue>
+      <newValue><![CDATA[110]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBUIAPP_PARAMETER" columnname="ISMANDATORY" pkRow="0480A387BD814BA8A06072B802306D3F">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBUIAPP_PARAMETER" columnname="ISMANDATORY" pkRow="A871582AA12A49DA88C826986853EA8B">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+  </vector>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="72D606E080ED47BC9E9D29AD9F51C05C" trl="N">
+    <value column="Name" isTrl="N" original="Counts Accounts">Counts Accounts</value>
+    <value column="Description" isTrl="N" original="Counts Accounts">Counts Accounts</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="90813F87BF2745D6AE9643AE0F9C03A6" trl="N">
+    <value column="Name" isTrl="N" original="Status Transaction">Status Transaction</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE GL_JOURNAL">
+    <table name="GL_JOURNAL" primaryKey="GL_JOURNAL_KEY">
+      <index name="EM_SFIAC_JOURNAL_DATEACCT" unique="false">
+        <index-column name="AD_CLIENT_ID"/>
+        <index-column name="DATEACCT"/>
+      </index>
+      <index name="EM_SFIAC_JOURNAL_POSTED" unique="false">
+        <index-column name="AD_CLIENT_ID"/>
+        <index-column name="POSTED"/>
+      </index>
+      <index name="EM_SFIAC_JOURNAL_STATUS" unique="false">
+        <index-column name="AD_CLIENT_ID"/>
+        <index-column name="DOCSTATUS"/>
+      </index>
+    </table>
+  </database>

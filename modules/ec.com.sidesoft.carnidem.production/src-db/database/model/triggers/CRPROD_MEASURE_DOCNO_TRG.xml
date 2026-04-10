@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER CRPROD_MEASURE_DOCNO_TRG">
+    <trigger name="CRPROD_MEASURE_DOCNO_TRG" table="MA_MEASURE_SHIFT" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	
+	vTypeDocID	Character varying;
+	vSequenceName	VARCHAR2(60);
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF ((INSERTING) OR (UPDATING AND :OLD.em_crprod_c_doctypetarget_id != :NEW.em_crprod_c_doctypetarget_id)) THEN
+
+			vTypeDocID = :NEW.em_crprod_c_doctypetarget_id;
+			
+			IF vTypeDocID IS NOT NULL THEN
+			 	SELECT s.name INTO vSequenceName
+				FROM ad_sequence s
+					JOIN c_doctype dt ON dt.docnosequence_id = s.ad_sequence_id
+				WHERE dt.c_doctype_id = vTypeDocID;
+
+				IF vSequenceName IS NULL THEN
+					:NEW.em_crprod_documentno := NULL;
+					:NEW.em_crprod_c_doctypetarget_id:= NULL;
+				ELSE
+					SELECT ad_sequence_doc(vSequenceName, :NEW.ad_client_id, 'Y') INTO :NEW.em_crprod_documentno;
+					:NEW.em_crprod_c_doctypetarget_id:= vTypeDocID;
+				END IF;
+			END IF;
+			
+	END IF;
+
+	END CRPROD_MEASURE_DOCNO_TRG
+]]></body>
+    </trigger>
+  </database>

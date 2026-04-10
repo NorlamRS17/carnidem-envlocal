@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="11A116CF604C4BDC8C0CCB3618F2B839" trl="Y">
+    <value column="Name" isTrl="Y" original="Pending Invoices">Facturas Pendientes</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6166FC4AF96740D1B9718474B5869430" trl="Y">
+    <value column="Name" isTrl="Y" original="Selected Invoices">Facturas Seleccionadas</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9EE10F7898B0454086FDEC836A3D8F4D" trl="Y">
+    <value column="Name" isTrl="Y" original="Summary of Pending Payments">Resumen de Pagos Pendientes</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="ED48303F350A42308E7B67554285AF93" trl="Y">
+    <value column="Name" isTrl="Y" original="Proposed Payment Configuration">Configuración Propuesta de Pago</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

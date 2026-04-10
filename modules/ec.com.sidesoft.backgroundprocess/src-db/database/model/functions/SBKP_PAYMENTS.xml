@@ -1,0 +1,216 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SBKP_PAYMENTS">
+    <function name="SBKP_PAYMENTS" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+    v_ResultStr VARCHAR2(2000):='';
+    v_Message VARCHAR2(2000):='';
+    v_Result NUMBER:=1; -- 0=failure
+    -- Parameter Variables
+    -- Create from ShipmentLine
+    TYPE RECORD IS REF CURSOR;
+    Cur_upd RECORD;
+    --
+    v_A_Asset_ID VARCHAR2(32) ;
+    v_DocumentNo VARCHAR2(40) ;
+    v_Value VARCHAR2(60) ;
+    v_Name VARCHAR2(80) ;
+    v_count NUMBER:=0;
+    v_Asset_Value VARCHAR2(200) ;
+    
+    v_MonthActual VARCHAR2(200) ;
+    v_SQL TEXT;
+  BEGIN
+             
+
+
+    --  Update AD_PInstance
+    IF(p_PInstance_ID IS NOT NULL) THEN
+      DBMS_OUTPUT.PUT_LINE('A_Asset_Create - Processing ' || p_PInstance_ID) ;
+      v_ResultStr:='PInstanceNotFound';
+      AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+    END IF;
+  BEGIN --BODY
+  
+    v_MonthActual:=to_char(now(),'MM/yyyy');
+  
+
+
+    create table tmp_payment
+    as
+    select
+    * from
+    (select 
+    max(ord.documentno) as orden
+    ,inv.documentno as factura
+    ,bp.name as tercero
+    ,sum(psd.amount) as valor_fpsd
+    --,case when psd.fin_payment_id then 'Y' else 'N' end as fpd_id
+    ,(select fpsd.fin_payment_detail_id 
+      from fin_payment_scheduledetail fpsd where
+    fpsd.fin_payment_schedule_invoice = ips.fin_payment_schedule_id
+    and fpsd.fin_payment_detail_id  is not null
+    and fpsd.amount=0
+    ) as  fin_payment_detail_id ,inv.dateinvoiced,inv.c_invoice_id
+    from fin_payment_scheduledetail psd
+    join c_bpartner bp on bp.c_bpartner_id = psd.c_bpartner_id
+    left join fin_payment_schedule ops on ops.fin_payment_schedule_id = psd.fin_payment_schedule_order
+    left join c_order ord on ord.c_order_id = ops.c_order_id and ord.issotrx='N' and ord.c_currency_id = '100' --and ord.c_bpartner_id = psd.c_bpartner_id--'66D7FA2BC5794D67AD229DDD7732D98E'
+    left join fin_paymentmethod opsfp on opsfp.fin_paymentmethod_id = ops.fin_paymentmethod_id
+    left join fin_payment_schedule ips on ips.fin_payment_schedule_id = psd.fin_payment_schedule_invoice
+    left join c_invoice inv on inv.c_invoice_id = ips.c_invoice_id and inv.issotrx='N' and inv.c_currency_id = '100'-- and inv.c_bpartner_id = psd.c_bpartner_id --'66D7FA2BC5794D67AD229DDD7732D98E'
+    left join fin_paymentmethod ipsfp on ipsfp.fin_paymentmethod_id = ips.fin_paymentmethod_id
+    left join ad_org org on org.ad_org_id = psd.ad_org_id
+    left join fin_payment_Detail pd on pd.fin_payment_Detail_id = psd.fin_payment_Detail_id
+    left join fin_payment fp on fp.fin_payment_id = pd.fin_payment_id
+    where  
+    psd.fin_payment_Detail_id is null 
+    and (ord.documentno is not null or inv.documentno is not null)
+    --and inv.c_invoice_id = '1636007F662448EAA90BC790C249E2E2'
+    group by  inv.c_invoice_id,  inv.documentNo,  inv.c_doctype_id,  COALESCE(ipsfp.fin_Paymentmethod_id, opsfp.fin_Paymentmethod_id),  COALESCE(ipsfp.name, opsfp.name), 
+     COALESCE(ips.expectedDate, ops.expectedDate), -- COALESCE(ipriority.priority, opriority.priority),  
+    inv.issotrx,  --oinfo.ad_org_id --,  oinfo.aPRMPaymentDescription
+      inv.poreference,  bp.c_bpartner_id,  bp.name  
+      --,ord.documentno --,psd.amount
+    ,5,6
+    having (    (( upper(COALESCE(ipsfp.name, opsfp.name)) like upper('%%') escape '|'  ))  )
+    ) rep
+    where (valor_fpsd = 0)
+    and fin_payment_detail_id is not null
+    and to_char(dateinvoiced,'mm/YYYY') = v_MonthActual
+    ;
+    
+    create table tmp_upd
+    as
+    select tp.*,fpsd.fin_payment_Scheduledetail_id
+    ,(select fpd.amount from fin_payment_detail fpd where fpd.fin_payment_detail_id = tp.fin_payment_detail_id) as valor_fpd
+    from  tmp_payment tp
+    join fin_payment_schedule fps on fps.c_invoice_id = tp.c_invoice_id
+    join fin_payment_Scheduledetail fpsd on fpsd.fin_payment_Schedule_invoice = fps.fin_payment_schedule_id
+    where fpsd.fin_payment_detail_id is null;
+    
+    create table tmp_upd2
+    as
+    select *
+    , 'update fin_payment_scheduledetail set fin_payment_detail_id=''' || fin_payment_detail_id || ''' where fin_payment_scheduledetail_id =' ||
+    '''' || fin_payment_scheduledetail_id || '''' as upd_fpsd
+    from tmp_upd;
+    
+    FOR Cur_upd IN (
+        select * from   tmp_upd2
+        
+    ) LOOP
+        v_SQL:= Cur_upd.upd_fpsd;
+        EXECUTE IMMEDIATE v_SQL;
+        
+    END LOOP;
+
+    -- Depuración de cobros
+    create table tmp_payment2
+    as
+     select
+    * from
+    (select 
+    max(ord.documentno) as orden
+    ,inv.documentno as factura
+    ,bp.name as tercero
+    ,sum(psd.amount) as valor_fpsd
+ 
+    ,(select 
+      (fpsd.fin_payment_detail_id )
+      from fin_payment_scheduledetail fpsd where
+    fpsd.fin_payment_schedule_invoice = ips.fin_payment_schedule_id
+    and fpsd.fin_payment_detail_id  is not null
+    and fpsd.amount>=0
+	  limit 1
+    ) as  fin_payment_detail_id ,inv.dateinvoiced,inv.c_invoice_id
+    from fin_payment_scheduledetail psd
+    join c_bpartner bp on bp.c_bpartner_id = psd.c_bpartner_id
+    left join fin_payment_schedule ops on ops.fin_payment_schedule_id = psd.fin_payment_schedule_order
+    left join c_order ord on ord.c_order_id = ops.c_order_id and ord.issotrx='Y' and ord.c_currency_id = '100' --and ord.c_bpartner_id = psd.c_bpartner_id--'66D7FA2BC5794D67AD229DDD7732D98E'
+    left join fin_paymentmethod opsfp on opsfp.fin_paymentmethod_id = ops.fin_paymentmethod_id
+    left join fin_payment_schedule ips on ips.fin_payment_schedule_id = psd.fin_payment_schedule_invoice
+    left join c_invoice inv on inv.c_invoice_id = ips.c_invoice_id and inv.issotrx='Y' and inv.c_currency_id = '100'-- and inv.c_bpartner_id = psd.c_bpartner_id --'66D7FA2BC5794D67AD229DDD7732D98E'
+    left join fin_paymentmethod ipsfp on ipsfp.fin_paymentmethod_id = ips.fin_paymentmethod_id
+    left join ad_org org on org.ad_org_id = psd.ad_org_id
+    left join fin_payment_Detail pd on pd.fin_payment_Detail_id = psd.fin_payment_Detail_id
+    left join fin_payment fp on fp.fin_payment_id = pd.fin_payment_id
+    where  
+    psd.fin_payment_Detail_id is null 
+    and (ord.documentno is not null or inv.documentno is not null)
+    --and inv.c_invoice_id = '37141D4DCCBC4F11BDEF121DA07AAEC3'
+    group by  inv.c_invoice_id,  inv.documentNo,  inv.c_doctype_id,  COALESCE(ipsfp.fin_Paymentmethod_id, opsfp.fin_Paymentmethod_id),  COALESCE(ipsfp.name, opsfp.name), 
+     COALESCE(ips.expectedDate, ops.expectedDate), 
+      inv.poreference,  bp.c_bpartner_id,  bp.name  
+ 
+    ,5,6
+     ) rep
+    where 
+    (valor_fpsd = 0)
+    and 
+    fin_payment_detail_id is not null
+    and to_char(dateinvoiced,'mm/YYYY') = v_MonthActual
+	order by fin_payment_detail_id desc
+    ;
+ 
+    create table tmp_upd3
+    as
+    select tp.*,fpsd.fin_payment_Scheduledetail_id
+    ,(select fpd.amount from fin_payment_detail fpd where fpd.fin_payment_detail_id = tp.fin_payment_detail_id) as valor_fpd
+    from  tmp_payment2 tp
+    join fin_payment_schedule fps on fps.c_invoice_id = tp.c_invoice_id
+    join fin_payment_Scheduledetail fpsd on fpsd.fin_payment_Schedule_invoice = fps.fin_payment_schedule_id
+    where fpsd.fin_payment_detail_id is null;
+    
+    create table tmp_upd4
+    as
+    select *
+    , 'update fin_payment_scheduledetail set fin_payment_detail_id=''' || fin_payment_detail_id || ''' where fin_payment_scheduledetail_id =' ||
+    '''' || fin_payment_scheduledetail_id || '''' as upd_fpsd
+    from tmp_upd3;
+    
+    FOR Cur_upd IN (
+        select * from   tmp_upd4
+        
+    ) LOOP
+        v_SQL:= Cur_upd.upd_fpsd;
+       --- RAISE exception '%','Correction payments =' || v_SQL;
+        EXECUTE IMMEDIATE v_SQL;
+        
+    END LOOP;
+    
+        
+     drop table if exists tmp_upd2;
+     drop table if exists tmp_payment;
+     drop table if exists tmp_upd;
+     drop table if exists tmp_upd3;
+    drop table if exists tmp_payment2;
+     drop table if exists tmp_upd4;
+    
+ 
+  
+    DBMS_OUTPUT.PUT_LINE('Correction payments =' || v_count) ;
+    --<<FINISH_PROCESS>>
+    DBMS_OUTPUT.PUT_LINE('Correction payments - Finished ' || v_Message) ;
+    --  Update AD_PInstance
+    IF(p_PInstance_ID IS NOT NULL) THEN
+      AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', v_Result, v_Message) ;
+    END IF;
+    RETURN;
+  END; --BODY
+  
+EXCEPTION
+WHEN OTHERS THEN
+  v_ResultStr:= '@ERROR=' || SQLERRM;
+  DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+  ROLLBACK;
+  IF(p_PInstance_ID IS NOT NULL) THEN
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+  END IF;
+  RETURN;
+END SBKP_PAYMENTS
+]]></body>
+    </function>
+  </database>

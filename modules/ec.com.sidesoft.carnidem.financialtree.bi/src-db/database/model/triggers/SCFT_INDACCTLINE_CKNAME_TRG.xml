@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCFT_INDACCTLINE_CKNAME_TRG">
+    <trigger name="SCFT_INDACCTLINE_CKNAME_TRG" table="SCFT_INDICATORACCTLINE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+/********************************************************************************** 
+ * Copyright (C) 2009 Openbravo S.L.U. 
+ * Licensed under the Openbravo Commercial License version 1.0 
+ * You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html 
+ **********************************************************************************
+ * Contributor(s):  ______________________________________.
+ **********************************************************************************/
+BEGIN
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+	-- Verificar registros duplciados
+	IF INSERTING THEN
+    -- Validación al insertar: no debe existir otra línea con el mismo nombre en el mismo padre
+    IF EXISTS (
+      SELECT 1
+      FROM public.scft_indicatoracctline
+      WHERE UPPER(name) = UPPER(:NEW.name)
+        AND scft_indicatoracct_id = :NEW.scft_indicatoracct_id
+    ) THEN
+			RAISE_APPLICATION_ERROR(-20000, '@scft_duplicatetrg@');
+    END IF;
+
+  ELSIF UPDATING THEN
+    -- Validación al actualizar: tampoco puede quedar duplicado dentro del mismo padre
+    IF EXISTS (
+      SELECT 1
+      FROM public.scft_indicatoracctline
+      WHERE UPPER(name) = UPPER(:NEW.name)
+        AND scft_indicatoracct_id = :NEW.scft_indicatoracct_id
+        AND scft_indicatoracctline_id <> :NEW.scft_indicatoracctline_id
+    ) THEN
+			RAISE_APPLICATION_ERROR(-20000, '@scft_duplicatetrg@');
+    END IF;
+  END IF;
+END SCFT_INDACCTLINE_CKNAME_TRG
+]]></body>
+    </trigger>
+  </database>

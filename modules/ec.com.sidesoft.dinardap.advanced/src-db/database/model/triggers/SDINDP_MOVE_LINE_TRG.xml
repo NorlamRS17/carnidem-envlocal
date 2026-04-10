@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SDINDP_MOVE_LINE_TRG">
+    <trigger name="SDINDP_MOVE_LINE_TRG" table="SDINDP_DINARDAP_LINE" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[
+	vCheck NUMBER;
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF DELETING AND :OLD.removable = 'N' THEN
+
+		INSERT INTO sdindp_dinardap_discard (
+			sdindp_dinardap_discard_id, ad_client_id, ad_org_id, createdby, updatedby,
+			sdindp_dinardap_id, codigoentidad, fecha, tipoidentificacion, identificacionsujeto,
+			nombresujeto, clasesujeto, provincia, canton, parroquia,
+			sexo, estadocivil, origeningresos, numerooperacion, valoroperacion,
+			saldooperacion, fechaconcesion, fechavencimiento, fechaexigible, plazooperacion,
+			periodicidadpagos, diasmorosidad, montomorosidad, montointeresenmora, valorxvencer1a30,
+			valorxvencer31a90, valorxvencer91a180, valorxvencer181a360, valorxvencermas360, valorvencido1a30,
+			valorvencidog31a90, valorvencido91a180, valorvencido181a360, valorvencidomas360, valorendemandajudicial,
+			carteracastigada, cuotacredito, fechacancelacion, formacancelacion
+		) VALUES (
+			:OLD.sdindp_dinardap_line_id, :OLD.ad_client_id, :OLD.ad_org_id, :OLD.createdby, :OLD.updatedby,
+			:OLD.sdindp_dinardap_id, :OLD.codigoentidad, :OLD.fecha, :OLD.tipoidentificacion, :OLD.identificacionsujeto,
+			:OLD.nombresujeto, :OLD.clasesujeto, :OLD.provincia, :OLD.canton, :OLD.parroquia,
+			:OLD.sexo, :OLD.estadocivil, :OLD.origeningresos, :OLD.numerooperacion, :OLD.valoroperacion,
+			:OLD.saldooperacion, :OLD.fechaconcesion, :OLD.fechavencimiento, :OLD.fechaexigible, :OLD.plazooperacion,
+			:OLD.periodicidadpagos, :OLD.diasmorosidad, :OLD.montomorosidad, :OLD.montointeresenmora, :OLD.valorxvencer1a30,
+			:OLD.valorxvencer31a90, :OLD.valorxvencer91a180, :OLD.valorxvencer181a360, :OLD.valorxvencermas360, :OLD.valorvencido1a30,
+			:OLD.valorvencidog31a90, :OLD.valorvencido91a180, :OLD.valorvencido181a360, :OLD.valorvencidomas360, :OLD.valorendemandajudicial,
+			:OLD.carteracastigada, :OLD.cuotacredito, :OLD.fechacancelacion, :OLD.formacancelacion
+		);
+
+	END IF;
+
+	END SDINDP_MOVE_LINE_TRG
+]]></body>
+    </trigger>
+  </database>

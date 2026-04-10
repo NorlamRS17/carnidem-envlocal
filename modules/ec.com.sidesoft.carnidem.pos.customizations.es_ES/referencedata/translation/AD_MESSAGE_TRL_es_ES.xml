@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="1D65E66C2B3C4ACB9DAD027BA2419080" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Do you want to continue?">La fecha de entrega coincide con la fecha actual. ¿Desea continuar o cancelar?</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="73D70F00D01144658CA9EF7A9373CE44" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Delivery Date">Fecha de Entrega</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="C2D09E382DD449B7A430408630D748A3" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Continue">Continuar</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

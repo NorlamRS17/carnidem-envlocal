@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE AD_ROLE">
+    <table name="AD_ROLE" primaryKey="AD_ROLE_KEY">
+      <column name="EM_SCCA_CASHIER" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCCA_ADMINISTRATOR" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <check name="EM_SCCA_ADMINISTRATOR_CHK"><![CDATA[EM_SCCA_ADMINISTRATOR IN ('Y', 'N')]]></check>
+      <check name="EM_SCCA_CASHIER_CHK"><![CDATA[EM_SCCA_CASHIER IN ('Y', 'N')]]></check>
+    </table>
+  </database>

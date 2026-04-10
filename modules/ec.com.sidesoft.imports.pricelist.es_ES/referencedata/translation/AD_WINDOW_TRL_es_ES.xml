@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="194A0297B5FA4C0E84CCBF585C3B4DBA" trl="Y">
+    <value column="Name" isTrl="Y" original="import price list">Importar lista de precios</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E10BCF6E6F064DA6BAC15F8991085A62" trl="Y">
+    <value column="Name" isTrl="Y" original="Import multiple price list by product">Importar Precios por producto a Multiples Lista de Precio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

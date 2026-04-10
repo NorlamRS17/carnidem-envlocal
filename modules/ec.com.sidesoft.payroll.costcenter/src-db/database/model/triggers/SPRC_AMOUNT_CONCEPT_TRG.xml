@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SPRC_AMOUNT_CONCEPT_TRG">
+    <trigger name="SPRC_AMOUNT_CONCEPT_TRG" table="SSPR_CONCEPT_AMOUNT" fires="after" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[
+  V_SSPR_Payroll_Ticket_Concept_id VARCHAR2(32);
+  V_concept_amount_payroll NUMBER;
+  
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+    IF INSERTING THEN
+
+        /*DATOS RELACIONADOS CON EL REGISTRO CREADO INICIAL*/
+        SELECT sptc.AMOUNT, sptc.SSPR_Payroll_Ticket_Concept_id 
+		INTO V_concept_amount_payroll, V_SSPR_Payroll_Ticket_Concept_id 
+		FROM SSPR_Payroll sp
+        LEFT JOIN SSPR_Payroll_Ticket spt on sp.SSPR_Payroll_id = spt.SSPR_Payroll_id 
+        LEFT JOIN SSPR_Payroll_Ticket_Concept sptc on spt.SSPR_Payroll_Ticket_id = sptc.SSPR_Payroll_Ticket_id    
+        WHERE sp.C_PERIOD_ID = :NEW.C_PERIOD_ID
+        and spt.C_BPARTNER_ID = :NEW.C_BPARTNER_ID
+        and sptc.SSPR_CONCEPT_ID = :NEW.SSPR_CONCEPT_ID
+		AND sp.IsPayroll = 'Y'
+		AND sp.Created = (
+		        SELECT MAX(sp2.Created)
+		        FROM SSPR_Payroll sp2
+		        WHERE sp2.C_PERIOD_ID = sp.C_PERIOD_ID
+		          AND sp2.IsPayroll = 'Y'
+		  );
+
+		update SSPR_Payroll_Ticket_Concept 
+		set amount = :NEW.AMOUNT 
+		WHERE SSPR_Payroll_Ticket_Concept_ID = V_SSPR_Payroll_Ticket_Concept_id;
+
+    END IF;
+
+    END SPRC_AMOUNT_CONCEPT_TRG
+]]></body>
+    </trigger>
+  </database>

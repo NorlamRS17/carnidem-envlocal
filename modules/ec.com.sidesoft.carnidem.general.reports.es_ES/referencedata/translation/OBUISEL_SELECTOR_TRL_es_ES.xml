@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="B833BBEED38E481882929748ADB0E968" trl="N">
+    <value column="Name" isTrl="N" original="SscgrAttributeIns">SscgrAttributeIns</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C5E7BFC6F92E445BAB79ACEE83A329C2" trl="N">
+    <value column="Name" isTrl="N" original="SscgrProductCatId">SscgrProductCatId</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

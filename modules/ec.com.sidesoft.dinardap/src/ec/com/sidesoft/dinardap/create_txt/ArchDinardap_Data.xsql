@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License.
+ * The Original Code is Openbravo ERP.
+ * The Initial Developer of the Original Code is Openbravo SLU
+ * All portions are Copyright (C) 2001-2006 Openbravo SLU
+ * All Rights Reserved.
+ * Contributor(s):  Cheli Pineda Ferrer <cheli@aradaen.com> (Oracle fixes)
+ ************************************************************************
+-->
+
+
+
+
+
+<SqlClass name="ArchDinardapData" package="ec.com.sidesoft.dinardap.create_txt" accessModifier="public">
+   <SqlClassComment></SqlClassComment>
+
+  <SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	select
+	* 
+	from(
+	
+	  SELECT AI.TAXID AS RUCORG, AO.EM_SDIN_DINARDAP_ID AS CODIGOENTIDAD, 
+     CASE WHEN  (UPPER(CB.EM_SSWH_TAXIDTYPE)='P') THEN
+        'E'
+     WHEN (UPPER(CB.EM_SSWH_TAXIDTYPE)='D') THEN
+        'C'
+     ELSE
+        UPPER(CB.EM_SSWH_TAXIDTYPE)
+     END AS TIPOIDENTIFICACION,
+     CB.TAXID AS IDENTIFICACIONSUJETO , CB.NAME AS NOMBRESUJETO, 
+    COALESCE(CB.EM_SDIN_SUBJET_CLASS,'N') AS CLASESUJETO, COALESCE(CR.VALUE,'17') AS PROVINCIA,COALESCE(SUBSTR(SC.IDENTIFICADOR,LENGTH(SC.IDENTIFICADOR)-1,LENGTH(SC.IDENTIFICADOR)),'01') AS CANTON,
+     COALESCE(SUBSTR(SP.IDENTIFICADOR,LENGTH(SP.IDENTIFICADOR)-1,LENGTH(SP.IDENTIFICADOR)),'55') AS PARROQUIA, 
+    CASE WHEN (COALESCE(CB.EM_SDIN_SUBJET_CLASS,'N') ='N') THEN 
+    COALESCE(CB.EM_SBPC_GENDER,'M') 
+    ELSE 
+    '' 
+    END AS SEXO, 
+    CASE WHEN (COALESCE(CB.EM_SDIN_SUBJET_CLASS,'N')='N') THEN 
+        COALESCE(CB.EM_SBPC_CIVIL_STATUS,'S') 
+    ELSE 
+    '' 
+    END AS ESTADOCIVIL, 
+    CASE WHEN (COALESCE(CB.EM_SDIN_SUBJET_CLASS,'N')='N') THEN 
+        COALESCE(CB.EM_SDIN_SOURCE_OF_INCOME,'V') 
+    ELSE 
+    '' 
+    END AS ORIGENINGRESOS, INVOICE AS NUMEROOPERACION,
+     COALESCE(ABS(ROUND(AVG(I.GRANDTOTAL), 2)),0) AS VALOROPERACION,  
+    COALESCE(ABS(ROUND(SUM(V.GRANDTOTAL), 2)),0) AS SALDOOPERACION,
+     TO_CHAR(I.DATEINVOICED,'dd/MM/yyyy') AS FECHACONCESION,
+     TO_CHAR(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)),'dd/MM/yyyy') AS FECHAVENCIMIENTO,
+      TO_CHAR(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)),'dd/MM/yyyy') AS FECHAEXIGIBLE, 
+     ( case when upper(pt.name) like '%MES%' then 30 else  to_number(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))-I.DATEINVOICED)  
+	 
+	 end) AS PLAZOOPERACION,
+	 
+   case when ( case when upper(pt.name) like '%MES%' then 30 else PT.NETDAYS end) >30 then 30 else 
+	( case when upper(pt.name) like '%MES%' then 30 else PT.NETDAYS end) end 
+   AS PERIODICIDADPAGOS, 
+    CASE   
+        WHEN FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)))) > 0 THEN FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))))
+        ELSE 0
+    END AS DIASMOROSIDAD, 
+    COALESCE(
+    CASE   
+        WHEN FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)))) > 0 THEN ABS(ROUND(SUM(V.GRANDTOTAL), 2))
+        ELSE ABS(ROUND(0, 2))   
+    END,0) AS MONTOMOROSIDAD,
+    COALESCE(ABS(ROUND(0, 2)),0)  AS MONTOINTERESENMORA,  
+    COALESCE(CASE    
+        WHEN FLOOR(TO_NUMBER(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))-TO_DATE(?))) >= 0 AND FLOOR(TO_NUMBER(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))-TO_DATE(?))) <= 30 THEN ABS(ROUND(SUM(V.GRANDTOTAL), 2))
+        ELSE ABS(ROUND(0, 2))   
+    END,0) AS VALORXVENCER1A30,  
+    COALESCE(CASE   
+        WHEN FLOOR(TO_NUMBER(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))-TO_DATE(?))) >= 31 AND FLOOR(TO_NUMBER(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))-TO_DATE(?))) <= 90 THEN ABS(ROUND(SUM(V.GRANDTOTAL), 2))
+        ELSE ABS(ROUND(0, 2))   
+    END,0) AS VALORXVENCER31A90, 
+    COALESCE(CASE    
+        WHEN FLOOR(TO_NUMBER(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))-TO_DATE(?))) >= 91 AND FLOOR(TO_NUMBER(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))-TO_DATE(?))) <= 180 THEN ABS(ROUND(SUM(V.GRANDTOTAL), 2))
+        ELSE ABS(ROUND(0, 2))   
+    END,0) AS VALORXVENCER91A180,  
+    COALESCE(CASE   
+        WHEN FLOOR(TO_NUMBER(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))-TO_DATE(?))) >= 181 AND FLOOR(TO_NUMBER(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))-TO_DATE(?))) <= 360 THEN ABS(ROUND(SUM(V.GRANDTOTAL), 2))
+        ELSE ABS(ROUND(0, 2))   
+    END,0) AS VALORXVENCER181A360, 
+    COALESCE(CASE  
+        WHEN FLOOR(TO_NUMBER(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))-TO_DATE(?))) > 360 THEN ABS(ROUND(SUM(V.GRANDTOTAL), 2))
+        ELSE ABS(ROUND(0, 2))   
+    END,0) AS VALORXVENCERMAS360, 
+    COALESCE(CASE  
+        WHEN FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)))) >= 1 AND FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)))) <= 30 THEN ABS(ROUND(SUM(V.GRANDTOTAL), 2))
+        ELSE ABS(ROUND(0, 2))   
+    END,0) AS VALORVENCIDO1A30, 
+    COALESCE(CASE   
+        WHEN FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)))) >= 31 AND FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)))) <= 90 THEN ABS(ROUND(SUM(V.GRANDTOTAL), 2))
+        ELSE ABS(ROUND(0, 2))   
+    END,0) AS VALORVENCIDO31A90,
+    COALESCE(CASE  
+        WHEN FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)))) >= 91 AND FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)))) <= 180 THEN ABS(ROUND(SUM(V.GRANDTOTAL), 2))
+        ELSE ABS(ROUND(0, 2))   
+    END,0) AS VALORVENCIDO91A180, 
+    COALESCE(CASE  
+        WHEN FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)))) >= 181 AND FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)))) <= 360 THEN ABS(ROUND(SUM(V.GRANDTOTAL), 2))
+        ELSE ABS(ROUND(0, 2))   
+    END,0) AS VALORVENCIDO181A360, 
+    COALESCE(CASE  
+        WHEN FLOOR(TO_NUMBER(TO_DATE(?)-TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))))>= 360 THEN ABS(ROUND(SUM(V.GRANDTOTAL), 2))
+        ELSE ABS(ROUND(0, 2))     
+    END,0) AS VALORVENCIDOMAS360, 
+    COALESCE(ABS(ROUND(I.EM_SDIN_LAWSUIT, 2)),ABS(ROUND(0, 2)) ,0) AS VALORENDEMANDAJUDICIAL, 
+    COALESCE (ABS(ROUND(CB.EM_SDIN_WALLET_PUNISHED, 2)),ABS(ROUND(0, 2)),0 ) as CARTERACASTIGADA, 
+    COALESCE(ABS(ROUND(AVG(V.GRANDTOTAL), 2)),0) as CUOTACREDITO,
+    CASE WHEN ((TO_DATE(sdin_cancellationdate(I.C_INVOICE_ID)))<= ?) THEN
+    TO_CHAR(TO_DATE(sdin_cancellationdate(I.C_INVOICE_ID)),'dd/MM/yyyy')
+    ELSE 
+    TO_CHAR('')
+    END
+   AS FECHACANCELACION,
+ SUBSTR(sdin_cancelpaymentmethod(I.C_INVOICE_ID),1,1 )     AS FORMACANCELACION 
+    FROM sswh_acct_receivab_payab_v V 
+    INNER JOIN C_BPARTNER CB ON V.C_BPARTNER_ID = CB.C_BPARTNER_ID   
+    LEFT JOIN C_INVOICE I ON V.INVOICE = I.DOCUMENTNO AND I.ISSOTRX = 'Y' 
+    LEFT JOIN C_DOCTYPE DT ON I.C_DOCTYPE_ID = DT.C_DOCTYPE_ID
+    LEFT JOIN AD_ORG AO ON I.AD_ORG_ID= AO.AD_ORG_ID 
+    LEFT JOIN C_BPARTNER_LOCATION PL ON CB.C_BPARTNER_ID = PL.C_BPARTNER_ID 
+    LEFT JOIN C_LOCATION CL ON PL.C_LOCATION_ID = CL.C_LOCATION_ID 
+    LEFT JOIN C_REGION CR ON CL.C_REGION_ID = CR.C_REGION_ID
+    LEFT JOIN SECPM_CANTON SC ON PL.EM_SECPM_CANTON_ID = SC.SECPM_CANTON_ID  
+    LEFT JOIN SECPM_PARROQUIA SP ON PL.EM_SECPM_PARROQUIA_ID = SP.SECPM_PARROQUIA_ID   
+        LEFT JOIN AD_ORGINFO AI ON AO.AD_ORG_ID = AI.AD_ORG_ID
+    INNER JOIN C_PAYMENTTERM PT ON I.C_PAYMENTTERM_ID = PT.C_PAYMENTTERM_ID
+    WHERE  (DOCUMENTDATE >= ? or ? is null)
+        AND DOCUMENTDATE <= ?  
+    AND DOC_CODE IN ('FC', 'CC', 'AC', 'RC')
+    AND DT.EM_SDIN_APPLYDINARDAP = 'Y'
+	AND PT.NAME NOT LIKE '%CONTADO%'  
+    GROUP BY AI.TAXID, INVOICE, EM_SSWH_TAXIDTYPE, CB.TAXID, CB.NAME, I.DATEINVOICED, TO_DATE(SDIN_DUE_INVOICE(V.INVOICE)), PT.NETDAYS,  
+    AO.EM_SDIN_DINARDAP_ID,CB.EM_SDIN_SUBJET_CLASS, CB.EM_SBPC_GENDER ,CB.EM_SBPC_CIVIL_STATUS,CB.EM_SDIN_SOURCE_OF_INCOME,I.EM_SDIN_LAWSUIT, CB.EM_SDIN_WALLET_PUNISHED,CR.VALUE ,SC.IDENTIFICADOR,SP.IDENTIFICADOR  
+    ,I.C_INVOICE_ID  , ( case when upper(pt.name) like '%MES%' then 30 else  to_number(TO_DATE(SDIN_DUE_INVOICE(V.INVOICE))-I.DATEINVOICED)  
+	  end) ,	 
+   (case when ( case when upper(pt.name) like '%MES%' then 30 else PT.NETDAYS end) >30 then 30 else 
+	( case when upper(pt.name) like '%MES%' then 30 else PT.NETDAYS end) end )   
+    ORDER BY CB.NAME 
+    ) rep
+    where
+    (case when (valorxvencer1a30=0 OR  valorxvencer1a30>0.10)
+               and (valorxvencer31a90=0 OR  valorxvencer31a90>0.10)
+               and (valorxvencer91a180=0 OR  valorxvencer91a180>0.10)
+               and (valorxvencer181a360=0 OR  valorxvencer181a360>0.10)
+               and (valorxvencermas360=0 OR  valorxvencermas360>0.10)
+               and (valorvencido1a30=0 OR  valorvencido1a30>0.10)
+               and (valorvencido31a90=0 OR  valorvencido31a90>0.10)
+               and (valorvencido91a180=0 OR  valorvencido91a180>0.10)
+               and (valorvencido181a360=0 OR  valorvencido181a360>0.10)
+               and (valorvencidomas360=0 OR  valorvencidomas360>0.10)
+     then 'Y'
+     else 'N'
+     end ) ='Y' 
+	 and VALOROPERACION >= 60 and SaldoOperacion > 0 and clasesujeto ='J' 
+	 AND TO_DATE(FECHACONCESION)<= TO_DATE(?) 
+     AND TIPOIDENTIFICACION not in ('E')
+     order by nombresujeto]]>
+    </Sql>
+    <Parameter name="C_YEAR_ID1"/>
+    <Parameter name="C_YEAR_ID2"/>
+    <Parameter name="C_YEAR_ID3"/>
+    <Parameter name="C_YEAR_ID4"/>
+    <Parameter name="C_YEAR_ID5"/>
+    <Parameter name="C_YEAR_ID6"/>
+    <Parameter name="C_YEAR_ID7"/>
+    <Parameter name="C_YEAR_ID8"/>
+    <Parameter name="C_YEAR_ID9"/>
+    <Parameter name="C_YEAR_ID10"/>
+    <Parameter name="C_YEAR_ID11"/>
+    <Parameter name="C_YEAR_ID12"/>
+    <Parameter name="C_YEAR_ID13"/>
+    <Parameter name="C_YEAR_ID14"/>
+    <Parameter name="C_YEAR_ID15"/>
+    <Parameter name="C_YEAR_ID16"/>
+    <Parameter name="C_YEAR_ID17"/>
+    <Parameter name="C_YEAR_ID18"/>
+    <Parameter name="C_YEAR_ID19"/>
+    <Parameter name="C_YEAR_ID20"/>
+    <Parameter name="C_YEAR_ID21"/>
+    <Parameter name="C_YEAR_ID22"/>
+    <Parameter name="startdate"/>
+    <Parameter name="startdate2"/>
+    <Parameter name="C_YEAR_ID"/>
+	<Parameter name="C_YEAR_ID"/>
+  </SqlMethod>
+
+</SqlClass>

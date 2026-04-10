@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_CreditInformationSuperCompañias" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DateFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT count( distinct a.INVOICE) "operaciones_corte" ,
+count( distinct b.C_BPARTNER_ID) "clientes_corte",
+sum(a.grandtotal) "saldo_corte"
+from sswh_acct_receivab_payab_v a , c_invoice b
+where a.INVOICE = b.DOCUMENTNO AND b.ISSOTRX = 'Y'
+and b.C_BPARTNER_ID = a.C_BPARTNER_ID
+and   DOC_CODE IN ('FC', 'CC', 'AC', 'RC')
+and a.doctype <>'PLANILLA DE  GASTOS'
+and DOCUMENTDATE <= $P{DateTo}
+and b.DATEINVOICED >= $P{DateFrom}
+and b.DATEINVOICED <= $P{DateTo}]]>
+	</queryString>
+	<field name="operaciones_corte" class="java.lang.Long"/>
+	<field name="clientes_corte" class="java.lang.Long"/>
+	<field name="saldo_corte" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="67" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="11" width="555" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OPERACIONES DE CORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="47" width="185" height="20"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="47" width="48" height="20"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[HASTA:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement x="336" y="47" width="219" height="20"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{DateTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement x="185" y="47" width="103" height="20"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{DateFrom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="18" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALDO CORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTES CORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OPERACIONES CORTE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{saldo_corte}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="185" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{clientes_corte}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="370" y="0" width="185" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{operaciones_corte}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

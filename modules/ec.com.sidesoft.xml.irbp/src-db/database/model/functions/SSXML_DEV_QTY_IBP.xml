@@ -1,0 +1,184 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSXML_DEV_QTY_IBP">
+    <function name="SSXML_DEV_QTY_IBP" type="NUMERIC">
+      <parameter name="p_initdate" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_enddate" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_m_product_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_m_product_ldm_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_group" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_codeimp" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_codecountry" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_movementqty NUMBER;
+v_qty_boom NUMBER;
+v_code_ibp NVARCHAR2(100);
+
+BEGIN
+
+    IF(p_group = 'PI') THEN 
+        IF (p_m_product_id IS NOT NULL AND  p_m_product_LDM_id IS NULL ) THEN 
+            select COALESCE(ROUND(SUM(ABS(mt.movementqty)),2) , 0)
+            INTO v_movementqty
+            from m_transaction mt 
+            JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+            LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+            JOIN m_inoutline mil ON mil.m_inoutline_id = mt.m_inoutline_id
+            JOIN m_inout mi ON mi.m_inout_ID = mil.m_inout_ID
+            JOIN c_invoiceline cil ON cil.m_inoutline_id = mt.m_inoutline_id
+            JOIN c_invoice ci on ci.c_invoice_id = cil.c_invoice_id
+            JOIN c_doctype dt ON dt.c_doctype_id = ci.c_doctypetarget_id
+            JOIN GL_Category glc ON glc.GL_Category_ID = dt.GL_Category_ID
+            where ci.dateinvoiced >= TO_DATE(p_initDate,  'YYYY-MM-DD') and ci.dateinvoiced < TO_DATE(p_endDate , 'YYYY-MM-DD')
+            AND mpm.em_ssxml_xml_ats = 'Y'
+            AND mt.movementtype in ('C-')
+            AND mt.movementqty > 0
+            AND mp.m_product_id = p_m_product_id
+            AND glc.name = 'AR Invoice' AND dt.DocBaseType = 'ARI_RM' AND dt.IsSOTrx = 'Y'
+            AND dt.EM_Eei_Is_Edoc = 'Y'
+            AND dt.isactive = 'Y'
+            AND dt.EM_Sswh_Implementautoriza = 'Y';
+
+                    
+        END IF;
+
+        IF (p_m_product_id IS NOT NULL AND  p_m_product_LDM_id IS NOT NULL ) THEN 
+
+            select COALESCE(ROUND(SUM(ABS(mt.movementqty)),2) , 0)
+            INTO v_movementqty
+            from m_transaction mt 
+            JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+            LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+            JOIN m_inoutline mil ON mil.m_inoutline_id = mt.m_inoutline_id
+            JOIN m_inout mi ON mi.m_inout_ID = mil.m_inout_ID
+            JOIN c_invoiceline cil ON cil.m_inoutline_id = mt.m_inoutline_id
+            JOIN c_invoice ci on ci.c_invoice_id = cil.c_invoice_id
+            JOIN c_doctype dt ON dt.c_doctype_id = ci.c_doctypetarget_id
+            JOIN GL_Category glc ON glc.GL_Category_ID = dt.GL_Category_ID
+            where ci.dateinvoiced >= TO_DATE(p_initDate,  'YYYY-MM-DD') and ci.dateinvoiced < TO_DATE(p_endDate , 'YYYY-MM-DD')
+            AND mpm.em_ssxml_xml_ats = 'Y'
+            AND mt.movementtype in ('C-')
+            AND mt.movementqty > 0
+            AND mp.m_product_id = p_m_product_LDM_id
+            AND glc.name = 'AR Invoice' AND dt.DocBaseType = 'ARI_RM' AND dt.IsSOTrx = 'Y'
+            AND dt.EM_Eei_Is_Edoc = 'Y'
+            AND dt.isactive = 'Y'
+            AND mi.docstatus  ='CO'
+            AND dt.EM_Sswh_Implementautoriza = 'Y';
+                IF (v_movementqty > 0) THEN 
+                    -- CONSULTAR EN EL PRODUCTO LDM EL SUBPRODUCTO Y SU CANTIDAD Lista de Materiales
+                    select bomqty
+                    INTO v_qty_boom
+                    FROM M_Product_BOM mpb 
+                    LEFT JOIN m_product mp ON mp.m_product_id = mpb.m_productbom_id
+                    LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+                    WHERE mpb.m_product_id = p_m_product_LDM_id
+                    AND mpm.em_ssxml_xml_ats = 'Y'   
+                    AND mpb.M_ProductBOM_ID = p_m_product_id;
+                    
+                    IF v_qty_boom > 0 THEN
+                    v_movementqty = v_movementqty * v_qty_boom;
+                    END IF;
+                END IF;
+        END IF;
+
+    END IF;
+    IF(p_group = 'PC') THEN 
+    
+        IF (p_m_product_id IS NOT NULL AND  p_m_product_LDM_id IS NULL ) THEN 
+            v_code_ibp = p_m_product_id;
+            SELECT  COALESCE(ROUND(SUM(movementqty) , 2 ), 0) 
+            INTO v_movementqty
+            FROM (
+            select ( mp.Em_Slplag_Prodclasif ||'-'|| mp.Em_Slplag_Brand ||'-'|| mp.Em_Slplag_Prodcap||'-'||
+                    mp.Em_Slplag_Irbpunit ||'-'|| mp.Em_Slplag_Galcohol ||'-'||    mpm.Presirbp) ,  
+                COALESCE(mt.movementqty, 2 ) as movementqty
+            from m_transaction mt
+            JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+            LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+            JOIN m_inoutline mil ON mil.m_inoutline_id = mt.m_inoutline_id
+            JOIN m_inout mi ON mi.m_inout_ID = mil.m_inout_ID
+            JOIN c_invoiceline cil ON cil.m_inoutline_id = mt.m_inoutline_id
+            JOIN c_invoice ci on ci.c_invoice_id = cil.c_invoice_id
+            JOIN c_doctype dt ON dt.c_doctype_id = ci.c_doctypetarget_id
+            JOIN GL_Category glc ON glc.GL_Category_ID = dt.GL_Category_ID
+            where ci.dateinvoiced >= TO_DATE(p_initDate,  'YYYY-MM-DD') and ci.dateinvoiced < TO_DATE(p_endDate , 'YYYY-MM-DD')
+            AND mpm.em_ssxml_xml_ats = 'Y'
+            AND mt.movementtype in ('C-')
+            AND mt.movementqty > 0
+              AND ( p_codeImp||'-'|| mp.Em_Slplag_Prodclasif ||'-'|| mp.Em_Slplag_Brand ||'-'|| mpm.Presirbp ||'-'|| mp.Em_Slplag_Prodcap||'-'||
+                mp.Em_Slplag_Irbpunit ||'-'|| p_codeCountry ||'-'|| mp.Em_Slplag_Galcohol ) = v_code_ibp
+            AND glc.name = 'AR Invoice' AND dt.DocBaseType = 'ARI_RM' AND dt.IsSOTrx = 'Y'
+            AND dt.EM_Eei_Is_Edoc = 'Y'
+            AND dt.isactive = 'Y'
+            AND dt.EM_Sswh_Implementautoriza = 'Y'
+            ) tmp;
+
+        END IF;
+        
+        IF (p_m_product_id IS NOT NULL AND  p_m_product_LDM_id IS NOT NULL ) THEN 
+            v_code_ibp =  p_m_product_id ;
+
+            select COALESCE(ROUND(SUM(ABS(mt.movementqty)),2) , 0)
+            INTO v_movementqty
+            from m_transaction mt 
+            JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+            LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+            JOIN m_inoutline mil ON mil.m_inoutline_id = mt.m_inoutline_id
+            JOIN m_inout mi ON mi.m_inout_ID = mil.m_inout_ID
+            JOIN c_invoiceline cil ON cil.m_inoutline_id = mt.m_inoutline_id
+            JOIN c_invoice ci on ci.c_invoice_id = cil.c_invoice_id
+            JOIN c_doctype dt ON dt.c_doctype_id = ci.c_doctypetarget_id
+            JOIN GL_Category glc ON glc.GL_Category_ID = dt.GL_Category_ID
+            where ci.dateinvoiced >= TO_DATE(p_initDate,  'YYYY-MM-DD') and ci.dateinvoiced < TO_DATE(p_endDate , 'YYYY-MM-DD')
+            AND mpm.em_ssxml_xml_ats = 'Y'
+            AND mt.movementtype in ('C-')
+            AND mt.movementqty > 0
+            AND mp.m_product_id = p_m_product_LDM_id
+            AND glc.name = 'AR Invoice' AND dt.DocBaseType = 'ARI_RM' AND dt.IsSOTrx = 'Y'
+            AND dt.EM_Eei_Is_Edoc = 'Y'
+            AND dt.isactive = 'Y'
+            AND mi.docstatus  ='CO'
+            AND dt.EM_Sswh_Implementautoriza = 'Y';
+
+                -- CONSULTAR EN EL PRODUCTO LDM EL SUBPRODUCTO Y SU CANTIDAD Lista de Materiales
+                select bomqty
+                INTO v_qty_boom
+                FROM M_Product_BOM mpb 
+                LEFT JOIN m_product mp ON mp.m_product_id = mpb.m_productbom_id
+                LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+                WHERE mpb.m_product_id = p_m_product_LDM_id
+                AND mpm.em_ssxml_xml_ats = 'Y'   
+                AND mpb.M_ProductBOM_ID in(
+                     SELECT m_product_id 
+                     FROM m_product 
+                     LEFT JOIN Slplag_Kindpackage pri ON pri.Slplag_Kindpackage_id = m_product.EM_Slplag_Mantainpackage_ID
+                     WHERE ( p_codeImp||'-'|| Em_Slplag_Prodclasif ||'-'|| 
+                     Em_Slplag_Brand ||'-'|| pri.Presirbp ||'-'|| Em_Slplag_Prodcap||'-'||
+                     Em_Slplag_Irbpunit ||'-'|| p_codeCountry ||'-'||
+                     Em_Slplag_Galcohol ) = v_code_ibp  );
+                
+                IF v_qty_boom > 0 THEN
+                    v_movementqty = v_movementqty * v_qty_boom;
+                END IF;
+        END IF;
+        
+    END IF;
+
+RETURN COALESCE(v_movementqty, 0 );
+END SSXML_DEV_QTY_IBP
+]]></body>
+    </function>
+  </database>

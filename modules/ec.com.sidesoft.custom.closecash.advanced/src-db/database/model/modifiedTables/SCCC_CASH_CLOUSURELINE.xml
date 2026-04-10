@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SCCC_CASH_CLOUSURELINE">
+    <table name="SCCC_CASH_CLOUSURELINE" primaryKey="SCCC_CLINE_KEY">
+      <column name="EM_SCCA_FINANCIAL_ACCOUNT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCCA_CARD_TYPE" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCCA_LOT" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCCA_LINE_TYPE" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default><![CDATA[R]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCCA_PAYMENTTYPE" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="FIN_FINANCIAL_ACCOUNT" name="EM_SCCA_CLOLINE_FINANCIALACCT">
+        <reference local="EM_SCCA_FINANCIAL_ACCOUNT_ID" foreign="FIN_FINANCIAL_ACCOUNT_ID"/>
+      </foreign-key>
+    </table>
+  </database>

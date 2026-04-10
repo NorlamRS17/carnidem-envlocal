@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="031A5C447857460EBDF9C6D9E9B6A000" trl="Y">
+    <value column="Name" isTrl="Y" original="Lines">Indicadores Financieros Contables</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="29933E8AA6894D75ABD5191FF5CC2931" trl="N">
+    <value column="Name" isTrl="N" original="Header">Header</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="673AA80BD2A64756ADD04E357193847D" trl="N">
+    <value column="Name" isTrl="N" original="Header">Header</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="94F7CD99CB544AFD84DBA17E9923680E" trl="Y">
+    <value column="Name" isTrl="Y" original="Line">Indicador Financiero Contable</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A20467456E9546BB8E641D16D8BFCD82" trl="Y">
+    <value column="Name" isTrl="Y" original="Acctaccount">Cuentas Contables</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FA3FBBF3B40E4D1789822004F7CBF0CD" trl="N">
+    <value column="Name" isTrl="Y" original="Header">Head</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

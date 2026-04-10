@@ -1,0 +1,226 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSDR_DEPOSIT_RECONCLT_POST">
+    <function name="SSDR_DEPOSIT_RECONCLT_POST" type="NULL">
+      <parameter name="p_instance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+    vResultStr					VARCHAR2(2000):='';
+    vMessage					VARCHAR2(2000):='';
+    vResult NUMBER:=1; -- 0=failure
+    vAmountDr NUMBER:=0;
+    vAmountCr NUMBER:=0;
+    vRecordID					VARCHAR2(32);
+    v_GlJournalID               VARCHAR2(32);
+    v_ValidcombinationID        VARCHAR2(32);
+    vUserID						VARCHAR2(32);
+    v_CreateFinTransaction CHAR(1):='N';
+    v_ExecutionType FIN_FINACC_PAYMENTMETHOD.PAYIN_EXECUTION_TYPE%TYPE;
+    v_FIN_FINACC_TRANSACTION_ID FIN_FINACC_TRANSACTION.FIN_FINACC_TRANSACTION_ID%TYPE;
+    v_Line FIN_FINACC_TRANSACTION.LINE%TYPE;
+    v_finalsettlementdate C_Invoice.FinalSettlement%TYPE;
+
+    v_PaidAmount NUMBER;
+    V_OutstandingAmount NUMBER;
+    V_DueAmount NUMBER;
+    V_DayStillDue NUMBER;
+    v_ConvertedAmount NUMBER;
+
+    TYPE RECORD IS REF CURSOR;
+    cParameter					RECORD;
+    cPayment					RECORD;
+	cRecord						RECORD;
+	cPeriod                     RECORD;
+	cDocType                    RECORD;
+	cPaymentSchedule			RECORD;
+	cHeadSpd         			RECORD;
+
+BEGIN
+
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || P_Instance_ID);
+    vResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(P_Instance_ID, NULL, 'Y', NULL, NULL);
+    
+    BEGIN --BODY
+        -- Get Parameters
+        vResultStr:='ReadingParameters';
+        FOR cParameter IN (
+            SELECT pi.Record_ID, pi.AD_User_ID, pip.ParameterName, pip.P_String, pip.P_Number, pip.P_Date
+            FROM AD_PInstance pi
+                LEFT JOIN AD_PInstance_Para pip ON pip.AD_PInstance_ID = pi.AD_PInstance_ID
+            WHERE pi.AD_PInstance_ID = P_Instance_ID
+            ORDER BY pip.SeqNo
+        ) LOOP
+            vRecordID := cParameter.Record_ID;
+            vUserID := cParameter.AD_User_ID;
+        END LOOP; -- Get Parameter
+
+        --Obtenemos los pagos asociados a un extracto bancario
+
+        FOR cPayment IN (
+            SELECT * FROM (SELECT fin_payment_id,fin_bankstatementline_id,p.fin_financial_account_id,
+            fin_paymentmethod_id,isreceipt,p.ad_client_id, p.ad_org_id,paymentdate,
+            c_currency_id,COALESCE(p.amount,0) AS amount,p.referenceno,p.documentno,
+			ROW_NUMBER() OVER (PARTITION BY fin_bankstatementline_id ) rn
+            FROM fin_payment p
+            JOIN (
+                SELECT em_ssdr_referenceno,referenceno,em_ssdr_fin_payment_id
+                ,datetrx,cramount,bs.fin_financial_account_id,fin_bankstatementline_id
+                FROM fin_bankstatementline bl
+                JOIN fin_bankstatement bs ON bs.fin_bankstatement_id=bl.fin_bankstatement_id 
+            ) bl on p.referenceno = COALESCE(bl.em_ssdr_referenceno,bl.referenceno) 
+            WHERE p.status = 'RPAE' 
+            AND bl.em_ssdr_fin_payment_id is null 
+            AND p.fin_financial_account_id=bl.fin_financial_account_id
+            AND (TO_DATE(bl.datetrx) = TO_DATE(p.paymentdate) OR TO_DATE(bl.datetrx) = TO_DATE(p.EM_Ssdr_Datedeposit))
+            AND COALESCE(bl.cramount,0) = COALESCE(p.amount,0)) a
+			WHERE rn=1
+            ORDER BY paymentdate,documentno,referenceno
+        ) LOOP
+
+            SELECT CASE WHEN cPayment.isreceipt = 'Y' THEN AUTOMATIC_DEPOSIT ELSE AUTOMATIC_WITHDRAWN END AS CreateFinTransaction,
+            CASE WHEN cPayment.isreceipt = 'Y' THEN payin_execution_type ELSE payout_execution_type END AS ExecutionType
+            INTO v_CreateFinTransaction, v_ExecutionType
+            FROM FIN_FINACC_PAYMENTMETHOD
+            WHERE FIN_FINACC_PAYMENTMETHOD.FIN_PAYMENTMETHOD_ID = cPayment.fin_paymentmethod_id
+            AND FIN_FINACC_PAYMENTMETHOD.FIN_FINANCIAL_ACCOUNT_ID = cPayment.fin_financial_account_id
+            AND FIN_FINACC_PAYMENTMETHOD.ISACTIVE='Y';
+
+                -- Automatic creation of financial transaction
+            IF(v_CreateFinTransaction = 'Y') THEN
+                vResultStr:='Generating FIN_FINACC_TRANSACTION';
+                v_FIN_FINACC_TRANSACTION_ID := GET_UUID();
+                --Get Lineno of financial transaction
+                SELECT COALESCE(MAX(LINE),0) INTO v_Line FROM FIN_FINACC_TRANSACTION 
+                WHERE FIN_FINANCIAL_ACCOUNT_ID = cPayment.fin_financial_account_id;
+
+                INSERT INTO fin_finacc_transaction(
+                fin_finacc_transaction_id, ad_client_id, ad_org_id, created, 
+                createdby, updated, updatedby, isactive, c_currency_id, fin_financial_account_id, 
+                line, fin_payment_id, dateacct, c_glitem_id, status, paymentamt, 
+                depositamt, processed, processing, posted, c_project_id, c_campaign_id, 
+                c_activity_id, user1_id, user2_id, trxtype, statementdate, description, 
+                fin_reconciliation_id,em_aprm_processed)
+                    VALUES (v_FIN_FINACC_TRANSACTION_ID, cPayment.ad_client_id, 
+                cPayment.ad_org_id, now(), vUserID,
+                now(), vUserID, 'Y', cPayment.c_currency_id, cPayment.fin_financial_account_id, 
+                v_Line, cPayment.fin_payment_id, cPayment.paymentdate, NULL, 
+                CASE WHEN cPayment.isreceipt='Y' THEN 'RDNC' ELSE 'PWNC' END, 
+                CASE WHEN cPayment.isreceipt='N' THEN cPayment.amount ELSE 0 END, 
+                CASE WHEN cPayment.isreceipt='Y' THEN cPayment.amount ELSE 0 END, 
+                'Y', 'N', 'N', NULL, NULL, 
+                NULL, NULL, NULL, CASE WHEN cPayment.isreceipt='N' THEN 'BPW' ELSE 'BPD' END, 
+                cPayment.paymentdate,'',
+                NULL,'R');
+
+                UPDATE FIN_PAYMENT SET STATUS = CASE WHEN cPayment.isreceipt='Y' THEN 'RDNC' ELSE 'PWNC' END,
+                updated = now(),updatedby = vUserID
+                WHERE FIN_PAYMENT_ID = cPayment.fin_payment_id;
+                
+                --UPDATE FINANCIAL ACCOUNT CURRENT BALANCE
+                UPDATE FIN_FINANCIAL_ACCOUNT 
+                SET CURRENTBALANCE=CURRENTBALANCE + (CASE WHEN cPayment.isreceipt='Y' THEN cPayment.amount ELSE (cPayment.amount*-1) END)
+                WHERE FIN_FINANCIAL_ACCOUNT_ID = cPayment.fin_financial_account_id;
+                
+                --UPDATE FINANCIAL BANK LINE
+                UPDATE fin_bankstatementline set em_ssdr_fin_payment_id = cPayment.fin_payment_id ,
+                updated = now(), updatedby = vUserID
+                WHERE fin_bankstatementline_id= cPayment.fin_bankstatementline_id;
+
+                -- UPDATE fin_payment_schedule/Plan de pagos
+                UPDATE fin_payment_schedule SET 
+                    paidamt=paidamt+detail.amount,
+                    outstandingamt=outstandingamt-detail.amount,
+                    updatedby='100'
+                FROM (
+                    SELECT fin_payment_schedule_invoice,psd.amount 
+                    FROM fin_payment_scheduledetail psd
+                    JOIN fin_payment_detail pd ON pd.fin_payment_detail_id=psd.fin_payment_detail_id
+                    WHERE pd.fin_payment_id =cPayment.fin_payment_id
+                ) detail
+                WHERE fin_payment_schedule.fin_payment_schedule_id = detail.fin_payment_schedule_invoice;
+
+                FOR cHeadSpd IN (
+                    SELECT fin_payment_scheduledetail_id,psd.amount,ps.fin_payment_schedule_id,ps.c_invoice_id
+                    FROM fin_payment_scheduledetail psd
+                    JOIN fin_payment_detail pd ON pd.fin_payment_detail_id=psd.fin_payment_detail_id
+                    JOIN fin_payment_schedule ps ON ps.fin_payment_schedule_id=psd.fin_payment_schedule_invoice
+                    WHERE pd.fin_payment_id = cPayment.fin_payment_id
+                ) LOOP
+                    --Update Invoice amounts
+                    -- Reading Data from FIN_PAYMENT_SCHEDULE
+                    SELECT COALESCE(sum(PAIDAMT),0) as PaidAmount, COALESCE(SUM(OUTSTANDINGAMT),0) as OutstandingAmount
+                        INTO v_PaidAmount,V_OutstandingAmount
+                    FROM FIN_PAYMENT_SCHEDULE
+                    WHERE C_INVOICE_ID=cHeadSpd.c_invoice_id;
+                    -- Getting DueAmount from FIN_PAYMENT_SCHEDULE for the Invoice
+                    SELECT coalesce(sum(OUTSTANDINGAMT),0) as DueAmount
+                        INTO V_DueAmount
+                    FROM FIN_PAYMENT_SCHEDULE
+                    WHERE C_INVOICE_ID=cHeadSpd.c_invoice_id
+                        AND duedate<=now();
+                    V_DueAmount :=COALESCE(V_DueAmount,0);
+                    --Getting Day Still Due
+                    SELECT COALESCE(TO_NUMBER(MIN(DUEDATE)-TRUNC(now())),0) as DAYSTILLDUE
+                    INTO V_DayStillDue
+                    FROM FIN_PAYMENT_SCHEDULE
+                    WHERE C_INVOICE_ID=cHeadSpd.c_invoice_id
+                        AND OUTSTANDINGAMT != 0;
+
+                    IF(v_OutstandingAmount = 0) THEN
+                        SELECT MAX(lastpayment)
+                        INTO v_finalsettlementdate
+                        FROM fin_payment_sched_inv_v
+                        WHERE c_invoice_id = cHeadSpd.c_invoice_id;
+                    ELSE
+                        v_finalsettlementdate := NULL;
+                    END IF;
+
+                    --Updating Payment Monitor values into C_INVOICE
+                    UPDATE C_INVOICE
+                    SET TOTALPAID = v_PaidAmount,
+                        OUTSTANDINGAMT = COALESCE(v_OutstandingAmount,0),
+                        DUEAMT =  V_DueAmount,
+                        DAYSTILLDUE = V_DayStillDue,
+                        LASTCALCULATEDONDATE = now(),
+                        ISPAID = CASE v_OutstandingAmount WHEN 0 THEN 'Y' ELSE 'N' END,
+                        FINALSETTLEMENT = v_finalsettlementdate
+                    WHERE C_INVOICE_ID = cHeadSpd.c_invoice_id;
+
+                    -- UPDATE STATUS PAID
+                    UPDATE FIN_PAYMENT_SCHEDULEDETAIL
+                    SET isinvoicepaid = detail.isinvoicepaid
+                    FROM
+                    (select CASE WHEN fpsd.fin_payment_detail_id is null then 'N'
+                        WHEN ((aprm_seqnumberpaymentstatus(fp.status))>= (aprm_seqnumberpaymentstatus((CASE WHEN fp.isreceipt='Y' 
+                        THEN Payin_Invoicepaidstatus ELSE Payout_Invoicepaidstatus END)))) THEN 'Y' ELSE 'N' END isinvoicepaid
+                        from fin_payment_scheduledetail fpsd
+                        left join fin_payment_detail fpd on fpsd.fin_payment_detail_id=fpd.fin_payment_detail_id
+                        left join fin_payment fp on fpd.fin_payment_id=fp.fin_payment_id
+                        left join fin_financial_account fa on fa.fin_financial_account_id=fp.fin_financial_account_id 
+                        left join FIN_FinAcc_PaymentMethod fpm on fpm.fin_financial_account_id=fp.fin_financial_account_id 
+                        and fpm.fin_paymentmethod_id=fp.fin_paymentmethod_id 
+                        WHERE fin_payment_scheduledetail_id = cHeadSpd.fin_payment_scheduledetail_id) detail
+                        WHERE FIN_PAYMENT_SCHEDULEDETAIL_ID = cHeadSpd.fin_payment_scheduledetail_id;
+                END LOOP; -- Get Invoice Values
+
+
+            END IF;
+
+        END LOOP; -- Get Payment
+
+        DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage);
+        AD_UPDATE_PINSTANCE(P_Instance_ID, NULL, 'N', vResult, vMessage);
+
+        RETURN;
+    END; --BODY
+    
+    EXCEPTION WHEN OTHERS THEN
+        vResultStr:= '@ERROR='||SQLERRM;
+        DBMS_OUTPUT.PUT_LINE( vResultStr) ;
+        ROLLBACK;
+        AD_UPDATE_PINSTANCE(P_Instance_ID, NULL, 'N', 0, vResultStr);
+END SSDR_DEPOSIT_RECONCLT_POST
+]]></body>
+    </function>
+  </database>

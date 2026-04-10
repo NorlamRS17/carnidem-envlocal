@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_CardsSettlement" pageWidth="1200" pageHeight="595" orientation="Landscape" columnWidth="1160" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.1000000000000056"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="AD_USER_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Datefrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Dateto" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FIN_PAYMENTMETHOD_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT sq.*
+FROM(
+	SELECT
+		cs.date_transaction
+		,CASE WHEN cs.card_type ='DT' THEN 'DATAFAST'
+			WHEN cs.card_type ='ME' THEN
+				'MEDIANET'
+			WHEN cs.card_type ='NA' THEN
+				'No Aplica'
+			ELSE
+				cs.card_type
+		END AS "tipotarjeta"
+		,cs.lot
+		,cl.amount
+		,cs.received_amount
+		,cs.bonded_amount
+		,cs.commission_amount
+		,cs.iva_retention
+		,cs.rent_retention
+		,coalesce(cl.amount,0)-coalesce(cs.received_amount,0)-coalesce(cs.bonded_amount,0)-coalesce(cs.commission_amount,0) AS "diferencia"
+		,TO_DATE(now()) AS "fechaimpresion"
+		,(select coalesce(to_char(cbp.name), to_char(au.name)) from ad_user au left join c_bpartner cbp on cbp.c_bpartner_id = au.c_bpartner_id where au.ad_user_id = $P{AD_USER_ID}) AS "usuario"
+		,cs.ad_org_id
+	FROM scca_cards_settlement cs
+		INNER JOIN sccc_cash_clousureline cl ON cs.lot=cl.em_scca_lot AND cs.fin_paymentmethod_id = cl.fin_paymentmethod_id
+		INNER JOIN sccc_cash_clousure cc ON cl.sccc_cash_clousure_id = cc.sccc_cash_clousure_id AND TO_DATE(cc.closingdate,'dd-mm-yyy')=TO_DATE(cs.date_transaction) AND cc.docstatus='SCCC_PR'
+		LEFT JOIN fin_paymentmethod pm ON cs.fin_paymentmethod_id = pm.fin_paymentmethod_id
+	WHERE (cs.fin_paymentmethod_id=$P{FIN_PAYMENTMETHOD_ID} OR $P{FIN_PAYMENTMETHOD_ID} IS NULL)
+		AND (TO_DATE($P{Datefrom}) IS NULL OR TO_DATE($P{Datefrom},'yyyy-MM-dd') <= TO_DATE(cs.date_transaction,'dd-MM-yyyy'))
+		AND (TO_DATE($P{Dateto}) IS NULL OR TO_DATE($P{Dateto},'yyyy-MM-dd') >= TO_DATE(cs.date_transaction,'dd-MM-yyyy'))
+
+	UNION ALL
+
+	SELECT cs.date_transaction
+		,CASE WHEN cs.card_type ='DT' THEN 'DATAFAST'
+			WHEN cs.card_type ='ME' THEN
+				'MEDIANET'
+			WHEN cs.card_type ='NA' THEN
+				'No Aplica'
+			ELSE
+				cs.card_type
+		END AS "tipotarjeta"
+		,cs.lot
+		,cl.amount
+		,cs.received_amount
+		,cs.bonded_amount
+		,cs.commission_amount
+		,cs.iva_retention
+		,cs.rent_retention
+		,coalesce(cl.amount,0)-coalesce(cs.received_amount,0)-coalesce(cs.bonded_amount,0)-coalesce(cs.commission_amount,0) AS "diferencia"
+		,TO_DATE(now()) AS "fechaimpresion"
+		,(select coalesce(to_char(cbp.name), to_char(au.name)) from ad_user au left join c_bpartner cbp on cbp.c_bpartner_id = au.c_bpartner_id where au.ad_user_id = $P{AD_USER_ID}) AS "usuario"
+		,cs.ad_org_id
+	FROM scca_cards_settlement cs
+		INNER JOIN scca_cash_clousureline2 cl ON cs.lot=cl.lot AND cs.fin_paymentmethod_id = cl.fin_paymentmethod_id
+		INNER JOIN sccc_cash_clousure cc ON cl.sccc_cash_clousure_id = cc.sccc_cash_clousure_id AND TO_DATE(cc.closingdate,'dd-mm-yyy')=TO_DATE(cs.date_transaction) AND cc.docstatus='SCCC_PR'
+		LEFT JOIN fin_paymentmethod pm ON cs.fin_paymentmethod_id = pm.fin_paymentmethod_id
+	WHERE (cs.fin_paymentmethod_id=$P{FIN_PAYMENTMETHOD_ID} OR $P{FIN_PAYMENTMETHOD_ID} IS NULL)
+		AND (TO_DATE($P{Datefrom}) IS NULL OR TO_DATE($P{Datefrom},'yyyy-MM-dd') <= TO_DATE(cs.date_transaction,'dd-MM-yyyy'))
+		AND (TO_DATE($P{Dateto}) IS NULL OR TO_DATE($P{Dateto},'yyyy-MM-dd') >= TO_DATE(cs.date_transaction,'dd-MM-yyyy'))
+) sq
+ORDER BY sq.date_transaction desc,sq.tipotarjeta,sq.lot]]>
+	</queryString>
+	<field name="date_transaction" class="java.sql.Timestamp"/>
+	<field name="tipotarjeta" class="java.lang.String"/>
+	<field name="lot" class="java.lang.String"/>
+	<field name="amount" class="java.math.BigDecimal"/>
+	<field name="received_amount" class="java.math.BigDecimal"/>
+	<field name="bonded_amount" class="java.math.BigDecimal"/>
+	<field name="commission_amount" class="java.math.BigDecimal"/>
+	<field name="iva_retention" class="java.math.BigDecimal"/>
+	<field name="rent_retention" class="java.math.BigDecimal"/>
+	<field name="diferencia" class="java.math.BigDecimal"/>
+	<field name="fechaimpresion" class="java.sql.Timestamp"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="802" y="20" width="119" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{fechaimpresion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="802" y="40" width="119" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="682" y="20" width="120" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Impresión:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="682" y="40" width="120" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="0" width="819" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE LIQUIDACIÓN DE TARJETAS]]></text>
+			</staticText>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="102" height="60"/>
+				<imageExpression class="java.lang.String"><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal",  $F{ad_org_id})]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<staticText>
+				<reportElement x="922" y="0" width="120" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor comisión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="102" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="0" width="120" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lote]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="802" y="0" width="120" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor depositado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="682" y="0" width="120" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor recibido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="322" y="0" width="120" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="102" y="0" width="100" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de tarjeta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1042" y="0" width="119" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Diferencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="442" y="0" width="120" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Retención IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="562" y="0" width="120" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Retención renta]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="922" y="0" width="120" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{commission_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="102" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{date_transaction}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="202" y="0" width="120" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{lot}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="802" y="0" width="120" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{bonded_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="682" y="0" width="120" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{received_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="322" y="0" width="120" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="102" y="0" width="100" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipotarjeta}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1042" y="0" width="119" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{diferencia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="442" y="0" width="120" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{iva_retention}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="562" y="0" width="120" height="16" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single" markup="none">
+					<font fontName="SansSerif" size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{rent_retention}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

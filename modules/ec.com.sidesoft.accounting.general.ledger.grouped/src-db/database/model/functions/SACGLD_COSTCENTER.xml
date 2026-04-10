@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SACGLD_COSTCENTER">
+    <function name="SACGLD_COSTCENTER" type="VARCHAR">
+      <parameter name="p_tablename" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="documentno" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_Display VARCHAR2(200):='';
+  v_sql VARCHAR2(2000):='';
+BEGIN
+
+  v_sql:=  'SELECT c_costcenter_id FROM c_costcenter WHERE c_costcenter_id = (
+    SELECT c_costcenter_id FROM ' || p_tablename || '  WHERE documentno = ''' || documentno || ''');';
+
+
+  EXECUTE IMMEDIATE v_sql INTO v_Display;
+  RETURN v_Display;
+EXCEPTION
+WHEN OTHERS THEN
+  RETURN '';
+END SACGLD_COSTCENTER
+]]></body>
+    </function>
+  </database>

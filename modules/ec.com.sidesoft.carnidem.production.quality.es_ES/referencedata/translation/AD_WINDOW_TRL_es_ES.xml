@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="78C57000C94E42C4ADA6B7928E367C9A" trl="Y">
+    <value column="Name" isTrl="Y" original="Params Status">Estados</value>
+    <value column="Description" isTrl="N" original="">Estados</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DB624BE65DD54D31BC14F9043E26F0DF" trl="Y">
+    <value column="Name" isTrl="Y" original="Quality transfer parameters">Parámetros de trasferencias seguridad y calidad</value>
+    <value column="Description" isTrl="N" original="">Parámetros de trasferencias seguridad y calidad</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,302 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSPCH_PROCESSED">
+    <function name="SSPCH_PROCESSED" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[/*************************************************************************
+  * The contents of this file are subject to the Compiere Public
+  * License 1.1 ("License"); You may not use this file except in
+  * compliance with the License. You may obtain a copy of the License in
+  * the legal folder of your Openbravo installation.
+  * Software distributed under the License is distributed on an
+  * "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  * implied. See the License for the specific language governing rights
+  * and limitations under the License.
+  * The Original Code is  Compiere  ERP  Solution
+  * The Initial Developer of the Original Code is Jorg Janke and ComPiere, Inc.
+  * Portions created by Jorg Janke are Copyright (C) 1999-2001 Jorg Janke,
+  * parts created by ComPiere are Copyright (C) ComPiere, Inc.;
+  * All Rights Reserved.
+  * Contributor(s): Rodney Jacome
+  * Contributions are Copyright (C) 2001-2011 Openbravo, S.L.U.
+  *
+  * Specifically, this derivative work is based upon the following Compiere
+  * file and version.
+
+  ************************************************************************/
+    -- Logistic
+    v_ResultStr VARCHAR2(2000):='';
+    v_Message VARCHAR2(2000):='';
+    v_Record_ID VARCHAR2(32);
+    
+
+    -- Parameter
+    -- Audit
+    v_AD_Client_ID VARCHAR2(32);
+    v_AD_ORG_ID VARCHAR2(32);
+    v_AD_USER_ID VARCHAR2(32);
+    TYPE RECORD IS REF CURSOR;
+    Cur_Parameter RECORD;
+    Cur_fin_payment RECORD;
+    Cur_fin_payment_plan RECORD;
+    -- Parameter Variables
+    v_lates_check VARCHAR2(200);
+    v_fin_paymentmethod_id VARCHAR2(32);
+    v_fin_financial_account_id	VARCHAR2(32);
+    v_fin_doctype_id VARCHAR2(32);
+    v_fin_payment_id VARCHAR2(32);
+    v_fin_payment_detail_id VARCHAR2(32);
+    v_ssfi_banktransfer_id VARCHAR2(32);
+    v_documentno VARCHAR2(100);
+    v_documentsno VARCHAR2(2000);
+    v_bp_currency_id VARCHAR2(32); 
+    v_payment_date DATE;
+    v_IsDatePaymentPlan CHAR(1);
+    v_PeriodStatus  VARCHAR(60);--OBTG:VARCHAR2--
+    v_c_bpartner_id VARCHAR2(32); 
+    v_by_bpartner_id VARCHAR2(32); 
+    v_accountno VARCHAR2(32); 
+    v_amount_payment NUMBER:=0;
+    v_checkno  VARCHAR2(200); 
+    v_account_holder VARCHAR2(300); 
+    v_NoOfFields NUMBER:=0;
+    v_count_v NUMBER:=0;
+    v_advance_value NUMBER:=0;
+    v_bpartner_rep_id VARCHAR2(32); 
+    v_trl_count NUMBER;
+    v_NextNo_F VARCHAR2(32);
+    v_total_head NUMBER:=0;
+    v_total_lines NUMBER:=0;
+
+    -- Copy
+    Cur_Fields RECORD;
+    Row_Src_Field AD_Field%ROWTYPE;
+    Row_Dest_Field_Trl AD_Field_Trl%ROWTYPE;
+    v_SalesRep RECORD; 
+    v_field_name NVARCHAR2(60);
+    v_field_desc NVARCHAR2(255);
+    v_field_help NVARCHAR2(2000);
+    assigned BOOLEAN;
+    
+  BEGIN
+    --  Update AD_PInstance
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_PInstance_ID) ;
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+  BEGIN --BODY
+    -- Get Parameters
+    v_ResultStr:='ReadingParameters';
+    FOR Cur_Parameter IN
+      (SELECT i.Record_ID, i.ad_user_id, i.ad_org_id, i.ad_client_id
+      FROM AD_PInstance i
+      WHERE i.AD_PInstance_ID=p_PInstance_ID
+      )
+    LOOP
+      v_Record_ID := Cur_Parameter.Record_ID;
+      v_AD_Client_ID := Cur_Parameter.ad_client_id;
+      v_AD_ORG_ID := Cur_Parameter.ad_org_id;
+      v_AD_USER_ID := Cur_Parameter.ad_user_id;
+    END LOOP; -- Get Parameter
+    DBMS_OUTPUT.PUT_LINE('  Record_ID=' || v_Record_ID) ;
+    v_ResultStr:='GetEntityType';
+
+	Select    spc.fin_paymentmethod_id	, spc.fin_financial_account_id	,spc.fin_doctype_id		,bp_currency_id		, payment_date		,isdatepaymentplan 
+		, bp.c_bpartner_id		, account			,spc.ssfi_banktransfer_id 	,account_holder		, spc.ad_org_id ,coalesce(total_checks,0)
+		Into v_fin_paymentmethod_id	, v_fin_financial_account_id	,v_fin_doctype_id		,v_bp_currency_id 	, v_payment_date		,v_IsDatePaymentPlan
+		, v_c_bpartner_id		, v_accountno			,v_ssfi_banktransfer_id 	,v_account_holder	, v_AD_ORG_ID ,v_total_head
+	From sspch_postdated_checks spc
+		Join c_bpartner bp on bp.c_bpartner_id =  spc.c_bpartner_id
+	Where spc.sspch_postdated_checks_id = v_Record_ID;
+
+	Select COUNT(*) ,sum(coalesce(spp.quota_value,0)+coalesce(advance_value,0)) 
+		Into v_count_v ,v_total_lines
+	From sspch_invoice si
+		Join sspch_payment_plan spp on spp.sspch_invoice_id = si.sspch_invoice_id
+	where spp.checkno  is not null
+		AND spp.quota_value >0
+		AND si.sspch_postdated_checks_id = v_Record_ID;
+			
+	If(v_count_v=0)Then
+		RAISE_APPLICATION_ERROR(-20000, '@Sspch_validation_cunt@');
+	End IF;
+
+	If(round(v_total_head,3)<>round(v_total_lines,3))Then
+		RAISE_APPLICATION_ERROR(-20000, '@Sspch_Amount@');
+	End IF;
+
+	Delete From sspch_payment_plan 
+	Where (checkno is null OR quota_value =0)
+		AND sspch_invoice_id in(Select s.sspch_invoice_id 
+					From sspch_invoice s
+					Where s.sspch_postdated_checks_id = v_Record_ID);
+
+	v_bpartner_rep_id := 'N';
+	For v_SalesRep IN (
+		Select u.c_bpartner_id 
+		From  sspch_payment_plan si
+			join c_invoice i on i.c_invoice_id = si.c_invoice_id
+			join ad_user u on u.ad_user_id = i.salesrep_id	
+			 where  si.sspch_postdated_checks_id  =v_Record_ID 
+				and u.c_bpartner_id is not null
+		Group By u.c_bpartner_id 
+	)LOOP 
+		If v_bpartner_rep_id = 'N' 
+			Then v_bpartner_rep_id := v_SalesRep.c_bpartner_id;
+			Else v_bpartner_rep_id := null;
+		End IF;		
+	END LOOP;
+	If(v_bpartner_rep_id = 'N')Then
+		v_bpartner_rep_id := null;
+	End IF;
+	
+	FOR Cur_fin_payment IN (
+		Select 
+			  MAX(spp.general_payment_date) As payment_date
+			, SUM(spp.quota_value+spp.Advance_Value) As amount_payment
+			, SUM(COALESCE(spp.advance_value,0)) As advance_value
+			, string_agg(i.documentno,' - '  ORDER BY i.documentno ASC) as documents
+			, checkno
+			, spp.account			
+			, spp.ssfi_banktransfer_id 	
+			, spp.account_holder		
+		From  sspch_invoice si
+			join c_invoice i on i.c_invoice_id = si.c_invoice_id
+			Join sspch_payment_plan spp on spp.sspch_invoice_id = si.sspch_invoice_id
+		where checkno  is not null
+		And si.sspch_postdated_checks_id  =v_Record_ID
+		Group By checkno, spp.account, spp.ssfi_banktransfer_id , spp.account_holder	
+	)LOOP
+		--Params
+		If(v_IsDatePaymentPlan = 'Y')Then v_payment_date:= Cur_fin_payment.payment_date; End If;
+
+		--SE COMPRUEBA SI EL PERÍODO ESTÁ CERRADO
+		SELECT openclose INTO v_PeriodStatus FROM c_period WHERE v_payment_date>=startdate AND v_payment_date <= enddate;
+		IF ( v_PeriodStatus='O')THEN
+			RAISE_APPLICATION_ERROR(-20000, '@PeriodNotAvailable@');
+		END IF;
+
+		v_fin_payment_id	:= get_uuid();
+		v_documentno		:= ad_sequence_doctype(v_fin_doctype_id, v_AD_Client_ID, 'Y');
+		v_amount_payment	:= Cur_fin_payment.amount_payment;
+		v_checkno		:= Cur_fin_payment.checkno;
+		v_advance_value		:= Cur_fin_payment.advance_value;
+		v_accountno		:= COALESCE(Cur_fin_payment.account, v_accountno);
+		v_ssfi_banktransfer_id 	:= COALESCE(Cur_fin_payment.ssfi_banktransfer_id, v_ssfi_banktransfer_id);
+		v_account_holder	:= COALESCE(Cur_fin_payment.account_holder, v_account_holder);
+		
+		INSERT INTO fin_payment (  
+			  fin_payment_id		, ad_client_id			, ad_org_id			, createdby			, updatedby
+			, isreceipt			, c_currency_id  		, fin_paymentmethod_id		, documentno			, paymentdate
+			, fin_financial_account_id	, c_doctype_id			, status  			, c_bpartner_id			, em_sspac_c_bpartner_id
+			, em_sspac_checkacc		, amount			, em_sspch_checkno		, em_ecscap_banktransfer_id	, em_sspch_account_holder
+			, generated_credit		, em_sspiv_annulment		, em_ssior_detailreport		, em_aprm_reconcile_payment	, em_aprm_executepayment
+			, em_aprm_add_scheduledpayments , finacc_txn_amount		)
+		VALUES (  v_fin_payment_id		, v_AD_Client_ID 		, v_AD_ORG_ID			, v_AD_USER_ID			, v_AD_USER_ID
+			, 'Y'				, v_bp_currency_id		, v_fin_paymentmethod_id 	, v_documentno 			, v_payment_date
+			, v_fin_financial_account_id	, v_fin_doctype_id		, 'RPAP'			, v_c_bpartner_id		, v_bpartner_rep_id
+			, v_accountno			, v_amount_payment		, v_checkno			, v_ssfi_banktransfer_id	, v_account_holder
+			, v_advance_value		, 'N'				, 'Y'				, 'N'				, 'N'
+			, 'N'				, v_amount_payment		);
+
+		FOR Cur_fin_payment_plan IN (
+			Select 
+				  spp.general_payment_date As payment_date
+				, u.c_bpartner_id   As us_partner_id
+				, spp.quota_value As amount_payment
+				, checkno
+				, spp.fin_payment_schedule_id
+			From  sspch_invoice si
+				join c_invoice i on i.c_invoice_id = si.c_invoice_id
+				Left join ad_user u on i.salesrep_id = u.c_bpartner_id
+				Join sspch_payment_plan spp on spp.sspch_invoice_id = si.sspch_invoice_id
+			where checkno  is not null
+				AND  checkno = Cur_fin_payment.checkno
+				And si.sspch_postdated_checks_id  =v_Record_ID
+			order by spp.sequence
+		)LOOP
+			v_fin_payment_detail_id	:=get_uuid();
+
+			--INSERTO LINEAS DE LOS COBROS1
+			
+			INSERT INTO fin_payment_detail(
+				 fin_payment_detail_id	, ad_client_id				, ad_org_id	, createdby	, updatedby
+				,fin_payment_id		, amount				, isprepayment	, refund	)
+			VALUES (v_fin_payment_detail_id	, v_AD_Client_ID 			, v_AD_ORG_ID	, v_AD_USER_ID	, v_AD_USER_ID
+				, v_fin_payment_id	, Cur_fin_payment_plan.amount_payment	, 'N'		,'N'		);
+
+      --Actualizamos la linea del plan de pago existente 
+      UPDATE fin_payment_scheduledetail 
+      SET fin_payment_detail_id=v_fin_payment_detail_id,
+          em_sspch_postdated_checks_id=v_Record_ID,
+          amount=Cur_fin_payment_plan.amount_payment,
+          writeoffamt=0.00, 
+          iscanceled='N',
+          doubtfuldebt_amount=0.00,
+          updatedby=v_AD_USER_ID,
+          updated=now(),
+          c_bpartner_id=v_c_bpartner_id
+      WHERE fin_payment_schedule_invoice=Cur_fin_payment_plan.fin_payment_schedule_id
+        AND fin_payment_detail_id is null;
+
+			--INSERTO LINEAS DEL PLAN DE PAGOS
+			-- INSERT INTO fin_payment_scheduledetail(
+			-- 	  fin_payment_scheduledetail_id	, ad_client_id				, ad_org_id			, createdby			, updatedby
+			-- 	, fin_payment_detail_id		, amount				, writeoffamt			, iscanceled			, c_bpartner_id
+			-- 	, doubtfuldebt_amount		, fin_payment_schedule_invoice						, em_sspch_postdated_checks_id)
+			-- VALUES (  get_uuid()			, v_AD_Client_ID			, v_AD_ORG_ID			, v_AD_USER_ID			, v_AD_USER_ID
+			-- 	, v_fin_payment_detail_id	, Cur_fin_payment_plan.amount_payment	, 0.00				, 'N'				, v_c_bpartner_id
+			-- 	, 0.00				, Cur_fin_payment_plan.fin_payment_schedule_id 				, v_Record_ID);
+
+		END Loop;-- End  Cur_fin_payment_plan
+		If(v_advance_value > 0)Then
+			v_fin_payment_detail_id	:=get_uuid();
+			INSERT INTO fin_payment_detail(
+				 fin_payment_detail_id	, ad_client_id		, ad_org_id	, createdby	, updatedby
+				,fin_payment_id		, amount		, isprepayment	, refund	)
+			VALUES (v_fin_payment_detail_id	, v_AD_Client_ID 	, v_AD_ORG_ID	, v_AD_USER_ID	, v_AD_USER_ID
+				, v_fin_payment_id	, v_advance_value	, 'Y'		,'N'		);
+
+		
+			INSERT INTO fin_payment_scheduledetail(
+				  fin_payment_scheduledetail_id	, ad_client_id				, ad_org_id			, createdby			, updatedby
+				, fin_payment_detail_id		, amount				, writeoffamt			, iscanceled			, doubtfuldebt_amount	
+				, em_sspch_postdated_checks_id)
+			VALUES (  get_uuid()			, v_AD_Client_ID			, v_AD_ORG_ID			, v_AD_USER_ID			, v_AD_USER_ID
+				, v_fin_payment_detail_id	, v_advance_value			, 0.00				, 'N'				, 0.00	
+				, v_Record_ID);
+		End IF;
+		if(v_documentsno is null)Then
+			v_documentsno:= v_documentno;
+		Else
+			v_documentsno:= v_documentsno||', '||v_documentno;
+		End If;
+		Update fin_payment set 
+			status='RPAE'
+			, description ='Factura Nº : '||Cur_fin_payment.documents 
+			, em_aprm_process_payment ='RE'
+			, Processed ='Y'
+		where fin_payment_id =v_fin_payment_id;
+
+	END Loop; -- END Cur_fin_payment
+	update sspch_postdated_checks set process ='Y'
+	where sspch_postdated_checks_id=v_Record_ID;
+
+    v_Message:='@Sspch_PaymentsCreated@=' || v_documentsno;
+    --<<FINISH_PROCESS>>
+    --  Update AD_PInstance
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message) ;
+    
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, v_Message) ;
+   RETURN;
+  END; --BODY
+EXCEPTION
+WHEN OTHERS THEN
+  v_ResultStr:= '@ERROR=' || SQLERRM;
+  DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+  AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+  RETURN;
+END SSPCH_PROCESSED
+]]></body>
+    </function>
+  </database>

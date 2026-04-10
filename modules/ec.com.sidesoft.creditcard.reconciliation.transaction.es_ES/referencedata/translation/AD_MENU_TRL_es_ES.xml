@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="741876B9FF5147CD8A1134763F2B01DD" trl="Y">
+    <value column="Name" isTrl="Y" original="Settled cards report POS">Reporte Liquidación Tarjetas POS</value>
+    <value column="Description" isTrl="Y" original="Settled cards report POS">Reporte Liquidación Tarjetas POS</value>
+  </row>
+  <row id="A9A1F07C98EC48839224B34788107EFB" trl="Y">
+    <value column="Name" isTrl="Y" original="Card Settlement Loading Transaction">Carga de Liquidación</value>
+    <value column="Description" isTrl="N" original="Card Settlement Loading Transaction">Card Settlement Loading Transaction</value>
+  </row>
+  <row id="D5A7DFC7438F4744833FBD2F24DC8621" trl="Y">
+    <value column="Name" isTrl="Y" original="Card Reconciliation Detail">Detalle Conciliaciones Tarjetas</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCFT_PARAMACCT_CKNAME_TRG">
+    <trigger name="SCFT_PARAMACCT_CKNAME_TRG" table="SCFT_PARAMACCT" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+/********************************************************************************** 
+ * Copyright (C) 2009 Openbravo S.L.U. 
+ * Licensed under the Openbravo Commercial License version 1.0 
+ * You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html 
+ **********************************************************************************
+ * Contributor(s):  ______________________________________.
+ **********************************************************************************/
+BEGIN
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+	-- Verificar registros duplciados
+	
+  -- Validación en INSERT
+  IF INSERTING THEN
+    IF EXISTS (
+      SELECT 1
+      FROM scft_paramacct
+      WHERE name = :NEW.name
+    ) THEN
+      RAISE_APPLICATION_ERROR(-20000, '@scft_duplicatetrg@');
+    END IF;
+  END IF;
+
+  -- Validación en UPDATE solo si cambió el name
+  IF UPDATING THEN
+    IF :NEW.name IS DISTINCT FROM :OLD.name THEN
+      IF EXISTS (
+        SELECT 1
+        FROM scft_paramacct
+        WHERE name = :NEW.name
+          AND scft_paramacct_id <> :OLD.scft_paramacct_id
+      ) THEN
+        RAISE_APPLICATION_ERROR(-20000, '@scft_duplicatetrg@');
+      END IF;
+    END IF;
+  END IF;
+END SCFT_PARAMACCT_CKNAME_TRG
+]]></body>
+    </trigger>
+  </database>

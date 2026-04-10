@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+  <database name="VIEW SSWH_INV_TAXABLE_TAX_V">
+    <view name="SSWH_INV_TAXABLE_TAX_V"><![CDATA[SELECT ci.c_invoice_id, sum(CASE WHEN ct.istaxdeductable = 'Y' AND ct.rate = 0 THEN cilt.taxbaseamt ELSE 0 END + CASE WHEN ct.istaxdeductable = 'Y' AND ct.rate <> 0 THEN cilt.taxbaseamt ELSE 0 END + CASE WHEN ct.istaxdeductable = 'Y' AND ct.rate = 0 THEN cilt.taxamt ELSE 0 END) AS importe_imponible, sum(CASE WHEN ct.istaxdeductable = 'Y' AND ct.rate <> 0 THEN cilt.taxamt ELSE 0 END) AS impuesto FROM c_invoice ci JOIN c_invoiceline cil ON cil.c_invoice_id = ci.c_invoice_id JOIN c_invoicelinetax cilt ON cil.c_invoiceline_id = cilt.c_invoiceline_id JOIN c_tax ct ON cilt.c_tax_id = ct.c_tax_id GROUP BY ci.c_invoice_id]]></view>
+  </database>

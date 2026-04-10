@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE MA_MEASURE_SHIFT">
+    <table name="MA_MEASURE_SHIFT" primaryKey="MA_MEASURE_SHIFT_KEY">
+      <column name="EM_CRPROD_C_DOCTYPETARGET_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_CRPROD_DOCUMENTNO" primaryKey="false" required="false" type="VARCHAR" size="30" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_CRPROD_COMPLETED" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_CRPROD_STATUS_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_CRPROD_ORDERLINE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_CRPROD_UNITPRICE" primaryKey="false" required="false" type="DECIMAL" size="30,3" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_CRPROD_MOVEMENT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_CRPROD_COMPLETEDFPQ" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_CRPROD_SAFETYQUALITYRPT" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="C_DOCTYPE" name="EM_CRPROD_FK_DOCTYPE">
+        <reference local="EM_CRPROD_C_DOCTYPETARGET_ID" foreign="C_DOCTYPE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="M_MOVEMENT" name="EM_CRPROD_FK_MOVEMENT">
+        <reference local="EM_CRPROD_MOVEMENT_ID" foreign="M_MOVEMENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_ORDERLINE" name="EM_CRPROD_FK_ORDERLINE">
+        <reference local="EM_CRPROD_ORDERLINE_ID" foreign="C_ORDERLINE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="CRPRQY_PARAMS_STATUS" name="EM_CRPROD_FK_STATUS">
+        <reference local="EM_CRPROD_STATUS_ID" foreign="CRPRQY_PARAMS_STATUS_ID"/>
+      </foreign-key>
+      <check name="EM_CRPROD_SHIFT_SHIFT_CHECK"><![CDATA[SHIFT IN ('M', 'T', 'SSCRTXT_NIGTH')]]></check>
+    </table>
+  </database>

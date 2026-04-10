@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+  <database name="TABLE ECSBA_ACCOUNT_PARAMET">
+    <table name="ECSBA_ACCOUNT_PARAMET" primaryKey="ECSBA_ACCOUNT_PARAMET_KEY">
+      <column name="ECSBA_ACCOUNT_PARAMET_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ECSBA_MODULE_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DESCRIPTION" primaryKey="false" required="false" type="VARCHAR" size="255" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_ELEMENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="AD_CLIENT" name="ECSBA_ACCOUNT_PARAMET_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_ELEMENT" name="ECSBA_ACCOUNT_PARAMET_ELEMENT">
+        <reference local="C_ELEMENT_ID" foreign="C_ELEMENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="ECSBA_MODULE" name="ECSBA_ACCOUNT_PARAMET_MODULE">
+        <reference local="ECSBA_MODULE_ID" foreign="ECSBA_MODULE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="ECSBA_ACCOUNT_PARAMET_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <check name="ECSBA_ACCOUNT_PARAMET_ISACTIVE"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
+    </table>
+  </database>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SDIN_CANCELPAYMENTMETHOD">
+    <function name="SDIN_CANCELPAYMENTMETHOD" type="VARCHAR">
+      <parameter name="p_cinvoice_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[TYPE RECORD IS REF CURSOR;
+    Cur_paymentmethod  RECORD;
+    V_flag NUMBER;
+    V_result character varying(5000);
+BEGIN 
+V_flag:=0;
+    FOR Cur_paymentmethod IN(
+
+SELECT fpm.name as paymentmethod
+FROM fin_payment_scheduledetail psd, fin_payment_schedule ps, fin_paymentmethod fpm ,c_invoice i, fin_payment_detail fpd,fin_payment fp
+WHERE psd.fin_payment_schedule_invoice = ps.fin_payment_schedule_id 
+AND   ps.c_invoice_id = i.c_invoice_id
+AND fpd.fin_payment_detail_id = psd.fin_payment_detail_id
+AND fpd.fin_payment_id = fp.fin_payment_id
+AND fpm.fin_paymentmethod_id = fp.fin_paymentmethod_id
+AND i.c_invoice_id= p_cinvoice_id
+ORDER BY psd.amount DESC
+) LOOP
+		V_flag := V_flag +1;
+	IF(V_flag =1) THEN
+ V_result := Cur_paymentmethod.paymentmethod ;
+	END IF;
+
+
+
+END LOOP;
+
+		return V_result;
+END SDIN_CANCELPAYMENTMETHOD
+]]></body>
+    </function>
+  </database>

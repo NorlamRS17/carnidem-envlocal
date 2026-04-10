@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="86FE340E9E9A42FCA924015F37DFBE9F" trl="N">
+    <value column="Name" isTrl="Y" original="Payment Execution">Ejecución de Pagos/Cobros</value>
+    <value column="Description" isTrl="Y" original="This window allows payment execution management for payments in status &quot;awaiting execution&quot;.">Esta ventana permite la gestión de ejecución de pagos/cobros en estado "pendientes de ejecución"</value>
+  </row>
+</compiereTrl>

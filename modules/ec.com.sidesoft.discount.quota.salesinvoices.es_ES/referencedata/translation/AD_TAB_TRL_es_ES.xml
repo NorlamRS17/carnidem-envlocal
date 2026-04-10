@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="838D542113D0479B87511D4059CDB80E" trl="Y">
+    <value column="Name" isTrl="Y" original="Header">Detalle de Cuotas Facturas Empleados</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="ABED3FE6D7FE4BE1AAA1A72A1F6D2729" trl="Y">
+    <value column="Name" isTrl="Y" original="Lines">Lineas</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

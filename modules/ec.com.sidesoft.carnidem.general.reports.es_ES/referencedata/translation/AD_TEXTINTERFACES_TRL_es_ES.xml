@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="1C13555127254AF99AE1E03F21C3EB1F" trl="N">
+    <value column="Text" isTrl="N" original="REPORTE DE MATERIAS PRIMAS POR CODIGO DE COMPRA">REPORTE DE MATERIAS PRIMAS POR CODIGO DE COMPRA</value>
+  </row>
+  <row id="1FAB4092281740159DE4E01F47F45215" trl="N">
+    <value column="Text" isTrl="N" original="Unidad">Unidad</value>
+  </row>
+  <row id="29E5D043AD29445F8552AA00A2E99D20" trl="N">
+    <value column="Text" isTrl="N" original="PAG.">PAG.</value>
+  </row>
+  <row id="415F571A18AF457E8B23B3540E07F0D0" trl="N">
+    <value column="Text" isTrl="N" original="Precio unitario con IVA">Precio unitario con IVA</value>
+  </row>
+  <row id="4A50359EB80340E8B44755FD9C9BEC3D" trl="N">
+    <value column="Text" isTrl="N" original="Factura Proveedor">Factura Proveedor</value>
+  </row>
+  <row id="4D42303DA3164792BCCFFECCF93B4E83" trl="N">
+    <value column="Text" isTrl="N" original="com.sidesoft.hrm.payroll/src/com/sidesoft/hrm/payroll/ad_Reports/Rpt_FinalSettlement.jrxml">com.sidesoft.hrm.payroll/src/com/sidesoft/hrm/payroll/ad_Reports/Rpt_FinalSettlement.jrxml</value>
+  </row>
+  <row id="55404F13CF0C4CCD882C5917287A05F7" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad">Cantidad</value>
+  </row>
+  <row id="5F6D819DDF674EF8BCD62F57A05B24A4" trl="N">
+    <value column="Text" isTrl="N" original="Proveedor">Proveedor</value>
+  </row>
+  <row id="630C3EA89E98400BA7EC2D61F93EF31F" trl="N">
+    <value column="Text" isTrl="N" original="Precio Unitario sin IVA">Precio Unitario sin IVA</value>
+  </row>
+  <row id="65ED3995D2154868A79992146D0B3949" trl="N">
+    <value column="Text" isTrl="N" original="Categoria de producto">Categoria de producto</value>
+  </row>
+  <row id="6DBDAF561D164D90913837039BBBBAC8" trl="N">
+    <value column="Text" isTrl="N" original="Valor Cuota">Valor Cuota</value>
+  </row>
+  <row id="6DDF06A05E954868AF2F231F1230B51F" trl="N">
+    <value column="Text" isTrl="N" original="Unidad">Unidad</value>
+  </row>
+  <row id="702A8828FA47473DA3775DC35D93284A" trl="N">
+    <value column="Text" isTrl="N" original="Entrada">Entrada</value>
+  </row>
+  <row id="73B1B572DDB14B7780015C0E92F85F41" trl="N">
+    <value column="Text" isTrl="N" original="Usuario:">Usuario:</value>
+  </row>
+  <row id="8B302F3DCFC34606ADBFDA1CE1708E02" trl="N">
+    <value column="Text" isTrl="N" original="Fecha factura">Fecha factura</value>
+  </row>
+  <row id="9835E71DF82A46218275B0052271D048" trl="N">
+    <value column="Text" isTrl="N" original="Codigo">Codigo</value>
+  </row>
+  <row id="B00C46E0851046E2B768527E392A2983" trl="N">
+    <value column="Text" isTrl="N" original="N° Cuotas">N° Cuotas</value>
+  </row>
+  <row id="B8138C15DB8045B8868608BB7E918CE7" trl="N">
+    <value column="Text" isTrl="N" original="Producto">Producto</value>
+  </row>
+  <row id="DC40380A56B14AC1BA8C927CCE97CE43" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de Impresión:">Fecha de Impresión:</value>
+  </row>
+  <row id="DD96B9BE957F4EDD82E05AB1730C8CC2" trl="N">
+    <value column="Text" isTrl="N" original="Código de compra">Código de compra</value>
+  </row>
+  <row id="E03C320718FB4212AE98AB08F57F0582" trl="N">
+    <value column="Text" isTrl="N" original="Unidad Alternativa">Unidad Alternativa</value>
+  </row>
+  <row id="EABF0E655F8442AF86DAC9E8439ED07F" trl="N">
+    <value column="Text" isTrl="N" original="N° documento">N° documento</value>
+  </row>
+  <row id="F5B6C4FBF427479DA45929456C21EF03" trl="N">
+    <value column="Text" isTrl="N" original="Producto">Producto</value>
+  </row>
+  <row id="F5BD5AB8D1A54553918FFB35D560297C" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad">Cantidad</value>
+  </row>
+</compiereTrl>

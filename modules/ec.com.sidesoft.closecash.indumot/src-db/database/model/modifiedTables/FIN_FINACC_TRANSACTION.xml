@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_FINACC_TRANSACTION">
+    <table name="FIN_FINACC_TRANSACTION" primaryKey="FIN_FINACC_TRANSACTION_KEY">
+      <column name="EM_SSCCCIN_REFERENCE" primaryKey="false" required="false" type="CLOB" size="4000" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <index name="EM_SSCCCIN_IDXFT_CLOSECASH" unique="false">
+        <index-column name="functionBasedColumn" functionExpression="STATEMENTDATE"/>
+        <whereClause><![CDATA[EM_SCCC_CASH_CLOUSURE_ID IS NULL AND EM_SCCC_ISCASHCLOUSURE<>'Y']]></whereClause>
+      </index>
+    </table>
+  </database>

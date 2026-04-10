@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0F1916CE4CC3458F8E85144BDB93CC42" trl="Y">
+    <value column="Name" isTrl="N" original="Total">Total</value>
+    <value column="PrintName" isTrl="N" original="Total">Total</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1BE10211953A4CA0A1F98DEE2D93C2C8" trl="Y">
+    <value column="Name" isTrl="N" original="Base">Base</value>
+    <value column="PrintName" isTrl="N" original="Base">Base</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2C2A6BCD0D3343F49C0F85031DDEAD24" trl="Y">
+    <value column="Name" isTrl="Y" original="Tax">Impuesto</value>
+    <value column="PrintName" isTrl="Y" original="Tax">Impuesto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3B744720B2964CCE9401256E3C0FE6D3" trl="Y">
+    <value column="Name" isTrl="Y" original="Business Partner">Tercero</value>
+    <value column="PrintName" isTrl="Y" original="Business Partner">Tercero</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C045FD5E414C4B5C905367E6D65943C4" trl="Y">
+    <value column="Name" isTrl="Y" original="Purchase Invoice">Factura (Proveedor)</value>
+    <value column="PrintName" isTrl="Y" original="Purchase Invoice">Factura (Proveedor)</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C47D7CF2CCF043B3BE4B224FF9B943B3" trl="N">
+    <value column="Name" isTrl="N" original="Eeir_Refund_ID">Eeir_Refund_ID</value>
+    <value column="PrintName" isTrl="N" original="Eeir_Refund_ID">Eeir_Refund_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="50B6A55056CD4B008B3000F2A20435F9" trl="N">
+    <value column="Name" isTrl="N" original="Sspch_postdated_checks">Sspch_postdated_checks</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6B6443B28F714ADD8161B577D0849710" trl="N">
+    <value column="Name" isTrl="N" original="Sspch_FIN_Payment_Schedule">Sspch_FIN_Payment_Schedule</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="871CA6E80AED46058AB040EE795041E7" trl="N">
+    <value column="Name" isTrl="N" original="BPartner Customers">BPartner Customers</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

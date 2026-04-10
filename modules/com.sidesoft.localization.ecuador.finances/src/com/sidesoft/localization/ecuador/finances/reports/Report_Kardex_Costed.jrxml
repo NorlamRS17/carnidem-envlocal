@@ -1,0 +1,952 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Report_Kardex" pageWidth="1160" pageHeight="1161" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="1100" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="ec6d803a-8681-488b-883f-79e2037d3554">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="0.9558924531310702"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="org.openbravo.dal.core.OBContext"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATETIMEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy hh:mm:ss")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="M_Product_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="M_Warehouse_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Org_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[OBContext.getOBContext().getCurrentOrganization().getId()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Org_Name" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="User_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="UserName" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[OBContext.getOBContext().getUser().getUsername()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH RECURSIVE query_kardex AS (
+select
+      w.name as "BODEGA",
+      p.value as "PRODUCTO",
+      p.name as "PRODUCTO_NOMBRE",
+      uom.uomsymbol AS "UM",
+      coalesce(costo,0)  as "COSTOINICIAL",
+      coalesce((select sum(mt.movementqty) from m_transaction mt where mt.m_product_id = p.m_product_id and mt.m_attributesetinstance_id = t.m_attributesetinstance_id and (mt.movementdate::date) < ($P{DateFrom}) and mt.m_locator_id in (select ml2.m_locator_id from m_locator ml2 where ml2.m_warehouse_id = l.m_warehouse_id)),0) as "CANTINICIAL",
+      CASE WHEN t.movementtype like '%+%' AND t.movementqty > 0 then
+      coalesce((select mg.cost from m_costing mg
+	  	where (mg.m_product_id = $P{M_Product_ID} or $P{M_Product_ID} is null)
+	   	AND mg.datefrom::date = t.movementdate::date
+		ORDER BY mg.created desc
+		limit 1
+	  ), 0)
+      WHEN t.movementtype like '%-%' OR (t.movementtype like '%+%' AND t.movementqty < 0) then
+      coalesce((select mc.cost from m_costing mc
+	  	where (mc.m_product_id = $P{M_Product_ID} or $P{M_Product_ID} is null)
+	   	AND t.movementdate::date BETWEEN mc.datefrom::date AND mc.dateto::date
+		ORDER BY mc.created desc
+		limit 1
+	  ), 0)
+      END as "COSTE",
+      t.movementdate as "FECHA",
+      t.movementtype as "TIPO_MOVIMIENTO",
+      case
+        when t.movementtype like '%+%' then 'I'
+        when t.movementtype like '%-%' then 'E'
+      end as "TIPOMOVIMIENTO",
+      coalesce(cast(io.documentno as varchar(60)), cast(m.documentno as varchar(60)), cast(it.documentno as varchar(60)), cast(pt.documentno as varchar(60))) as "DOCUMENTNO",
+CASE
+		when INV.POReference is null then INV.documentno
+		when INV.POReference = ''  then INV.documentno
+		else INV.POReference
+	END as "DOCUMENTNOFAC",
+      case
+        when t.movementtype='C+' or t.movementtype='C-' or t.movementtype='V+' or t.movementtype='V-' then cast(dtio.name as varchar(60))
+        when t.movementtype='I+' then cast('Ajuste Ingreso' as varchar(60))
+        when t.movementtype='I-' then cast('Ajuste Egreso' as varchar(60))
+        when t.movementtype='M+' then cast('Movimiento Ingreso' as varchar(60))
+        when t.movementtype='M-' then cast('Movimiento Egreso' as varchar(60))
+        when t.movementtype='P+' then cast('Producción Ingreso' as varchar(60))
+        when t.movementtype='P-' then cast('Producción Egreso' as varchar(60))
+        when t.movementtype='D+' then cast('Consumo Interno Ingreso' as varchar(60))
+        when t.movementtype='D-' then cast('Consumo Interno Egreso' as varchar(60))
+        when t.movementtype='W+' then cast('Orden de Trabajo Ingreso' as varchar(60))
+        when t.movementtype='W-' then cast('Orden de Trabajo Egreso' as varchar(60))
+        else cast(t.movementtype as varchar(60))
+      end as "DOCUMENTO",
+      t.movementqty as "CANT"
+      , CASE WHEN t.movementqty > 0 THEN t.movementqty END as "CANTI"
+      , CASE WHEN t.movementqty < 0 THEN abs(t.movementqty) END as "CANTE"
+      , CASE WHEN t.movementqty > 0 THEN t.transactioncost END as "COSTOTI"
+      , CASE WHEN t.movementqty < 0 THEN t.transactioncost END as "COSTOTE"
+      , crr.costingprecision as currency
+      , CASE WHEN t.movementqty > 0 THEN round((t.transactioncost/t.movementqty),coalesce(crr.costingprecision,2)) END as "COSTOI"
+      , CASE WHEN t.movementqty < 0 THEN round(t.transactioncost/abs(t.movementqty),coalesce(crr.costingprecision,2)) END as "COSTOE"
+      , coalesce(costo,0)*coalesce((select sum(sd.qtyonhand) from m_storage_detail sd where sd.m_product_id = p.m_product_id and sd.m_attributesetinstance_id = t.m_attributesetinstance_id and sd.m_locator_id in (select ml1.m_locator_id from m_locator ml1 where ml1.m_warehouse_id = l.m_warehouse_id))
+      - (select sum(mt.movementqty) from m_transaction mt where mt.m_product_id = p.m_product_id and mt.m_attributesetinstance_id = t.m_attributesetinstance_id and (mt.movementdate::date) >= ($P{DateFrom}) and mt.m_locator_id in (select ml2.m_locator_id from m_locator ml2 where ml2.m_warehouse_id = l.m_warehouse_id)),0) as "TOTALCOST"
+	  , ROW_NUMBER() OVER (PARTITION BY w.name, p.value, COALESCE(asi.lot, asi.serno, asi.description, '') ORDER BY t.movementdate, t.created) AS column_num
+	  , 'S' as detail_init
+	  , COALESCE(asi.lot, asi.serno, asi.description, '') AS "ATRIBUTO"
+	  , asi.description AS "DESCRIPCION_ATRIBUTO"
+from m_transaction t
+left join m_attributesetinstance asi ON asi.m_attributesetinstance_id = t.m_attributesetinstance_id
+left join
+(
+
+SELECT
+costo.m_product_id
+,costo.m_locator_id
+,costo.m_attributesetinstance_id
+,stock as cantidad_s
+,(case when stock <> 0 Then CASE iscostcalculated WHEN 'Y' THEN total_cost / stock ELSE NULL END else  0 end ) AS costo
+FROM
+(
+
+select  t.m_locator_id,t.m_product_id,t.m_attributesetinstance_id,sum(t.movementqty) as stock,     round( (C_CURRENCY_CONVERT_PRECISION (sum(CASE WHEN t.MOVEMENTQTY < 0 THEN - t.transactioncost ELSE t.transactioncost END)
+,t.c_currency_id,t.c_currency_id,$P{DateFrom} ,NULL,mp.AD_CLIENT_ID,mp.ad_org_id,'C')),2)
+	AS TOTAL_COST,t.iscostcalculated
+from m_transaction t
+left join m_product mp on mp.m_product_id = t.m_product_id
+where  t.movementdate::date <  $P{DateFrom}
+and  mp.m_product_id = t.m_product_id
+group by 1,2,3, t.c_currency_id, mp.AD_CLIENT_ID, mp.ad_org_id,t.iscostcalculated
+) costo
+
+) saldo on saldo.m_product_id = t.m_product_id  and saldo.m_locator_id = t.m_locator_id and saldo.m_attributesetinstance_id = t.m_attributesetinstance_id
+join ad_org org on org.ad_org_id = t.ad_org_id
+join m_locator l on l.m_locator_id  = t.m_locator_id
+join m_warehouse w on w.m_warehouse_id = l.m_warehouse_id
+join m_product p on p.m_product_id = t.m_product_id
+join c_uom uom on t.c_uom_id = uom.c_uom_id
+left join m_costing c on c.m_transaction_id = t.m_transaction_id
+left join (select c.costingprecision as costingprecision from c_acctschema ac
+  JOIN c_currency c ON c.c_currency_id = ac.c_currency_id
+  where ac.isactive = 'Y'
+  limit 1
+) crr ON 1=1
+left join (
+  m_inoutline iol
+  join m_inout io on io.m_inout_id = iol.m_inout_id
+  join c_doctype dtio on io.c_doctype_id = dtio.c_doctype_id
+) on iol.m_inoutline_id = t.m_inoutline_id
+left join C_InvoiceLine INVL on  INVL.M_InOutLine_ID = iol.M_InOutLine_ID
+left join c_invoice INV on INV.c_invoice_id = INVL.c_invoice_id
+left join (
+  m_movementline ml
+  join m_movement m on m.m_movement_id = ml.m_movement_id
+) on ml.m_movementline_id = t.m_movementline_id
+left join (
+  m_inventoryline itl
+  join m_inventory it on it.m_inventory_id = itl.m_inventory_id
+) on itl.m_inventoryline_id = t.m_inventoryline_id
+left join (
+  select ptl.m_productionline_id as m_productionline_id, pt.documentno as documentno from m_productionline ptl
+  left join m_productionplan ptp on ptp.m_productionplan_id = ptl.m_productionplan_id
+  join m_production pt on pt.m_production_id = ptp.m_production_id
+)pt on pt.m_productionline_id = t.m_productionline_id
+where coalesce(io.docstatus, 'CO') = 'CO'
+and t.movementdate::date between $P{DateFrom} and $P{DateTo}
+and (  l.m_warehouse_id = $P{M_Warehouse_ID} or $P{M_Warehouse_ID} is null)
+and  (p.m_product_id = $P{M_Product_ID} or $P{M_Product_ID} is null)
+order by w.name, p.value, t.movementdate, t.created
+),
+cte_recursive AS (
+    SELECT
+        *,
+        CASE
+            WHEN column_num = 1 THEN
+                (COALESCE("CANTINICIAL", 0)*COALESCE("COSTOINICIAL", 0)) + COALESCE("COSTOTI", 0) - COALESCE("COSTOTE", 0)
+            ELSE
+                NULL
+        END AS fullcost
+    FROM
+        query_kardex
+    WHERE
+        column_num = 1
+
+    UNION ALL
+
+    SELECT
+        qk.*,
+        (cr.fullcost + COALESCE(qk."COSTOTI", 0) - COALESCE(qk."COSTOTE", 0)) AS test1
+    FROM
+        query_kardex qk
+    INNER JOIN
+        cte_recursive cr ON
+            cr."BODEGA" = qk."BODEGA"
+            AND cr."PRODUCTO" = qk."PRODUCTO"
+            AND cr."ATRIBUTO" = qk."ATRIBUTO"
+            AND cr.column_num = qk.column_num - 1
+)
+SELECT
+    w.name AS "BODEGA"
+    , p.value AS "PRODUCTO"
+    , p.name AS "PRODUCTO_NOMBRE"
+	, p.name as "PRODUCTO_NOMBRE"
+	, uom.uomsymbol AS "UM"
+    , coalesce(costo,0)  as "COSTOINICIAL"
+    , coalesce((select sum(mt.movementqty) from m_transaction mt where mt.m_product_id = p.m_product_id and mt.m_attributesetinstance_id = t.m_attributesetinstance_id and (mt.movementdate::date) < ($P{DateFrom}) and mt.m_locator_id in (select ml2.m_locator_id from m_locator ml2 where ml2.m_warehouse_id = l.m_warehouse_id)),0) as "CANTINICIAL"
+	, 0::numeric as "COSTE"
+    , now() as "FECHA"
+	, 'N/A'::character varying(60) as "TIPO_MOVIMIENTO"
+	, 'N/A' as "TIPOMOVIMIENTO"
+	, 'N/A'::character varying(60) as "DOCUMENTNO"
+	, 'N/A'::character varying as "DOCUMENTNOFAC"
+	, 'N/A'::character varying(60) as "DOCUMENTO"
+	, 0::numeric as "CANT"
+	, 0::numeric as "CANTI"
+	, 0::numeric as "CANTE"
+	, 0::numeric as "COSTOTI"
+	, 0::numeric as "COSTOTE"
+	, crr.costingprecision as currency
+	, 0::numeric as "COSTOI"
+	, 0::numeric as "COSTOE"
+	, 0::numeric as "TOTALCOST"
+	, 0::bigint as column_num
+	, 'N' as detail_init
+	, 0::numeric as fullcost
+	, COALESCE(asi.lot, asi.serno, asi.description, '') AS "ATRIBUTO"
+	, asi.description AS "DESCRIPCION_ATRIBUTO"
+	,TO_CHAR(now(), 'dd/MM/yyyy HH24:MI:SS') fecha_impresion
+FROM m_transaction t
+left join m_attributesetinstance asi ON asi.m_attributesetinstance_id = t.m_attributesetinstance_id
+left join
+(
+
+SELECT
+costo.m_product_id
+,costo.m_locator_id
+,costo.m_attributesetinstance_id
+,stock as cantidad_s
+,(case when stock <> 0 Then CASE iscostcalculated WHEN 'Y' THEN total_cost / stock ELSE NULL END else  0 end ) AS costo
+FROM
+(
+
+select  t.m_locator_id,t.m_product_id,t.m_attributesetinstance_id,sum(t.movementqty) as stock,     round( (C_CURRENCY_CONVERT_PRECISION (sum(CASE WHEN t.MOVEMENTQTY < 0 THEN - t.transactioncost ELSE t.transactioncost END)
+,t.c_currency_id,t.c_currency_id,$P{DateFrom} ,NULL,mp.AD_CLIENT_ID,mp.ad_org_id,'C')),2)
+	AS TOTAL_COST,t.iscostcalculated
+from m_transaction t
+left join m_product mp on mp.m_product_id = t.m_product_id
+where  t.movementdate::date <  $P{DateFrom}
+and  mp.m_product_id = t.m_product_id
+group by 1,2,3, t.c_currency_id, mp.AD_CLIENT_ID, mp.ad_org_id,t.iscostcalculated
+) costo
+
+) saldo on saldo.m_product_id = t.m_product_id  and saldo.m_locator_id = t.m_locator_id and saldo.m_attributesetinstance_id = t.m_attributesetinstance_id
+JOIN m_locator l ON l.m_locator_id = t.m_locator_id
+JOIN m_warehouse w ON w.m_warehouse_id = l.m_warehouse_id
+JOIN m_product p ON p.m_product_id = t.m_product_id
+join c_uom uom on t.c_uom_id = uom.c_uom_id
+left join (select c.costingprecision as costingprecision from c_acctschema ac
+  JOIN c_currency c ON c.c_currency_id = ac.c_currency_id
+  where ac.isactive = 'Y'
+  limit 1
+) crr ON 1=1
+LEFT JOIN
+    (
+        SELECT
+            t.m_locator_id,
+            t.m_product_id,
+            t.m_attributesetinstance_id
+        FROM
+            m_transaction t
+        WHERE
+            t.movementdate::date BETWEEN $P{DateTo} AND $P{DateTo}
+    ) t_exclude ON t_exclude.m_locator_id = t.m_locator_id AND t_exclude.m_product_id = t.m_product_id AND t_exclude.m_attributesetinstance_id = t.m_attributesetinstance_id
+WHERE
+    (p.m_product_id = $P{M_Product_ID} or $P{M_Product_ID} is null)
+    and (  l.m_warehouse_id = $P{M_Warehouse_ID} or $P{M_Warehouse_ID} is null)
+    AND t.movementdate::date < $P{DateTo}
+    AND t_exclude.m_locator_id IS NULL
+GROUP BY
+    w.m_warehouse_id, p.value, p.name, uom.uomsymbol, saldo.costo, p.m_product_id, l.m_warehouse_id, crr.costingprecision, COALESCE(asi.lot, asi.serno, asi.description, ''), t.m_attributesetinstance_id, asi.description
+HAVING
+    SUM(t.movementqty) <> 0
+
+	UNION ALL
+
+SELECT
+   "BODEGA"
+	, "PRODUCTO"
+	, "PRODUCTO_NOMBRE"
+	, "PRODUCTO_NOMBRE"
+	, "UM"
+	, "COSTOINICIAL"
+	, "CANTINICIAL"
+    , "COSTE"
+	, "FECHA"
+	, "TIPO_MOVIMIENTO"
+	, "TIPOMOVIMIENTO"
+	, "DOCUMENTNO"
+	, "DOCUMENTNOFAC"
+	, "DOCUMENTO"
+	, "CANT"
+	, "CANTI"
+	, "CANTE"
+	, "COSTOTI"
+	, "COSTOTE"
+	, currency
+	, "COSTOI"
+	, "COSTOE"
+	, "TOTALCOST"
+	, column_num
+	, detail_init
+	, fullcost
+	, "ATRIBUTO"
+	, "DESCRIPCION_ATRIBUTO"
+	,TO_CHAR(now(), 'dd/MM/yyyy HH24:MI:SS') fecha_impresion
+FROM
+    cte_recursive
+ORDER BY
+    "BODEGA",
+    "PRODUCTO",
+    "ATRIBUTO",
+    column_num]]>
+	</queryString>
+	<field name="BODEGA" class="java.lang.String"/>
+	<field name="PRODUCTO" class="java.lang.String"/>
+	<field name="PRODUCTO_NOMBRE" class="java.lang.String"/>
+	<field name="UM" class="java.lang.String"/>
+	<field name="COSTOINICIAL" class="java.math.BigDecimal"/>
+	<field name="CANTINICIAL" class="java.math.BigDecimal"/>
+	<field name="COSTE" class="java.math.BigDecimal"/>
+	<field name="FECHA" class="java.sql.Timestamp"/>
+	<field name="TIPO_MOVIMIENTO" class="java.lang.String"/>
+	<field name="TIPOMOVIMIENTO" class="java.lang.String"/>
+	<field name="DOCUMENTNO" class="java.lang.String"/>
+	<field name="DOCUMENTNOFAC" class="java.lang.String"/>
+	<field name="DOCUMENTO" class="java.lang.String"/>
+	<field name="CANT" class="java.math.BigDecimal"/>
+	<field name="CANTI" class="java.math.BigDecimal"/>
+	<field name="CANTE" class="java.math.BigDecimal"/>
+	<field name="COSTOTI" class="java.math.BigDecimal"/>
+	<field name="COSTOTE" class="java.math.BigDecimal"/>
+	<field name="currency" class="java.math.BigDecimal"/>
+	<field name="COSTOI" class="java.math.BigDecimal"/>
+	<field name="COSTOE" class="java.math.BigDecimal"/>
+	<field name="TOTALCOST" class="java.math.BigDecimal"/>
+	<field name="column_num" class="java.lang.Long"/>
+	<field name="detail_init" class="java.lang.String"/>
+	<field name="fullcost" class="java.math.BigDecimal"/>
+	<field name="ATRIBUTO" class="java.lang.String"/>
+	<field name="DESCRIPCION_ATRIBUTO" class="java.lang.String"/>
+	<field name="fecha_impresion" class="java.lang.String"/>
+	<variable name="saldoproducto" class="java.math.BigDecimal" resetType="Group" resetGroup="producto" calculation="Sum">
+		<variableExpression><![CDATA[$F{CANT}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<group name="bodega">
+		<groupExpression><![CDATA[$F{BODEGA}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<staticText>
+					<reportElement key="staticText" mode="Opaque" x="0" y="0" width="158" height="20" forecolor="#FFFFFF" backcolor="#C0C0C0" uuid="69ffff50-33fb-4833-b26e-d0b575ff341f"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<text><![CDATA[Bodega]]></text>
+				</staticText>
+				<textField>
+					<reportElement mode="Opaque" x="158" y="0" width="942" height="20" forecolor="#FFFFFF" backcolor="#C0C0C0" uuid="38a6f3f7-65c8-40b7-998e-65169c6b31b8"/>
+					<box>
+						<bottomPen lineWidth="1.0" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{BODEGA}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="producto">
+		<groupExpression><![CDATA[$F{PRODUCTO}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="0" y="0" width="158" height="20" forecolor="#000000" uuid="9dbd17c4-c532-441c-9ef4-e42cb3693ca8"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PRODUCTO}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="158" y="0" width="589" height="20" forecolor="#000000" uuid="5856c640-c30f-4224-9aba-f4eb611156e3"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PRODUCTO_NOMBRE}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="747" y="0" width="153" height="20" uuid="49dbba59-904a-4e67-871e-bc7da11d825a"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10"/>
+					</textElement>
+					<text><![CDATA[Saldos al Inicio:]]></text>
+				</staticText>
+				<textField pattern="###0.00">
+					<reportElement x="900" y="0" width="65" height="20" uuid="5fd07fdc-9a9b-4327-a4c4-82f7f15bac10"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CANTINICIAL}]]></textFieldExpression>
+				</textField>
+				<textField pattern="">
+					<reportElement x="965" y="0" width="66" height="20" uuid="8381f104-1e62-4746-928b-f48304038e39"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{COSTOINICIAL}]]></textFieldExpression>
+					<patternExpression><![CDATA["###0." + new String(new char[$F{currency}.intValue()]).replace('\0', '0')]]></patternExpression>
+				</textField>
+				<textField pattern="###0.00">
+					<reportElement x="1031" y="0" width="69" height="20" uuid="cce895b8-c3e4-49b2-b400-8469c97cbe75"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{CANTINICIAL}.multiply( $F{COSTOINICIAL} )]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<title>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText" x="106" y="0" width="859" height="50" uuid="295db217-fde5-4c77-80a8-08cefb5bc83b"/>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<text><![CDATA[Kardex]]></text>
+			</staticText>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="106" height="50" uuid="bf81ab62-815f-4c67-b805-b43be601e9f6"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $P{Org_ID})]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="965" y="0" width="135" height="50" isPrintWhenDetailOverflows="true" uuid="3d8c0955-0e3f-47f0-a535-67a74a7c367f"/>
+				<box>
+					<topPen lineWidth="2.0"/>
+					<bottomPen lineWidth="2.0"/>
+				</box>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>Fecha de Impresión: </b><br>"+$F{fecha_impresion}+"<br><b>Usuario: </b><br>"+$P{UserName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="356" y="0" width="68" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="418f2218-11a2-47e6-a91d-ea4c2056ecdf"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="0" y="0" width="158" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="f1456109-68c2-48e7-95d4-4596b760dc61"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Movimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="158" y="0" width="111" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="f2effb84-8325-4d95-89e4-bd99d681603d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="545" y="0" width="49" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="08e3f5b1-5b93-4b5c-93ea-5cfd80a0023f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="803" y="16" width="52" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="d2edb8c5-52eb-4fa8-9782-125b4f5df3d9"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="965" y="16" width="66" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="9e7f53cb-1c39-462d-8656-97e679cfa7d6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="747" y="0" width="153" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="ffb47bce-0f22-40a4-ab0e-048917e5b78c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Egresos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="900" y="0" width="200" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="b08e6f4e-e741-485e-9e32-10b9ea770c8d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="855" y="16" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="dfbc030f-454c-4225-ba1a-3ae13f37c061"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="1031" y="16" width="69" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="9289e088-1cba-4104-a1b9-f72b99e39cd6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="269" y="0" width="87" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="572968ba-6733-4d68-b690-2e4f5c785b7d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.Factura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="747" y="16" width="56" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="bc3b7955-de5d-485b-95dc-d01dfbae3b4a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="900" y="16" width="65" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="60200376-77de-4b32-8487-3e08403bd6e9"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="594" y="0" width="153" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="907a3385-ffd6-47ae-ac33-a3bcdcbb4a2c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ingresos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="702" y="16" width="45" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="9839a339-053c-40df-8112-c63cf1a6f87c"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="650" y="16" width="52" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="61779ae3-a7b5-42d9-a54d-c7da4dc62159"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="594" y="16" width="56" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="0f5cf32a-ee49-4578-bc54-2322228d3b37"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText" mode="Transparent" x="424" y="0" width="121" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="1b318cfa-c0fd-4f1a-b4fd-e15b184953be"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Atributo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{detail_init}.equals( "S" )]]></printWhenExpression>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" x="356" y="0" width="68" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="38cedddb-717c-4b38-acd5-97d57117b425"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FECHA}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{DATEFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" x="0" y="0" width="158" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="6e9b2682-c081-4db3-ae31-8416bdd74528"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DOCUMENTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" x="158" y="0" width="111" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="65b6e9e6-dc7a-429a-b450-41113fab3e7d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DOCUMENTNO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="855" y="0" width="45" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="81666426-5dea-4308-a0e5-ca4128b6f302"/>
+				<box rightPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COSTOTE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="269" y="0" width="87" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="0eb51975-db97-45ed-ad9c-c399b43dd0f8"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DOCUMENTNOFAC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="702" y="0" width="45" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="71ee603c-389f-476b-a5d2-3b3424a2421f"/>
+				<box rightPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COSTOTI}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="594" y="0" width="56" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="669f2562-6944-4b30-9110-33226e3ff04f"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CANTI}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" x="545" y="0" width="49" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="cf8206d0-dfef-4f23-abbf-1f6b6f4e5369"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{UM}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" x="803" y="0" width="52" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="76bbf8b1-cdb4-4a22-accc-fa6ac50e4d84"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COSTOE}]]></textFieldExpression>
+				<patternExpression><![CDATA["###0." + new String(new char[$F{currency}.intValue()]).replace('\0', '0')]]></patternExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" x="650" y="0" width="52" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="b4895a20-b1e4-4f25-a799-ca4c3eb8aa2e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COSTOI}]]></textFieldExpression>
+				<patternExpression><![CDATA["###0." + new String(new char[$F{currency}.intValue()]).replace('\0', '0')]]></patternExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" x="965" y="0" width="66" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="25dfc6cf-52da-48d9-9410-fa19147a417a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COSTE}]]></textFieldExpression>
+				<patternExpression><![CDATA["###0." + new String(new char[$F{currency}.intValue()]).replace('\0', '0')]]></patternExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="1031" y="0" width="69" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="96281362-fea6-4651-bf62-689e1e4c5d88"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CANTINICIAL}.add( $V{saldoproducto} ).setScale(2, java.math.RoundingMode.HALF_UP).multiply($F{COSTE})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="747" y="0" width="56" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="449ebf44-4878-4bfe-89bf-8bbb94261374"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CANTE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement key="textField" x="900" y="0" width="65" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" uuid="ea484eb6-cca8-4ec3-ba26-430f07f2c323"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CANTINICIAL}.add( $V{saldoproducto} )]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="424" y="0" width="121" height="14" isPrintWhenDetailOverflows="true" forecolor="#000000" backcolor="#FFFFFF" uuid="53ee7203-8045-4de5-b648-e1d5147d3d2a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="7" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESCRIPCION_ATRIBUTO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="0" y="0" width="379" height="19" forecolor="#000000" uuid="70468641-6667-455e-9f4b-775a92b22347"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<patternExpression><![CDATA[$P{DATETIMEFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" x="379" y="0" width="183" height="19" forecolor="#000000" uuid="c0e21e96-428c-4284-8f87-2d7079ba62dc"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField" mode="Transparent" x="562" y="0" width="538" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="9743046e-fde3-42e4-84e2-3cb919202ce5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

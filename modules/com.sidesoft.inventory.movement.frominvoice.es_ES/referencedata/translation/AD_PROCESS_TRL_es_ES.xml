@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="1B50BF1368CE4954BEBE59FDD3D33F7D" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Partial Sales Invoices without Dispatch">Reporte Facturas de Venta Parcial sin Despacho</value>
+    <value column="Description" isTrl="Y" original="Report Partial Sales Invoices without Dispatch">Reporte Facturas de Venta Parcial sin Despacho</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AEAD04EDF29A4F87BC47E593EEBE813D" trl="Y">
+    <value column="Name" isTrl="Y" original="Orders pending dispatch or billing">Pedidos pendientes de despacho o facturación</value>
+    <value column="Description" isTrl="N" original="">Pedidos pendientes de despacho o facturación</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

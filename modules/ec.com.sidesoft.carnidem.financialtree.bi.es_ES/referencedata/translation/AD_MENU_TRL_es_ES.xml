@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="043823B02B874A92A4C6E54E54474BB1" trl="Y">
+    <value column="Name" isTrl="Y" original="accounting financial indicators">Indicadores financieros contables</value>
+    <value column="Description" isTrl="Y" original="accounting financial indicators">Indicadores financieros contables</value>
+  </row>
+  <row id="60C7C8A367244F7C8A882C1D54DF7ED4" trl="Y">
+    <value column="Name" isTrl="Y" original="Type of Accounting Financial Indicator">Tipo de Indicador Financiero Contable</value>
+    <value column="Description" isTrl="Y" original="Type of Accounting Financial Indicator">Tipo de Indicador Financiero Contable</value>
+  </row>
+  <row id="81AED98AF5FB4EDBB6D9D535818264CC" trl="Y">
+    <value column="Name" isTrl="Y" original="Accounting Account Classification">Clasificación Cuenta Contable</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="82ED9ACE3E6042BC93292A7148F531D8" trl="Y">
+    <value column="Name" isTrl="Y" original="Parameterization of Financial/Accounting Indicators">Parametrización Indicadores Financieros/Contables</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="DAE7718D8CDC48C69E12FF0CB017653B" trl="Y">
+    <value column="Name" isTrl="Y" original="Setup">Configuración</value>
+    <value column="Description" isTrl="Y" original="Setup">Configuración</value>
+  </row>
+</compiereTrl>

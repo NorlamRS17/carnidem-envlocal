@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_GLITEM">
+    <table name="C_GLITEM" primaryKey="C_GLITEM_KEY">
+      <index name="EM_SSFI_C_GLITEM_NAME" unique="false">
+        <index-column name="NAME"/>
+        <whereClause><![CDATA[NAME IS NULL]]></whereClause>
+      </index>
+    </table>
+  </database>

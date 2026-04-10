@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSCCR_UPDATE_LINES_TRG">
+    <trigger name="SSCCR_UPDATE_LINES_TRG" table="SSCCR_POS_CARD_REC_SUM" fires="before" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[ 	TYPE RECORD IS REF CURSOR;
+	Cur_Pos_Card_Rec_Line RECORD;
+	
+	v_status VARCHAR2(60);    
+	v_amount NUMBER:=0;
+	
+BEGIN
+
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+    
+	If(UPDATING) THEN
+		Select status Into v_status from ssccr_pos_card_rec  where ssccr_pos_card_rec_id = :NEW.ssccr_pos_card_rec_id;
+		
+		UPDATE ssccr_pos_card_rec_line SET reconciled = :NEW.reconciled, confirmation_no = :NEW.confirmation_no
+		WHERE type = :NEW.type
+			And ssccr_pos_card_rec_id = :NEW.ssccr_pos_card_rec_id
+			And lot = :NEW.lot
+			And ssccr_processor_banck_id = :NEW.ssccr_processor_banck_id;
+		If (:NEW.deposit_amount <> :OLD.deposit_amount) Then
+			If (:NEW.deposit_amount < :OLD.deposit_amount) Then
+				v_amount := :OLD.deposit_amount - :NEW.deposit_amount;
+			Else
+				v_amount := :NEW.deposit_amount - :OLD.deposit_amount;
+			End IF;
+			
+				
+			FOR Cur_Pos_Card_Rec_Line IN (
+				SELECT i.ssccr_pos_card_rec_line_id, i.deposit_amount
+				FROM ssccr_pos_card_rec_line i
+				WHERE i.type = :NEW.type
+					And i.ssccr_pos_card_rec_id = :NEW.ssccr_pos_card_rec_id
+					And i.lot = :NEW.lot
+					And i.ssccr_processor_banck_id = :NEW.ssccr_processor_banck_id
+				Order By i.deposit_amount DESC
+			) LOOP 
+				If (:NEW.deposit_amount < :OLD.deposit_amount) Then
+					If (Cur_Pos_Card_Rec_Line.deposit_amount >= v_amount) Then
+						v_amount := Cur_Pos_Card_Rec_Line.deposit_amount - v_amount;
+						UPDATE ssccr_pos_card_rec_line SET deposit_amount = v_amount 
+						WHERE ssccr_pos_card_rec_line_id = Cur_Pos_Card_Rec_Line.ssccr_pos_card_rec_line_id;
+						v_amount := 0;
+					else
+						UPDATE ssccr_pos_card_rec_line SET deposit_amount = 0
+						WHERE ssccr_pos_card_rec_line_id = Cur_Pos_Card_Rec_Line.ssccr_pos_card_rec_line_id;
+
+						v_amount := v_amount - Cur_Pos_Card_Rec_Line.deposit_amount;
+
+					End If;
+				Else
+					UPDATE ssccr_pos_card_rec_line SET deposit_amount = deposit_amount + v_amount
+					WHERE ssccr_pos_card_rec_line_id = Cur_Pos_Card_Rec_Line.ssccr_pos_card_rec_line_id;
+					v_amount := 0;
+				End If;
+				
+				EXIT WHEN v_amount = 0;
+			END LOOP;
+		End If;
+	END IF;
+    
+    -- Summary Nodes first
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20000, '@20001@') ;
+END SSCCR_UPDATE_LINES_TRG
+]]></body>
+    </trigger>
+  </database>

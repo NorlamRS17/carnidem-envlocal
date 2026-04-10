@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCMA_CHECK_MAINTENANCE_TRG">
+    <trigger name="SCMA_CHECK_MAINTENANCE_TRG" table="MA_MAINT_PERIODICITY" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+/********************************************************************************** 
+ * Copyright (C) 2009 Openbravo S.L.U. 
+ * Licensed under the Openbravo Commercial License version 1.0 
+ * You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html 
+ **********************************************************************************
+ * Contributor(s):  ______________________________________.
+ **********************************************************************************/
+BEGIN
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+
+	-- Verificar que si ambos checks estan habilitados
+  IF (:NEW.em_scma_isweekend_maintenance = 'Y' and :new.excludeweekend='Y')
+  THEN
+	RAISE_APPLICATION_ERROR(-20000,'@em_scma_checks_activate@');
+  END IF;
+
+END SCMA_CHECK_MAINTENANCE_TRG
+]]></body>
+    </trigger>
+  </database>

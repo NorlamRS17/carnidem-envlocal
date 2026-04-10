@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION ECSWC_CONTROL_VOIDINVOICE">
+    <function name="ECSWC_CONTROL_VOIDINVOICE" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[p_record_id VARCHAR(60);
+    p_docAction VARCHAR(60);
+    p_user VARCHAR(60);
+    v_ResultStr VARCHAR2(2000):='';
+    
+    TYPE RECORD IS REF CURSOR;
+    Cur_Params RECORD;
+    Cur_invoice RECORD;
+
+BEGIN
+
+    FOR Cur_Params IN (
+        SELECT *
+        FROM ad_ep_instance_para
+        WHERE ad_ep_instance_id = p_ep_instance
+    ) LOOP
+        IF cur_params.parametername = 'DocAction' THEN
+            p_docaction := Cur_Params.p_string;
+        ELSIF (cur_params.parametername = 'Record_ID') THEN
+            p_record_id := cur_params.p_string;
+        ELSIF (cur_params.parametername = 'User') THEN
+            p_user := cur_params.p_string;
+        END IF;
+    END LOOP;
+
+    SELECT
+        EM_Sswh_Datewithhold,
+        EM_Eei_Codigo,
+        EM_Eei_Numauto,
+        EM_Eei_Urlxml,
+        EM_Eei_Urlride,
+        EM_Sswh_Totalwithholdingincome,
+        EM_Sswh_Totalwithholdingvat,
+        EM_Sswh_Withholdingref,
+        ad_client_id,
+        ad_org_id 
+    INTO Cur_invoice
+    FROM
+        c_invoice
+    WHERE
+        c_invoice_id = p_record_id;
+
+    --INSERTAR EN LA CABECERA RETENCIONES ANULADAS
+    INSERT INTO ecswc_withholding_cancel (ecswc_withholding_cancel_id, ad_client_id, 
+        ad_org_id, isactive, created, createdby, updated, updatedby, c_invoice_id, documentno, 
+        status_doc, withholding_date, withholding_date_cancel, key_access, key_access_auth, 
+        urlxml, urlxml_ride, totalwithholdingincome, totalwithholdingvat)
+        VALUES (get_uuid (), Cur_invoice.ad_client_id, Cur_invoice.ad_org_id, 'Y', 
+        now(), p_user, now(), p_user, 
+        p_record_id, Cur_invoice.EM_Sswh_Withholdingref, 'Anulado', 
+        Cur_invoice.EM_Sswh_Datewithhold, now(), 
+        Cur_invoice.EM_Eei_Codigo, Cur_invoice.EM_Eei_Numauto, 
+        Cur_invoice.EM_Eei_Urlxml, Cur_invoice.EM_Eei_Urlride,
+        Cur_invoice.EM_Sswh_Totalwithholdingincome, Cur_invoice.EM_Sswh_Totalwithholdingvat);
+
+    EXCEPTION WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('ecswc_control_voidinvoice exception: '|| v_ResultStr);
+    RAISE;
+END ECSWC_CONTROL_VOIDINVOICE
+]]></body>
+    </function>
+  </database>

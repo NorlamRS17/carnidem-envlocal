@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_PROCESS" columnname="PROCEDURENAME" pkRow="53D4CF8974724C9B92780120C6EAD0A0">
+      <oldValue><![CDATA[sccc_loadlines]]></oldValue>
+      <newValue><![CDATA[ssccso_loadlines]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="PROCEDURENAME" pkRow="73BC310415EA4DD0A9CB84D84CEF5E52">
+      <oldValue><![CDATA[sccc_record]]></oldValue>
+      <newValue><![CDATA[ssccso_record]]></newValue>
+    </columnDataChange>
+  </vector>

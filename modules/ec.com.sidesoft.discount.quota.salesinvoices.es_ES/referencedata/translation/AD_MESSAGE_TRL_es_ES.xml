@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="8880CCB66E8440D6AE38F86F9537DE42" trl="Y">
+    <value column="MsgText" isTrl="Y" original=" error process line">No se puede eliminar una vez procesado</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

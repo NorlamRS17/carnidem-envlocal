@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="36751F7081BE4BECA2EF84DF2C8D6F67" trl="N">
+    <value column="Name" isTrl="Y" original="Type of operation">Tipo de operación</value>
+    <value column="PrintName" isTrl="Y" original="Type of operation">Tipo de operación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="499BAE54777C45B3AD44BA0D5BB55B67" trl="N">
+    <value column="Name" isTrl="Y" original="Accounting Concept">Conceptos Contables</value>
+    <value column="PrintName" isTrl="Y" original="Accounting Concept">Conceptos Contables</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5069A900D38B4A9883F1D389374155B5" trl="N">
+    <value column="Name" isTrl="N" original="Ssccso_Cash_Inc_Exp_ID">Ssccso_Cash_Inc_Exp_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssccso_Cash_Inc_Exp_ID">Ssccso_Cash_Inc_Exp_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="53D8987241C249A0ACB6871D08950233" trl="N">
+    <value column="Name" isTrl="Y" original="Deposit amount">Importe Depósito</value>
+    <value column="PrintName" isTrl="Y" original="Deposit amount">Importe Depósito</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="76D6B0225B214944862D2469C72E0D72" trl="N">
+    <value column="Name" isTrl="Y" original="Accounting date">Fecha Contable</value>
+    <value column="PrintName" isTrl="Y" original="Accounting date">Fecha Contable</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7D283F8C6D8A49FF9E5B93DB9E8C3465" trl="N">
+    <value column="Name" isTrl="Y" original="Date">Fecha</value>
+    <value column="PrintName" isTrl="Y" original="Date">Fecha</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B6CD253F09864DD588024DAAB26B0AA4" trl="N">
+    <value column="Name" isTrl="Y" original="Reconciled">Conciliado</value>
+    <value column="PrintName" isTrl="Y" original="Reconciled">Conciliado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C93847D24DE3415991F5305B24B18964" trl="N">
+    <value column="Name" isTrl="Y" original="Refund amount">Importe Reintegro</value>
+    <value column="PrintName" isTrl="Y" original="Refund amount">Importe Reintegro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F2E45D3EC3164594A70F53162C063C37" trl="N">
+    <value column="Name" isTrl="N" original="Sccc_Setup_ID">Sccc_Setup_ID</value>
+    <value column="PrintName" isTrl="N" original="Sccc_Setup_ID">Sccc_Setup_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FFC8291CE07A4C1AA3B41A0533D0B811" trl="N">
+    <value column="Name" isTrl="N" original="Ssccso_Type_Of_Document_ID">Ssccso_Type_Of_Document_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssccso_Type_Of_Document_ID">Ssccso_Type_Of_Document_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

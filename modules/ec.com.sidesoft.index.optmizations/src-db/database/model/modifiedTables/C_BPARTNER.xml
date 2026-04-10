@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_BPARTNER">
+    <table name="C_BPARTNER" primaryKey="C_BPARTNER_KEY">
+      <index name="EM_DBIDXO_C_BPARTNER_ID_IDX" unique="false">
+        <index-column name="C_BPARTNER_ID"/>
+      </index>
+    </table>
+  </database>

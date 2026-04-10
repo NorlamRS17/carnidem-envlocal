@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RptCardReconciliationDetail" pageWidth="1100" pageHeight="726" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="1060" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fee87fa3-fa31-4d12-b6ec-b6c6116f298c">
+	<property name="ireport.zoom" value="1.5000000000000024"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.sheet.names.all" value="Detalle Conciliaciones"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="org.openbravo.dal.core.OBContext"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Org_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[OBContext.getOBContext().getCurrentOrganization().getId()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="User_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[OBContext.getOBContext().getUser().getId()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="UserName" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[OBContext.getOBContext().getUser().getUsername()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *,
+TO_CHAR(now(),'dd/MM/yyyy HH24:MI:SS') as fecha_impresion
+FROM (
+
+SELECT lt.documentno, 'Carga' as typetrx,
+lot,
+recap,
+iva,
+withh_rent,
+withh_iva,
+commision_value as commision,
+accredit_value as bank
+FROM sccrt_card_load_transaction lt
+JOIN sccrt_card_load_line ll ON lt.sccrt_card_load_transaction_id = ll.sccrt_card_load_transaction_id
+WHERE TRUNC(ll.date_deposit) BETWEEN $P{DateFrom} AND $P{DateTo}
+UNION ALL
+(SELECT x.documentno,x.typetrx,x.lot,x.recap,
+max(iva) iva,
+max(withh_rent) withh_rent,
+max(withh_iva) withh_iva,
+max(commision) as commision,
+max(bank)as bank
+FROM (SELECT x.documentno,x.typetrx,x.lot,x.recap,
+CASE WHEN type = 'IVA' THEN deposit_amount ELSE 0 END as iva,
+CASE WHEN type = 'IW' THEN deposit_amount ELSE 0 END as withh_rent,
+CASE WHEN type = 'VW' THEN deposit_amount ELSE 0 END as withh_iva,
+CASE WHEN type = 'C' THEN deposit_amount ELSE 0 END as commision,
+CASE WHEN type = 'B' OR type is null  THEN COALESCE(deposit_amount,amounttrx) ELSE 0 END as bank
+ FROM (
+	SELECT pcr.documentno,
+	CASE WHEN Trxtype='BPD' THEN 'Cobro' ELSE 'Pago' END AS typetrx,
+	CASE WHEN Trxtype='BPD' THEN depositamt ELSE paymentamt END AS amounttrx,
+	ft.em_ssccr_pos_card_rec_id as ssccr_pos_card_rec_id,
+	 em_ssccr_recapno as recap,
+	 em_ssccr_lot as lot
+	FROM fin_finacc_transaction  ft
+		JOIN ssccr_pos_card_rec pcr ON pcr.ssccr_pos_card_rec_id = ft.em_ssccr_pos_card_rec_id
+	WHERE TRUNC(ft.statementdate) BETWEEN $P{DateFrom} AND $P{DateTo}
+	AND ft.em_ssccr_processor_banck_id IS NULL AND EXISTS (
+		SELECT prc.ssccr_pos_card_rec_id
+		FROM ssccr_pos_card_rec prc
+		JOIN sccrt_card_load_transaction lt ON prc.description ilike '%'||lt.documentno||'%'
+		WHERE prc.ssccr_pos_card_rec_id = ft.em_ssccr_pos_card_rec_id
+	)) x
+	LEFT JOIN ssccr_pos_card_rec_line pl ON pl.ssccr_pos_card_rec_id = x.ssccr_pos_card_rec_id
+		AND deposit_amount = x.amounttrx AND typetrx = 'Pago'
+	ORDER BY x.documentno) x
+	GROUP BY x.documentno,x.typetrx,x.lot,x.recap)
+UNION ALL
+(SELECT x.documentno,x.typetrx,x.lot,x.recap,
+max(iva) iva,
+max(withh_rent) withh_rent,
+max(withh_iva) withh_iva,
+max(commision) as commision,
+max(bank)as bank
+FROM (SELECT prc.documentno, 'Conciliacion' as typetrx,recap,lot,
+CASE WHEN type = 'IVA' THEN deposit_amount ELSE 0 END as iva,
+CASE WHEN type = 'IW' THEN deposit_amount ELSE 0 END as withh_rent,
+CASE WHEN type = 'VW' THEN deposit_amount ELSE 0 END as withh_iva,
+CASE WHEN type = 'C' THEN deposit_amount ELSE 0 END as commision,
+CASE WHEN type = 'B' THEN deposit_amount ELSE 0 END as bank
+	FROM ssccr_pos_card_rec prc
+		JOIN sccrt_card_load_transaction lt ON prc.description ilike '%'||lt.documentno||'%'
+		LEFT JOIN ssccr_pos_card_rec_line pl ON pl.ssccr_pos_card_rec_id = prc.ssccr_pos_card_rec_id
+	WHERE TRUNC(prc.date_payment) BETWEEN $P{DateFrom} AND $P{DateTo}
+	) x
+		GROUP BY x.documentno,x.typetrx,x.lot,x.recap)
+	ORDER BY 3,4
+
+)x]]>
+	</queryString>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="typetrx" class="java.lang.String"/>
+	<field name="lot" class="java.lang.String"/>
+	<field name="recap" class="java.lang.String"/>
+	<field name="iva" class="java.math.BigDecimal"/>
+	<field name="withh_rent" class="java.math.BigDecimal"/>
+	<field name="withh_iva" class="java.math.BigDecimal"/>
+	<field name="commision" class="java.math.BigDecimal"/>
+	<field name="bank" class="java.math.BigDecimal"/>
+	<field name="fecha_impresion" class="java.lang.String"/>
+	<title>
+		<band height="50" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="0" width="640" height="50" uuid="c34d01ff-458a-45d3-a2d3-04cef4941a4c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DETALLE DE CONCILIACIONES TARJETAS"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="840" y="0" width="220" height="50" uuid="a8af0273-b23a-4bd5-be49-3855db6a43a3"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA["<b>Fecha de Impresión: </b><br>"+$F{fecha_impresion}
++"<br><b>Usuario: </b><br>"+$P{UserName}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="200" height="50" uuid="277645f3-0cf2-440e-b284-a00de7d91d55"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $P{Org_ID})]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="840" y="0" width="110" height="25" uuid="d616ff2c-781a-481e-97ec-97672febf26f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Ret. IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="950" y="0" width="110" height="25" uuid="84796af4-74f2-4d0b-8578-cfc18cd9985d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="25" uuid="b964f345-50ed-4d36-9a01-cb9c1280ca25"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="100" height="25" uuid="8c8ffb5b-8140-4189-b25d-8641cb304220"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Lote]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="730" y="0" width="110" height="25" uuid="da19b4cb-5e6e-48ed-9cec-e065b6ee5489"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Ret. Renta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="110" height="25" uuid="567bbd01-4f3a-4981-8149-0165ae70e206"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Recap]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="200" height="25" uuid="bc6c88a4-4a66-41c0-a0b6-783c7fab06d8"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="620" y="0" width="110" height="25" uuid="677ee394-febc-406d-b336-6ec3b23c57f4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Comisión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="0" width="110" height="25" uuid="c4b00a5d-1454-435a-96da-076e36e50d2d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Banco]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="200" height="20" isPrintWhenDetailOverflows="true" uuid="2a1f24f7-6ac0-44b1-9c49-ab79a2219731"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="200" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="84878b13-8581-4ec6-82f4-baa85e1ea281"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{typetrx}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="300" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="0d9afe03-600e-4602-891f-d2579d74d703"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{lot}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="b8d70df8-5781-4ff2-b35d-babc64d73a8f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{recap}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="620" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="3d3a6916-392c-47e9-b6d5-ef198edf8fa1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{commision}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="730" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="52551c48-0bc5-452c-88ce-52f4f1cd209c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{withh_rent}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="840" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="7b617774-d897-44ab-b5c1-d302ffa28dac"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{withh_iva}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="950" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="983ee637-7e80-4c19-ae19-fcdd0eae647a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="510" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="e2821c8d-1dc5-4f7a-a529-3e29d16f86fc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{bank}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnSizeChange tablename="C_POC_CONFIGURATION" columnname="SMTPSERVERPASSWORD" newSize="500" oldSize="60"/>
+    <columnDataChange tablename="AD_COLUMN" columnname="FIELDLENGTH" pkRow="1000500014">
+      <oldValue><![CDATA[60]]></oldValue>
+      <newValue><![CDATA[250]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLENGTH" pkRow="1000500012">
+      <oldValue><![CDATA[20]]></oldValue>
+      <newValue><![CDATA[250]]></newValue>
+    </columnDataChange>
+  </vector>

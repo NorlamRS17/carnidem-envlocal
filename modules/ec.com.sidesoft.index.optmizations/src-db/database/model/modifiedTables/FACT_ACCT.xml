@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FACT_ACCT">
+    <table name="FACT_ACCT" primaryKey="FACT_ACCT_KEY">
+      <index name="EM_DBIDXO_ACCT_BPARTNER_IDX" unique="false">
+        <index-column name="C_BPARTNER_ID"/>
+      </index>
+      <index name="EM_DBIDXO_ACCT_DATE_ORG_IDX" unique="false">
+        <index-column name="ACCOUNT_ID"/>
+        <index-column name="AD_CLIENT_ID"/>
+        <index-column name="FACT_ACCT_GROUP_ID"/>
+        <index-column name="RECORD_ID2"/>
+        <index-column name="DATEACCT"/>
+        <index-column name="AD_ORG_ID"/>
+      </index>
+      <index name="EM_DBIDXO_ACCT_PRODUCT_IDX" unique="false">
+        <index-column name="M_PRODUCT_ID"/>
+      </index>
+      <index name="EM_DBIDXO_ACCT_PROJECT_IDX" unique="false">
+        <index-column name="C_PROJECT_ID"/>
+      </index>
+    </table>
+  </database>

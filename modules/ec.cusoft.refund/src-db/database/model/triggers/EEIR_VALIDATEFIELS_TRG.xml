@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER EEIR_VALIDATEFIELS_TRG">
+    <trigger name="EEIR_VALIDATEFIELS_TRG" table="EEIR_REFUND" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[v_bPartner VARCHAR(32);
+v_invoice VARCHAR(32);
+v_base NUMBER;
+v_tax NUMBER;	
+v_total NUMBER;
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+	IF INSERTING THEN
+		SELECT 
+		eeir_bpartner_id, eeir_invoice_id, eeir_base, eeir_tax, eeir_total
+		INTO
+		v_bPartner, v_invoice, v_base, v_tax, v_total
+		FROM public.eeir_refund;
+
+        IF :NEW.eeir_bpartner_id IS NULL OR
+           :NEW.eeir_invoice_id IS NULL OR
+           :NEW.eeir_base IS NULL OR
+           :NEW.eeir_tax IS NULL OR
+           :NEW.eeir_total IS NULL THEN
+			RAISE_APPLICATION_ERROR(VARCHAR2000, 'Se deben llenar todos los campos');
+		END IF;
+	END IF;
+
+	IF UPDATING THEN
+		SELECT 
+		eeir_bpartner_id, eeir_invoice_id, eeir_base, eeir_tax, eeir_total
+		INTO
+		v_bPartner, v_invoice, v_base, v_tax, v_total
+		FROM public.eeir_refund;
+
+        IF :NEW.eeir_bpartner_id IS NULL OR
+           :NEW.eeir_invoice_id IS NULL OR
+           :NEW.eeir_base IS NULL OR
+           :NEW.eeir_tax IS NULL OR
+           :NEW.eeir_total IS NULL THEN
+			RAISE_APPLICATION_ERROR(VARCHAR2000, 'Se deben llenar todos los campos');
+		END IF;
+	END IF;
+
+    END EEIR_VALIDATEFIELS_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="2AB3D792D67340F8AA3AC6E43FAE3B40" trl="N">
+    <value column="Name" isTrl="N" original="Ecspb_Scalehardwarem_ID">Ecspb_Scalehardwarem_ID</value>
+    <value column="PrintName" isTrl="N" original="Ecspb_Scalehardwarem_ID">Ecspb_Scalehardwarem_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="830E4BEA33C5410E8065EA4A03C6D530" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ecspb_Posted">Contabilidad</value>
+    <value column="PrintName" isTrl="Y" original="Accounting">Contabilidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B9798DB0C3CA4E76A25FB4D2A25B95AD" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ecspb_Heavyunits">UNIDADES PESADAS</value>
+    <value column="PrintName" isTrl="Y" original="Heavy Units">UNIDADES PESADAS</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C5C1150F07DD4D0EB9728AB7DE220172" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ecspb_Confirmations">CONFIRMACIONES</value>
+    <value column="PrintName" isTrl="Y" original="Confirmations">CONFIRMACIONES</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CFB22E552B8E4EB1B1A24659355AA7B1" trl="Y">
+    <value column="Name" isTrl="Y" original="Table_Name">Nombre de Tabla</value>
+    <value column="PrintName" isTrl="Y" original="Table Name">Nombre de Tabla</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FA546998C720438EB1C9A2865E1A6BF6" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ecspb_Confirm">Confirmado</value>
+    <value column="PrintName" isTrl="Y" original="Confirmed">Confirmado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

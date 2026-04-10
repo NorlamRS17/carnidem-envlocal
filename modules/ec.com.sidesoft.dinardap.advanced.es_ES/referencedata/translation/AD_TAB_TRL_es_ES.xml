@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="563B7DA35C064D62963187A6B312B969" trl="Y">
+    <value column="Name" isTrl="Y" original="Lines">Líneas</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6AEEFB5EB5DF42B79E355FAF2FB13A4D" trl="Y">
+    <value column="Name" isTrl="Y" original="Discards">Descartes</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B7ECD56481F34C55A2CC7E0DB85D4EE0" trl="N">
+    <value column="Name" isTrl="N" original="Header">Header</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D1EABD732DF04BA5A592F4F31D965095" trl="N">
+    <value column="Name" isTrl="N" original="Header">Header</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="4A64347952334735A8076E5C23E0A94E" trl="Y">
+    <value column="Name" isTrl="Y" original="Transacción de Carga de Liquidación de Tarjeta">Carga de Liquidación</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="Y" original="Card Settlement Loading Transaction">Carga de Liquidación</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="85434F7E3029443CA8E5A3829C61738D" trl="Y">
+    <value column="Name" isTrl="Y" original="Concepts">Conceptos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9F41BDD449CA4229A9BD3D15354FF7C7" trl="Y">
+    <value column="Name" isTrl="Y" original="Linea de Transacción de Carga de Liquidación de Tarjeta">Lineas</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="Y" original="Card Settlement Loading Transaction Line ">Lineas</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

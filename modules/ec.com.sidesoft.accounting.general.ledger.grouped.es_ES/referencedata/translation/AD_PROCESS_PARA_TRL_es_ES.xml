@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS_PARA" version="">
+  <row id="AF523EB93BB64A49A525746061F3009D" trl="Y">
+    <value column="Name" isTrl="Y" original="Organization">Organización</value>
+    <value column="Description" isTrl="N" original="Organizational entity within client">Organizational entity within client</value>
+    <value column="Help" isTrl="N" original="An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.">An organization is a unit of your client or legal entity - examples are store, department. You can share data between organizations.</value>
+  </row>
+</compiereTrl>

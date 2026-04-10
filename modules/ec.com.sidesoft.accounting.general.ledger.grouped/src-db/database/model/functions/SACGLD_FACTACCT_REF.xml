@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SACGLD_FACTACCT_REF">
+    <function name="SACGLD_FACTACCT_REF" type="VARCHAR">
+      <parameter name="p_tablename" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_record_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_language" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_Display VARCHAR2(200):='';
+  v_sql VARCHAR2(2000):='';
+BEGIN
+
+
+  IF ( p_tablename = 'C_Invoice' ) THEN  --Factura de Venta - Factura De compra
+    v_sql:='SELECT POReference FROM ' || p_tablename ||' WHERE '|| p_tablename || '_id = ''' || p_record_id || '''';
+    EXECUTE IMMEDIATE v_sql INTO v_Display;
+  END IF;
+
+  IF ( p_tablename = 'FIN_Payment' ) THEN  --Factura de Venta - Factura De compra
+    v_sql:='SELECT referenceno FROM ' || p_tablename ||' WHERE '|| p_tablename || '_id = ''' || p_record_id || '''';
+    EXECUTE IMMEDIATE v_sql INTO v_Display;
+  END IF;
+
+  IF ( p_tablename = 'FIN_Financial_Account' OR p_tablename = 'SSPR_Payroll' ) THEN 
+    v_Display ='N/A';
+  END IF;
+
+  IF ( p_tablename= 'M_InOut' ) THEN
+    v_sql:='SELECT documentno FROM c_invoice WHERE c_invoice_id = (
+                select c_invoice_id from ' || p_tablename ||' where '|| p_tablename || '_id = ''' || p_record_id || ''' 
+            )';
+    EXECUTE IMMEDIATE v_sql INTO v_Display;
+  END IF;
+
+  IF ( p_tablename not in ('C_Invoice', 'FIN_Payment', 'M_InOut' ) ) THEN 
+    v_Display ='N/A';
+  END IF;
+   
+ RETURN v_Display;
+EXCEPTION
+WHEN OTHERS THEN
+  RETURN '';
+END SACGLD_FACTACCT_REF
+]]></body>
+    </function>
+  </database>

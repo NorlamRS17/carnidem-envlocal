@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0613F239016B49EEAC000F8A0CA8D6D4" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssaseq_Seq_Prefix_Pe">Prefijo Secuencia propiedad planta y equipos</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssaseq_Seq_Prefix_Pe">Prefijo Secuencia propiedad planta y equipos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1ED471829CDA48389B6016BA6EBE497A" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssaseq_Sequence_Prefix_Pe">Prefijo Secuencia propiedad planta y equipos</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssaseq_Sequence_Prefix_Pe">Prefijo Secuencia propiedad planta y equipos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5EFDF00C6677405AAC96B9D60FA96A6E" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssaseq_Current_Value">Valor actual Bien de Control</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssaseq_Current_Value">Valor actual Bien de Control</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9A9686A2B52A45CDABB41B763B64CC08" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssaseq_Current_Value_Pe">Valor actual Bien propiedad planta y equipos</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssaseq_Current_Value_Pe">Valor actual Bien propiedad planta y equipos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A6595BADF2E240FE93344A38C8FEAD1D" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssaseq_Sequence_Prefix">Prefijo Secuencia Bien de Control</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssaseq_Sequence_Prefix">Prefijo Secuencia Bien de Control</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

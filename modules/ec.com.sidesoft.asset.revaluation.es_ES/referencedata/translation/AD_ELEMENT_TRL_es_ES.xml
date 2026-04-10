@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="1594CFD4638945A68CC1A9A516561D6C" trl="Y">
+    <value column="Name" isTrl="Y" original="Value Change Date">Fecha de Cambio de Valor</value>
+    <value column="PrintName" isTrl="Y" original="Value Change Date">Fecha de Cambio de Valor</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="174927AF9968436A9E0E5A58DD8489E6" trl="Y">
+    <value column="Name" isTrl="Y" original="Description">Descripción</value>
+    <value column="PrintName" isTrl="Y" original="Description">Descripción</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="21839954471D46E1BE2007FF24A7F104" trl="Y">
+    <value column="Name" isTrl="Y" original="Useful Life">Vida Útil</value>
+    <value column="PrintName" isTrl="Y" original="Useful Life">Vida Útil</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="295D5030221E497FBFB97C9F815B95C2" trl="N">
+    <value column="Name" isTrl="N" original="Ssarv_Value_Change_ID">Ssarv_Value_Change_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssarv_Value_Change_ID">Ssarv_Value_Change_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="49026DC97C204496A5B95160319BDDDA" trl="Y">
+    <value column="Name" isTrl="Y" original="Change Date">Fecha de Cambio</value>
+    <value column="PrintName" isTrl="Y" original="Change Date">Fecha de Cambio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B0CA230BBEFE4D6E9D5682AFF71716AB" trl="Y">
+    <value column="Name" isTrl="Y" original="New Asset Value">Nuevo Valor del Activo</value>
+    <value column="PrintName" isTrl="Y" original="New Asset Value">Nuevo Valor del Activo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F4A26800C6DC468BB1EC4A1B7EB61F53" trl="Y">
+    <value column="Name" isTrl="Y" original="Create Depreciation Plan">Crear Plan de Depreciación</value>
+    <value column="PrintName" isTrl="Y" original="Create Depreciation Plan">Crear Plan de Depreciación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

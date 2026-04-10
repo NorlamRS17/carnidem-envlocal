@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="7FF0F7A1016549228F600F3862D1056D" trl="Y">
+    <value column="Name" isTrl="Y" original="Initlocator_ID">Ubicación desde</value>
+    <value column="PrintName" isTrl="Y" original="Locator">Ubicación desde</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9620A2A9A1D84F21BAABF5A8AB1CB099" trl="N">
+    <value column="Name" isTrl="N" original="Crprqy_Params_Safety_Qly_ID">Crprqy_Params_Safety_Qly_ID</value>
+    <value column="PrintName" isTrl="N" original="Crprqy_Params_Safety_Qly_ID">Crprqy_Params_Safety_Qly_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B6980EF5D75B478FBE1B57D06E1446CD" trl="Y">
+    <value column="Name" isTrl="Y" original="Crprqy_Params_Status_ID">Estados</value>
+    <value column="PrintName" isTrl="Y" original="Status">Estados</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E6DC36C304AA4E57B4FAE0BE3F1E92C1" trl="Y">
+    <value column="Name" isTrl="Y" original="New_LocatorTo_ID">Ubicación transferencia hasta</value>
+    <value column="PrintName" isTrl="Y" original="Locator To">Ubicación transferencia hasta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

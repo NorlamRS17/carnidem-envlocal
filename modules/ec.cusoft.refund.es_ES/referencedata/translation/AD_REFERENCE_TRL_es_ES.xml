@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="0E92ABEB4E4E49B0817ECCB6F02A2646" trl="N">
+    <value column="Name" isTrl="N" original="eeir_invoice_id">eeir_invoice_id</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="197292560A1C4B3A84F6788766D12102" trl="N">
+    <value column="Name" isTrl="N" original="eeir_bpartner_id">eeir_bpartner_id</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

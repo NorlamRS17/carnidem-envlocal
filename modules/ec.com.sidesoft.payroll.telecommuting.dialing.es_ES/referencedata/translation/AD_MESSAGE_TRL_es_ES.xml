@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="5D8C3AD1BB454CB8AEA1FA15D49CD8E6" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Can't update location manually">No se puede actualizar la ubicación manualmente</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="D9163BADF3124B48A14F452949F2C8E1" trl="Y">
+    <value column="MsgText" isTrl="Y" original="The location cannot be modified if it is already processed">La ubicación no se puede modificar si ya está procesada</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCFT_FINACCT_CKNAME_TRG">
+    <trigger name="SCFT_FINACCT_CKNAME_TRG" table="SCFT_FINAN_ACCT_IND" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[  v_exists NUMBER;	--OBTG:NUMBER--
+/********************************************************************************** 
+ * Copyright (C) 2009 Openbravo S.L.U. 
+ * Licensed under the Openbravo Commercial License version 1.0 
+ * You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html 
+ **********************************************************************************
+ * Contributor(s):  ______________________________________.
+ **********************************************************************************/
+BEGIN
+
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+	-- Verificar registros duplciados
+	
+	-- Validación en INSERT
+	IF INSERTING THEN
+	  IF EXISTS (
+	    SELECT 1
+	    FROM scft_finan_acct_ind
+	    WHERE Scft_Indicatoracct_ID = :NEW.Scft_Indicatoracct_ID
+	           and Scft_Indicatoracctline_ID = :NEW.Scft_Indicatoracctline_ID
+	      AND scft_paramacct_id = :NEW.scft_paramacct_id  -- Compara solo dentro del mismo padre
+	  ) THEN
+	    RAISE_APPLICATION_ERROR(-20000, '@scft_duplicatetrg@');
+	  END IF;
+	END IF;
+
+-- Validación en UPDATE si cambia el Scft_Indicatoracct_ID
+IF UPDATING THEN
+
+  IF :NEW.Scft_Indicatoracct_id IS NOT DISTINCT FROM :OLD.Scft_Indicatoracct_id
+     AND :NEW.Scft_Indicatoracctline_id IS NOT DISTINCT FROM :OLD.Scft_Indicatoracctline_id THEN
+    RAISE_APPLICATION_ERROR(-20000,'@scft_duplicatetrg@');
+  END IF;
+
+  -- Validación 2: No debe existir otro registro con la misma combinación bajo el mismo padre
+  SELECT COUNT(*) INTO v_exists
+  FROM scft_finan_acct_ind
+  WHERE Scft_Paramacct_ID = :NEW.Scft_Paramacct_ID
+    AND Scft_Indicatoracct_id = :NEW.Scft_Indicatoracct_id
+    AND Scft_Indicatoracctline_id = :NEW.Scft_Indicatoracctline_id
+    AND scft_finan_acct_ind_id <> :NEW.scft_finan_acct_ind_id;
+
+  IF v_exists > 0 THEN
+    RAISE_APPLICATION_ERROR(-20000,'@scft_duplicatetrg@');
+  END IF;
+END IF;
+
+END SCFT_FINACCT_CKNAME_TRG
+]]></body>
+    </trigger>
+  </database>

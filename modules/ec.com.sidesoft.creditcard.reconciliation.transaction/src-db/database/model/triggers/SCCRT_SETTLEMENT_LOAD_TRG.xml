@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCCRT_SETTLEMENT_LOAD_TRG">
+    <trigger name="SCCRT_SETTLEMENT_LOAD_TRG" table="SCCRT_CARD_LOAD_TRANSACTION" fires="before" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+	v_count NUMBER;
+
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+    -- Solo para UPDATE
+    IF TG_OP IN ('UPDATE') THEN
+        
+        -- Verifica si hay errores en las líneas
+        SELECT COUNT(*)
+        INTO v_count
+        FROM sccrt_card_load_line
+        WHERE sccrt_card_load_transaction_id = :NEW.sccrt_card_load_transaction_id
+          AND iserror = 'Y';
+
+        -- Si hay errores, cambia el estado
+        IF v_count > 0 THEN
+            :NEW.DocStatus := 'DR';
+        END IF;
+    END IF;
+   
+    END SCCRT_SETTLEMENT_LOAD_TRG
+]]></body>
+    </trigger>
+  </database>

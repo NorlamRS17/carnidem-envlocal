@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="11C435A2C2534383BE775BCF998BAC74" trl="N">
+    <value column="Name" isTrl="Y" original="Subjet Class">Clase del Sujeto</value>
+    <value column="PrintName" isTrl="Y" original="Subjet Class">Clase del Sujeto</value>
+    <value column="Description" isTrl="N" original="Subjet Class">Subjet Class</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="69B6962180DB4A1A99070F3214B261DB" trl="Y">
+    <value column="Name" isTrl="Y" original="Apply Dinardap">Aplica Dinardap</value>
+    <value column="PrintName" isTrl="Y" original="Apply Dinardap">Aplica Dinardap</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="83525911FA374F5EAE1817BB47D0D690" trl="N">
+    <value column="Name" isTrl="Y" original="Wallet Punished">Cartera Castigada</value>
+    <value column="PrintName" isTrl="Y" original="Wallet Punished">Cartera Castigada</value>
+    <value column="Description" isTrl="N" original="Wallet Punished">Wallet Punished</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="84CA11DA1775492A923C18725D08D6E7" trl="N">
+    <value column="Name" isTrl="Y" original="Dinardap ID">ID Dinardap</value>
+    <value column="PrintName" isTrl="Y" original="Dinardap ID">ID Dinardap</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CA40A7A012064ED1A8426BCF285A17E2" trl="N">
+    <value column="Name" isTrl="Y" original="Lawsuit">Demanda Judicial</value>
+    <value column="PrintName" isTrl="Y" original="Lawsuit">Demanda Judicial</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E392DB4E60864ED2A09AB5E19C1B6F45" trl="N">
+    <value column="Name" isTrl="Y" original="Source Of Income">Origen de ingreso</value>
+    <value column="PrintName" isTrl="Y" original="Source Of Income">Origen de ingreso</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

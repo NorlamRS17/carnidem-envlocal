@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="c_purchase_reconcile_totals" pageWidth="1741" pageHeight="25" columnWidth="1741" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="87d7523f-3aa1-498c-b909-77dca7a5ce08">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="DateFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Posted" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_DocTypeTarget_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AD_Org_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_BPartner_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[WITH tax_used AS (
+    SELECT DISTINCT t.rate
+    FROM c_tax t
+    JOIN c_invoicetax it ON t.c_tax_id = it.c_tax_id
+    JOIN c_invoice i ON i.c_invoice_id = it.c_invoice_id
+    WHERE t.istaxdeductable = 'Y'
+      AND t.rate <> 0
+      AND i.dateinvoiced::date BETWEEN $P{DateFrom} AND $P{DateTo}
+      AND i.issotrx = 'N'
+      AND i.docstatus IN ('CO','VO')
+      AND (i.posted = $P{Posted} OR $P{Posted} IS NULL)
+      AND (i.C_doctypetarget_id = $P{C_DocTypeTarget_ID} OR $P{C_DocTypeTarget_ID} IS NULL)
+      AND (i.ad_org_id = $P{AD_Org_ID} OR $P{AD_Org_ID} IS NULL)
+      AND (i.c_bpartner_id = $P{C_BPartner_ID} OR $P{C_BPartner_ID} IS NULL)
+)
+SELECT * FROM (
+SELECT 'TOTAL' as etiqueta,
+SUM(CASE WHEN c.isreversal = 'N' THEN
+	COALESCE((SELECT SUM(taxbaseamt)
+	FROM c_invoicetax j
+	LEFT JOIN c_tax t ON j.c_tax_id = t.c_tax_id
+	WHERE i.c_invoice_id = j.c_invoice_id
+	AND t.rate = 0
+	AND t.istaxdeductable = 'Y'),0.00)
+	ELSE
+	COALESCE((SELECT SUM(taxbaseamt)
+	FROM c_invoicetax j
+	LEFT JOIN c_tax t ON j.c_tax_id = t.c_tax_id
+	WHERE i.c_invoice_id = j.c_invoice_id
+	AND t.rate = 0
+	AND t.istaxdeductable = 'Y'),0.00) * -1 END) AS "sum_basecero",
+	SUM(CASE WHEN c.isreversal = 'N' THEN
+	COALESCE((SELECT SUM(taxbaseamt)
+	FROM c_invoicetax j
+	LEFT JOIN c_tax t ON j.c_tax_id = t.c_tax_id
+	WHERE i.c_invoice_id = j.c_invoice_id
+	AND t.rate <> 0
+	AND t.istaxdeductable = 'Y'),0.00)
+	ELSE
+	COALESCE((SELECT SUM(taxbaseamt)
+	FROM c_invoicetax j
+	LEFT JOIN c_tax t ON j.c_tax_id = t.c_tax_id
+	where i.c_invoice_id = j.c_invoice_id
+	AND t.rate <> 0
+	AND t.istaxdeductable = 'Y'),0.00) * -1 END) AS "sum_basedoce",
+SUM(CASE WHEN c.isreversal = 'N' THEN i.totallines ELSE i.totallines * -1 END) AS "sum_base",
+SUM(CASE WHEN c.isreversal = 'N' THEN i.grandtotal ELSE i.grandtotal * -1 END) AS "sum_total",
+SUM(i.EM_Sswh_Totalwithholdingincome) AS "sum_imprenta",
+SUM(i.EM_Sswh_Totalwithholdingvat) AS "sum_impiva"
+FROM c_invoice i
+LEFT JOIN c_doctype c ON i.c_doctype_id = c.c_doctype_id
+WHERE i.issotrx = 'N'
+AND i.docstatus IN ('CO','VO')
+AND i.dateinvoiced::date BETWEEN $P{DateFrom} AND $P{DateTo}
+AND (i.posted = $P{Posted} OR $P{Posted} IS NULL)
+AND (i.C_doctypetarget_id = $P{C_DocTypeTarget_ID} OR $P{C_DocTypeTarget_ID} IS NULL)
+AND (i.ad_org_id = $P{AD_Org_ID} OR $P{AD_Org_ID} IS NULL)
+AND (i.c_bpartner_id = $P{C_BPartner_ID} OR $P{C_BPartner_ID} IS NULL)
+) Consulta
+JOIN LATERAL (
+    SELECT CASE WHEN t.isdefault = 'Y' THEN -1 ELSE t.rate END AS "rate",
+           t.isdefault,
+           SUM(COALESCE(it.taxamt, 0.00)) AS taxamt
+    FROM c_tax t
+    LEFT JOIN c_invoicetax it ON t.c_tax_id = it.c_tax_id
+	LEFT JOIN c_invoice i ON it.c_invoice_id = i.c_invoice_id
+    WHERE t.istaxdeductable = 'Y'
+AND i.issotrx = 'N'
+AND i.docstatus IN ('CO','VO')
+AND i.dateinvoiced::date BETWEEN $P{DateFrom} AND $P{DateTo}
+AND (i.posted = $P{Posted} OR $P{Posted} IS NULL)
+AND (i.C_doctypetarget_id = $P{C_DocTypeTarget_ID} OR $P{C_DocTypeTarget_ID} IS NULL)
+AND (i.ad_org_id = $P{AD_Org_ID} OR $P{AD_Org_ID} IS NULL)
+AND (i.c_bpartner_id = $P{C_BPartner_ID} OR $P{C_BPartner_ID} IS NULL)
+      AND t.rate IN (SELECT rate FROM tax_used)
+	GROUP BY t.rate,t.isdefault
+) tx ON TRUE
+ORDER BY rate]]>
+	</queryString>
+	<field name="etiqueta" class="java.lang.String"/>
+	<field name="sum_basecero" class="java.math.BigDecimal"/>
+	<field name="sum_basedoce" class="java.math.BigDecimal"/>
+	<field name="sum_base" class="java.math.BigDecimal"/>
+	<field name="sum_total" class="java.math.BigDecimal"/>
+	<field name="sum_imprenta" class="java.math.BigDecimal"/>
+	<field name="sum_impiva" class="java.math.BigDecimal"/>
+	<field name="rate" class="java.math.BigDecimal"/>
+	<field name="isdefault" class="java.lang.String"/>
+	<field name="taxamt" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="25" splitType="Stretch">
+			<crosstab>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="1741" height="25" isPrintWhenDetailOverflows="true" uuid="0a9b1c6d-bd57-408b-b3ed-a3a60650ffd2"/>
+				<rowGroup name="etiqueta" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{etiqueta}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque">
+							<box>
+								<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="ff13571a-a199-4af6-8352-c41746853bd8"/>
+								<box leftPadding="2" rightPadding="2">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{etiqueta}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="base_cero" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{sum_basecero}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque">
+							<box>
+								<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="ff13571a-a199-4af6-8352-c41746853bd8"/>
+								<box leftPadding="2" rightPadding="2">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{basecero}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="base_doce" width="100">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{sum_basedoce}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque">
+							<box>
+								<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true">
+								<reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="ff13571a-a199-4af6-8352-c41746853bd8"/>
+								<box leftPadding="2" rightPadding="2">
+									<pen lineWidth="0.5"/>
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.5"/>
+									<bottomPen lineWidth="0.5"/>
+									<rightPen lineWidth="0.5"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="8" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{basedoce}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents/>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="tipo" height="0" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{rate}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents/>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="basecero" class="java.math.BigDecimal">
+					<measureExpression><![CDATA[$F{sum_basecero}]]></measureExpression>
+				</measure>
+				<measure name="basedoce" class="java.math.BigDecimal">
+					<measureExpression><![CDATA[$F{sum_basedoce}]]></measureExpression>
+				</measure>
+				<measure name="sum_imprenta" class="java.math.BigDecimal">
+					<measureExpression><![CDATA[$F{sum_imprenta} != null ? $F{sum_imprenta} : BigDecimal.ZERO]]></measureExpression>
+				</measure>
+				<measure name="sum_total" class="java.math.BigDecimal">
+					<measureExpression><![CDATA[$F{sum_total} != null ? $F{sum_total} : BigDecimal.ZERO]]></measureExpression>
+				</measure>
+				<measure name="sum_base" class="java.math.BigDecimal">
+					<measureExpression><![CDATA[$F{sum_base}]]></measureExpression>
+				</measure>
+				<measure name="rate" class="java.math.BigDecimal">
+					<measureExpression><![CDATA[$F{rate}]]></measureExpression>
+				</measure>
+				<measure name="taxamt" class="java.math.BigDecimal">
+					<measureExpression><![CDATA[$F{taxamt}]]></measureExpression>
+				</measure>
+				<measure name="sum_impiva" class="java.math.BigDecimal">
+					<measureExpression><![CDATA[$F{sum_impiva}]]></measureExpression>
+				</measure>
+				<crosstabCell width="120" height="25">
+					<cellContents>
+						<box>
+							<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<topPen lineWidth="0.0"/>
+							<leftPen lineWidth="0.0"/>
+							<bottomPen lineWidth="0.0"/>
+							<rightPen lineWidth="0.0"/>
+						</box>
+						<textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true">
+							<reportElement style="Crosstab Data Text" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="120" height="25" isRemoveLineWhenBlank="true" uuid="385a4827-1fef-4124-9fde-2a380dff4ea1"/>
+							<box leftPadding="2" rightPadding="2">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{taxamt}  != null ? $V{taxamt} : BigDecimal.ZERO]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="600" height="25" columnTotalGroup="tipo">
+					<cellContents mode="Opaque">
+						<box>
+							<pen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="0" y="0" width="120" height="25" uuid="3fb64629-68bd-4201-ac5b-e50013c2833e"/>
+							<box leftPadding="2" rightPadding="2">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{sum_base}]]></textFieldExpression>
+						</textField>
+						<textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="360" y="0" width="120" height="25" uuid="3fb64629-68bd-4201-ac5b-e50013c2833e"/>
+							<box leftPadding="2" rightPadding="2">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{sum_imprenta}]]></textFieldExpression>
+						</textField>
+						<textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="120" y="0" width="120" height="25" uuid="3fb64629-68bd-4201-ac5b-e50013c2833e"/>
+							<box leftPadding="2" rightPadding="2">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{sum_total}]]></textFieldExpression>
+						</textField>
+						<textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="240" y="0" width="120" height="25" uuid="3fb64629-68bd-4201-ac5b-e50013c2833e"/>
+							<box leftPadding="2" rightPadding="2">
+								<pen lineWidth="0.0"/>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.0"/>
+								<bottomPen lineWidth="0.0"/>
+								<rightPen lineWidth="0.0"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[""]]></textFieldExpression>
+						</textField>
+						<textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true">
+							<reportElement positionType="Float" x="480" y="0" width="120" height="25" uuid="3fb64629-68bd-4201-ac5b-e50013c2833e"/>
+							<box leftPadding="2" rightPadding="2">
+								<pen lineWidth="0.5"/>
+								<topPen lineWidth="0.0"/>
+								<leftPen lineWidth="0.5"/>
+								<bottomPen lineWidth="0.5"/>
+								<rightPen lineWidth="0.5"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font size="8" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{sum_impiva}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

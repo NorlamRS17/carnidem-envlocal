@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE AD_TABLE">
+    <table name="AD_TABLE" primaryKey="AD_TABLE_KEY">
+      <index name="EM_SACGLD_TABLE" unique="false">
+        <index-column name="AD_TABLE_ID"/>
+      </index>
+    </table>
+  </database>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="17E578E157604DE59787A8B61F49C3AE" trl="N">
+    <value column="Name" isTrl="N" original="Ssccr_Processor_Banck">Ssccr_Processor_Banck</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="1AEC8F3EB53A448199727BFF2981ED79" trl="N">
+    <value column="Name" isTrl="Y" original="Ssccr - Withholdings">Ssccr - Retenciónes</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2433FFAD38C9460B98E8A9E74E59697E" trl="N">
+    <value column="Name" isTrl="Y" original="Card Selector">Selector Tarjeta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5DFCDD6516264BF7A319BE30501A9988" trl="N">
+    <value column="Name" isTrl="N" original="Ssccr_Cards_Types_ID">Ssccr_Cards_Types_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="723861315A2849D9ADB3D93A2BAE60C3" trl="N">
+    <value column="Name" isTrl="N" original="Ssfi_Banktransfer">Ssfi_Banktransfer</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8246F8E9250C4E79BB81BC97C54C3AA3" trl="N">
+    <value column="Name" isTrl="Y" original="Type of credit Selector">Selector Tipo de Crédito</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8F4389A693FC46C896154A3A3208D79F" trl="N">
+    <value column="Name" isTrl="Y" original="Issuing Bank Selector">Selector Banco Emisor</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9FCAF166ABF24BDE83CD9B668D9283C7" trl="N">
+    <value column="Name" isTrl="Y" original="Bank processed Selector">Selector Banco Procesador</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B63FB5A0FAF54EACA6B505F915BF39BD" trl="N">
+    <value column="Name" isTrl="N" original="Ssccr_Types_Of_Credit">Ssccr_Types_Of_Credit</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BF2C5A8134AE4F49B72C6FB4E4DCFC01" trl="N">
+    <value column="Name" isTrl="N" original="ssccr_pos_card_rec">ssccr_pos_card_rec</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CC619AF2ED9246D09D23D2346FB52899" trl="N">
+    <value column="Name" isTrl="N" original="Selector Financial Account">Selector Financial Account</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D261AD97E50F430A9373B3F2B53F8850" trl="N">
+    <value column="Name" isTrl="N" original="FIN_Finacc_Transaction">FIN_Finacc_Transaction</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="EAB7A780909147C9BFD3D8880A74B2C4" trl="N">
+    <value column="Name" isTrl="N" original="Ssccr_Status">Ssccr_Status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F4E22A2CDA7D428C94B3D8BFA988F1C6" trl="N">
+    <value column="Name" isTrl="N" original="Finnancial Transaction POS">Finnancial Transaction POS</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FE4FD8E566B64BEC923BC970D093656D" trl="N">
+    <value column="Name" isTrl="N" original="Ssccr_C_Invoice_ID">Ssccr_C_Invoice_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

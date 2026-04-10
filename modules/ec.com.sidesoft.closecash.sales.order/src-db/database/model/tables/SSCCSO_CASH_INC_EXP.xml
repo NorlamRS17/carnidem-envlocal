@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+  <database name="TABLE SSCCSO_CASH_INC_EXP">
+    <table name="SSCCSO_CASH_INC_EXP" primaryKey="SSCCSO_CASH_INC_EXP_KEY">
+      <column name="SSCCSO_CASH_INC_EXP_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_DOCTYPE_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DOCUMENTNO" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="TYPE_OF_OPERATION" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="FIN_FINANCIAL_ACCOUNT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DATEACTUAL" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ACCOUNTING_DATE" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_BPARTNER_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="FIN_PAYMENTMETHOD_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="C_GLITEM_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DESCRIPTION" primaryKey="false" required="false" type="VARCHAR" size="300" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DEPOSIT_AMOUNT" primaryKey="false" required="true" type="DECIMAL" size="15,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="REFUND_AMOUNT" primaryKey="false" required="true" type="DECIMAL" size="15,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="STATUS" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default><![CDATA[DR]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="ISRECONCILED" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="ISSUMMARY" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="PROCESSED" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="FIN_FINACC_TRANSACTION_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SCCC_CASH_CLOUSURE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="SCCC_CASH_CLOUSURE" name="SSCCSO_CASH_IE_SCCC_CASHCLOU">
+        <reference local="SCCC_CASH_CLOUSURE_ID" foreign="SCCC_CASH_CLOUSURE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_CLIENT" name="SSCCSO_CASH_INC_EXP_AD_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="SSCCSO_CASH_INC_EXP_AD_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_BPARTNER" name="SSCCSO_CASH_INC_EXP_C_BPARTNER">
+        <reference local="C_BPARTNER_ID" foreign="C_BPARTNER_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_DOCTYPE" name="SSCCSO_CASH_INC_EXP_C_DOCTYPE">
+        <reference local="C_DOCTYPE_ID" foreign="C_DOCTYPE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_GLITEM" name="SSCCSO_CASH_INC_EXP_C_GLITEM">
+        <reference local="C_GLITEM_ID" foreign="C_GLITEM_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="FIN_FINANCIAL_ACCOUNT" name="SSCCSO_CASH_INC_EXP_FIN_ACC">
+        <reference local="FIN_FINANCIAL_ACCOUNT_ID" foreign="FIN_FINANCIAL_ACCOUNT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="FIN_FINACC_TRANSACTION" name="SSCCSO_CASH_INC_EXP_FIN_FIN_TR">
+        <reference local="FIN_FINACC_TRANSACTION_ID" foreign="FIN_FINACC_TRANSACTION_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="FIN_PAYMENTMETHOD" name="SSCCSO_CASH_INCEXP_FIN_PAYMETH">
+        <reference local="FIN_PAYMENTMETHOD_ID" foreign="FIN_PAYMENTMETHOD_ID"/>
+      </foreign-key>
+      <check name="SSCCSO_CASH_INC_EXP_ISACTI_CHK"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
+      <check name="SSCCSO_CASH_INC_EXP_ISREC_CHK"><![CDATA[ISRECONCILED IN ('Y', 'N')]]></check>
+      <check name="SSCCSO_CASH_INC_EXP_ISSUMM_CHK"><![CDATA[ISSUMMARY IN ('Y', 'N')]]></check>
+    </table>
+  </database>

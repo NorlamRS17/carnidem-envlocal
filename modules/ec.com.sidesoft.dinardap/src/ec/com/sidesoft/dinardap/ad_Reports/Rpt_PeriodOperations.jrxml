@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_CreditInformationSuperCompañias" pageWidth="725" pageHeight="842" columnWidth="685" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DateFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select count( distinct a.INVOICE)as  "operaciones_periodo" ,
+ count( distinct b.C_BPARTNER_ID) as "clientes_periodo",
+round(to_number(avg((to_date(SDIN_DUE_INVOICE(a.INVOICE)) -b.DATEINVOICED))),0) as "plazo_promedio",
+round(to_number(max((to_date(SDIN_DUE_INVOICE(a.INVOICE)) -b.DATEINVOICED))),0) as "plazo_maximo",
+sum(b.GRANDTOTAL) as "total_cartera_periodo"
+from sswh_acct_receivab_payab_v a , c_invoice b
+where a.INVOICE = b.DOCUMENTNO AND b.ISSOTRX = 'Y'
+and a.C_BPARTNER_ID = b.C_BPARTNER_ID
+and a.doctype <>'PLANILLA DE  GASTOS'
+and  DOC_CODE IN ('FC')
+and b.DATEINVOICED >= $P{DateFrom}
+and b.DATEINVOICED <= $P{DateTo}]]>
+	</queryString>
+	<field name="operaciones_periodo" class="java.math.BigDecimal"/>
+	<field name="clientes_periodo" class="java.math.BigDecimal"/>
+	<field name="plazo_promedio" class="java.math.BigDecimal"/>
+	<field name="plazo_maximo" class="java.math.BigDecimal"/>
+	<field name="total_cartera_periodo" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="67" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="11" width="685" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OPERACIONES DE PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="47" width="251" height="20"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DEL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="354" y="47" width="48" height="20"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[HASTA:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement x="402" y="47" width="283" height="20"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{DateTo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd MMMMM yyyy" isBlankWhenNull="true">
+				<reportElement x="251" y="47" width="103" height="20"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{DateFrom}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="161" height="20"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OPERACIONES PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="161" y="0" width="127" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTES PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="0" width="113" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PLAZO PROMEDIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="401" y="0" width="109" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PLAZO MAXIMO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="0" width="175" height="20"/>
+				<box rightPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL CARTERA PERIODO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="161" height="20"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{operaciones_periodo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="161" y="0" width="127" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{clientes_periodo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="401" y="0" width="109" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{plazo_maximo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="510" y="0" width="175" height="20"/>
+				<box rightPadding="3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{total_cartera_periodo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="288" y="0" width="113" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{plazo_promedio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SACGLD_USER">
+    <function name="SACGLD_USER" type="VARCHAR">
+      <parameter name="p_tablename" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="documentno" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="typeuser" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_Display VARCHAR2(200):='';
+  v_sql VARCHAR2(2000):='';
+BEGIN
+
+  IF typeUser = '1' THEN 
+
+    v_sql:=  'SELECT User1_ID FROM User1 WHERE User1_ID = (
+      SELECT User1_ID FROM ' || p_tablename || '  WHERE documentno = ''' || documentno || ''');';
+
+  END IF;
+
+  IF typeUser = '2' THEN 
+
+    v_sql:=  'SELECT User2_ID FROM User2 WHERE User2_ID = (
+      SELECT User2_ID FROM ' || p_tablename || '  WHERE documentno = ''' || documentno || ''');';
+
+  END IF;
+
+
+  EXECUTE IMMEDIATE v_sql INTO v_Display;
+  RETURN v_Display;
+EXCEPTION
+WHEN OTHERS THEN
+  RETURN '';
+END SACGLD_USER
+]]></body>
+    </function>
+  </database>

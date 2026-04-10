@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+  <database name="TABLE SSCCR_POS_CARD_REC_SUM">
+    <table name="SSCCR_POS_CARD_REC_SUM" primaryKey="SSCCR_POSCARDSUM_KEY">
+      <column name="SSCCR_POS_CARD_REC_SUM_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SSCCR_POS_CARD_REC_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="LOT" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AMOUNT" primaryKey="false" required="false" type="DECIMAL" size="15,5" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DEPOSIT_AMOUNT" primaryKey="false" required="false" type="DECIMAL" size="15,5" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="TYPE" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="RECONCILED" primaryKey="false" required="false" type="VARCHAR" size="40" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SSCCR_PROCESSOR_BANCK_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="CONFIRMATION_NO" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISSUMMARY" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="FIN_FINACC_TRANSSACTION_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="AD_CLIENT" name="SSCCR_POSCARDSUM_AD_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="SSCCR_POSCARDSUM_AD_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SSCCR_POS_CARD_REC" name="SSCCR_POSCARDSUM_POS_CARD_REC">
+        <reference local="SSCCR_POS_CARD_REC_ID" foreign="SSCCR_POS_CARD_REC_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SSCCR_PROCESSOR_BANCK" name="SSCCR_POSCARDSUM_PROCESSBANCK">
+        <reference local="SSCCR_PROCESSOR_BANCK_ID" foreign="SSCCR_PROCESSOR_BANCK_ID"/>
+      </foreign-key>
+      <check name="SSCCR_POSCARDSUM_ISACTIVE_CHK"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
+      <check name="SSCCR_POSCARDSUM_ISSUMM_CHK"><![CDATA[ISSUMMARY IN ('Y', 'N')]]></check>
+    </table>
+  </database>

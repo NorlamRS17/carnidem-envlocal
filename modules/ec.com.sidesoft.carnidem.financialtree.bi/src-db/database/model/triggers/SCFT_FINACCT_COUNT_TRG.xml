@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCFT_FINACCT_COUNT_TRG">
+    <trigger name="SCFT_FINACCT_COUNT_TRG" table="SCFT_FINAN_ACCT_IND" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[
+/********************************************************************************** 
+ * Copyright (C) 2009 Openbravo S.L.U. 
+ * Licensed under the Openbravo Commercial License version 1.0 
+ * You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html 
+ **********************************************************************************
+ * Contributor(s):  ______________________________________.
+ **********************************************************************************/
+BEGIN
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+	-- Verifica si existen líneas relacionadas
+	  IF EXISTS (
+		  SELECT 1
+		  FROM scft_finan_acct_ind
+		  WHERE scft_paramacct_id = :OLD.scft_paramacct_id
+		) THEN
+		  RAISE_APPLICATION_ERROR(-20000, '@scft_countrow_trg@');
+		END IF;
+
+END SCFT_FINACCT_COUNT_TRG
+]]></body>
+    </trigger>
+  </database>
