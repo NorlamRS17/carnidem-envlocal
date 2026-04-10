@@ -1,14 +1,6 @@
 <?xml version="1.0"?>
   <vector>
     <versionInfo version="3.0.34312"/>
-    <columnDataChange tablename="AD_FIELD" columnname="AD_FIELDGROUP_ID" pkRow="8C5329776D38432DA2E1ABA44CBE60C2">
-      <oldValue/>
-      <newValue><![CDATA[FFC1717BB6E141E9B66EF7992732EFF5]]></newValue>
-    </columnDataChange>
-    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="8C5329776D38432DA2E1ABA44CBE60C2">
-      <oldValue><![CDATA[61]]></oldValue>
-      <newValue><![CDATA[107]]></newValue>
-    </columnDataChange>
     <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="B283607F4D9A4EE6BF2FF2BB7ADCF36A">
       <oldValue><![CDATA[30]]></oldValue>
       <newValue><![CDATA[40]]></newValue>

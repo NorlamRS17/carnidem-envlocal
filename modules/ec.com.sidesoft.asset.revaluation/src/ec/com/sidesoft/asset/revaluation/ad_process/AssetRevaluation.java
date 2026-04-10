@@ -142,7 +142,7 @@ public class AssetRevaluation extends DalBaseProcess {
 
     Date dChangeDate = null, dStartDate = null;
     BigDecimal bNewAssetValue = new BigDecimal(newAssetValue);
-    Long lUsefulLife = new Long(usefulLife);
+    Long lUsefulLife = Long.valueOf(usefulLife);
 
     try {
       dChangeDate = df.parse(changeDate);
@@ -882,6 +882,8 @@ public class AssetRevaluation extends DalBaseProcess {
    * @throws OBException
    *           If more than one amortization line exists for the given period.
    */
+  
+  @SuppressWarnings("deprecation")
   private AmortizationLine getAmortizationLine(Asset asset, Date startDate, Date endDate)
       throws OBException {
     StringBuilder whereClause = new StringBuilder();
@@ -1053,6 +1055,7 @@ public class AssetRevaluation extends DalBaseProcess {
    * @return Max asset sequence number in amortization lines related to the given asset. 0 if there
    *         is no amortization line related to the given asset.
    */
+  @SuppressWarnings("deprecation")
   private Long getMaxSeqNoAsset(Asset asset) {
     StringBuilder hql = new StringBuilder();
     hql.append(" select coalesce(max(al.sEQNoAsset), 0) as maxSeqNoAsset ");
@@ -1075,6 +1078,7 @@ public class AssetRevaluation extends DalBaseProcess {
    * @return max asset sequence number in amortization lines that belong to the given amortization.
    *         0 if there is no amortization line related to the given amortization.
    */
+  @SuppressWarnings("deprecation")
   private Long getMaxLineNo(Amortization amortization) {
     StringBuilder hql = new StringBuilder();
     hql.append(" select coalesce(max(al.lineNo), 0) as maxSeqNoAsset ");

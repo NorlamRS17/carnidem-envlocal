@@ -35,17 +35,20 @@ import org.openbravo.model.financialmgmt.payment.FIN_Payment;
 import org.openbravo.model.financialmgmt.payment.FIN_PaymentSchedInvV;
 import org.openbravo.model.financialmgmt.payment.FIN_PaymentSchedule;
 import org.openbravo.model.financialmgmt.payment.FIN_PaymentScheduleDetail;
+import org.openbravo.scheduling.KillableProcess;
 import org.openbravo.scheduling.ProcessBundle;
 import org.openbravo.scheduling.ProcessLogger;
 import org.openbravo.service.db.DalBaseProcess;
 import org.openbravo.service.db.DalConnectionProvider;
 import org.quartz.JobExecutionException;
+import java.math.RoundingMode;
 
 import ec.com.sidesoft.localization.ecuador.withholdingssales.SSWSWithholdingSale;
 
-public class Sswh_PaymentMonitorProcess extends DalBaseProcess {
+public class Sswh_PaymentMonitorProcess extends DalBaseProcess implements KillableProcess {
   private static ProcessLogger logger;
   public static ConnectionProvider conn;
+  private boolean killProcess = false;
 
   public void doExecute(ProcessBundle bundle) throws Exception {
 
@@ -73,6 +76,9 @@ public class Sswh_PaymentMonitorProcess extends DalBaseProcess {
 
     ScrollableResults invoiceScroller = null;
     try {
+      if (killProcess) {
+        throw new OBException("Process killed");
+      }
       int counter = 0;
       final Module migration = OBDal.getInstance().get(Module.class,
           "4BD3D4B262B048518FE62496EF09D549");
@@ -103,6 +109,9 @@ public class Sswh_PaymentMonitorProcess extends DalBaseProcess {
 
       invoiceScroller = obc.scroll(ScrollMode.FORWARD_ONLY);
       while (invoiceScroller.next()) {
+        if (killProcess) {
+          throw new OBException("Process killed");
+        }
         final Invoice invoice = (Invoice) invoiceScroller.get()[0];
         updateInvoice(invoice);
         counter++;
@@ -202,10 +211,10 @@ public class Sswh_PaymentMonitorProcess extends DalBaseProcess {
       }
       if (bgdWithholdingRENT.doubleValue() == 0) {
         invoice.setPercentageOverdue(amounts.get("overdue").multiply(new BigDecimal(100))
-            .divide(grandTotalAmount, BigDecimal.ROUND_HALF_UP).longValue());
+            .divide(grandTotalAmount, RoundingMode.HALF_UP).longValue());
       } else {
         invoice.setPercentageOverdue(bgdWithholdingTOTAL.multiply(new BigDecimal(100))
-            .divide(grandTotalAmount, BigDecimal.ROUND_HALF_UP).longValue());
+            .divide(grandTotalAmount, RoundingMode.HALF_UP).longValue());
       }
       invoice.setLastCalculatedOnDate(new Date());
       // invoice.setDescription((invoice.getDescription()==null?"":invoice.getDescription()) +
@@ -625,10 +634,10 @@ public class Sswh_PaymentMonitorProcess extends DalBaseProcess {
       // payment amount * (generatedPaymentPaidAmount / generatedPaymentTotalAmount)
       BigDecimal paidAmountTmp = payment.getAmount().subtract(payment.getWriteoffAmount())
           .multiply(generatedPaymentPaidAmount)
-          .divide(generatedPaymentTotalAmount, BigDecimal.ROUND_HALF_UP);
+          .divide(generatedPaymentTotalAmount, RoundingMode.HALF_UP);
       // set scale of the currency using standard precision
       paidAmount = paidAmount.add(paidAmountTmp.setScale(payment.getCurrency()
-          .getStandardPrecision().intValue(), BigDecimal.ROUND_HALF_UP));
+          .getStandardPrecision().intValue(), RoundingMode.HALF_UP));
       // Add payment's write off amount to the paid amount
       paidAmount = paidAmount.add(getConvertedAmt(payment.getWriteoffAmount(), payment
           .getCurrency().getId(), strCurrencyTo, conversionDate, payment.getClient().getId(),
@@ -705,7 +714,7 @@ public class Sswh_PaymentMonitorProcess extends DalBaseProcess {
       }
       // payment amount * (generatedPaymentOverdueAmount / generatedPaymentTotalAmount)
       BigDecimal overdueAmountTmp = payment.getAmount().multiply(generatedPaymentOverdueAmount)
-          .divide(generatedPaymentTotalAmount, BigDecimal.ROUND_HALF_UP);
+          .divide(generatedPaymentTotalAmount, RoundingMode.HALF_UP);
       // set scale of the currency using standard precision
       overdueAmount = overdueAmount.add(overdueAmountTmp.setScale(payment.getCurrency()
           .getStandardPrecision().intValue(), RoundingMode.HALF_UP));
@@ -741,5 +750,9 @@ public class Sswh_PaymentMonitorProcess extends DalBaseProcess {
       }
     }
     return status;
+  }
+  @Override
+  public void kill(ProcessBundle processBundle) throws Exception {
+    this.killProcess = true;
   }
 }

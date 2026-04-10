@@ -900,6 +900,16 @@
     <value column="PO_Name" isTrl="N" original=""/>
     <value column="PO_PrintName" isTrl="N" original=""/>
   </row>
+  <row id="2C645CF283AA4F738589D0A3CFE5E207" trl="Y">
+    <value column="Name" isTrl="Y" original="Days Worked Benefits">Días Laborados Beneficios</value>
+    <value column="PrintName" isTrl="Y" original="Days Worked Benefits">Días Laborados Beneficios</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
   <row id="2C8D4817C1A246CC87F3AA7CDB172117" trl="N">
     <value column="Name" isTrl="N" original="Numeroidentificaciondiscapacidad">Numeroidentificaciondiscapacidad</value>
     <value column="PrintName" isTrl="N" original="Numeroidentificaciondiscapacidad">Numeroidentificaciondiscapacidad</value>
@@ -2850,6 +2860,16 @@
     <value column="PO_Name" isTrl="N" original=""/>
     <value column="PO_PrintName" isTrl="N" original=""/>
   </row>
+  <row id="799D250D13064C39B7B60E9BE9B2DB27" trl="Y">
+    <value column="Name" isTrl="Y" original="Income Tax Calculation">Cálculo del impuesto sobre la renta</value>
+    <value column="PrintName" isTrl="Y" original="Income Tax Calculation">Cálculo del impuesto sobre la renta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
   <row id="7A2D32114C5E4516838AF52932A0DE0D" trl="N">
     <value column="Name" isTrl="Y" original="Status Payroll">Estado de Nómina</value>
     <value column="PrintName" isTrl="Y" original="Status Payroll">Estado de Nómina</value>
@@ -3493,6 +3513,16 @@
   <row id="915426B929DF4AC4B7E2E871A09D7150" trl="Y">
     <value column="Name" isTrl="Y" original="Request Loans - Lines - Advance Payment"> Solicitud de prestamos - Anticipo Pago</value>
     <value column="PrintName" isTrl="Y" original="Request Loans - Lines - Advance Payment"> Solicitud de prestamos - Anticipo Pago</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="915FAB0A51284FDE8D1A527001242F4B" trl="Y">
+    <value column="Name" isTrl="Y" original="Period">Período</value>
+    <value column="PrintName" isTrl="Y" original="Period">Período</value>
     <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
     <value column="PO_Description" isTrl="N" original=""/>
@@ -4460,6 +4490,16 @@
     <value column="PO_Name" isTrl="N" original=""/>
     <value column="PO_PrintName" isTrl="N" original=""/>
   </row>
+  <row id="C412856293464A33ACEA931A5FFE9B91" trl="Y">
+    <value column="Name" isTrl="Y" original="Part-time Hours">Horas Jornada Parcial</value>
+    <value column="PrintName" isTrl="Y" original="Part-time Hours">Horas Jornada Parcial</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
   <row id="C49A35A215AF415FBE77B74B63EF4F46" trl="N">
     <value column="Name" isTrl="Y" original="Is Debe">Debe</value>
     <value column="PrintName" isTrl="Y" original="Is Debe">Debe</value>
@@ -4530,6 +4570,16 @@
     <value column="PO_Name" isTrl="N" original=""/>
     <value column="PO_PrintName" isTrl="N" original=""/>
   </row>
+  <row id="C754424C04204498BF0DEF3C00FD60D9" trl="Y">
+    <value column="Name" isTrl="Y" original="Monthly Tenth">Décimo Mensualizado</value>
+    <value column="PrintName" isTrl="Y" original="Monthly Tenth">Décimo Mensualizado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
   <row id="C7648CD281A24246A6F5C998FAB134C1" trl="N">
     <value column="Name" isTrl="N" original="Decimotercero">Decimotercero</value>
     <value column="PrintName" isTrl="N" original="Decimotercero">Decimotercero</value>
@@ -4543,6 +4593,16 @@
   <row id="C77E31CFB08A493BB901C1FCAE7C9E38" trl="Y">
     <value column="Name" isTrl="Y" original="Date Birth">Fecha nacimiento</value>
     <value column="PrintName" isTrl="Y" original="Date Birth">Fecha nacimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C820CD17394B413CB78A3EF3F516BD84" trl="Y">
+    <value column="Name" isTrl="Y" original="Income Tax Withholding">Impuesto Renta Retención</value>
+    <value column="PrintName" isTrl="Y" original="Income Tax Withholding">Impuesto Renta Retención</value>
     <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
     <value column="PO_Description" isTrl="N" original=""/>
@@ -5063,6 +5123,16 @@
   <row id="DA3ADFF281CE4BA2B209276CFB461CCF" trl="N">
     <value column="Name" isTrl="Y" original="Tipoidentdiscapacidad">Tipo identificación discapacidad</value>
     <value column="PrintName" isTrl="Y" original="Tipoidentdiscapacidad">Tipo identificación discapacidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DA5DB7D6BBEB4D369D9ACF186C1C1FA0" trl="Y">
+    <value column="Name" isTrl="Y" original="Full-time hours">Horas Jornada Completa</value>
+    <value column="PrintName" isTrl="Y" original="Full-time hours">Horas Jornada Completa</value>
     <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
     <value column="PO_Description" isTrl="N" original=""/>

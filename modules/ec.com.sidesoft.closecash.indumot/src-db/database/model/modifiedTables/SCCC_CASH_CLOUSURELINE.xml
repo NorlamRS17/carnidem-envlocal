@@ -9,6 +9,9 @@
         <default><![CDATA[N]]></default>
         <onCreateDefault/>
       </column>
+      <index name="EM_SSCCCIN_IDXCASHCLOUSURELINE" unique="false">
+        <index-column name="SCCC_CASH_CLOUSURE_ID"/>
+      </index>
       <check name="EM_SSCCCIN_READONLY"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
     </table>
   </database>

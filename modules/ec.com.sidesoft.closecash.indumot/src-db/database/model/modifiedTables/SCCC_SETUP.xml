@@ -5,5 +5,10 @@
         <default/>
         <onCreateDefault/>
       </column>
+      <column name="EM_SSCCCIN_NOT_CLOSECASH_ZERO" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <check name="EM_SSCCCIN_NOT_CCASH_ZERO_CHK"><![CDATA[EM_SSCCCIN_NOT_CLOSECASH_ZERO IN ('Y', 'N')]]></check>
     </table>
   </database>

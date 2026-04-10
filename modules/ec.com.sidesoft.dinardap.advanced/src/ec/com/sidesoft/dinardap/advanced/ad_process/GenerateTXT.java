@@ -32,6 +32,7 @@ import org.openbravo.service.db.DbUtility;
 import ec.com.sidesoft.dinardap.advanced.Sdindp_Dinardap;
 import ec.com.sidesoft.dinardap.advanced.Sdindp_DinardapConfig;
 import ec.com.sidesoft.dinardap.advanced.Sdindp_DinardapLine;
+import org.openbravo.client.application.attachment.CoreAttachImplementation;
 
 public class GenerateTXT extends DalBaseProcess {
   private final Logger log4j = Logger.getLogger(GenerateTXT.class);
@@ -98,7 +99,7 @@ public class GenerateTXT extends DalBaseProcess {
     String path;
     List<Attachment> attachments = attachmentList.list();
     if (attachments.size() == 0) {
-      path = TabAttachments.getAttachmentDirectoryForNewAttachments(tableId, recordId);
+      path = CoreAttachImplementation.getAttachmentDirectoryForNewAttachments(tableId, recordId);
     } else {
       path = attachments.get(0).getPath();
     }

@@ -10,11 +10,12 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 
+@SuppressWarnings("deprecation")
 public abstract class SCCRT_Helper {
 
   static public String getString(Cell cell) throws Exception {
     if (cell.getCellTypeEnum().equals(CellType.NUMERIC)) {
-      cell.setCellType(Cell.CELL_TYPE_STRING);
+      cell.setCellType(CellType.STRING);
     }
     DataFormatter dataFormatter = new DataFormatter();
     String value = dataFormatter.formatCellValue(cell);

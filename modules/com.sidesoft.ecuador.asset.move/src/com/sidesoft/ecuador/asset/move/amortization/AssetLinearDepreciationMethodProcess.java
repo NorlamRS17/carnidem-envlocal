@@ -904,6 +904,7 @@ public class AssetLinearDepreciationMethodProcess extends DalBaseProcess {
    * @return Max asset sequence number in amortization lines related to the given asset. 0 if there
    *         is no amortization line related to the given asset.
    */
+  @SuppressWarnings("deprecation")
   private Long getMaxSeqNoAsset(Asset asset) {
     StringBuilder hql = new StringBuilder();
     hql.append(" select coalesce(max(al.sEQNoAsset), 0) as maxSeqNoAsset ");

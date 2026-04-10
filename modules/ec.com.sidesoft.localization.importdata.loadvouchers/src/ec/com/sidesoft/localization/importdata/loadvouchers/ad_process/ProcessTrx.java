@@ -123,6 +123,7 @@ import org.openbravo.model.common.invoice.Invoice;
 import org.openbravo.model.common.plm.Product;
 import org.apache.log4j.Logger;
 
+@SuppressWarnings("deprecation")
 public class ProcessTrx extends DalBaseProcess {
 	OBError message;
 	private boolean insert = false;

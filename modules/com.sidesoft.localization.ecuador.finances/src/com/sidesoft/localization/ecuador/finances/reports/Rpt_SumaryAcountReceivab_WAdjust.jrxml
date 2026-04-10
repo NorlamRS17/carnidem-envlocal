@@ -67,7 +67,7 @@
   LEFT JOIN c_costcenter cc ON p.c_costcenter_id = cc.c_costcenter_id
   WHERE fa.name ~~ '%Anticipo Cliente SI%'
     AND p.isreceipt = 'Y'
-    AND p.paymentdate <= $P{Dateto}
+    AND to_date(to_char(p.paymentdate, 'dd/MM/yyyy'), 'dd/MM/yyyy') <= $P{Dateto}
     AND ($P{Docstatus} IS NULL OR p.posted = $P{Docstatus})
     AND ($P{C_BPartner_ID} IS NULL OR p.c_bpartner_id = $P{C_BPartner_ID})
 ),
@@ -93,7 +93,7 @@ gen AS (
     AND p.isreceipt = 'Y'
     AND pd.isprepayment = 'Y'
     AND p.generated_credit = pdv.paidamt
-    AND p.paymentdate <= $P{Dateto}
+    AND to_date(to_char(p.paymentdate, 'dd/MM/yyyy'), 'dd/MM/yyyy') <= $P{Dateto}
     AND ($P{Docstatus} IS NULL OR p.posted = $P{Docstatus})
     AND ($P{C_BPartner_ID} IS NULL OR p.c_bpartner_id = $P{C_BPartner_ID})
   GROUP BY p.fin_payment_id, p.c_bpartner_id, p.documentno, p.paymentdate,
@@ -183,7 +183,7 @@ used_rows AS (
   LEFT JOIN c_bpartner bp ON bp.c_bpartner_id = p.c_bpartner_id
   LEFT JOIN c_doctype dt ON dt.c_doctype_id = p.c_doctype_id
   LEFT JOIN c_costcenter cc ON cc.c_costcenter_id = p.c_costcenter_id
-  WHERE c.paymentdate <= $P{Dateto}
+  WHERE to_date(to_char(c.paymentdate, 'dd/MM/yyyy'), 'dd/MM/yyyy') <= $P{Dateto}
     AND ($P{Docstatus} IS NULL OR p.posted = $P{Docstatus})
     AND ($P{C_BPartner_ID} IS NULL OR p.c_bpartner_id = $P{C_BPartner_ID})
 ),
@@ -219,7 +219,7 @@ zro AS (
   FROM sswh_acct_receivab_payab_zro_v arp
   WHERE arp.isclient = 'Y'
     AND arp.doc_type IN ('Anticipo Cliente')
-    AND arp.dateacct <= $P{Dateto}
+    AND to_date(to_char(arp.dateacct, 'dd/MM/yyyy'), 'dd/MM/yyyy') <= $P{Dateto}
     AND ($P{Docstatus} IS NULL OR arp.posted = $P{Docstatus})
     AND ($P{C_BPartner_ID} IS NULL OR arp.c_bpartner_id = $P{C_BPartner_ID})
 )

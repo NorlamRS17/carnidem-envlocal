@@ -47,8 +47,10 @@ import org.openbravo.service.db.DalConnectionProvider;
 import ec.com.sidesoft.payroll.events.SPEVConfigIauditor;
 import ec.com.sidesoft.payroll.events.SPEVConfigTemplate;
 import ec.com.sidesoft.payroll.events.SPEVTempAuditor;
+import org.openbravo.scheduling.KillableProcess;
 
-public class PayrollEventsChecklistBonus extends DalBaseProcess {
+
+public class PayrollEventsChecklistBonus extends DalBaseProcess implements KillableProcess{
   private static final Logger log4j = Logger.getLogger(PayrollEventsChecklistBonus.class);
   private ProcessLogger logger;
   String msgTitle = "";
@@ -58,6 +60,7 @@ public class PayrollEventsChecklistBonus extends DalBaseProcess {
 
   private static String urlWS = "";
   private static String token = "";
+  private boolean killProcess = false;
 
   @Override
   protected void doExecute(ProcessBundle bundle) throws Exception {
@@ -78,7 +81,10 @@ public class PayrollEventsChecklistBonus extends DalBaseProcess {
       JSONObject consumews = consumeIAuditorWS(logger);
       message = String.format(consumews.getString("message"), consumews.getString("error"));
       logger.logln(message);
-
+      
+      if (killProcess) {
+        throw new OBException("Process killed");
+      }
       // HAGO LA LLAMADA A LA FUNCION POSTGRES BONUS CHECKLIST
       bonusChecklist();
 
@@ -562,6 +568,10 @@ public class PayrollEventsChecklistBonus extends DalBaseProcess {
         ignore.printStackTrace();
       }
     }
+  }
+  @Override
+  public void kill(ProcessBundle processBundle) throws Exception {
+    this.killProcess = true;
   }
 
 }

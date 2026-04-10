@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_MATCHINV">
+    <table name="M_MATCHINV" primaryKey="M_MATCHINV_KEY">
+      <index name="EM_DBIDXO_MATCHINV_OUTLN_QTY" unique="false">
+        <index-column name="M_INOUTLINE_ID"/>
+        <index-column name="QTY"/>
+      </index>
+    </table>
+  </database>

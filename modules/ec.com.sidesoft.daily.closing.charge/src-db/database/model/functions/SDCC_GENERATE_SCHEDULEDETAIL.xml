@@ -187,9 +187,8 @@ BEGIN
             WHERE
                 issotrx = 'Y'
                 AND ci.docstatus = 'CO'
-                AND ci.OutstandingAmt BETWEEN LEAST(Cur_Head.valuefrom, Cur_Head.valueto)
-                              AND GREATEST(Cur_Head.valuefrom, Cur_Head.valueto)
-                AND ci.OutstandingAmt <> 0
+                AND ci.OutstandingAmt <= Cur_Head.valueto
+                AND ci.OutstandingAmt >= Cur_Head.valuefrom
                 AND ad_isorgincluded (ci.ad_org_id, Cur_Head.ad_org_id, ci.ad_client_id) > 0
                 AND (ci.c_bpartner_id = Cur_Head.c_bpartner_id OR Cur_Head.c_bpartner_id IS NULL)
                 AND TRUNC(ci.DateInvoiced) BETWEEN TRUNC(Cur_Head.datefrom) AND TRUNC(Cur_Head.dateto)

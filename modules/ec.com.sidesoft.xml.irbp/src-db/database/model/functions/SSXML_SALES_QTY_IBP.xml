@@ -48,6 +48,7 @@ BEGIN
             AND glc.name = 'AR Invoice' AND dt.DocBaseType = 'ARI' AND dt.IsSOTrx = 'Y'
             AND dt.EM_Eei_Is_Edoc = 'Y'
             AND dt.isactive = 'Y'
+            AND ci.docstatus  ='CO'
             AND dt.EM_Sswh_Implementautoriza = 'Y';
 
         END IF;
@@ -122,6 +123,7 @@ BEGIN
             AND glc.name = 'AR Invoice' AND dt.DocBaseType = 'ARI' AND dt.IsSOTrx = 'Y'
             AND dt.EM_Eei_Is_Edoc = 'Y'
             AND dt.isactive = 'Y'
+             AND ci.docstatus  ='CO'
             AND dt.EM_Sswh_Implementautoriza = 'Y'
             ) tmp;
 

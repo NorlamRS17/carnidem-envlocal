@@ -33,25 +33,20 @@
     v_Message VARCHAR2(2000):='';
     v_Record_ID VARCHAR2(32);
 
-    -- Parameter
     -- Audit
     v_AD_Client_ID VARCHAR2(32);
     v_AD_ORG_ID VARCHAR2(32);
     v_AD_USER_ID VARCHAR2(32);
-    TYPE RECORD IS REF CURSOR;
-    Cur_Parameter RECORD;
+
     Cur_Finacc_Transaction RECORD;
     Cur_withholdings  RECORD;
+
     -- Parameter Variables
-    v_sspch_invoice_id VARCHAR2(32);
     v_fin_financial_account_from VARCHAR2(32);
-    v_start_date DATE;
-    v_end_date DATE;
     v_get_uuid VARCHAR2(32);
     v_c_invoice_id VARCHAR2(32);
-	v_fin_payment_id VARCHAR2(32);
+    v_fin_payment_id VARCHAR2(32);
     v_c_order_id VARCHAR2(32);
-    v_recap VARCHAR2(30);
     v_type VARCHAR2(30);
     v_lot VARCHAR2(30);
     v_date DATE;
@@ -69,302 +64,267 @@
     v_typeVW NUMBER:=0;
     v_typeC NUMBER:=0;
     v_typeI NUMBER:=0;
-    v_AgainProcess NUMBER:=0;
     v_type_val NUMBER:=3;
-    v_paymet_date DATE;
-    v_outstandingamt NUMBER:=0;
-    v_NoOfFields NUMBER:=0;
     v_insert_lines NUMBER:=0;
-    v_trl_count NUMBER;
-    v_NextNo_F VARCHAR2(32);
-    -- Copy
-    Cur_Fields RECORD;
-    Row_Src_Field AD_Field%ROWTYPE;
-    Row_Dest_Field_Trl AD_Field_Trl%ROWTYPE;
 
-    v_field_name NVARCHAR2(60);
-    v_field_desc NVARCHAR2(255);
-    v_field_help NVARCHAR2(2000);
-    assigned BOOLEAN;
-	
-	v_fin_finacc_transsaction_id VARCHAR2(32);
-	
-	-- RARC
-	vCheck				BOOLEAN;
-	vBase			  NUMBER;
-	vDepositAmount	  NUMBER;
-	vPricePrecision	 NUMBER;
+    v_fin_finacc_transsaction_id VARCHAR2(32);
+
+    -- RARC
+    vCheck         BOOLEAN;
+    vBase          NUMBER;
+    vDepositAmount NUMBER;
+    vPricePrecision NUMBER;
+
+    -- [OPT] Tasa IVA cacheada al inicio (evita subselects repetidos por cada fila/iteracion)
+    v_iva_rate  NUMBER;
+    v_iva_count NUMBER;
+
   BEGIN
-    --  Update AD_PInstance
   BEGIN --BODY
-    -- Get Parameters
     v_ResultStr:='GetEntityType';
-	v_Record_ID := p_ssccr_pos_card_rec_id;
+    v_Record_ID := p_ssccr_pos_card_rec_id;
 
-	--HEAD VAR
-	SELECT pcr.fin_financial_account_from_id, pcr.start_date, pcr.end_date, pcr.ad_client_id, pcr.ad_org_id,
-		pcr.createdby, cu.priceprecision
-	INTO v_fin_financial_account_from, v_start_date, v_end_date, v_AD_Client_ID, v_AD_ORG_ID,
-		v_AD_USER_ID, vPricePrecision
-	FROM ssccr_pos_card_rec pcr
-		JOIN fin_financial_account ft ON ft.fin_financial_account_id = pcr.fin_financial_account_from_id
-		JOIN c_currency cu ON cu.c_currency_id = ft.c_currency_id
-	WHERE pcr.ssccr_pos_card_rec_id = v_Record_ID;
+    -- [OPT] Validar impuesto configurado y cachear la tasa en una sola consulta
+    -- Antes: dos SELECT COUNT separados sobre c_tax (una por condicion)
+    SELECT count(*), max(ct.rate)
+    INTO v_iva_count, v_iva_rate
+    FROM c_tax ct
+    WHERE ct.em_ssccr_isivacardreconprocess = 'Y'
+      AND ct.issummary = 'N'
+      AND ct.istaxdeductable = 'Y'
+      AND ct.rate > 0;
 
-	FOR Cur_Finacc_Transaction IN (
-		Select    fft.em_ssccr_c_invoice_id 		as "c_invoice_id"
-			, fft.em_ssccr_c_order_id 		as "c_order_id"
-			, fft.em_ssccr_lot 			as "lot"
-			, fft.em_ssccr_ssfi_banktransfer_id 	as "ssfi_banktransfer_id"
-			, fft.em_ssccr_processor_banck_id 	as "ssccr_processor_banck_id"
-			, fft.em_ssccr_types_of_credit_id 	as "ssccr_types_of_credit_id"
-			, fft.em_ssccr_expiration_date 		as "ssccr_expiration_date"
-			, fft.em_ssccr_cards_types_id 		as "ssccr_cards_types_id"
-			, fft.em_ssccr_fin_payment_id		as "fin_payment_id"
-			, fft.statementdate 			as "statementdate"
-			, fft.depositamt			as "depositamt"
-			, CASE
-		    WHEN fft.depositamt = i.grandtotal THEN tax.impuesto
-		    ELSE fft.depositamt / (
-		      CASE WHEN cit.c_invoice_id IS NULL THEN
-		        (SELECT ct.rate
-		         FROM c_tax ct
-		         WHERE ct.em_ssccr_isivacardreconprocess = 'Y')
-		      ELSE ct.rate
-		     END / 100::numeric + 1::numeric) * (
-		      CASE WHEN cit.c_invoice_id IS NULL THEN
-		        (SELECT ct.rate
-		         FROM c_tax ct
-		         WHERE ct.em_ssccr_isivacardreconprocess = 'Y')
-		      ELSE ct.rate
-		     END / 100::numeric)
-	  		END AS impuesto
-	  		, CASE
-			    WHEN fft.depositamt = i.grandtotal THEN i.totallines
-			    ELSE fft.depositamt / (
-			      CASE WHEN cit.c_invoice_id IS NULL THEN
-			        (SELECT ct.rate
-			         FROM c_tax ct
-			         WHERE ct.em_ssccr_isivacardreconprocess = 'Y')
-			      ELSE ct.rate
-			      END / 100::numeric + 1::numeric)
-			END AS totallines
-			, CASE
-			    WHEN fft.depositamt = i.grandtotal THEN i.grandtotal
-				    ELSE fft.depositamt
-			END AS grandtotal
-			, fft.em_ssccr_expiration_date		as "expiration_date"
-			, fft.em_ssccr_recapno 			as "referenceno"
-			, fft.em_ssccr_reconciled		as "reconciled"
-			, fft.fin_finacc_transaction_id
-		From fin_finacc_transaction fft 
-			Left Join c_invoice i on i.c_invoice_id = fft.em_ssccr_c_invoice_id  
-			Left join (Select sum(taxamt) as "impuesto",c_invoice_id from c_invoicelinetax  group by c_invoice_id) tax on tax.c_invoice_id = i.c_invoice_id
-			LEFT JOIN C_InvoiceTax cit on cit.c_invoice_id = i.c_invoice_id and cit.c_tax_id in(select ct.c_tax_id	
-												        	From c_tax ct
-														where ct.issummary = 'N' 
-														and ct.IsTaxDeductable = 'Y'	
-														and ct.rate > 0 )
-	  		LEFT JOIN C_Tax ct on ct.C_Tax_id = cit.C_Tax_id
-		Where fin_finacc_transaction_id = p_fin_finacc_transaction_id
-		AND fft.Trxtype = 'BPD'
-	) LOOP
-		v_c_invoice_id		:= Cur_Finacc_Transaction.c_invoice_id;
-		v_c_order_id		:= Cur_Finacc_Transaction.c_order_id;
-		v_lot			:= Cur_Finacc_Transaction.lot;
-		v_date			:= Cur_Finacc_Transaction.statementdate;
-		v_amount		:= Cur_Finacc_Transaction.depositamt;
-		v_types_of_credit_id	:= Cur_Finacc_Transaction.ssccr_types_of_credit_id;
-		v_expiration_date	:= Cur_Finacc_Transaction.expiration_date;
-		v_cards_types_id	:= Cur_Finacc_Transaction.ssccr_cards_types_id;
-		v_banktransfer_id	:= Cur_Finacc_Transaction.ssfi_banktransfer_id;
-		v_referenceno		:= Cur_Finacc_Transaction.referenceno;
-		v_processor_banck_id	:= Cur_Finacc_Transaction.ssccr_processor_banck_id;
-		v_reconciled		:= 'Y';
-		v_fin_payment_id	:= Cur_Finacc_Transaction.fin_payment_id;
+    IF v_iva_count = 0 THEN
+        RAISE_APPLICATION_ERROR(-20000, 'No existe impuesto con el check activado');
+    ELSIF v_iva_count > 1 THEN
+        RAISE_APPLICATION_ERROR(-20000, 'Existe más de un impuesto con el check activado');
+    END IF;
 
-		If(v_cards_types_id IS NULL OR v_types_of_credit_id IS NULL OR  v_processor_banck_id IS NULL)Then
-			RAISE_APPLICATION_ERROR(-20000,'@SSCCR_Load_Config_Empty_Lines@ ');
-		End If;
-		v_type_IW := 0;
-		v_typeVW := 0;
-		v_typeC := 0;
-		v_depositamt_resp:= 0;
-		
-		--RARC
-		vCheck := v_c_invoice_id IS NULL OR COALESCE(Cur_Finacc_Transaction.impuesto,0) = 0;
-		vBase := COALESCE(v_amount,0)/(1::numeric + (CASE WHEN v_c_invoice_id IS NULL THEN
-			        								  (SELECT ct.rate FROM c_tax ct
-									   					WHERE ct.em_ssccr_isivacardreconprocess = 'Y' 
-									   					AND ct.issummary = 'N' 
-									   					AND ct.IsTaxDeductable = 'Y'
-									   					AND ct.rate > 0)
-			      									ELSE (SELECT ct.rate FROM c_invoice ci
-														LEFT JOIN C_InvoiceTax cit ON cit.c_invoice_id = ci.c_invoice_id AND cit.c_tax_id IN(SELECT ct.c_tax_id
-																								FROM c_tax ct
-																								WHERE ct.issummary = 'N' 
-																								AND ct.IsTaxDeductable = 'Y'
-																								AND ct.rate > 0)
-														LEFT JOIN C_Tax ct ON ct.C_Tax_id = cit.C_Tax_id
-														WHERE ci.c_invoice_id = v_c_invoice_id)
-				  									END) / 100::numeric);
-		
-		FOR Cur_withholdings IN (
-			Select sw.porcentage ,sw.type
-			From ssccr_cardmatchingconf  cmc
-				Join ssccr_cardmatchingconfline  cmcl on cmcl.ssccr_cardmatchingconf_id = cmc.ssccr_cardmatchingconf_id
-				Join ssccr_withholdings sw on sw.ssccr_cardmatchingconfline_id = cmcl.ssccr_cardmatchingconfline_id
-			Where sw.type IN ('IW' , 'VW' , 'C','IVA')
-				And v_date Between cmcl.from_validity And cmcl.valid_up
-				And cmcl.ssccr_cards_types_id = v_cards_types_id
-				And cmcl.ssccr_types_of_credit_id = v_types_of_credit_id
-				And cmcl.income_withholding = 'IW'
-		)Loop
-			v_type	:= Cur_withholdings.type;
+    -- HEAD VAR: cabecera del documento de conciliacion
+    SELECT pcr.fin_financial_account_from_id, pcr.ad_client_id, pcr.ad_org_id,
+           pcr.createdby, cu.priceprecision
+    INTO v_fin_financial_account_from, v_AD_Client_ID, v_AD_ORG_ID,
+         v_AD_USER_ID, vPricePrecision
+    FROM ssccr_pos_card_rec pcr
+        JOIN fin_financial_account ft ON ft.fin_financial_account_id = pcr.fin_financial_account_from_id
+        JOIN c_currency cu ON cu.c_currency_id = ft.c_currency_id
+    WHERE pcr.ssccr_pos_card_rec_id = v_Record_ID;
 
-			If(v_type='IW')Then--Retencion Renta
-				v_amount := CASE WHEN vCheck THEN vBase ELSE Cur_Finacc_Transaction.totallines END;
-				v_type_IW := v_type_IW + 1;
-			End If;
-			If(v_type='VW')Then--Retencion IVA
-				v_amount := CASE WHEN vCheck THEN vBase*((CASE WHEN v_c_invoice_id IS NULL THEN
-			        									  (SELECT ct.rate FROM c_tax ct
-									   						WHERE ct.em_ssccr_isivacardreconprocess = 'Y' 
-									   						AND ct.issummary = 'N' 
-									   						AND ct.IsTaxDeductable = 'Y'
-									   						AND ct.rate > 0)
-			      										ELSE (SELECT ct.rate FROM c_invoice ci
-															LEFT JOIN C_InvoiceTax cit ON cit.c_invoice_id = ci.c_invoice_id AND cit.c_tax_id IN(SELECT ct.c_tax_id
-																									FROM c_tax ct
-																									WHERE ct.issummary = 'N' 
-																									AND ct.IsTaxDeductable = 'Y'
-																									AND ct.rate > 0)
-															LEFT JOIN C_Tax ct ON ct.C_Tax_id = cit.C_Tax_id
-															WHERE ci.c_invoice_id = v_c_invoice_id)
-				  										END) / 100::numeric)  ELSE Cur_Finacc_Transaction.impuesto END;
-				v_typeVW := v_typeVW + 1;
-			End If;
-			If(v_type='C')Then--Comision
-				v_amount := Cur_Finacc_Transaction.grandtotal;
-				v_typeC := v_typeC + 1;
-			End If;
-			If(v_type='IVA')Then--IVA
-				v_amount := Cur_Finacc_Transaction.grandtotal;
-				v_typeI := v_typeI + 1;
-			End If;
-			v_depositamt 	:=	v_amount * Cur_withholdings.porcentage / 100;
-			v_get_uuid 	:= 	get_uuid();
+    FOR Cur_Finacc_Transaction IN (
+        -- [OPT] LEFT JOIN LATERAL: agrega impuestos solo para la factura de esta transaccion.
+        -- Antes: LEFT JOIN (SELECT sum... FROM c_invoicelinetax GROUP BY c_invoice_id) tax
+        --   → agregaba TODA c_invoicelinetax (~millones de filas) antes del join → ~7s por llamada.
+        -- Ahora: LATERAL filtra primero por c_invoice_id → solo las filas necesarias.
+        --
+        -- [OPT] v_iva_rate sustituye los cuatro subselects inline:
+        --   (SELECT ct.rate FROM c_tax WHERE em_ssccr_isivacardreconprocess = 'Y')
+        SELECT fft.em_ssccr_c_invoice_id          AS "c_invoice_id"
+             , fft.em_ssccr_c_order_id            AS "c_order_id"
+             , fft.em_ssccr_lot                   AS "lot"
+             , fft.em_ssccr_ssfi_banktransfer_id  AS "ssfi_banktransfer_id"
+             , fft.em_ssccr_processor_banck_id    AS "ssccr_processor_banck_id"
+             , fft.em_ssccr_types_of_credit_id    AS "ssccr_types_of_credit_id"
+             , fft.em_ssccr_expiration_date        AS "ssccr_expiration_date"
+             , fft.em_ssccr_cards_types_id        AS "ssccr_cards_types_id"
+             , fft.em_ssccr_fin_payment_id        AS "fin_payment_id"
+             , fft.statementdate                  AS "statementdate"
+             , fft.depositamt                     AS "depositamt"
+             , CASE
+                   WHEN fft.depositamt = i.grandtotal THEN tax.impuesto
+                   ELSE fft.depositamt / (
+                       CASE WHEN cit.c_invoice_id IS NULL THEN v_iva_rate ELSE ct.rate END
+                       / 100::numeric + 1::numeric) * (
+                       CASE WHEN cit.c_invoice_id IS NULL THEN v_iva_rate ELSE ct.rate END
+                       / 100::numeric)
+               END AS impuesto
+             , CASE
+                   WHEN fft.depositamt = i.grandtotal THEN i.totallines
+                   ELSE fft.depositamt / (
+                       CASE WHEN cit.c_invoice_id IS NULL THEN v_iva_rate ELSE ct.rate END
+                       / 100::numeric + 1::numeric)
+               END AS totallines
+             , CASE
+                   WHEN fft.depositamt = i.grandtotal THEN i.grandtotal
+                   ELSE fft.depositamt
+               END AS grandtotal
+             , fft.em_ssccr_expiration_date       AS "expiration_date"
+             , fft.em_ssccr_recapno               AS "referenceno"
+             , fft.em_ssccr_reconciled            AS "reconciled"
+             , fft.fin_finacc_transaction_id
+        FROM fin_finacc_transaction fft
+            LEFT JOIN c_invoice i ON i.c_invoice_id = fft.em_ssccr_c_invoice_id
+            -- [OPT] LATERAL: suma solo las lineas de la factura de esta transaccion
+            -- Sin COALESCE: si no hay lineas de impuesto, SUM es NULL (igual que el JOIN al subquery global original)
+            LEFT JOIN LATERAL (
+                SELECT SUM(il.taxamt) AS impuesto
+                FROM c_invoicelinetax il
+                WHERE il.c_invoice_id = i.c_invoice_id
+            ) tax ON true
+            LEFT JOIN c_invoicetax cit ON cit.c_invoice_id = i.c_invoice_id
+                AND cit.c_tax_id IN (
+                    SELECT ct2.c_tax_id FROM c_tax ct2
+                    WHERE ct2.issummary = 'N'
+                      AND ct2.istaxdeductable = 'Y'
+                      AND ct2.rate > 0
+                )
+            LEFT JOIN c_tax ct ON ct.c_tax_id = cit.c_tax_id
+        WHERE fft.fin_finacc_transaction_id = p_fin_finacc_transaction_id
+          AND fft.trxtype = 'BPD'
+    ) LOOP
+        v_c_invoice_id       := Cur_Finacc_Transaction.c_invoice_id;
+        v_c_order_id         := Cur_Finacc_Transaction.c_order_id;
+        v_lot                := Cur_Finacc_Transaction.lot;
+        v_date               := Cur_Finacc_Transaction.statementdate;
+        v_amount             := Cur_Finacc_Transaction.depositamt;
+        v_types_of_credit_id := Cur_Finacc_Transaction.ssccr_types_of_credit_id;
+        v_expiration_date    := Cur_Finacc_Transaction.expiration_date;
+        v_cards_types_id     := Cur_Finacc_Transaction.ssccr_cards_types_id;
+        v_banktransfer_id    := Cur_Finacc_Transaction.ssfi_banktransfer_id;
+        v_referenceno        := Cur_Finacc_Transaction.referenceno;
+        v_processor_banck_id := Cur_Finacc_Transaction.ssccr_processor_banck_id;
+        v_reconciled         := 'Y';
+        v_fin_payment_id     := Cur_Finacc_Transaction.fin_payment_id;
 
-			Select COUNT(*)
-				INTO v_AgainProcess
-			From ssccr_pos_card_rec_line 
-			Where fin_payment_id = v_fin_payment_id
-				And type = v_type;
-			
-			v_AgainProcess:=0;
-			
-			If (v_AgainProcess = 0) Then
-				SELECT deposit_amount INTO vDepositAmount
-				FROM ssccr_card_rec_summary_v
-				WHERE fin_finacc_transaction_id = Cur_Finacc_Transaction.fin_finacc_transaction_id
-					AND type = v_type;
-				vDepositAmount := COALESCE(vDepositAmount, 0.0);
-				
-				IF ROUND(v_depositamt - vDepositAmount, 2) > 0 THEN
-					INSERT INTO ssccr_pos_card_rec_line(
-						ssccr_pos_card_rec_line_id, ad_client_id, ad_org_id, createdby, updatedby,
-						c_invoice_id, c_order_id, recap, lot, date_statement,
-						amount, deposit_amount, type, reconciled, ssccr_types_of_credit_id,
-						expiration_date, ssccr_cards_types_id, ssccr_processor_banck_id, ssccr_pos_card_rec_id, ssfi_banktransfer_id,
-						fin_payment_id, group_id, deposit_amount_original
-					) VALUES (
-						v_get_uuid, v_AD_Client_ID, v_AD_ORG_ID, v_AD_USER_ID, v_AD_USER_ID,
-						v_c_invoice_id, v_c_order_id, v_referenceno, v_lot, v_date,
-						ROUND(v_amount, vPricePrecision), ROUND(v_depositamt - vDepositAmount, vPricePrecision), v_type, v_reconciled, v_types_of_credit_id,
-						v_expiration_date, v_cards_types_id	, v_processor_banck_id, v_Record_ID, v_banktransfer_id,
-						v_fin_payment_id, Cur_Finacc_Transaction.fin_finacc_transaction_id, ROUND(v_depositamt - vDepositAmount, vPricePrecision)
-					);
-					v_insert_lines		:= v_insert_lines + 1;
-				END IF;
-			End IF;
-			v_depositamt_resp	:= v_depositamt_resp + v_depositamt;
-					
-		End Loop; --END Cur_withholdings
-		v_type_val := 4;
-		v_type_val := v_type_val - v_type_IW - v_typeVW - v_typeC - v_typeI;
+        IF v_cards_types_id IS NULL OR v_types_of_credit_id IS NULL OR v_processor_banck_id IS NULL THEN
+            RAISE_APPLICATION_ERROR(-20000, '@SSCCR_Load_Config_Empty_Lines@ ');
+        END IF;
 
-		IF(v_type_val <> 0)Then
-			If(v_type_val<0)Then
-				RAISE EXCEPTION '%','@SSCCR_Load_Too_Many_Lines@ '||(select name From ssccr_processor_banck where ssccr_processor_banck_id = v_processor_banck_id)
-				||', '||(Select name from ssccr_cards_types  where ssccr_cards_types_id  = v_cards_types_id)
-				||', '||(Select name From ssccr_types_of_credit  where ssccr_types_of_credit_id = v_types_of_credit_id); --OBTG:-20000--
-			Else
-				RAISE EXCEPTION '%','@SSCCR_Load_dont_find_Lines@ ' ||(select name From ssccr_processor_banck where ssccr_processor_banck_id = v_processor_banck_id)
-				||', '||(Select name from ssccr_cards_types  where ssccr_cards_types_id  = v_cards_types_id)
-				||', '||(Select name From ssccr_types_of_credit  where ssccr_types_of_credit_id = v_types_of_credit_id); --OBTG:-20000--
-			End IF;
-		End if;
+        v_type_IW        := 0;
+        v_typeVW         := 0;
+        v_typeC          := 0;
+        v_typeI          := 0;
+        v_depositamt_resp := 0;
 
-		v_type			:= 'B';
-		v_amount		:= ROUND(Cur_Finacc_Transaction.depositamt, vPricePrecision);	
-		v_depositamt	:= ROUND(v_amount - v_depositamt_resp, vPricePrecision);
-		v_get_uuid 		:= get_uuid();
+        -- [OPT] vBase usa v_iva_rate en lugar de repetir el subselect a c_tax
+        vCheck := v_c_invoice_id IS NULL OR COALESCE(Cur_Finacc_Transaction.impuesto, 0) = 0;
+        vBase  := COALESCE(v_amount, 0) / (1::numeric + (v_iva_rate / 100::numeric));
 
-		Select COUNT(*)
-			INTO v_AgainProcess
-		From ssccr_pos_card_rec_line 
-		Where fin_payment_id = v_fin_payment_id 
-			And type = v_type;
-			
-		v_AgainProcess:=0;
-		
-		If (v_AgainProcess = 0) Then
-		
-			if(v_type='B')then
-				v_fin_finacc_transsaction_id:=Cur_Finacc_Transaction.fin_finacc_transaction_id;
-			else
-				v_fin_finacc_transsaction_id:=null;
-			end if;
-			
-			SELECT deposit_amount INTO vDepositAmount
-			FROM ssccr_card_rec_summary_v
-			WHERE fin_finacc_transaction_id = Cur_Finacc_Transaction.fin_finacc_transaction_id
-				AND type = v_type;
-			vDepositAmount := COALESCE(vDepositAmount, 0.0);
+        FOR Cur_withholdings IN (
+            SELECT sw.porcentage, sw.type
+            FROM ssccr_cardmatchingconf cmc
+                JOIN ssccr_cardmatchingconfline cmcl ON cmcl.ssccr_cardmatchingconf_id = cmc.ssccr_cardmatchingconf_id
+                JOIN ssccr_withholdings sw ON sw.ssccr_cardmatchingconfline_id = cmcl.ssccr_cardmatchingconfline_id
+            WHERE sw.type IN ('IW', 'VW', 'C', 'IVA')
+              AND v_date BETWEEN cmcl.from_validity AND cmcl.valid_up
+              AND cmcl.ssccr_cards_types_id = v_cards_types_id
+              AND cmcl.ssccr_types_of_credit_id = v_types_of_credit_id
+              AND cmcl.income_withholding = 'IW'
+        ) LOOP
+            v_type := Cur_withholdings.type;
 
-			v_depositamt := v_depositamt - vDepositAmount;
-			
-			IF ROUND(v_depositamt, 2) > 0 THEN
-				INSERT INTO ssccr_pos_card_rec_line(
-					ssccr_pos_card_rec_line_id, ad_client_id, ad_org_id, createdby, updatedby,
-					c_invoice_id, c_order_id, recap, lot, date_statement,
-					amount, deposit_amount, type, reconciled, ssccr_types_of_credit_id,
-					expiration_date, ssccr_cards_types_id, ssccr_processor_banck_id, ssccr_pos_card_rec_id, ssfi_banktransfer_id,
-					fin_payment_id, fin_finacc_transsaction_id, group_id, deposit_amount_original
-				) VALUES (
-					v_get_uuid, v_AD_Client_ID, v_AD_ORG_ID, v_AD_USER_ID, v_AD_USER_ID,
-					v_c_invoice_id, v_c_order_id, v_referenceno, v_lot, v_date,
-					v_amount, v_depositamt, v_type, v_reconciled, v_types_of_credit_id,
-					v_expiration_date, v_cards_types_id, v_processor_banck_id, v_Record_ID, v_banktransfer_id,
-					v_fin_payment_id, v_fin_finacc_transsaction_id, v_fin_finacc_transsaction_id, v_depositamt
-				);
-				v_insert_lines		:= v_insert_lines + 1;
-			END IF;
-		End IF;
-			
-	END LOOP; -- End Parameter
+            IF v_type = 'IW' THEN -- Retencion Renta
+                v_amount  := CASE WHEN vCheck THEN vBase ELSE Cur_Finacc_Transaction.totallines END;
+                v_type_IW := v_type_IW + 1;
+            END IF;
+            IF v_type = 'VW' THEN -- Retencion IVA
+                -- [OPT] v_iva_rate en lugar de subselect inline a c_tax
+                v_amount  := CASE WHEN vCheck THEN vBase * (v_iva_rate / 100::numeric) ELSE Cur_Finacc_Transaction.impuesto END;
+                v_typeVW  := v_typeVW + 1;
+            END IF;
+            IF v_type = 'C' THEN -- Comision
+                v_amount := Cur_Finacc_Transaction.grandtotal;
+                v_typeC  := v_typeC + 1;
+            END IF;
+            IF v_type = 'IVA' THEN -- IVA
+                v_amount := Cur_Finacc_Transaction.grandtotal;
+                v_typeI  := v_typeI + 1;
+            END IF;
 
-    v_Message:='@RowsInserted@=' || v_insert_lines ;
-    --<<FINISH_PROCESS>>
-    
-    --  Update AD_PInstance
-    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message) ;
-   RETURN 'OK';
-END; --BODY
-EXCEPTION
-WHEN OTHERS THEN
-  v_ResultStr:= '@ERROR=' || SQLERRM;
-  RETURN v_ResultStr;
+            v_depositamt := v_amount * Cur_withholdings.porcentage / 100;
+            v_get_uuid   := get_uuid();
+
+            -- [OPT] Eliminado SELECT COUNT(*) INTO v_AgainProcess ... v_AgainProcess:=0
+            -- Era codigo muerto: el count se calculaba pero se pisaba inmediatamente con 0,
+            -- por lo que el IF (v_AgainProcess = 0) siempre era verdadero.
+            SELECT deposit_amount INTO vDepositAmount
+            FROM ssccr_card_rec_summary_v
+            WHERE fin_finacc_transaction_id = Cur_Finacc_Transaction.fin_finacc_transaction_id
+              AND type = v_type;
+            vDepositAmount := COALESCE(vDepositAmount, 0.0);
+
+            IF ROUND(v_depositamt - vDepositAmount, 2) > 0 THEN
+                INSERT INTO ssccr_pos_card_rec_line(
+                    ssccr_pos_card_rec_line_id, ad_client_id, ad_org_id, createdby, updatedby,
+                    c_invoice_id, c_order_id, recap, lot, date_statement,
+                    amount, deposit_amount, type, reconciled, ssccr_types_of_credit_id,
+                    expiration_date, ssccr_cards_types_id, ssccr_processor_banck_id, ssccr_pos_card_rec_id, ssfi_banktransfer_id,
+                    fin_payment_id, group_id, deposit_amount_original
+                ) VALUES (
+                    v_get_uuid, v_AD_Client_ID, v_AD_ORG_ID, v_AD_USER_ID, v_AD_USER_ID,
+                    v_c_invoice_id, v_c_order_id, v_referenceno, v_lot, v_date,
+                    ROUND(v_amount, vPricePrecision), ROUND(v_depositamt - vDepositAmount, vPricePrecision),
+                    v_type, v_reconciled, v_types_of_credit_id,
+                    v_expiration_date, v_cards_types_id, v_processor_banck_id, v_Record_ID, v_banktransfer_id,
+                    v_fin_payment_id, Cur_Finacc_Transaction.fin_finacc_transaction_id,
+                    ROUND(v_depositamt - vDepositAmount, vPricePrecision)
+                );
+                v_insert_lines := v_insert_lines + 1;
+            END IF;
+            v_depositamt_resp := v_depositamt_resp + v_depositamt;
+
+        END LOOP; -- END Cur_withholdings
+
+        v_type_val := 4;
+        v_type_val := v_type_val - v_type_IW - v_typeVW - v_typeC - v_typeI;
+
+        IF v_type_val <> 0 THEN
+            IF v_type_val < 0 THEN
+                RAISE EXCEPTION '%', '@SSCCR_Load_Too_Many_Lines@ '
+                    || (SELECT name FROM ssccr_processor_banck WHERE ssccr_processor_banck_id = v_processor_banck_id)
+                    || ', ' || (SELECT name FROM ssccr_cards_types WHERE ssccr_cards_types_id = v_cards_types_id)
+                    || ', ' || (SELECT name FROM ssccr_types_of_credit WHERE ssccr_types_of_credit_id = v_types_of_credit_id); --OBTG:-20000--
+            ELSE
+                RAISE EXCEPTION '%', '@SSCCR_Load_dont_find_Lines@ '
+                    || (SELECT name FROM ssccr_processor_banck WHERE ssccr_processor_banck_id = v_processor_banck_id)
+                    || ', ' || (SELECT name FROM ssccr_cards_types WHERE ssccr_cards_types_id = v_cards_types_id)
+                    || ', ' || (SELECT name FROM ssccr_types_of_credit WHERE ssccr_types_of_credit_id = v_types_of_credit_id); --OBTG:-20000--
+            END IF;
+        END IF;
+
+        v_type       := 'B';
+        v_amount     := ROUND(Cur_Finacc_Transaction.depositamt, vPricePrecision);
+        v_depositamt := ROUND(v_amount - v_depositamt_resp, vPricePrecision);
+        v_get_uuid   := get_uuid();
+
+        -- [OPT] Igual que arriba: eliminado SELECT COUNT(*) + v_AgainProcess:=0 (codigo muerto)
+        v_fin_finacc_transsaction_id := Cur_Finacc_Transaction.fin_finacc_transaction_id;
+
+        SELECT deposit_amount INTO vDepositAmount
+        FROM ssccr_card_rec_summary_v
+        WHERE fin_finacc_transaction_id = Cur_Finacc_Transaction.fin_finacc_transaction_id
+          AND type = v_type;
+        vDepositAmount := COALESCE(vDepositAmount, 0.0);
+
+        v_depositamt := v_depositamt - vDepositAmount;
+
+        IF ROUND(v_depositamt, 2) > 0 THEN
+            INSERT INTO ssccr_pos_card_rec_line(
+                ssccr_pos_card_rec_line_id, ad_client_id, ad_org_id, createdby, updatedby,
+                c_invoice_id, c_order_id, recap, lot, date_statement,
+                amount, deposit_amount, type, reconciled, ssccr_types_of_credit_id,
+                expiration_date, ssccr_cards_types_id, ssccr_processor_banck_id, ssccr_pos_card_rec_id, ssfi_banktransfer_id,
+                fin_payment_id, fin_finacc_transsaction_id, group_id, deposit_amount_original
+            ) VALUES (
+                v_get_uuid, v_AD_Client_ID, v_AD_ORG_ID, v_AD_USER_ID, v_AD_USER_ID,
+                v_c_invoice_id, v_c_order_id, v_referenceno, v_lot, v_date,
+                v_amount, v_depositamt, v_type, v_reconciled, v_types_of_credit_id,
+                v_expiration_date, v_cards_types_id, v_processor_banck_id, v_Record_ID, v_banktransfer_id,
+                v_fin_payment_id, v_fin_finacc_transsaction_id, v_fin_finacc_transsaction_id, v_depositamt
+            );
+            v_insert_lines := v_insert_lines + 1;
+        END IF;
+
+    END LOOP; -- End Parameter
+
+    v_Message := '@RowsInserted@=' || v_insert_lines;
+    DBMS_OUTPUT.PUT_LINE( 'Updating PInstance - Finished ' || v_Message);
+    RETURN 'OK';
+
+  END; --BODY
+  EXCEPTION
+  WHEN OTHERS THEN
+    v_ResultStr := '@ERROR=' || SQLERRM;
+    RETURN v_ResultStr;
 END SSCCR_LOAD_LINES_ONE
 ]]></body>
     </function>

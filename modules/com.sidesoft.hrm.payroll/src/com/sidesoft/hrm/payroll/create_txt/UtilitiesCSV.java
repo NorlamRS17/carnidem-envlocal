@@ -103,7 +103,7 @@ public class UtilitiesCSV extends DalBaseProcess {
                 "BENEFICIOS ADICIONALES EN EFECTIVO " + String.valueOf(intYearNumb) + ""));//
             s.addCell(new Label(19, 0, "Anticipo de Utilidad"));
             s.addCell(new Label(20, 0, "Retencion Judicial"));
-            s.addCell(new Label(21, 0, "Impuesto Retencion"));
+            s.addCell(new Label(21, 0, "Impuesto retención"));
             s.addCell(new Label(22, 0, "Información MDT(No ingrese datos en esta columna)"));
             s.addCell(new Label(23, 0,
                 "Tipo de Pago Salario Digno(Pago Directo=P,Deposito MDT=D,Acreditación en Cuenta=A)"));
@@ -217,7 +217,7 @@ public class UtilitiesCSV extends DalBaseProcess {
             out.write("BENEFICIOS ADICIONALES EN EFECTIVO " + String.valueOf(intYearNumb) + ";");//
             out.write("Anticipo de Utilidad;");
             out.write("Retencion Judicial;");
-            out.write("Impuesto Retencion;");
+            out.write("Impuesto retención;");
             out.write("Información MDT(No ingrese datos en esta columna);");
             out.println(
                 "Tipo de Pago Salario Digno(Pago Directo=P,Deposito MDT=D,Acreditación en Cuenta=A)");

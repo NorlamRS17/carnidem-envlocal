@@ -224,7 +224,7 @@ BEGIN
     End If;	
 
     If(v_reasonendperiod is null or v_reasonendperiod = '')Then
-      RAISE_APPLICATION_ERROR(-20000,'@Field reason end is null@');
+      RAISE_APPLICATION_ERROR(-20000,'@FieldReasonNull@');
     End If;
   	
     -- Obtengo datos de la configuracion

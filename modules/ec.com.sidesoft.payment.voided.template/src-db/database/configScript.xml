@@ -25,14 +25,6 @@
       <oldValue><![CDATA[@NotAllowChangeExchange@='Y' | @Processed@='Y' | @status@='RPAE']]></oldValue>
       <newValue><![CDATA[@NotAllowChangeExchange@='Y' | @Processed@='Y' | @status@='RPAE' | @Status@='RPVOID']]></newValue>
     </columnDataChange>
-    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="58FD732591324C9D900866054DE3F572">
-      <oldValue/>
-      <newValue><![CDATA[@Status@='RPVOID']]></newValue>
-    </columnDataChange>
-    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="614A2650745043F1A4DD1C16168DF20E">
-      <oldValue/>
-      <newValue><![CDATA[@Status@='RPVOID']]></newValue>
-    </columnDataChange>
     <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="6A993E2C0191432BBEE30285693F4E9F">
       <oldValue/>
       <newValue><![CDATA[@Status@='RPVOID']]></newValue>

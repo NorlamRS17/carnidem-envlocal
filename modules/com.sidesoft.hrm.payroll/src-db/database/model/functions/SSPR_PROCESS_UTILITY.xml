@@ -50,6 +50,12 @@ v_CountUtilities    NUMBER; --OBTG:NUMBER--
 v_sspr_concept_id CHARACTER VARYING(32);  --OBTG:VARCHAR2--
 v_c_period_id CHARACTER VARYING(32);  --OBTG:VARCHAR2--
 v_countsup NUMBER; --OBTG:NUMBER--
+v_isincometaxcalculation CHARACTER VARYING(1); --OBTG:VARCHAR2--
+v_c_period_incometax_id CHARACTER VARYING(32); --OBTG:VARCHAR2--
+v_ir_year_id CHARACTER VARYING(32); --OBTG:VARCHAR2--
+v_ir_periodno NUMBER; --OBTG:NUMBER--
+v_incometaxwithholding NUMBER; --OBTG:NUMBER--
+v_prevmonth_incometax NUMBER; --OBTG:NUMBER--
 
 vLivingWageMonth NUMBER; --OBTG:NUMBER--
 vMonthPartialLivingWage NUMBER; --OBTG:NUMBER--
@@ -112,9 +118,10 @@ BEGIN
 
 	If(v_countconfig > 0)Then
 		select a.livingwage, b.year, netprofit, perc_earnings_employee, perc_utility_loads, concepttypepayroll, sspr_codeformulary107_id,
-		coalesce(sspr_concept_id,'ND') as sspr_concept_id, coalesce(c_period_id,'ND') as c_period_id, Living_Wage_Month, Month_Partial_Living_Wage
+		coalesce(sspr_concept_id,'ND') as sspr_concept_id, coalesce(c_period_id,'ND') as c_period_id, Living_Wage_Month, Month_Partial_Living_Wage,
+		coalesce(a.isincometaxcalculation,'N') as isincometaxcalculation, coalesce(a.c_period_incometax_id,'ND') as c_period_incometax_id
 		into v_livingwage, v_year, v_netprofit, v_perc_earnings_employee, v_perc_utility_loads, v_concepttypepayroll, v_sspr_codeformulary107_id,
-		v_sspr_concept_id, v_c_period_id, vLivingWageMonth, vMonthPartialLivingWage
+		v_sspr_concept_id, v_c_period_id, vLivingWageMonth, vMonthPartialLivingWage, v_isincometaxcalculation, v_c_period_incometax_id
 		from sspr_configurationutility a
 		left join c_year b on b.c_year_id = a.c_year_id
 		where a.c_year_id = v_c_year_id;
@@ -195,7 +202,7 @@ BEGIN
 					from (
 					select name, c_bpartner_id, c_year_id, workeddays, workingdays
 					from 
-					(select bp.name, bp.c_bpartner_id, pr.c_year_id, sum(pt.workeddays) as workeddays, sum(pt.workingdays) as workingdays
+					(select bp.name, bp.c_bpartner_id, pr.c_year_id, round(sum(coalesce(round(pt.worked_days_benefits), pt.workeddays))) as workeddays, sum(pt.workingdays) as workingdays
 					from sspr_payroll_ticket pt
 					left join sspr_payroll p on p.sspr_payroll_id = pt.sspr_payroll_id
 					left join c_bpartner bp on bp.c_bpartner_id = pt.c_bpartner_id
@@ -381,8 +388,22 @@ BEGIN
 		where a.c_year_id = v_c_year_id;
 		
 		v_SubValue5:=0;
-		
 		--INSERTA TABLA DEFINITIVA
+		IF (v_isincometaxcalculation = 'Y') THEN
+			IF (v_c_period_incometax_id = 'ND') THEN
+				RAISE_APPLICATION_ERROR(-20000, 'Debe configurar el período de impuesto a la renta');
+			END IF;
+
+			select count(*), max(c_year_id), max(periodno)
+			into v_countconfig, v_ir_year_id, v_ir_periodno
+			from c_period
+			where c_period_id = v_c_period_incometax_id;
+
+			IF (v_countconfig = 0) THEN
+				RAISE_APPLICATION_ERROR(-20000, 'El período IR configurado no existe');
+			END IF;
+		END IF;
+
 		For Cur_Profits In(
 			select a.sspr_profits_id, a.ad_client_id, a.ad_org_id, a.isactive, a.created, a.createdby, a.updated, a.updatedby, a.c_bpartner_id, a.sspr_supplementary_data_id, 
 				a.c_year_id, a.averageincome, a.livingwage, a.wagecompensation,
@@ -399,7 +420,7 @@ BEGIN
 				     when v_numberchargestotal <= 0 Then coalesce(((v_perc_utility_loads * a.workeddays)/v_workeddaystotal),0) 
 				     end as values_fivepcttotal,
 				--TOTAL 10% + 5%
-				coalesce(trunc(((v_perc_earnings_employee * a.workeddays)/v_workeddaystotal),2),0) +
+				coalesce(((v_perc_earnings_employee * a.workeddays)/v_workeddaystotal),2) +
 				case when v_numberchargestotal > 0 Then coalesce((((v_perc_utility_loads * a.workeddays) * a.numbercharges)/ (v_chargesworkedtotal)),0)
 				     when v_numberchargestotal <= 0 Then coalesce(((v_perc_utility_loads * a.workeddays)/v_workeddaystotal),0) 
 				     end as totalprofits,
@@ -459,11 +480,49 @@ BEGIN
 			V_TotalValue5:= Cur_Profits.values_fivepcttotal;              
 		END IF;
 
+		v_incometaxwithholding := 0;
+		v_prevmonth_incometax := 0;
+		IF (v_isincometaxcalculation = 'Y' AND Cur_Profits.c_bpartner_id IS NOT NULL) THEN
+			-- Simulación sin inserciones: tomar salida del motor IR ya calculada en sspr_incometotal.
+			select greatest(0, coalesce(round(max(it.totalincomemonth), 2), 0))
+			into v_incometaxwithholding
+			from sspr_incometotal it
+			left join c_bpartner bp on bp.c_bpartner_id = it.c_bpartner_id
+			where it.c_year_id = v_ir_year_id
+			and it.c_bpartner_id = Cur_Profits.c_bpartner_id
+			and bp.isactive = 'Y'
+			and bp.isemployee = 'Y';
+
+			-- Del IR calculado del período actual, descontar el valor del concepto IR
+			-- en la nómina del mes anterior (periodo IR - 1).
+			if (v_ir_periodno > 1) then
+				select coalesce(round(sum(ptc.amount), 2), 0)
+				into v_prevmonth_incometax
+				from sspr_payroll_ticket_concept ptc
+				join sspr_payroll_ticket pt on pt.sspr_payroll_ticket_id = ptc.sspr_payroll_ticket_id
+				join sspr_payroll p on p.sspr_payroll_id = pt.sspr_payroll_id
+				join c_period cp on cp.c_period_id = p.c_period_id
+				join sspr_concept sc on sc.sspr_concept_id = ptc.sspr_concept_id
+				left join c_bpartner bp on bp.c_bpartner_id = pt.c_bpartner_id
+				where cp.c_year_id = v_ir_year_id
+				and cp.periodno = (v_ir_periodno - 1)
+				and p.ispayroll = 'Y'
+				and pt.c_bpartner_id = Cur_Profits.c_bpartner_id
+				and sc.value = 'IMPU_RENT'
+				and sc.conceptsubtype = 'Out'
+				and sc.isactive = 'Y'
+				and bp.isactive = 'Y'
+				and bp.isemployee = 'Y';
+			end if;
+
+			v_incometaxwithholding := greatest(0, coalesce(v_incometaxwithholding, 0) - coalesce(v_prevmonth_incometax, 0));
+		END IF;
+
 		--INSERTA REGISTRO DE UTILIDADES TEMPORAL
 		insert into sspr_utilities(sspr_utilities_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby,
 					c_bpartner_id,sspr_supplementary_data_id, c_year_id, averageincome,livingwage, 
 					wagecompensation, value_tenpct, values_fivepct,
-					 totalprofits, numbercharges, workingdays, workeddays,judicial_retention,sspr_codeformulary107_id)
+					 totalprofits, numbercharges, workingdays, workeddays,judicial_retention,sspr_codeformulary107_id,incometaxwithholding)
 		values(get_uuid(), v_Client_ID, v_Org_ID, 'Y', now(), v_User_ID, now(), v_User_ID,
 			Cur_Profits.c_bpartner_id,
 			Cur_Profits.sspr_supplementary_data_id
@@ -472,7 +531,7 @@ BEGIN
 			Cur_Profits.value_tenpcttotal,
 			V_TotalValue5,
 			Cur_Profits.totalprofits - V_TotalJudicialRetention,
-			Cur_Profits.numbercharges, Cur_Profits.workingdays, Cur_Profits.workeddays,V_TotalJudicialRetention,v_sspr_codeformulary107_id);
+			Cur_Profits.numbercharges, Cur_Profits.workingdays, Cur_Profits.workeddays,V_TotalJudicialRetention,v_sspr_codeformulary107_id,v_incometaxwithholding);
 
 		-- Inserta en el concepto de utilidades						  
 		If(v_sspr_concept_id != 'ND' and v_c_period_id != 'ND')Then

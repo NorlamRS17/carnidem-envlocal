@@ -40,6 +40,8 @@ import org.openbravo.model.common.plm.Product;
 import org.openbravo.model.pricing.pricelist.PriceList;
 import org.openbravo.utils.FormatUtilities;
 import org.openbravo.xmlEngine.XmlDocument;
+import java.math.RoundingMode;
+
 
 public class SL_ResupplyLine_Product extends HttpSecureAppServlet {
   private static final long serialVersionUID = 1L;
@@ -137,8 +139,8 @@ public class SL_ResupplyLine_Product extends HttpSecureAppServlet {
               BigDecimal discount = new BigDecimal(0.0);
               if (priceList.compareTo(discount) != 0) {
                 discount = (((priceList.subtract(priceActual)).divide(priceList, 12,
-                    BigDecimal.ROUND_HALF_EVEN)).multiply(new BigDecimal("100"))).setScale(2,
-                    BigDecimal.ROUND_HALF_UP);
+                    RoundingMode.HALF_EVEN)).multiply(new BigDecimal("100"))).setScale(2,
+                    RoundingMode.HALF_UP);
               }
               strResult.append("new Array(\"inppricelist\", "
                   + (strPriceList.equals("") ? "\"\"" : strPriceList) + "),\n");

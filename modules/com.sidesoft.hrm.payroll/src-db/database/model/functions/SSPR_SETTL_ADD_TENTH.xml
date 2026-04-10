@@ -78,6 +78,10 @@
   v_IsIESS CHAR(1) ;
   v_MovementDate DATE;
   v_ispayroll VARCHAR2(32);
+  -- NUEVA LOGICA: variables para ajuste de decimo mensualizado
+  v_provision_amount NUMBER:=0;
+  v_tenth_monthly_amount NUMBER:=0;
+  v_final_amount NUMBER:=0;
   
 BEGIN --BODY
   IF (p_sspr_settlement_id IS NOT NULL) THEN
@@ -96,7 +100,8 @@ BEGIN --BODY
   --DESARROLLO DECIMO TERCERO Y DECIMO CUARTO
 
   For Cur_benefits In(
-    SELECT  bda.sspr_concept_id, bda.value, bda.rate, conc.isincomecalculated, conc.iscumulative, conc.isprojected, conc.isiess
+    SELECT  bda.sspr_concept_id, bda.value, bda.rate, conc.isincomecalculated, conc.iscumulative, conc.isprojected, conc.isiess,
+            bda.sspr_concept_tenth_id
     FROM  sspr_settlementconfigline scl
     JOIN  sspr_benefit_dismissal bda on scl.sspr_benefit_dismissal_id = bda.sspr_benefit_dismissal_id
     LEFT JOIN sspr_concept conc on conc.sspr_concept_id = bda.sspr_concept_id
@@ -148,7 +153,30 @@ BEGIN --BODY
       --  RAISE_APPLICATION_ERROR(-20000,'@No exits concept 13TH in payroll provision@');
             
       --ELSE
-          
+          -- NUEVA LOGICA (Paso 1): valor provision acumulada calculada actualmente
+          v_provision_amount := v_amount_concept * v_rate * v_yearmultiplier;
+          -- NUEVA LOGICA (Paso 2): valor de decimo mensualizado desde nominas procesadas
+          v_tenth_monthly_amount := 0;
+          IF Cur_benefits.sspr_concept_tenth_id IS NOT NULL THEN
+            SELECT COALESCE(SUM(sspr_payroll_ticket_concept.amount), 0)
+            INTO v_tenth_monthly_amount
+            FROM sspr_payroll
+            LEFT JOIN c_period on c_period.c_period_id = sspr_payroll.c_period_id
+            LEFT JOIN sspr_payroll_ticket on sspr_payroll_ticket.sspr_payroll_id = sspr_payroll.sspr_payroll_id
+            LEFT JOIN sspr_payroll_ticket_concept on sspr_payroll_ticket_concept.sspr_payroll_ticket_id = sspr_payroll_ticket.sspr_payroll_ticket_id
+            WHERE sspr_payroll_ticket_concept.sspr_concept_id = Cur_benefits.sspr_concept_tenth_id
+                  AND sspr_payroll_ticket.c_bpartner_id = p_c_bpartner_id
+                  AND ((c_period.startdate >= v_date_val and c_period.startdate <= p_enddate) or (c_period.enddate >= v_date_val and c_period.enddate <= p_enddate))
+                  AND sspr_payroll.processed = 'Y'
+                  AND sspr_payroll.ispayroll = 'Y'
+                  AND sspr_payroll.isactive = 'Y';
+          END IF;
+          -- NUEVA LOGICA (Paso 3): aplicar ajuste y validar minimo cero (sin GREATEST)
+          v_final_amount := COALESCE(v_provision_amount, 0) - COALESCE(v_tenth_monthly_amount, 0);
+          IF v_final_amount < 0 THEN
+            v_final_amount := 0;
+          END IF;
+
         INSERT INTO sspr_settlementline (
           sspr_settlementline_id, sspr_settlement_id, AD_Client_ID, AD_Org_ID, IsActive, Created, CreatedBy, 
           Updated, UpdatedBy, line, sspr_concept_id,amount
@@ -156,8 +184,8 @@ BEGIN --BODY
           isincomecalculated,iscumulative,isprojected,isiess
         ) VALUES (
           get_uuid(), p_sspr_settlement_id, p_client_id, p_org_id,'Y', now(), p_user_id, now(), 
-          p_user_id, v_line, Cur_benefits.sspr_concept_id, v_amount_concept * v_rate * v_yearmultiplier
-          , v_count_concept, v_amount_concept * v_rate * v_yearmultiplier, p_sspr_payroll_id_provision,
+          p_user_id, v_line, Cur_benefits.sspr_concept_id, v_final_amount
+          , v_count_concept, v_final_amount, p_sspr_payroll_id_provision,
           Cur_benefits.isincomecalculated,Cur_benefits.iscumulative,Cur_benefits.isprojected,Cur_benefits.isiess
         );
               
@@ -227,6 +255,29 @@ BEGIN --BODY
       END IF;
 	  
       IF COALESCE(v_amount_concept, 0) > 0 AND COALESCE(v_count_concept, 0) > 0 THEN
+        -- NUEVA LOGICA (Paso 1): valor provision acumulada calculada actualmente
+        v_provision_amount := v_amount_concept * v_rate * v_yearmultiplier;
+        -- NUEVA LOGICA (Paso 2): valor de decimo mensualizado desde nominas procesadas
+        v_tenth_monthly_amount := 0;
+        IF Cur_benefits.sspr_concept_tenth_id IS NOT NULL THEN
+          SELECT COALESCE(SUM(sspr_payroll_ticket_concept.amount), 0)
+          INTO v_tenth_monthly_amount
+          FROM sspr_payroll
+          LEFT JOIN c_period on c_period.c_period_id = sspr_payroll.c_period_id
+          LEFT JOIN sspr_payroll_ticket on sspr_payroll_ticket.sspr_payroll_id = sspr_payroll.sspr_payroll_id
+          LEFT JOIN sspr_payroll_ticket_concept on sspr_payroll_ticket_concept.sspr_payroll_ticket_id = sspr_payroll_ticket.sspr_payroll_ticket_id
+          WHERE sspr_payroll_ticket_concept.sspr_concept_id = Cur_benefits.sspr_concept_tenth_id
+                AND sspr_payroll_ticket.c_bpartner_id = p_c_bpartner_id
+                AND ((c_period.startdate >= v_date_val and c_period.startdate <= p_enddate) or (c_period.enddate >= v_date_val and c_period.enddate <= p_enddate))
+                AND sspr_payroll.processed = 'Y'
+                AND sspr_payroll.ispayroll = 'Y'
+                AND sspr_payroll.isactive = 'Y';
+        END IF;
+        -- NUEVA LOGICA (Paso 3): aplicar ajuste y validar minimo cero (sin GREATEST)
+        v_final_amount := COALESCE(v_provision_amount, 0) - COALESCE(v_tenth_monthly_amount, 0);
+        IF v_final_amount < 0 THEN
+          v_final_amount := 0;
+        END IF;
 
   	If v_ispayroll <> 'Y' Then
   		
@@ -235,8 +286,8 @@ BEGIN --BODY
 		    Updated, UpdatedBy, line, sspr_concept_id, amount, qty, totalnet, sspr_payroll_id,
 		    isincomecalculated,iscumulative,isprojected,isiess)
 		VALUES (get_uuid(), p_sspr_settlement_id, p_client_id, p_org_id,'Y', now(), p_user_id, now(), 
-		  p_user_id, v_line, Cur_benefits.sspr_concept_id, v_amount_concept * v_rate * v_yearmultiplier
-		  , v_count_concept, v_amount_concept * v_rate * v_yearmultiplier,
+		  p_user_id, v_line, Cur_benefits.sspr_concept_id, v_final_amount
+		  , v_count_concept, v_final_amount,
 		  p_sspr_payroll_id_provision,
 		  Cur_benefits.isincomecalculated,Cur_benefits.iscumulative,Cur_benefits.isprojected,Cur_benefits.isiess);
 	End If;

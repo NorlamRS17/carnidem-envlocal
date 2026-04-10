@@ -402,7 +402,6 @@
         this.set('calculateReceiptCallbacks', []);
         this.set('loaded', attributes.loaded);
         this.set('isModified', attributes.isModified);
-	this.set('scheduledDeliveryDate', attributes.scheduledDeliveryDate);
         _.each(_.keys(attributes), function (key) {
           if (!this.has(key)) {
             this.set(key, attributes[key]);
@@ -1020,17 +1019,7 @@
       this.set('approvals', []);
       this.set('isPartiallyDelivered', false);
       this.set('isModified', false);
-      this.set('scheduledDeliveryDate',  this.getCurrentDate());
     },
-	getCurrentDate:	function getCurrentLocalISOString() {
-	  const now = new Date();
-	  return now.getFullYear() + '-' +
-	         String(now.getMonth() + 1).padStart(2, '0') + '-' +
-	         String(now.getDate()).padStart(2, '0') + 'T' +
-	         String(now.getHours()).padStart(2, '0') + ':' +
-	         String(now.getMinutes()).padStart(2, '0') + ':' +
-	         String(now.getSeconds()).padStart(2, '0');
-	},
 
     clearWith: function (_order) {
       // verify that the clearWith is not used for any other purpose than to update and fire the events of the UI receipt
@@ -1058,7 +1047,6 @@
       this.set('isLayaway', _order.get('isLayaway'));
       this.set('isPartiallyDelivered', _order.get('isPartiallyDelivered'));
       this.set('isModified', _order.get('isModified'));
-      this.set('scheduledDeliveryDate', _order.get('scheduledDeliveryDate'));
       if (!_order.get('isEditable')) {
         // keeping it no editable as much as possible, to prevent
         // modifications to trigger editable events incorrectly
@@ -5351,7 +5339,6 @@
       order.set('paidOnCredit', false);
       order.set('session', OB.MobileApp.model.get('session'));
       order.set('skipApplyPromotions', true);
-      order.set('scheduledDeliveryDate', model.scheduledDeliveryDate ? model.scheduledDeliveryDate : null);
       if (model.isQuotation) {
         order.set('isQuotation', true);
         order.set('oldId', model.orderid);

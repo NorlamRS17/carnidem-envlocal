@@ -5,5 +5,10 @@
         <default><![CDATA[N]]></default>
         <onCreateDefault/>
       </column>
+      <index name="EM_SLCB_IDX_PAYMETH_ML" unique="false">
+        <index-column name="FIN_FINANCIAL_ACCOUNT_ID"/>
+        <index-column name="FIN_PAYMENTMETHOD_ID"/>
+        <whereClause><![CDATA[ISACTIVE='Y' AND PAYIN_ALLOW='Y' AND PAYIN_ISMULTICURRENCY='Y']]></whereClause>
+      </index>
     </table>
   </database>

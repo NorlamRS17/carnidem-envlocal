@@ -66,18 +66,13 @@ public class AppPaymentEventHandler extends EntityPersistenceEventObserver {
     queryAppPayments.add(Restrictions.eq(OBPOSAppPayment.PROPERTY_FINANCIALACCOUNT,
         appPayment.getFinancialAccount()));
     queryAppPayments.add(Restrictions.ne(OBPOSAppPayment.PROPERTY_ID, appPayment.getId()));
-    
-    // Validación eliminada: Ya no se valida que métodos NO compartidos usen cuentas únicas
-    // if (!appPayment.getPaymentMethod().isShared()) {
-    //   queryAppPayments.setMaxResults(1);
-    //   if (queryAppPayments.list().size() > 0) {
-    //     throw new OBException(OBMessageUtils.getI18NMessage("OBPOS_PaymentMethodNotAllowed",
-    //         new String[] {}));
-    //   }
-    // }
-    
-    // Validación mantenida: Para métodos compartidos en terminales maestro-esclavo
-    if (appPayment.getPaymentMethod().isShared()) {
+    if (!appPayment.getPaymentMethod().isShared()) {
+      queryAppPayments.setMaxResults(1);
+      if (queryAppPayments.list().size() > 0) {
+        throw new OBException(OBMessageUtils.getI18NMessage("OBPOS_PaymentMethodNotAllowed",
+            new String[] {}));
+      }
+    } else {
       OBCriteria<OBPOSApplications> queryApplications = OBDal.getInstance().createCriteria(
           OBPOSApplications.class);
       String masterterminal = "";

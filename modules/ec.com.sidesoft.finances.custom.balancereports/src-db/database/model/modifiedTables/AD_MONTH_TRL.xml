@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE AD_MONTH_TRL">
+    <table name="AD_MONTH_TRL" primaryKey="AD_MONTH_TRL_KEY">
+      <index name="EM_SFCBR_TRL_IDX" unique="false">
+        <index-column name="AD_MONTH_ID"/>
+        <index-column name="AD_LANGUAGE"/>
+      </index>
+    </table>
+  </database>

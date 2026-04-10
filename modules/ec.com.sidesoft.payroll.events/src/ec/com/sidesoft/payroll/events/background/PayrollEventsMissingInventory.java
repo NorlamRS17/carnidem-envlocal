@@ -36,6 +36,7 @@ import org.openbravo.model.ad.system.Client;
 import org.openbravo.model.common.businesspartner.BusinessPartner;
 import org.openbravo.model.common.enterprise.Organization;
 import org.openbravo.model.financialmgmt.accounting.Costcenter;
+import org.openbravo.scheduling.KillableProcess;
 import org.openbravo.scheduling.ProcessBundle;
 import org.openbravo.scheduling.ProcessLogger;
 import org.openbravo.service.db.DalBaseProcess;
@@ -44,7 +45,7 @@ import org.openbravo.service.db.DalConnectionProvider;
 import ec.com.sidesoft.payroll.events.SPEVConfigInventory;
 import ec.com.sidesoft.payroll.events.SPEVTempInventory;
 
-public class PayrollEventsMissingInventory extends DalBaseProcess {
+public class PayrollEventsMissingInventory extends DalBaseProcess implements KillableProcess{
   private static final Logger log4j = Logger.getLogger(PayrollEventsMissingInventory.class);
   private ProcessLogger logger;
   String msgTitle = "";
@@ -53,6 +54,7 @@ public class PayrollEventsMissingInventory extends DalBaseProcess {
   public ConfigParameters cf;
 
   private static String urlWS = "";
+  private boolean killProcess = false;
 
   @Override
   protected void doExecute(ProcessBundle bundle) throws Exception {
@@ -69,6 +71,9 @@ public class PayrollEventsMissingInventory extends DalBaseProcess {
 
       String message;
 
+      if (killProcess) {
+        throw new OBException("Process killed");
+      }
       // CONSUMO EL SERVICIO DE FLATANTE DE INVENTARIOS
       JSONObject consumews = consumeWSInventory();
 
@@ -77,6 +82,9 @@ public class PayrollEventsMissingInventory extends DalBaseProcess {
 
       // HAGO LA LLAMADA A LA FUNCION POSTGRES
       if (consumews.getString("error").equals("0")) {
+        if (killProcess) {
+          throw new OBException("Process killed");
+        }
         missingInventory();
 
         OBCriteria<SPEVConfigInventory> config = OBDal.getInstance()
@@ -358,6 +366,10 @@ public class PayrollEventsMissingInventory extends DalBaseProcess {
       throw new OBException("Error al consultar canton de la Organizacion. " + e.getMessage());
     }
 
+  }
+  @Override
+  public void kill(ProcessBundle processBundle) throws Exception {
+    this.killProcess = true;
   }
 
 }

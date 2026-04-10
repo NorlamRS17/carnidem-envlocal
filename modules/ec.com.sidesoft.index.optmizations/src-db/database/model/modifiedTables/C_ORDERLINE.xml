@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_ORDERLINE">
+    <table name="C_ORDERLINE" primaryKey="C_ORDERLINE_KEY">
+      <index name="EM_DBIDXO_ORDERLINE_AGG" unique="false">
+        <index-column name="C_ORDER_ID"/>
+        <index-column name="C_ORDERLINE_ID"/>
+        <index-column name="QTYORDERED"/>
+      </index>
+    </table>
+  </database>

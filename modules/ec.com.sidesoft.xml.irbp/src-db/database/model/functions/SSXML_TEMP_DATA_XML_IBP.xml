@@ -53,6 +53,7 @@
             where ci.dateinvoiced >= TO_DATE(p_initDate,  'YYYY-MM-DD') and ci.dateinvoiced < TO_DATE(p_endDate , 'YYYY-MM-DD')
             AND mpm.em_ssxml_xml_ats = 'Y'
             AND mt.movementtype in ( 'I+', 'C-', 'P+' )
+            AND ci.docstatus  ='CO'
            -- AND mp.m_product_Id = '3EAAC2F9A6B842529649A24D73F9A964'
             GROUP BY 1,2,3,4,5,6,7,8,9
             ORDER BY mp.IsBOM
@@ -228,6 +229,7 @@
             where ci.dateinvoiced >= TO_DATE(p_initDate,  'YYYY-MM-DD') and ci.dateinvoiced < TO_DATE(p_endDate , 'YYYY-MM-DD')
             AND mpm.em_ssxml_xml_ats = 'Y'
             AND mt.movementtype in ( 'I+', 'C-', 'P+' )
+            AND ci.docstatus  ='CO'
             GROUP BY 1,2
             ORDER BY mp.IsBOM
 

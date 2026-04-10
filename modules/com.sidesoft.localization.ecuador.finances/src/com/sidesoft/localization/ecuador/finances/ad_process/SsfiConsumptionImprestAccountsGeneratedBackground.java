@@ -10,6 +10,7 @@ import org.openbravo.database.ConnectionProvider;
 import org.openbravo.erpCommon.utility.OBError;
 import org.openbravo.erpCommon.utility.OBMessageUtils;
 import org.openbravo.model.financialmgmt.payment.FIN_Payment;
+import org.openbravo.scheduling.KillableProcess;
 import org.openbravo.scheduling.ProcessBundle;
 import org.openbravo.scheduling.ProcessLogger;
 import org.openbravo.service.db.DalBaseProcess;
@@ -18,10 +19,11 @@ import org.openbravo.service.db.DalBaseProcess;
  * @author Charlie :D
  * 
  */
-public class SsfiConsumptionImprestAccountsGeneratedBackground extends DalBaseProcess {
+public class SsfiConsumptionImprestAccountsGeneratedBackground extends DalBaseProcess implements KillableProcess {
   private static final Logger log4j = Logger
       .getLogger(SsfiConsumptionImprestAccountsGeneratedBackground.class);
   private ProcessLogger logger;
+  private boolean killProcess = false;
 
   @Override
   protected void doExecute(ProcessBundle bundle) throws Exception {
@@ -42,6 +44,9 @@ public class SsfiConsumptionImprestAccountsGeneratedBackground extends DalBasePr
 
       for (SsfiConsumptionImprestAccountsGeneratedBackgroundData lstConsumptionAcct : DataConsumptionAcct) {
         try {
+          if (killProcess) {
+            throw new OBException("Process killed");
+          }
           /* SFBBudgetVersion version = OBDal.getInstance().get(SFBBudgetVersion.class, versionId); */
           FIN_Payment payment = OBDal.getInstance().get(FIN_Payment.class,
               lstConsumptionAcct.finPaymentId);
@@ -75,5 +80,9 @@ public class SsfiConsumptionImprestAccountsGeneratedBackground extends DalBasePr
     } finally {
       OBContext.restorePreviousMode();
     }
+  }
+  @Override
+  public void kill(ProcessBundle processBundle) throws Exception {
+    this.killProcess = true;
   }
 }

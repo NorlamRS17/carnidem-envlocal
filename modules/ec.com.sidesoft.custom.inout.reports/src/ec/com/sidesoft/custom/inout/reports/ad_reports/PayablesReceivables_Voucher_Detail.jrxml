@@ -28,6 +28,7 @@ LEFT JOIN C_DOCTYPE DT ON CI.C_DOCTYPE_ID = DT.C_DOCTYPE_ID
 LEFT JOIN FIN_PAYMENT FP ON FP.FIN_PAYMENT_ID = PD.FIN_PAYMENT_ID
  WHERE PD.FIN_PAYMENT_ID = (
 select fp.fin_payment_id from fin_payment fp where documentno = $P{fin_payment_id} and fp.c_doctype_id = $P{c_doctype_id})
+AND PD.C_INVOICE_ID IS NOT NULL
 ORDER BY PD.InvoiceNo]]>
 	</queryString>
 	<field name="FACTURA" class="java.lang.String"/>

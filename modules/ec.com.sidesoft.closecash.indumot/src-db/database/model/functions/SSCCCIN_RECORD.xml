@@ -27,6 +27,8 @@
 	vTotalExpenses NUMBER;
 	vAmount NUMBER;
 	v_count NUMBER;
+	v_doc_types VARCHAR[];
+        v_doc_types_credit VARCHAR[];
 
 BEGIN
 
@@ -106,6 +108,18 @@ BEGIN
 		IF vCheck =0 THEN
 			RAISE_APPLICATION_ERROR(-20000,'@Sscccin_DocumentTypesUnconfiguredForInvoices@');
 		END IF;
+
+		-- Precargar tipos de documentos para facturas
+		SELECT array_agg(c_doctype_id)
+		INTO v_doc_types
+		FROM ssccso_type_of_document
+		WHERE sccc_setup_id = vCashClosure.sccc_setup_id;
+
+		-- Precargar tipos de documentos para notas de crédito
+		SELECT array_agg(c_doctype_credit_notes_id)
+		INTO v_doc_types_credit
+		FROM sscccin_invoice_doctype
+		WHERE sccc_setup_id = vCashClosure.sccc_setup_id;
 		
 		--Validar pagos detallados
 		FOR vRecord IN (
@@ -183,13 +197,11 @@ BEGIN
 						JOIN fin_payment_schedule AS ps ON ps.fin_payment_schedule_id=psd.fin_payment_schedule_invoice
 						JOIN c_invoice AS i ON i.c_invoice_id=ps.c_invoice_id
 					WHERE p.status!='RPVOID' AND i.docstatus='CO' AND i.issotrx='Y'
-						AND p.paymentdate::DATE=vCashClosure.closingdate::DATE
-						AND i.dateinvoiced::DATE=vCashClosure.closingdate::DATE
-						AND p.c_doctype_id IN (
-							SELECT c_doctype_id
-							FROM ssccso_type_of_document
-							WHERE sccc_setup_id=vCashClosure.sccc_setup_id
-						)
+						AND p.paymentdate >= vCashClosure.closingdate::DATE
+						AND p.paymentdate <  vCashClosure.closingdate::DATE + INTERVAL '1 day'
+						AND i.dateinvoiced >= vCashClosure.closingdate::DATE
+						AND i.dateinvoiced <  vCashClosure.closingdate::DATE + INTERVAL '1 day'
+						AND p.c_doctype_id = ANY(v_doc_types)
 						AND p.amount>0
 					UNION
 					--Cobros de facturas de dias pasados
@@ -200,13 +212,10 @@ BEGIN
 						LEFT JOIN fin_payment_schedule AS ps ON ps.fin_payment_schedule_id=psd.fin_payment_schedule_invoice
 						LEFT JOIN c_invoice AS i ON i.c_invoice_id=ps.c_invoice_id
 					WHERE p.status!='RPVOID'
-						AND p.paymentdate::DATE=vCashClosure.closingdate::DATE
+						AND p.paymentdate >= vCashClosure.closingdate::DATE
+						AND p.paymentdate <  vCashClosure.closingdate::DATE + INTERVAL '1 day'
 						AND i.dateinvoiced::DATE<vCashClosure.closingdate::DATE
-						AND p.c_doctype_id IN (
-							SELECT c_doctype_id
-							FROM ssccso_type_of_document
-							WHERE sccc_setup_id=vCashClosure.sccc_setup_id
-						)
+						AND p.c_doctype_id = ANY(v_doc_types)
 						AND p.amount>0
 					UNION
 					--Cobros no relacionados a facturas
@@ -215,13 +224,10 @@ BEGIN
 						JOIN fin_payment_detail AS pd ON pd.fin_payment_id=p.fin_payment_id
 						JOIN fin_payment_scheduledetail AS psd ON psd.fin_payment_detail_id=pd.fin_payment_detail_id
 					WHERE p.status!='RPVOID'
-						AND p.paymentdate::DATE=vCashClosure.closingdate::DATE
+						AND p.paymentdate >= vCashClosure.closingdate::DATE
+						AND p.paymentdate <  vCashClosure.closingdate::DATE + INTERVAL '1 day'
 						AND psd.fin_payment_schedule_invoice IS NULL
-						AND p.c_doctype_id IN (
-							SELECT c_doctype_id
-							FROM ssccso_type_of_document
-							WHERE sccc_setup_id=vCashClosure.sccc_setup_id
-						)
+						AND p.c_doctype_id = ANY(v_doc_types)
 						AND p.amount>0
 					UNION
 					--Obtenemos las notas de credito
@@ -232,12 +238,9 @@ BEGIN
 						LEFT JOIN fin_payment_schedule AS ps ON ps.fin_payment_schedule_id=psd.fin_payment_schedule_invoice
 						LEFT JOIN c_invoice AS i ON i.c_invoice_id=ps.c_invoice_id
 					WHERE i.docstatus='CO' AND i.issotrx='Y'
-						AND i.dateinvoiced::DATE=vCashClosure.closingdate::DATE
-						AND i.c_doctype_id IN (
-							SELECT c_doctype_credit_notes_id
-							FROM sscccin_invoice_doctype
-							WHERE sccc_setup_id=vCashClosure.sccc_setup_id
-						)
+						AND i.dateinvoiced >= vCashClosure.closingdate::DATE
+						AND i.dateinvoiced <  vCashClosure.closingdate::DATE + INTERVAL '1 day'
+						AND i.c_doctype_id = ANY(v_doc_types_credit)
 				) AS a
 			) AS b;
 
@@ -253,11 +256,7 @@ BEGIN
 			FROM ssccso_cash_inc_exp
 			WHERE status='PR' AND isreconciled='Y'
 				AND dateactual::DATE=vCashClosure.closingdate::DATE
-				AND c_doctype_id IN (
-					SELECT c_doctype_id
-					FROM ssccso_type_of_document
-					WHERE sccc_setup_id=vCashClosure.sccc_setup_id
-				)
+				AND c_doctype_id = ANY(v_doc_types)
             GROUP BY type_of_operation
             ) LOOP
                 IF (vIncExp.type_of_operation='BPW') THEN
@@ -319,17 +318,13 @@ BEGIN
     			    AND pm.sccc_setup_id=vCashClosure.sccc_setup_id AND ccl.typeaccount='EXP';
 				vTotalExpenses := vTotalExpenses + vAmount;
 			END IF;
-			
-		-- Autor: Jolyt Mina
-		-- Ticket: 11783
-		-- Descripcion: Modificar el proceso 
-		-- para que cuando la suma de ingresos y egresos sean 0 entonces le permita registrar  y cambie el Estado doc a Registrado:
-		
-			/*
-			IF vTotalIncomes - vTotalExpenses = 0 THEN
-				RAISE_APPLICATION_ERROR(-20000,'@SCCC_TOTAL_ZERO@');
+
+			--Validamos si en la configuracion se permite un cierre de caja en 0
+			IF vSetup.em_sscccin_not_closecash_zero = 'Y' THEN
+				IF vTotalIncomes - vTotalExpenses = 0 THEN
+					RAISE_APPLICATION_ERROR(-20000,'@SCCC_TOTAL_ZERO@');
+				END IF;
 			END IF;
-			*/
 			
 			--Actualizamos el cierre de caja
 			UPDATE sccc_cash_clousure SET docstatus='SCCC_RG',

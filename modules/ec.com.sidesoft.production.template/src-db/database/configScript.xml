@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
   <vector>
     <versionInfo version="3.0.34312"/>
-    <columnSizeChange tablename="MA_WORKREQUIREMENT" columnname="SECONDARYQTY" newSize="10" newScale="0" oldSize="10"/>
     <columnDataChange tablename="AD_PROCESS" columnname="PROCEDURENAME" pkRow="137">
       <oldValue><![CDATA[M_Production_Run]]></oldValue>
       <newValue><![CDATA[ssprod_production_run]]></newValue>
@@ -25,10 +24,6 @@
     <columnDataChange tablename="AD_COLUMN" columnname="ISIDENTIFIER" pkRow="801516">
       <oldValue><![CDATA[N]]></oldValue>
       <newValue><![CDATA[Y]]></newValue>
-    </columnDataChange>
-    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="802027">
-      <oldValue/>
-      <newValue><![CDATA[64CC6AF8C49F44398DB3833428D8F440]]></newValue>
     </columnDataChange>
     <columnDataChange tablename="AD_COLUMN" columnname="AD_PROCESS_ID" pkRow="802028">
       <oldValue><![CDATA[FF80818132A4F6AD0132A573DD7A0021]]></oldValue>

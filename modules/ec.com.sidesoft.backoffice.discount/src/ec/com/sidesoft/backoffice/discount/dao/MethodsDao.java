@@ -39,7 +39,7 @@ public class MethodsDao {
         }
     }
 
-    public static List getList() {
+    public static List<String> getList() {
         List<String> firstOBList = new ArrayList<String>();
         firstOBList.add("");
         return firstOBList;        

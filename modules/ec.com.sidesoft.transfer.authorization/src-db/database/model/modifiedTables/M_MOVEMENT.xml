@@ -2,7 +2,7 @@
   <database name="MODIFIED TABLE M_MOVEMENT">
     <table name="M_MOVEMENT" primaryKey="M_MOVEMENT_KEY">
       <column name="EM_STAT_GENERATE_CODE" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
-        <default><![CDATA[ND]]></default>
+        <default/>
         <onCreateDefault/>
       </column>
       <column name="EM_STAT_CODE_AUTHORIZATION" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">

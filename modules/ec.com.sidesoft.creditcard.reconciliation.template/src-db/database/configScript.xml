@@ -1,21 +1,9 @@
 <?xml version="1.0"?>
   <vector>
     <versionInfo version="3.0.34312"/>
-    <columnDataChange tablename="AD_TREENODE" columnname="PARENT_ID" pkRow="20CA2A67FD584099AF865ADA00ECE9BD">
-      <oldValue><![CDATA[800077]]></oldValue>
-      <newValue><![CDATA[12C38A739661418DB5EEB80E91231356]]></newValue>
-    </columnDataChange>
-    <columnDataChange tablename="AD_TREENODE" columnname="SEQNO" pkRow="20CA2A67FD584099AF865ADA00ECE9BD">
-      <oldValue><![CDATA[10]]></oldValue>
-      <newValue><![CDATA[30]]></newValue>
-    </columnDataChange>
     <columnDataChange tablename="OBUIAPP_PROCESS" columnname="CLASSNAME" pkRow="9BED7889E1034FE68BD85D5D16857320">
       <oldValue><![CDATA[org.openbravo.advpaymentmngt.actionHandler.AddPaymentActionHandler]]></oldValue>
       <newValue><![CDATA[ec.com.sidesoft.creditcard.reconciliation.actionHandler.SSCCR_AddPaymentActionHandler]]></newValue>
-    </columnDataChange>
-    <columnDataChange tablename="OBUIAPP_PARAMETER" columnname="ISMANDATORY" pkRow="80465B6CEEB84046955FD51F38FC2804">
-      <oldValue><![CDATA[Y]]></oldValue>
-      <newValue><![CDATA[N]]></newValue>
     </columnDataChange>
     <columnDataChange tablename="OBUIAPP_PARAMETER" columnname="AD_ELEMENT_ID" pkRow="80465B6CEEB84046955FD51F38FC2804">
       <oldValue><![CDATA[6D7CB8FA9C4644E8B0AFDA576D134B6A]]></oldValue>

@@ -26,6 +26,9 @@
 	<parameter name="BASE_DESIGN" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[Select rr.*
+	,coalesce(conceptos.cant_conceptos, 0) as "cant_conceptos"
+	,coalesce(conceptos.total_conceptos, 0) as "total_conceptos"
+	,coalesce(facturas.total_facturas, 0) as "total_facturas"
 	,split_part( signatures.etiquetas, ',-,', 1) as "label_firma_1"
 	,split_part( signatures.etiquetas, ',-,', 2) as "label_firma_2"
 	,split_part( signatures.etiquetas, ',-,', 3) as "label_firma_3"
@@ -161,7 +164,26 @@ join fin_payment fp on y.c_doctype_id= fp.c_doctype_id
 where fp.documentno = $P{documentno}
 and z.c_doctype_id = $P{c_doctype_id}
 GROUP BY z.c_doctype_id
-) signatures on 1=1]]>
+) signatures on 1=1
+left join (
+    SELECT COUNT(*) as cant_conceptos,
+           COALESCE(SUM(pd.amount), 0) as total_conceptos
+    FROM fin_payment_detail pd
+    INNER JOIN fin_payment fp ON fp.fin_payment_id = pd.fin_payment_id
+    WHERE fp.documentno = $P{documentno}
+      AND fp.c_doctype_id = $P{c_doctype_id}
+      AND pd.c_glitem_id IS NOT NULL
+) conceptos on 1=1
+left join (
+    SELECT COALESCE(SUM(psd.amount), 0) as total_facturas
+    FROM fin_payment fp
+    JOIN fin_payment_detail pd ON pd.fin_payment_id = fp.fin_payment_id
+    JOIN fin_payment_scheduledetail psd ON psd.fin_payment_detail_id = pd.fin_payment_detail_id
+    JOIN fin_payment_schedule fps ON fps.fin_payment_schedule_id = psd.fin_payment_schedule_invoice
+    WHERE fps.c_invoice_id IS NOT NULL
+      AND fp.documentno = $P{documentno}
+      AND fp.c_doctype_id = $P{c_doctype_id}
+) facturas on 1=1]]>
 	</queryString>
 	<field name="organizationid" class="java.lang.String"/>
 	<field name="typedocument" class="java.lang.String"/>
@@ -184,6 +206,9 @@ GROUP BY z.c_doctype_id
 	<field name="isreceipt" class="java.lang.String"/>
 	<field name="detailreport" class="java.lang.String"/>
 	<field name="orden" class="java.lang.Integer"/>
+	<field name="cant_conceptos" class="java.lang.Long"/>
+	<field name="total_conceptos" class="java.math.BigDecimal"/>
+	<field name="total_facturas" class="java.math.BigDecimal"/>
 	<field name="label_firma_1" class="java.lang.String"/>
 	<field name="label_firma_2" class="java.lang.String"/>
 	<field name="label_firma_3" class="java.lang.String"/>
@@ -413,51 +438,12 @@ GROUP BY z.c_doctype_id
 		<band splitType="Stretch"/>
 	</columnFooter>
 	<lastPageFooter>
-		<band height="50">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="78" y="0" width="142" height="37" uuid="20c9d0e1-29d8-41cc-b575-7a2d2ca63d27"/>
-				<box leftPadding="5">
-					<topPen lineWidth="0.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font size="7" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{label_firma_1}.toUpperCase() + "\n"
-+ $F{nombre_firma_1}.toUpperCase() + "\n"
-+ $F{nombre_cargos_1}.toUpperCase()]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="322" y="0" width="145" height="37" uuid="e9cd210a-0630-4fb6-83d4-a51ee264bedb"/>
-				<box leftPadding="5">
-					<topPen lineWidth="0.75"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font size="7" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{label_firma_2}.toUpperCase() + "\n"
- + $F{nombre_firma_2}.toUpperCase() + "\n"
- + $F{nombre_cargos_2}.toUpperCase()]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement positionType="Float" x="271" y="37" width="284" height="13" uuid="9b9aa69a-31d4-4b75-be19-440ac5a37cb7"/>
-				<textElement textAlignment="Left" verticalAlignment="Bottom">
-					<font size="7" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement positionType="Float" x="0" y="37" width="271" height="13" uuid="3baf3e76-1ce7-443c-82e3-9b0df5c5470a"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="7" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+"/"]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="0" splitType="Stretch"/>
 	</lastPageFooter>
 	<summary>
-		<band height="57" splitType="Stretch">
+		<band height="220" splitType="Stretch">
 			<subreport>
-				<reportElement x="0" y="42" width="555" height="15" uuid="c4b71c54-52b4-4f36-b98f-c3a4c70dad0a">
+				<reportElement positionType="Float" x="0" y="42" width="555" height="15" uuid="c4b71c54-52b4-4f36-b98f-c3a4c70dad0a">
 					<printWhenExpression><![CDATA[$F{detailreport}.equals("Y")]]></printWhenExpression>
 				</reportElement>
 				<subreportParameter name="fin_payment_id">
@@ -469,6 +455,101 @@ GROUP BY z.c_doctype_id
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/custom/inout/reports/ad_reports/PayablesReceivables_Voucher_Detail.jasper"]]></subreportExpression>
 			</subreport>
+			<line>
+				<reportElement positionType="Float" x="0" y="58" width="555" height="1" uuid="a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d"/>
+			</line>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="60" width="555" height="30" uuid="b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e"/>
+				<subreportParameter name="fin_payment_id">
+					<subreportParameterExpression><![CDATA[$P{documentno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="c_doctype_id">
+					<subreportParameterExpression><![CDATA[$P{c_doctype_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NUMBERFORMAT">
+					<subreportParameterExpression><![CDATA[$P{NUMBERFORMAT}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NUMBERDECIMAL">
+					<subreportParameterExpression><![CDATA[$P{NUMBERDECIMAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/custom/inout/reports/ad_reports/PayablesReceivables_Voucher_Conceptos.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="100" width="388" height="15" uuid="d4e5f6a7-b8c9-0123-def4-567890abcdef">
+					<printWhenExpression><![CDATA[$F{cant_conceptos} > 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL REGISTRO]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="388" y="100" width="92" height="15" uuid="e5f6a7b8-c9d0-1234-ef56-7890abcdef01">
+					<printWhenExpression><![CDATA[$F{cant_conceptos} > 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_facturas}.add($F{total_conceptos}).setScale($P{NUMBERDECIMAL}, java.math.RoundingMode.HALF_UP)]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="480" y="100" width="75" height="15" uuid="f6a7b8c9-d0e1-2345-f678-90abcdef0123">
+					<printWhenExpression><![CDATA[$F{cant_conceptos} > 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="78" y="145" width="142" height="37" uuid="a1b2c3d4-0001-1111-aaaa-111111111111"/>
+				<box leftPadding="5">
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{label_firma_1}.toUpperCase() + "\n"
++ $F{nombre_firma_1}.toUpperCase() + "\n"
++ $F{nombre_cargos_1}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" x="322" y="145" width="145" height="37" uuid="b2c3d4e5-0002-2222-bbbb-222222222222"/>
+				<box leftPadding="5">
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{label_firma_2}.toUpperCase() + "\n"
++ $F{nombre_firma_2}.toUpperCase() + "\n"
++ $F{nombre_cargos_2}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="0" y="187" width="271" height="13" uuid="d4e5f6a7-0004-4444-dddd-444444444444"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+"/"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement positionType="Float" x="271" y="187" width="284" height="13" uuid="e5f6a7b8-0005-5555-eeee-555555555555"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="373" height="12" uuid="45c9b435-abc8-4f1e-b7e9-1fa5b4c0e724"/>
 				<box>

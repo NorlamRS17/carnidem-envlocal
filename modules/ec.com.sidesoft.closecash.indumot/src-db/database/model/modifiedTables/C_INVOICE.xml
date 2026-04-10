@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_INVOICE">
+    <table name="C_INVOICE" primaryKey="C_INVOICE_KEY">
+      <index name="EM_SSCCCIN_IDXINVOICECLOSECASH" unique="false">
+        <index-column name="DOCSTATUS"/>
+        <index-column name="ISSOTRX"/>
+        <index-column name="DATEINVOICED"/>
+      </index>
+    </table>
+  </database>

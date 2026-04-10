@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_MATCHPO">
+    <table name="M_MATCHPO" primaryKey="M_MATCHPO_KEY">
+      <index name="EM_DBIDXO_MATCHPO_ORDLN_QTY" unique="false">
+        <index-column name="C_ORDERLINE_ID"/>
+        <index-column name="QTY"/>
+        <whereClause><![CDATA[C_INVOICELINE_ID IS NOT NULL]]></whereClause>
+      </index>
+    </table>
+  </database>

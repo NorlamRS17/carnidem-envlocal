@@ -18,9 +18,10 @@
     v_posted  VARCHAR2(3);
     v_count_extractbanc NUMBER;
     v_fin_bankstatement_ID VARCHAR2(32);
+	payment_type VARCHAR2(32);
     TYPE RECORD IS REF CURSOR;
     Cur_Parameter RECORD;
-
+	Cur_Payments RECORD;
 BEGIN
 
     DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || P_Instance_ID);
@@ -68,7 +69,7 @@ BEGIN
 
         -- 1) Descontabilizar manualmente la transaccion de Reconciliacion
         -- 2) La reconciliacion a estado Borrador - requiere bajar trigger
-            UPDATE  FIN_Reconciliation SET docstatus= 'DR'  
+            UPDATE  FIN_Reconciliation SET docstatus= 'DR', processed = 'N', startingbalance = 0.00, endingbalance = 0.00
             WHERE FIN_Reconciliation_ID = v_Record_ID;
 
         -- 3) Cambiar el esatdo de las Lineas de la Reconciliacion satdo  => 'PWNC' (Concilaido a Pago reintegrado ) para q permita la reactivacion de la linea
@@ -85,6 +86,25 @@ BEGIN
             GROUP BY bsl.fin_bankstatement_ID   ;
 
             IF(v_count_extractbanc > 0 ) THEN 
+				--SE ACTUALIZAN LOS COBROS/PAGOS DE CONCILIADO A COBRO DEPOSITADO/PAGO REINTEGRADO
+				FOR Cur_Payments IN (
+					SELECT ft.fin_payment_id
+					FROM fin_finacc_transaction ft
+					WHERE ft.fin_reconciliation_id = v_Record_ID
+				) LOOP
+					SELECT isreceipt INTO payment_type 
+					FROM fin_payment 
+					WHERE fin_payment_id = Cur_Payments.fin_payment_id;
+
+					IF payment_type = 'N' THEN
+						--PAGOS
+						UPDATE fin_payment SET status = 'PWNC' WHERE fin_payment_id = Cur_Payments.fin_payment_id;
+					ELSE
+						--COBROS
+						UPDATE fin_payment SET status = 'RDNC' WHERE fin_payment_id = Cur_Payments.fin_payment_id;
+					END IF;
+				END LOOP;
+			
                 --'Existen Lineas De extracto bancario relacionadas a esta conciliacion...';
                 UPDATE fin_finacc_transaction   SET FIN_Reconciliation_ID = null
                 WHERE FIN_Reconciliation_ID = v_Record_ID;

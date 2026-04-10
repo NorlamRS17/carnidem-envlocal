@@ -45,6 +45,7 @@ import org.openbravo.service.db.DalConnectionProvider;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.sidesoft.localization.ecuador.refunds.Ssre_RefundInvoiceLine;
 import com.sidesoft.localization.ecuador.refunds.ssrerefundinvoice;
 
 import ec.cusoft.facturaec.EEIParamFacturae;
@@ -1324,192 +1325,74 @@ public class PurchaseSettlementGenerationEcuador {
 							.createElement("detalleImpuestos");
 					reembolsoDetalle.appendChild(detalleImpuestos);
 
-					Element detalleImpuesto = doc
-							.createElement("detalleImpuesto");
-					detalleImpuestos.appendChild(detalleImpuesto);
+				// REEMBOLSO INDIVIDUAL - Iterar sobre las líneas de reembolso
+				List<Ssre_RefundInvoiceLine> refundLines = objRefundInvoice.getSsreRefundinvoicelineList();
 
-				        // CÓDIGO DE IMPUESTO
-					TaxRate objTaxRate = getTaxIdRefund(invoice.getId()) == null ? null
-					      : OBDal.getInstance().get(TaxRate.class, getTaxIdRefund(invoice.getId()));
-					if (objTaxRate == null) {
-					    objTaxRate = OBDal.getInstance().get(TaxRate.class,
-						getTaxIdRefundInvoice(invoice.getId()));
+				if (refundLines == null || refundLines.isEmpty()) {
+					throw new OBException("No existen líneas de reembolso en la factura de reembolso.");
+				}
+				
+				// Generar un <detalleImpuesto> para cada línea de reembolso
+				for (Ssre_RefundInvoiceLine refundLine : refundLines) {
+					
+					// Obtener el TaxRate de la línea actual
+					TaxRate lineTaxRate = refundLine.getTax();
+					if (lineTaxRate == null) {
+						throw new OBException("La línea de reembolso no tiene impuesto configurado.");
 					}
 
-					Element codigo = doc.createElement("codigo");
-					codigo.appendChild(doc.createTextNode(objTaxRate
-							.getEeiSriTaxType()));
-					detalleImpuesto.appendChild(codigo);
+					// Solo generar detalleImpuesto para las líneas con base imponible > 0
+					BigDecimal lineaTaxBase = refundLine.getTaxbase();
+					BigDecimal lineaTaxAmount = refundLine.getTaxAmount();
 
-					// CÓDIGO PORCENTAJE
-					String strTaxCode = objTaxRate.getEeiSriTaxcatCode();
-					if (strTaxCode == null) {
-						throw new OBException(
-								"Código de impuesto SRI no configurado (Reembolsos). ");
+					if (lineaTaxBase == null) {
+						lineaTaxBase = BigDecimal.ZERO;
 					}
-					Element codigoPorcentaje = doc
-							.createElement("codigoPorcentaje");
-					codigoPorcentaje
-							.appendChild(doc.createTextNode(strTaxCode));
-					detalleImpuesto.appendChild(codigoPorcentaje);
-
-					// TARIFA
-					double Tarifa = objTaxRate.getRate().doubleValue();
-					int intRate = (int) Tarifa;
-					Element tarifa = doc.createElement("tarifa");
-					tarifa.appendChild(doc.createTextNode(String
-							.valueOf(intRate)));
-					detalleImpuesto.appendChild(tarifa);
-
-					// BASE IMPONIBLE REEMBOLSO
-					double sbBaseImponible = (objRefundInvoice
-							.getTaxbaserefund() == null ? BigDecimal.ZERO
-							: objRefundInvoice
-									.getTaxbaserefund())
-							.doubleValue();
-					Element baseImponibleReembolso = doc
-							.createElement("baseImponibleReembolso");
-					baseImponibleReembolso.appendChild(doc
-							.createTextNode(formateador.format(sbBaseImponible)
-									.toString()));
-					detalleImpuesto.appendChild(baseImponibleReembolso);
-
-					// IMPUESTO REEMBOLSO
-					double dbimpuestoReembolso = (objRefundInvoice
-							.getTaxAmount() == null ? BigDecimal.ZERO
-							: objRefundInvoice.getTaxAmount()).doubleValue();
-					Element impuestoReembolso = doc
-							.createElement("impuestoReembolso");
-					impuestoReembolso.appendChild(doc
-							.createTextNode(formateador.format(
-									dbimpuestoReembolso).toString()));
-					detalleImpuesto.appendChild(impuestoReembolso);
-
-					// IMPUESTOS EN CERO
-
-					// BASE NO GRABA IVA
-					double bdBaseNoGrabaIva = (objRefundInvoice.getTaxbase() == null ? BigDecimal.ZERO
-							: objRefundInvoice.getTaxbase()).doubleValue();
-					if (bdBaseNoGrabaIva != 0) {
-
-						detalleImpuesto = doc.createElement("detalleImpuesto");
+					if (lineaTaxAmount == null) {
+						lineaTaxAmount = BigDecimal.ZERO;
+					}
+					
+					// Generar detalleImpuesto solo si hay base imponible
+					if (lineaTaxBase.compareTo(BigDecimal.ZERO) > 0) {
+						Element detalleImpuesto = doc.createElement("detalleImpuesto");
 						detalleImpuestos.appendChild(detalleImpuesto);
 
 						// CÓDIGO DE IMPUESTO
-						codigo = doc.createElement("codigo");
-						codigo.appendChild(doc.createTextNode("2"));
+						Element codigo = doc.createElement("codigo");
+						String strEeiSriTaxType = lineTaxRate.getEeiSriTaxType();
+						if (strEeiSriTaxType == null || strEeiSriTaxType.trim().equals("")) {
+							throw new OBException("Código de tipo de impuesto SRI no configurado en la línea de reembolso.");
+						}
+						codigo.appendChild(doc.createTextNode(strEeiSriTaxType));
 						detalleImpuesto.appendChild(codigo);
 
 						// CÓDIGO PORCENTAJE
-						codigoPorcentaje = doc
-								.createElement("codigoPorcentaje");
-						codigoPorcentaje.appendChild(doc.createTextNode("6"));
+						String strTaxCode = lineTaxRate.getEeiSriTaxcatCode();
+						if (strTaxCode == null || strTaxCode.trim().equals("")) {
+							throw new OBException("Código de impuesto SRI no configurado en la línea de reembolso.");
+						}
+						Element codigoPorcentaje = doc.createElement("codigoPorcentaje");
+						codigoPorcentaje.appendChild(doc.createTextNode(strTaxCode));
 						detalleImpuesto.appendChild(codigoPorcentaje);
 
-						// TARIFA
-						tarifa = doc.createElement("tarifa");
-						tarifa.appendChild(doc.createTextNode("0"));
-						detalleImpuesto.appendChild(tarifa);
+						// TARIFA - Usar formateador para mantener consistencia
+						double tarifa = lineTaxRate.getRate().doubleValue();
+						Element tarifaElement = doc.createElement("tarifa");
+						tarifaElement.appendChild(doc.createTextNode(formateador.format(tarifa).toString()));
+						detalleImpuesto.appendChild(tarifaElement);
 
-						// BASE IMPONIBLE
-						baseImponibleReembolso = doc
-								.createElement("baseImponibleReembolso");
-						baseImponibleReembolso.appendChild(doc
-								.createTextNode(formateador.format(
-										bdBaseNoGrabaIva).toString()));
+						// BASE IMPONIBLE REEMBOLSO - De la línea específica
+						Element baseImponibleReembolso = doc.createElement("baseImponibleReembolso");
+						baseImponibleReembolso.appendChild(doc.createTextNode(
+								formateador.format(lineaTaxBase.doubleValue()).toString()));
 						detalleImpuesto.appendChild(baseImponibleReembolso);
 
-						// IMPUESTO REEMBOLSO
-						impuestoReembolso = doc
-								.createElement("impuestoReembolso");
-						impuestoReembolso.appendChild(doc
-								.createTextNode(formateador.format(0)
-										.toString()));
+						// IMPUESTO REEMBOLSO - De la línea específica
+						Element impuestoReembolso = doc.createElement("impuestoReembolso");
+						impuestoReembolso.appendChild(doc.createTextNode(
+								formateador.format(lineaTaxAmount.doubleValue()).toString()));
 						detalleImpuesto.appendChild(impuestoReembolso);
 					}
-
-					// BASE IVA 0%
-					double dbBaseIvaCero = (objRefundInvoice.getUntaxedBasis() == null ? BigDecimal.ZERO
-							: objRefundInvoice.getUntaxedBasis()).doubleValue();
-					if (dbBaseIvaCero != 0) {
-
-						detalleImpuesto = doc.createElement("detalleImpuesto");
-						detalleImpuestos.appendChild(detalleImpuesto);
-
-						// CÓDIGO DE IMPUESTO
-						codigo = doc.createElement("codigo");
-						codigo.appendChild(doc.createTextNode("2"));
-						detalleImpuesto.appendChild(codigo);
-
-						// CÓDIGO PORCENTAJE
-						codigoPorcentaje = doc
-								.createElement("codigoPorcentaje");
-						codigoPorcentaje.appendChild(doc.createTextNode("0"));
-						detalleImpuesto.appendChild(codigoPorcentaje);
-
-						// TARIFA
-						tarifa = doc.createElement("tarifa");
-						tarifa.appendChild(doc.createTextNode("0"));
-						detalleImpuesto.appendChild(tarifa);
-
-						// BASE IMPONIBLE
-						baseImponibleReembolso = doc
-								.createElement("baseImponibleReembolso");
-						baseImponibleReembolso.appendChild(doc
-								.createTextNode(formateador.format(
-										dbBaseIvaCero).toString()));
-						detalleImpuesto.appendChild(baseImponibleReembolso);
-
-						// IMPUESTO REEMBOLSO
-						impuestoReembolso = doc
-								.createElement("impuestoReembolso");
-						impuestoReembolso.appendChild(doc
-								.createTextNode(formateador.format(0)
-										.toString()));
-						detalleImpuesto.appendChild(impuestoReembolso);
-
-					}
-
-					// BASE EXCENTA IVA
-					double dbBaseExcemto = (objRefundInvoice.getExemptBase() == null ? BigDecimal.ZERO
-							: objRefundInvoice.getExemptBase()).doubleValue();
-					if (dbBaseExcemto != 0) {
-
-						detalleImpuesto = doc.createElement("detalleImpuesto");
-						detalleImpuestos.appendChild(detalleImpuesto);
-
-						// CÓDIGO DE IMPUESTO
-						codigo = doc.createElement("codigo");
-						codigo.appendChild(doc.createTextNode("2"));
-						detalleImpuesto.appendChild(codigo);
-
-						// CÓDIGO PORCENTAJE
-						codigoPorcentaje = doc
-								.createElement("codigoPorcentaje");
-						codigoPorcentaje.appendChild(doc.createTextNode("7"));
-						detalleImpuesto.appendChild(codigoPorcentaje);
-
-						// TARIFA
-						tarifa = doc.createElement("tarifa");
-						tarifa.appendChild(doc.createTextNode("0"));
-						detalleImpuesto.appendChild(tarifa);
-
-						// BASE IMPONIBLE
-						baseImponibleReembolso = doc
-								.createElement("baseImponibleReembolso");
-						baseImponibleReembolso.appendChild(doc
-								.createTextNode(formateador.format(
-										dbBaseIvaCero).toString()));
-						detalleImpuesto.appendChild(baseImponibleReembolso);
-
-						// IMPUESTO REEMBOLSO
-						impuestoReembolso = doc
-								.createElement("impuestoReembolso");
-						impuestoReembolso.appendChild(doc
-								.createTextNode(formateador.format(0)
-										.toString()));
-						detalleImpuesto.appendChild(impuestoReembolso);
-
 					}
 
 				}

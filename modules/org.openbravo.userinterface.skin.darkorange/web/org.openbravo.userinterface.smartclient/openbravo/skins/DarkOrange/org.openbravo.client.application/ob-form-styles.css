@@ -1,0 +1,364 @@
+/*
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License.
+ * The Original Code is Openbravo ERP.
+ * The Initial Developer of the Original Code is Openbravo SLU
+ * All portions are Copyright (C) 2010-2014 Openbravo SLU
+ * All Rights Reserved.
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+*/
+
+/*=======================================================================
+ * Contains styles for:
+ * View Form Styles
+ * Form Fields/Items
+ * Date Picker
+ * Form Buttons
+ * Image Item
+ * LinkButton Item
+ * SectionItem Button
+ * Dialog
+ * Note section
+=======================================================================*/
+
+/*=======================================================================
+ * View Form Styles 
+=======================================================================*/
+
+/*=======================================================================
+ * Form Field Styles 
+=======================================================================*/
+
+.OBFormFieldInput,
+.OBFormFieldInputFocused,
+.OBFormFieldInputError,
+.OBFormFieldInputHint,
+
+.OBFormFieldInputRequired,
+.OBFormFieldInputRequiredFocused,
+.OBFormFieldInputRequiredError,
+.OBFormFieldInputRequiredHint,
+
+.OBFormFieldSelectInput,
+.OBFormFieldSelectInputError,
+.OBFormFieldSelectInputFocused,
+.OBFormFieldSelectInputHint,
+
+.OBFormFieldSelectInputErrorFocused,
+.OBFormFieldSelectInputErrorRequired,
+.OBFormFieldSelectInputErrorRequiredFocused,
+
+.OBFormFieldSelectInputPending,
+
+.OBFormFieldSelectInputRequired,
+.OBFormFieldSelectInputRequiredFocused,
+.OBFormFieldSelectInputRequiredError,
+.OBFormFieldSelectInputRequiredHint,
+
+.OBFormFieldDateInputRequired,
+.OBFormFieldDateInputRequiredFocused,
+.OBFormFieldDateInputRequiredError,
+.OBFormFieldDateInputRequiredHint,
+
+.OBFormFieldDateInput,
+.OBFormFieldDateInputFocused,
+.OBFormFieldDateInputError,
+.OBFormFieldDateInputHint,
+
+.OBFormFieldNumberInput,
+.OBFormFieldNumberInputDisabled,
+.OBFormFieldNumberInputFocused,
+.OBFormFieldNumberInputError,
+.OBFormFieldNumberInputHint,
+
+.OBFormFieldNumberInputRequired,
+.OBFormFieldNumberInputRequiredDisabled,
+.OBFormFieldNumberInputRequiredFocused,
+.OBFormFieldNumberInputRequiredError,
+.OBFormFieldNumberInputRequiredHint,
+
+.OBFormFieldImageInput,
+.OBFormFieldImageInputRequired {
+  border-color: #cfcfcf;
+  background-color: #f5f5f5;
+}
+
+.OBFormFieldInputRequiredDisabled,
+.OBFormFieldSelectInputRequiredDisabled,
+.OBFormFieldDateInputRequiredDisabled,
+.OBFormFieldNumberInputRequiredDisabled,
+.OBFormFieldInputDisabled,
+.OBFormFieldSelectInputDisabled,
+.OBFormFieldDateInputDisabled,
+.OBFormFieldNumberInputDisabled {
+  background-color: transparent;
+}
+
+.OBFormFieldSelectInputPending {
+  background-color: #ffdfdf;
+}
+
+.OBFormFieldSelectInputRequired:focus,
+.OBFormFieldSelectInputRequiredFocused,
+.OBFormFieldSelectInputRequiredSelectedFocused,
+.OBFormFieldSelectInputErrorRequired:focus,
+.OBFormFieldSelectInputErrorRequiredFocused,
+.OBFormFieldInputRequired:focus,
+.OBFormFieldInputRequiredFocused,
+.OBFormFieldInputRequiredSelectedFocused,
+.OBFormFieldDateInputRequired:focus,
+.OBFormFieldDateInputRequiredFocused,
+.OBFormFieldDateInputRequiredSelectedFocused,
+.OBFormFieldNumberInputRequired:focus,
+.OBFormFieldNumberInputRequiredFocused,
+.OBFormFieldNumberInputRequiredSelectedFocused,
+
+.OBFormFieldInput:focus,
+.OBFormFieldInputFocused,
+.OBFormFieldInputSelectedFocused,
+.OBFormFieldSelectInputFocused,
+.OBFormFieldSelectInputSelectedFocused,
+.OBFormFieldSelectInput:focus,
+.OBFormFieldSelectInputError:focus,
+.OBFormFieldSelectInputErrorFocused,
+.OBFormFieldDateInput:focus,
+.OBFormFieldDateInputFocused,
+.OBFormFieldDateInputSelectedFocused
+.OBFormFieldNumberInput:focus,
+.OBFormFieldNumberInputFocused,
+.OBFormFieldNumberInputSelectedFocused {
+  border-color: #00b2e0;
+}
+
+.OBFormFieldInputRequiredHint,
+
+.OBPickListBody,
+.OBPickListBodyFocused {
+  border-color: #cfcfcf;
+  background-color: #f5f5f5;
+}
+
+.OBFormFieldPickListCell,
+.OBFormFieldPickListCellFocused,
+.OBFormFieldPickListCellDark {
+  color: #333333;
+  background-color: #f5f5f5;
+}
+
+.OBFormFieldPickListCellSelected,
+.OBFormFieldPickListCellSelectedFocused,
+.OBFormFieldPickListCellSelectedDark {
+  color: #333333;
+  background-color: #cfcfcf;
+}
+
+.OBFormFieldInputRequired,
+.OBFormFieldInputRequiredFocused,
+.OBFormFieldInputRequiredError,
+.OBFormFieldInputRequiredHint,
+
+.OBFormFieldSelectInputRequired,
+.OBFormFieldSelectInputRequiredFocused,
+.OBFormFieldSelectInputRequiredError,
+.OBFormFieldSelectInputRequiredHint,
+
+.OBFormFieldSelectInputErrorRequired,
+.OBFormFieldSelectInputErrorRequiredFocused,
+
+.OBFormFieldDateInputRequired,
+.OBFormFieldDateInputRequiredFocused,
+.OBFormFieldDateInputRequiredError,
+.OBFormFieldDateInputRequiredHint,
+
+.OBFormFieldNumberInputRequired,
+.OBFormFieldNumberInputRequiredFocused,
+.OBFormFieldNumberInputRequiredError,
+.OBFormFieldNumberInputRequiredHint,
+
+.OBFormFieldImageInputRequired {
+  background-color: #ffeec5;
+}
+
+/*=======================================================================
+ * Date Picker 
+=======================================================================*/
+
+.OBDateChooserBottomButton,
+.OBDateChooserBottomButtonFocused,
+.OBDateChooserBottomButtonSelected {
+  background-image: url(./images/form/dateChooser-bg-button.png);
+}
+
+.OBDateChooserBottomButtonOver,
+.OBDateChooserBottomButtonFocusedOver,
+.OBDateChooserBottomButtonSelectedOver {
+  background-image: url(./images/form/dateChooser-bg-button_Over.png);
+}
+
+.OBDateChooserBottomButtonDown,
+.OBDateChooserBottomButtonFocusedDown,
+.OBDateChooserBottomButtonSelectedDown {
+  background-image: url(./images/form/dateChooser-bg-button_Down.png);
+}
+
+.OBDateChooserBottomButton,
+.OBDateChooserBottomButtonOver,
+.OBDateChooserBottomButtonDown {
+  border-left: 1px solid #404040;
+  border-top: 1px solid #ACB1B9;
+}
+
+.OBDateChooserWeekendButton,
+.OBDateChooserWeekendButtonOver,
+.OBDateChooserWeekendButtonDown,
+.OBDateChooserWeekendButtonSelected,
+.OBDateChooserWeekendButtonSelectedOver,
+.OBDateChooserWeekendButtonSelectedDown {
+  background-color: #cfcfcf;
+  border-color: #cfcfcf;
+}
+
+.OBDateChooserNavButtonOver,
+.OBDateChooserNavButtonDown {
+  color: #00b2e0;
+}
+
+.OBDateChooserWeekend,
+.OBDateChooserWeekendOver,
+.OBDateChooserWeekendSelected,
+.OBDateChooserWeekendDisabled,
+.OBDateChooserWeekendDisabledOver,
+.OBDateChooserWeekendDisabledDown {
+  border-color: #cfcfcf;
+  background-color: #cfcfcf;
+}
+
+.OBDateChooserWeekdayOver,
+.OBDateChooserWeekendOver {
+  border-color: #00b2e0;
+}
+
+.OBDateChooserWeekdaySelected,
+.OBDateChooserWeekdaySelectedOver,
+.OBDateChooserWeekdayDown,
+.OBDateChooserWeekdaySelectedDown,
+.OBDateChooserWeekendSelected,
+.OBDateChooserWeekendSelectedOver,
+.OBDateChooserWeekendDown,
+.OBDateChooserWeekendSelectedDown {
+  border-color: #00b2e0;
+  background-color: #ffeec5;
+}
+
+/*=======================================================================
+ * Form Button Styles 
+=======================================================================*/
+
+.OBFormButton,
+.OBFormButtonOver,
+.OBFormButtonFocused,
+.OBFormButtonFocusedOver,
+.OBFormButtonDown,
+.OBFormButtonFocusedDown,
+.OBFormButtonSelected,
+.OBFormButtonSelectedFocused,
+.OBFormButtonSelectedDown,
+.OBFormButtonSelectedFocusedDown,
+.OBFormButtonSelectedOver,
+.OBFormButtonSelectedFocusedOver,
+.OBFormButtonDisabled,
+.OBFormButtonSelectedDisabled {
+  border-color: #c0c0c0;
+  background-image:url(./images/form/textButton-bg-normal.png);
+}
+
+.OBFormButtonDisabled,
+.OBFormButtonSelectedDisabled {
+  background-image: url(./images/form/textButton-bg-disabled.png);
+}
+
+.OBFormButtonFocused,
+.OBFormButtonFocusedOver,
+.OBFormButtonSelectedFocused,
+.OBFormButtonSelectedFocusedOver,
+.OBFormButtonSelectedFocusedDown {
+  border-color: #00b2e0;
+}
+
+.OBFormButtonOver,
+.OBFormButtonFocusedOver,
+.OBFormButtonSelectedFocused,
+.OBFormButtonSelectedFocusedOver {
+  background-image: url(./images/form/textButton-bg-hover.png);
+}
+
+.OBFormButtonDown,
+.OBFormButtonFocusedDown,
+.OBFormButtonSelectedDown,
+.OBFormButtonSelectedFocusedDown {
+  background-image: url(./images/form/textButton-bg-down.png);
+}
+
+/*=======================================================================
+ * Image Item
+=======================================================================*/
+
+/*=======================================================================
+ * LinkButton Item
+=======================================================================*/
+
+.OBLinkButtonItem,
+.OBLinkButtonItemOver,
+.OBLinkButtonItem:hover {
+  color: #f5372a;
+}
+
+.OBLinkButtonItemDown,
+.OBLinkButtonItem:active {
+  color: #9a0902;
+}
+
+.OBLinkButtonItemFocused,
+.OBLinkButtonItemFocusedOver,
+.OBLinkButtonItemFocusedDown,
+.OBLinkButtonItem:focus {
+  color: #00b2e0;
+}
+
+/*=======================================================================
+ * SectionItem Button
+=======================================================================*/
+
+/*=======================================================================
+ * Used in the label of a foreign key field, for link image 
+=======================================================================*/
+
+.OBFormFieldLinkButton:hover {
+  color: #fd991a;
+}
+
+/*=======================================================================
+ * Dialog
+=======================================================================*/
+
+/*=======================================================================
+ * Note section
+=======================================================================*/
+
+.OBNoteListGridOtherUserNoteCell,
+.OBNoteListGridOtherUserNoteCellOver {
+  background-color: #fd991a;
+}
+
+.OBNoteListGridDelete {
+  color: #f5372a;
+}

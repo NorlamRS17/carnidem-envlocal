@@ -17,10 +17,6 @@
       <oldValue><![CDATA[70]]></oldValue>
       <newValue><![CDATA[66]]></newValue>
     </columnDataChange>
-    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="2991">
-      <oldValue><![CDATA[75]]></oldValue>
-      <newValue><![CDATA[67]]></newValue>
-    </columnDataChange>
     <columnDataChange tablename="AD_FIELD" columnname="ISREADONLY" pkRow="801454">
       <oldValue><![CDATA[N]]></oldValue>
       <newValue><![CDATA[Y]]></newValue>
@@ -32,9 +28,5 @@
     <columnDataChange tablename="AD_FIELD" columnname="ISSHOWNINSTATUSBAR" pkRow="803150">
       <oldValue><![CDATA[Y]]></oldValue>
       <newValue><![CDATA[N]]></newValue>
-    </columnDataChange>
-    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="160EFAF69BEC46A9AD43404A59356CA3">
-      <oldValue><![CDATA[77]]></oldValue>
-      <newValue><![CDATA[68]]></newValue>
     </columnDataChange>
   </vector>

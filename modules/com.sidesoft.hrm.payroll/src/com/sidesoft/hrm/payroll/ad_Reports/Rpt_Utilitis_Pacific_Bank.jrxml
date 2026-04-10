@@ -21,7 +21,7 @@ case
     when BankAccountType='S' then savingcode
 end as "tipocuenta",
 AccountNo as "numerocuenta",
-pr.totalprofits as "valor",
+(coalesce(pr.totalprofits,0)+coalesce(pr.advance_utilities,0)-coalesce(pr.incometaxwithholding,0)) as "valor",
 bp.EM_SSPR_DocumentNo as "identificacion",
 case
     when EM_SSPR_Documenttype = 'NI' then 'C'

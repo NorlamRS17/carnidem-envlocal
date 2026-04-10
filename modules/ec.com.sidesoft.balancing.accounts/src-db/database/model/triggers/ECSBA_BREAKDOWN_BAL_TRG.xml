@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ECSBA_BREAKDOWN_BAL_TRG">
+    <trigger name="ECSBA_BREAKDOWN_BAL_TRG" table="ECSBA_BREAKDOWN_BALANCE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[    v_count integer;
+BEGIN
+    IF AD_isTriggerEnabled () = 'N' THEN
+        IF DELETING THEN
+            RETURN OLD;
+        ELSE
+            RETURN NEW;
+        END IF;
+    END IF;
+    -- Verificar registros Nombres duplicados
+    -- Validación en INSERT
+    IF(INSERTING OR UPDATING) THEN
+        SELECT
+            count(*) INTO v_count
+        FROM
+            ecsba_breakdown_balance
+        WHERE
+            ecsba_breakdown_id = :NEW.ecsba_breakdown_id
+            AND ecsba_account_paramet_id = :NEW.ecsba_account_paramet_id            	
+            AND ecsba_breakdown_balance_id <> COALESCE(:NEW.ecsba_breakdown_balance_id, '0');
+        IF (v_count > 0) THEN
+            RAISE_APPLICATION_ERROR(-20000, '@ECSBA_DuplicateName@');
+        END IF;
+    END IF;
+    END ECSBA_BREAKDOWN_BAL_TRG
+]]></body>
+    </trigger>
+  </database>

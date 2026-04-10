@@ -5,5 +5,15 @@
         <default><![CDATA[N]]></default>
         <onCreateDefault/>
       </column>
+      <index name="EM_SACGLD_ELEMENTVALUE" unique="false">
+        <index-column name="C_ELEMENTVALUE_ID"/>
+      </index>
+      <index name="EM_SACGLD_ELEMENTVALUENOSHOW" unique="false">
+        <index-column name="C_ELEMENTVALUE_ID"/>
+        <index-column name="EM_SACGLD_NOSHOW_CLIENT"/>
+      </index>
+      <index name="EM_SACGLD_ELEMENTVALUEVALUE" unique="false">
+        <index-column name="VALUE"/>
+      </index>
     </table>
   </database>

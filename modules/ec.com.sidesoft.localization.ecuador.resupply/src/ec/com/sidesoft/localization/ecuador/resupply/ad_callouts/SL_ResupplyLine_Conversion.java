@@ -32,6 +32,8 @@ import org.openbravo.base.secureApp.VariablesSecureApp;
 import org.openbravo.erpCommon.utility.Utility;
 import org.openbravo.utils.FormatUtilities;
 import org.openbravo.xmlEngine.XmlDocument;
+import java.math.RoundingMode;
+
 
 public class SL_ResupplyLine_Conversion extends HttpSecureAppServlet {
   private static final long serialVersionUID = 1L;
@@ -101,7 +103,7 @@ public class SL_ResupplyLine_Conversion extends HttpSecureAppServlet {
       quantityOrder = new BigDecimal(strQuantityOrder);
       movementQty = quantityOrder.multiply(multiplyRate);
       if (movementQty.scale() > stdPrecision)
-        movementQty = movementQty.setScale(stdPrecision, BigDecimal.ROUND_HALF_UP);
+        movementQty = movementQty.setScale(stdPrecision, RoundingMode.HALF_UP);
       resultado.append("new Array(\"inpqty\", " + movementQty.toString() + ")");
       if (check) {
         if (!strQuantityOrder.equals(""))

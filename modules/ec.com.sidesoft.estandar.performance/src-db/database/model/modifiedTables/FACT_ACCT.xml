@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FACT_ACCT">
+    <table name="FACT_ACCT" primaryKey="FACT_ACCT_KEY">
+      <index name="EM_EPERF_FACT_ACCT_DTR_BAL" unique="false">
+        <index-column name="DATEACCT"/>
+        <index-column name="ACCOUNT_ID"/>
+        <index-column name="AD_ORG_ID"/>
+        <index-column name="FACTACCTTYPE"/>
+        <index-column name="AMTACCTDR"/>
+        <index-column name="AMTACCTCR"/>
+        <whereClause><![CDATA[ISACTIVE='Y']]></whereClause>
+      </index>
+      <index name="EM_EPERF_FACT_ACCT_ORG_BAL" unique="false">
+        <index-column name="AD_ORG_ID"/>
+        <index-column name="DATEACCT"/>
+        <index-column name="ACCOUNT_ID"/>
+        <index-column name="FACTACCTTYPE"/>
+        <index-column name="AMTACCTDR"/>
+        <index-column name="AMTACCTCR"/>
+        <whereClause><![CDATA[ISACTIVE='Y']]></whereClause>
+      </index>
+      <index name="EM_EPERF_FACT_ACCT_U1_BAL" unique="false">
+        <index-column name="AD_ORG_ID"/>
+        <index-column name="USER1_ID"/>
+        <index-column name="DATEACCT"/>
+        <index-column name="ACCOUNT_ID"/>
+        <index-column name="FACTACCTTYPE"/>
+        <index-column name="AMTACCTDR"/>
+        <index-column name="AMTACCTCR"/>
+        <whereClause><![CDATA[ISACTIVE='Y' AND user1_id IS NOT NULL]]></whereClause>
+      </index>
+    </table>
+  </database>

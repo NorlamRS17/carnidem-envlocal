@@ -9,9 +9,12 @@
       <![CDATA[
 	select * from ( select fechat,caja,doc,cliente,mpago,tdoc,sum(total),cd,grupo,cgrupo,texto from ( 
 	SELECT
-		CASE WHEN cir.documentno is null AND pd.C_Glitem_ID is null THEN TO_CHAR(ci.dateinvoiced,'dd/MM/yyyy')
-			WHEN pd.C_Glitem_ID is not null  THEN TO_CHAR(p.paymentdate,'dd/MM/yyyy')
-			ELSE TO_CHAR(cir.dateinvoiced,'dd/MM/yyyy')
+		CASE
+			WHEN cir.documentno is null AND pd.C_Glitem_ID is null 
+				THEN ci.dateinvoiced::date 
+			WHEN pd.C_Glitem_ID is not null  
+				THEN p.paymentdate::date 
+			ELSE cir.dateinvoiced::date 
 		END as fechat
 		, sccc_cash_clousure_id as caja
 		, p.documentno as doc
@@ -45,16 +48,19 @@
 			WHEN pd.C_Glitem_ID is not null  THEN p.paymentdate::date
 			ELSE cir.dateinvoiced::date
 		END = cc.Closingdate::date
-		AND CASE WHEN cir.documentno is null AND pd.C_Glitem_ID is null THEN TO_CHAR(ci.dateinvoiced,'dd/MM/yyyy')
-			WHEN pd.C_Glitem_ID is not null  THEN TO_CHAR(p.paymentdate,'dd/MM/yyyy')
-			ELSE TO_CHAR(cir.dateinvoiced,'dd/MM/yyyy')
-		END = ?
+		AND CASE
+			WHEN cir.documentno is null AND pd.C_Glitem_ID is null 
+				THEN ci.dateinvoiced::date 
+			WHEN pd.C_Glitem_ID is not null  
+				THEN p.paymentdate::date 
+			ELSE cir.dateinvoiced::date 
+		END = DATE(?)
 		AND sccc_cash_clousure_ID=?
 		AND  P.STATUS<>'RPR') x 
 	group by fechat,doc,caja,cliente,mpago,tdoc,cd,grupo,cgrupo,texto
 	UNION
 	SELECT fechat,caja,doc,cliente,mpago,tdoc,sum(total),cd,grupo,cgrupo,texto from (
-	SELECT TO_CHAR(p.paymentdate,'dd/MM/yyyy') as fechat
+	SELECT p.paymentdate::date AS fechat
 		, sccc_cash_clousure_id as caja
 		, p.documentno as doc
 		, CASE WHEN P.STATUS = 'RPVOID' THEN 'ANULADO' ELSE bp.name END as cliente
@@ -85,11 +91,11 @@
 		inner join sccc_cash_clousure cc on cc.Sccc_Setup_ID=ss.Sccc_Setup_ID
 		WHERE (ci.dateinvoiced::date<>p.paymentdate::date or cir.dateinvoiced::date<>p.paymentdate::date)
 			AND (P.STATUS<>'RPAP') AND p.paymentdate=cc.Closingdate::date
-		AND TO_CHAR(p.paymentdate,'dd/MM/yyyy')=?
+		AND p.paymentdate >= DATE(?) AND p.paymentdate <  DATE(?) 
 		AND sccc_cash_clousure_ID=?
 		GROUP BY fechat,doc,cliente,caja,mpago,tdoc
 	UNION
-	SELECT TO_CHAR(p.paymentdate,'dd/MM/yyyy') as fechat
+	SELECT  p.paymentdate::date AS fechat 
 		, sccc_cash_clousure_id as caja
 		, p.documentno as doc
 		, bp.name as cliente
@@ -120,8 +126,8 @@
 	WHERE  (ci.c_invoice_id is null AND cir.c_invoice_id is null)
 		AND P.STATUS<>'RPVOID' AND  P.STATUS<>'RPAP'
 		AND round(p.generated_credit,4)>0 AND p.paymentdate=cc.Closingdate::date
-		AND TO_CHAR(p.paymentdate,'dd/MM/yyyy')=?
-		AND sccc_cash_clousure_ID=? 
+		AND p.paymentdate >= DATE(?) AND p.paymentdate <  DATE(?)
+		AND sccc_cash_clousure_ID=?
 	GROUP BY fechat,doc,cliente,caja,mpago,tdoc ) x  
 	GROUP BY fechat,doc,cliente,caja,mpago,tdoc,cd,grupo,cgrupo,texto ) x
 
@@ -134,6 +140,8 @@
     <Parameter name="noDoc4"/>
     <Parameter name="noDoc5"/>
     <Parameter name="noDoc6"/>
+    <Parameter name="noDoc7"/>
+    <Parameter name="noDoc8"/>
   </SqlMethod>
 
 </SqlClass>

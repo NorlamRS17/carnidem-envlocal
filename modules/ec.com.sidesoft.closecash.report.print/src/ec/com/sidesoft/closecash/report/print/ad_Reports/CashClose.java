@@ -114,19 +114,9 @@ public class CashClose extends HttpSecureAppServlet {
         strDocumentId);
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     String strDate = dateFormat.format(ScccCashClousure.getClosingdate());
-    CloseCashValdtData data[] = CloseCashValdtData.select(conn, strDate, strDocumentId, strDate,
-        strDocumentId, strDate, strDocumentId);
-
-    if (data.length > 0) {
-      System.out.println(data.length );
-      for (CloseCashValdtData value : data) {
-        sumtotal.add(new BigDecimal(value.sum));
-      }
-    }
 
     // Validacion transacciones no registradas
-    if (data.length > 0 && sumtotal.compareTo(BigDecimal.ZERO) != 0
-        && ScccCashClousure.getDocumentStatus().equals("DR")) {
+    if (ScccCashClousure.getDocumentStatus().equals("DR")) {
       throw new ServletException(
           Utility.messageBD(conn, "Se requiere registrar el Cierre de Caja", language));
     }

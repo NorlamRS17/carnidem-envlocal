@@ -375,8 +375,8 @@ public class WithholdingFileGenerationEcuador extends AbstractFileGeneration imp
 		infoCompRetencion.appendChild(identificacionComprador);
 
 		// PERÍODO FISCAL
-		int year = invoice.getSswhDatewithhold().getYear() + 1900;
-		int month = invoice.getSswhDatewithhold().getMonth() + 1;
+		int year = invoice.getInvoiceDate().getYear() + 1900;
+		int month = invoice.getInvoiceDate().getMonth() + 1;
 
 		String strYear = String.valueOf(year);
 		String strMonth = String.valueOf(month);

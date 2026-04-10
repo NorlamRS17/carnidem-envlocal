@@ -41,7 +41,7 @@ import org.openbravo.model.financialmgmt.gl.GLJournalLine;
 import org.openbravo.model.marketing.Campaign;
 import org.apache.log4j.Logger;
 
-
+@SuppressWarnings("unchecked")
 public class ProcessFileManualEntries extends DalBaseProcess {
 
 	  private static final Logger log = Logger.getLogger(ProcessFileManualEntries.class);
@@ -173,6 +173,7 @@ public class ProcessFileManualEntries extends DalBaseProcess {
 	    OBDal.getInstance().flush();
 	  }
 
+	  @SuppressWarnings("unchecked")
 	  private <T extends BaseOBObject> T findUnique(Class<T> clazz, String property, Object value, long line, String msgval) {
 	    if (StringUtils.isBlank(ObjectUtils.toString(value))) return null;
 	    OBCriteria<T> criteria = OBDal.getInstance().createCriteria(clazz);
@@ -184,7 +185,8 @@ public class ProcessFileManualEntries extends DalBaseProcess {
 	    }
 	    return result;
 	  }
-
+	  
+	  @SuppressWarnings("unchecked")
 	  private <T extends BaseOBObject> T findOptional(Class<T> clazz, String property, String value, long line, String msgval) {
 	    //if (StringUtils.isBlank(value)) return null;
 	    OBCriteria<T> criteria = OBDal.getInstance().createCriteria(clazz);

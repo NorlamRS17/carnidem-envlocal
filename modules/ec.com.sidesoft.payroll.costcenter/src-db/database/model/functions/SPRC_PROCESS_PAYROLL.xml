@@ -66,6 +66,9 @@
 	vYear NUMBER;
 	cCommission RECORD;
 
+	v_partialTime NUMBER;
+	v_timeHours NUMBER;
+
 BEGIN
   --  Update AD_PInstance
   DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || PInstance_ID) ;
@@ -293,7 +296,7 @@ BEGIN
 						End If;
 
                         v_Ticket_ID := get_uuid();
-
+			
                         select
                         coalesce(to_number((select amount
                         from sspr_concept_amount
@@ -329,12 +332,23 @@ BEGIN
                         into v_workingDays
                         from dual;
 
+						select weeklyhoursparttime into v_partialTime
+						from sspr_contract
+						where isactive = 'Y' 
+						and isparttime = 'Y'
+						and c_bpartner_id = Cur_Employee.C_BPartner_ID;
+
+						select full_time_hours into v_timeHours
+						from sspr_hours_work 
+						where isactive = 'Y';
+						
+							
 						INSERT INTO SSPR_Payroll_Ticket
 						(SSPR_Payroll_Ticket_ID, AD_Client_ID, AD_Org_ID, IsActive,
 						Created, CreatedBy, Updated, UpdatedBy,
 						SSPR_Payroll_ID, C_BPartner_ID, totalincome, totalexpense, totalnet,
 						workeddays, workingdays , em_sprc_costcenter_id, em_sprc_user1_id, em_sprc_user2_id,
-						em_sprc_cat_acct_id
+						em_sprc_cat_acct_id, Partial_Work_Hours, Worked_Days_Benefits
 						)
 						VALUES
 						(v_Ticket_ID, v_Client_ID, v_Org_ID, 'Y',
@@ -342,7 +356,7 @@ BEGIN
 						v_Payroll_ID, Cur_Employee.C_BPartner_ID, 0, 0, 0,
 						v_resultWorkerDays,
 						v_workingDays, Cur_Employee.c_costcenter_id, Cur_Employee.user1_id, Cur_Employee.user2_id
-						, Cur_Employee.em_sspr_category_acct_id
+						, Cur_Employee.em_sspr_category_acct_id, round(v_partialTime), round((v_partialTime / v_timeHours) * v_resultWorkerDays)
 						);
 						v_n_insertions := v_n_insertions + 1;
 				END IF;
@@ -818,6 +832,16 @@ BEGIN
 
                         END IF;
                     END IF;--*** FIN PROCESO NOMINA
+
+ 		    ---/****** INICIO @NUEVO DESARROLLO@ - Ticket 20725 ******/
+                    IF (v_isliquidation='Y' AND  v_ispayroll='Y') THEN
+	              --*** PROCESO ACTUALIZA SUELDO SUBSIDIADO - SB
+		      IF (CUR_PROCESSPAYROOLL.PROCESSNAME = 'SS')THEN
+		      	SSPR_SALARY_LEAVE(V_PERIOD_ID,CUR_PROCESSPAYROOLL.SSPR_CONCEPTIN_ID,CUR_PROCESSPAYROOLL.SSPR_CONCEPTOUT_ID,V_CLIENT_ID,V_ORG_ID,V_USER_ID,V_PAYROLL_ID);
+		      END IF;
+		      --*** FIN PROCESO ACTUALIZAR SUELDO SUBSIDIADO - SB
+                    END IF;
+                    ---/****** FIN @NUEVO DESARROLLO@ - Ticket 20725 ******/
 
                     --*** PROCESO ACTUALIZAR SUELDO - US
                     IF (CUR_PROCESSPAYROOLL.PROCESSNAME='US') THEN

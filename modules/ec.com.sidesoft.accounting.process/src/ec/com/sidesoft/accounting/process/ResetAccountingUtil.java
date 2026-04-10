@@ -30,6 +30,7 @@ import org.openbravo.model.common.enterprise.OrganizationType;
 import org.openbravo.model.financialmgmt.accounting.AccountingFact;
 import org.openbravo.model.financialmgmt.calendar.Period;
 
+@SuppressWarnings("deprecation")
 public class ResetAccountingUtil {
 
   private static String documenTypeId = "";

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PayablesReceivables_Voucher_Conceptos" pageWidth="555" pageHeight="200" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="11111111-1111-1111-1111-111111111111">
+	<property name="ireport.zoom" value="1.5"/>
+	<parameter name="fin_payment_id" class="java.lang.String"/>
+	<parameter name="c_doctype_id" class="java.lang.String"/>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new java.text.DecimalFormat("###,##0.00;-###,##0.00", new java.text.DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERDECIMAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+    gl.name AS CONCEPTO,
+    COALESCE(pd.amount, 0) AS VALOR
+FROM fin_payment_detail pd
+INNER JOIN fin_payment fp ON fp.fin_payment_id = pd.fin_payment_id
+INNER JOIN c_glitem gl ON gl.c_glitem_id = pd.c_glitem_id
+WHERE fp.fin_payment_id = (
+    SELECT fin_payment_id
+    FROM fin_payment
+    WHERE documentno   = $P{fin_payment_id}
+      AND c_doctype_id = $P{c_doctype_id}
+    LIMIT 1
+)
+AND pd.c_glitem_id IS NOT NULL
+ORDER BY gl.name]]>
+	</queryString>
+	<field name="CONCEPTO" class="java.lang.String"/>
+	<field name="VALOR" class="java.math.BigDecimal"/>
+	<variable name="TOTAL_CONCEPTO" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VALOR}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+		<staticText>
+			<reportElement x="0" y="0" width="388" height="20" uuid="11756a58-3e95-4aa4-aea1-d6ac1db190ce"/>
+			<textElement verticalAlignment="Middle">
+				<font size="8" isBold="true"/>
+			</textElement>
+			<text><![CDATA[CONCEPTO CONTABLE]]></text>
+		</staticText>
+		<staticText>
+			<reportElement x="388" y="0" width="92" height="20" uuid="158bf078-ed6a-4fef-9934-51ba863ba920"/>
+			<textElement textAlignment="Right" verticalAlignment="Middle">
+				<font size="8" isBold="true"/>
+			</textElement>
+			<text><![CDATA[VALOR]]></text>
+		</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+		<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<reportElement x="0" y="0" width="388" height="12" uuid="a57eda38-ed36-4a0d-ad27-22c794b880af"/>
+			<textElement verticalAlignment="Middle">
+				<font size="8"/>
+			</textElement>
+			<textFieldExpression><![CDATA[$F{CONCEPTO}]]></textFieldExpression>
+		</textField>
+		<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+			<reportElement x="388" y="0" width="92" height="12" uuid="f44bbf85-fafb-439a-b0ce-5feae1bc35e1"/>
+			<textElement textAlignment="Right" verticalAlignment="Middle">
+				<font size="8"/>
+			</textElement>
+			<textFieldExpression><![CDATA[$F{VALOR}.setScale($P{NUMBERDECIMAL}, java.math.RoundingMode.HALF_UP)]]></textFieldExpression>
+			<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+		</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch">
+		<staticText>
+			<reportElement x="0" y="0" width="388" height="20" uuid="bfd8bb1f-690e-44ed-a65e-808f44bff9eb"/>
+			<box>
+				<topPen lineWidth="0.75"/>
+			</box>
+			<textElement verticalAlignment="Middle">
+				<font size="8" isBold="true"/>
+			</textElement>
+			<text><![CDATA[TOTAL CONCEPTOS CONTABLES]]></text>
+		</staticText>
+		<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+			<reportElement x="388" y="0" width="92" height="20" uuid="d6f1157e-9d44-4073-8a05-4c0c7210a5a5"/>
+			<box>
+				<topPen lineWidth="0.75"/>
+			</box>
+			<textElement textAlignment="Right" verticalAlignment="Middle">
+				<font size="8" isBold="true"/>
+			</textElement>
+			<textFieldExpression><![CDATA[$V{TOTAL_CONCEPTO}.setScale($P{NUMBERDECIMAL}, java.math.RoundingMode.HALF_UP)]]></textFieldExpression>
+			<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+		</textField>
+		<staticText>
+			<reportElement x="480" y="0" width="75" height="20" uuid="e5f6a7b8-c9d0-1234-ef56-789012345678"/>
+			<box>
+				<topPen lineWidth="0.75"/>
+			</box>
+			<textElement verticalAlignment="Middle">
+				<font size="8"/>
+			</textElement>
+			<text><![CDATA[]]></text>
+		</staticText>
+		</band>
+	</summary>
+</jasperReport>

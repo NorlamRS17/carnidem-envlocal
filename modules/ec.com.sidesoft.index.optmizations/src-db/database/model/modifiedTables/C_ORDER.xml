@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_ORDER">
+    <table name="C_ORDER" primaryKey="C_ORDER_KEY">
+      <index name="EM_DBIDXO_ORDER_MAIN_FILTER" unique="false">
+        <index-column name="C_BPARTNER_ID"/>
+        <index-column name="AD_CLIENT_ID"/>
+        <index-column name="AD_ORG_ID"/>
+        <index-column name="ISSOTRX"/>
+        <index-column name="DOCSTATUS"/>
+        <index-column name="C_CURRENCY_ID"/>
+        <index-column name="M_PRICELIST_ID"/>
+      </index>
+      <index name="EM_DBIDXO_ORDER_NOT_INVRL" unique="false">
+        <index-column name="C_ORDER_ID"/>
+        <index-column name="C_CURRENCY_ID"/>
+        <index-column name="M_PRICELIST_ID"/>
+        <whereClause><![CDATA[INVOICERULE<>'N']]></whereClause>
+      </index>
+    </table>
+  </database>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="223DB495607F433AABA846FC366A4465" trl="Y">
+    <value column="Name" isTrl="Y" original="SMT configuration">Configuración SMTP</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3B3B62850AFF4DAEA967A1F20CEFBE39" trl="Y">
+    <value column="Name" isTrl="Y" original="Output tray queue">Planificador de bandeja de salida</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A631C48D3B5341668CD4FD71750D632F" trl="Y">
+    <value column="Name" isTrl="Y" original="Transactions">Transacciones</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B7D77EEA3A1B4AD0B4548B88F3E38EA4" trl="N">
+    <value column="Name" isTrl="Y" original="Configuration">Configuración</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F2769196EA7D4DDD9229CB1249D94859" trl="Y">
+    <value column="Name" isTrl="Y" original="Email">Gestión de Correo electrónico</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F2D8649734AD4C2983B2F29E9CD25FFC" trl="Y">
+    <value column="Name" isTrl="Y" original="Email Template">Plantilla de correo electrónico</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

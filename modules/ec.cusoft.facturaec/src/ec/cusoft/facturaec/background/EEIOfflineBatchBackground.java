@@ -54,12 +54,10 @@ public class EEIOfflineBatchBackground extends DalBaseProcess implements Killabl
     cf = bundle.getConfig(); // Obtener la configuración de la App OB
     logger = bundle.getLogger();
     OBError result = new OBError();
-    ConnectionProvider conn = new DalConnectionProvider(false);
+    ConnectionProvider conn = bundle.getConnection();
     String language = OBContext.getOBContext().getLanguage().getLanguage();
     String strSessionUserId = OBContext.getOBContext().getUser().getId();
     try {
-
-      OBContext.setAdminMode(false);
       result.setType("Error");
       result.setTitle(OBMessageUtils.messageBD("Error"));
 
@@ -140,25 +138,18 @@ public class EEIOfflineBatchBackground extends DalBaseProcess implements Killabl
       logger.logln(result.getMessage());
       bundle.setResult(result);
       return;
-    } finally {
-      OBContext.restorePreviousMode();
-      try {
-        conn.destroy();
-      } catch (Exception e) {
-
-      }
     }
 
   }
 
   public static ArrayList<String> SelectInvoices(ProcessBundle bundle) {
-    ConnectionProvider conn = new DalConnectionProvider(false);
+    ConnectionProvider conn = bundle.getConnection();
 
     String strTypeOfBatch = null;
     String strOrgList = null;
     String strDateLimit = "null";
     try {
-      strTypeOfBatch = SelectParams();
+      strTypeOfBatch = SelectParams(conn);
       log4j.debug("Tipo de proceso en lote: " + strTypeOfBatch);
       if (strTypeOfBatch.length() == 0 || strTypeOfBatch == null || strTypeOfBatch.equals("")) {
         throw new OBException(
@@ -206,7 +197,9 @@ public class EEIOfflineBatchBackground extends DalBaseProcess implements Killabl
     } catch (Exception e) {
       throw new OBException("Error al obtener lista de organizaciones de envío. " + e.getMessage());
     }
-
+    
+    ArrayList<String> strResult = new ArrayList<String>();
+    strResult.clear();
     try {
       String strSql = null;
       if (strTypeOfBatch.equals("AD")) {
@@ -239,8 +232,6 @@ public class EEIOfflineBatchBackground extends DalBaseProcess implements Killabl
 
       st = conn.getPreparedStatement(strSql);
       ResultSet rsConsulta = st.executeQuery();
-      ArrayList<String> strResult = new ArrayList<String>();
-      strResult.clear();
       int contador = 0;
       while (rsConsulta.next()) {
 
@@ -248,23 +239,17 @@ public class EEIOfflineBatchBackground extends DalBaseProcess implements Killabl
         contador = contador + 1;
       }
       log4j.debug("Número de transacciones a procesar. " + contador);
-      return strResult;
 
     } catch (Exception e) {
-      log4j.debug("Error al consultar la tabla c_invoice " + e);
-      return null;
+    	strResult.clear();
+    	log4j.debug("Error al consultar la tabla c_invoice " + e);
     } finally {
-      try {
-        conn.destroy();
-      } catch (Exception e) {
-
-      }
+    	return strResult;
     }
 
   }
 
-  public static String SelectParams() {
-    ConnectionProvider conn = new DalConnectionProvider(false);
+  public static String SelectParams(ConnectionProvider conn) {
 
     try {
       String strSql = "SELECT type_of_batch  FROM eei_param_facturae where isactive='Y' and type_of_batch is not null";
@@ -291,16 +276,13 @@ public class EEIOfflineBatchBackground extends DalBaseProcess implements Killabl
 
       throw new OBException("Error al consultar la tabla eei_param_facturae (Tipo de Lote WS) " + e);
     } finally {
-      try {
-        conn.destroy();
-      } catch (Exception e) {
-
-      }
     }
 
   }
+  
   @Override
   public void kill(ProcessBundle processBundle) throws Exception {
     this.killProcess = true;
   }
+  
 }

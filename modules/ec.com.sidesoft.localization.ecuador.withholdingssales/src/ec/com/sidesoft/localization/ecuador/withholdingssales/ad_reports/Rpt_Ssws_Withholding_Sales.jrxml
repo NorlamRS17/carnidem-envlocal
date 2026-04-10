@@ -63,7 +63,7 @@ from
       case when e.rate < 0 then e.rate *-1 else e.rate end as porc_ret,
       (
         select
-          sum(d1.whrentalamt)
+          round(sum(d1.whrentalamt), 2)
         from
           ssws_withholdingsaleline d1
         where
