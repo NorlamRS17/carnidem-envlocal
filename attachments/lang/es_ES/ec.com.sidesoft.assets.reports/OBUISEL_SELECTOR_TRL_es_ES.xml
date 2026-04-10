@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="073615EB5139432E9EA9D93532F6ECBE" trl="N">
+    <value column="Name" isTrl="N" original="C_BPartner">C_BPartner</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6DFA7B5F54E140C2872DB6D855FA0726" trl="N">
+    <value column="Name" isTrl="N" original="Selector - Asset code">Selector - Asset code</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A2D5ECEE53E74CBCBC6BAA47339F8DF1" trl="N">
+    <value column="Name" isTrl="N" original="a_Asset">a_Asset</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="ED61157A756C44A59D09D665ACAAA9E6" trl="N">
+    <value column="Name" isTrl="N" original="SSASL_Subcategory">SSASL_Subcategory</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

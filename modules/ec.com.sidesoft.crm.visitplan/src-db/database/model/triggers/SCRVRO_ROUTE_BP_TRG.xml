@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCRVRO_ROUTE_BP_TRG">
+    <trigger name="SCRVRO_ROUTE_BP_TRG" table="SCRVRO_ROUTE" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[	vCheck NUMBER;
+	v_status VARCHAR;
+BEGIN
+
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+	
+	IF TG_OP IN ('DELETE') THEN
+		v_status:= :old.status;
+		IF (v_status='I' OR v_status='C')  THEN
+			RAISE_APPLICATION_ERROR(-20000, '@AlreadyPosted@') ;
+		END IF;
+	END IF;
+	
+	END SCRVRO_ROUTE_BP_TRG
+]]></body>
+    </trigger>
+  </database>

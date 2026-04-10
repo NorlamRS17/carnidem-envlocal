@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="280526382B9B48B387678E6E45A98AB3" trl="Y">
+    <value column="Name" isTrl="Y" original="Fully paid documents based on payment plan">Documentos totalmente pagados en base a plan de pagos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="67B9B86C983A47798476D1E6FD95DF10" trl="Y">
+    <value column="Name" isTrl="Y" original="Fees paid based on payment plan">Cuotas pagadas en base a plan de pagos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A69168B694884FC78551E8F3AE5D8482" trl="Y">
+    <value column="Name" isTrl="Y" original="Commissions">Comisiones</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C29372F6AEB44B338A31D02D65A56156" trl="Y">
+    <value column="Name" isTrl="Y" original="Commission based on collections and sales made in the period">Comisión en función de los cobros y ventas realizadas en el </value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="CE5F22DB39AC41EABF183D8642A67B00" trl="Y">
+    <value column="Name" isTrl="Y" original="Fully paid documents based on due date">Documentos totalmente pagados en base a la fecha de vencimie</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

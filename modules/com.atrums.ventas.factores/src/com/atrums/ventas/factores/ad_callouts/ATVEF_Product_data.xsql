@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+
+<SqlClass name="ATVEFProductData" package="com.atrums.ventas.factores.ad_callouts">
+  <SqlMethod name="dummy" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+      select '' as pricelist, '' as plazo 
+        from dual
+      ]]>
+    </Sql>
+    
+  </SqlMethod>
+  
+  <SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+      select pp.pricelist 
+        from m_productprice pp, m_pricelist_version pv 
+        where pp.m_pricelist_version_id = pv.m_pricelist_version_id 
+        and m_product_id = ?
+        and pv.m_pricelist_id = ?        
+        order by pv.validfrom desc limit 1 
+      ]]>
+    </Sql>
+    <Parameter name="mProductId"/>
+    <Parameter name="mPriceListId"/>
+  </SqlMethod>
+  
+  <SqlMethod name="plazo" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+      select p.netdays as plazo 
+        from c_order o, c_paymentterm p 
+        where o.c_paymentterm_id = p.c_paymentterm_id 
+        and o.c_order_id = ? 
+      ]]>
+    </Sql>
+    <Parameter name="cOrderId"/>
+  </SqlMethod>
+</SqlClass>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="1B97880F332644EA9FF171D736E65077" trl="Y">
+    <value column="Name" isTrl="Y" original="sproctm_add_requisition">Crear necesidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="1BB774A7EFF34CF6BF4F088C35AC5567" trl="N">
+    <value column="Name" isTrl="N" original="SPROCTM - PRINT TimeExpense">SPROCTM - PRINT TimeExpense</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="30DA204D11ED4D129FE2956C5799FECB" trl="Y">
+    <value column="Name" isTrl="Y" original="sproctm_asigned_ce">Asignar CE</value>
+    <value column="Description" isTrl="N" original="">Asignar CE</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6400AD0123EA4FD8A8108CB4F26FEF02" trl="N">
+    <value column="Name" isTrl="Y" original="sproctm_phase_execute">Crear Fase Ejecución</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7901FF7DF9444013904A03D8F86E1B7E" trl="Y">
+    <value column="Name" isTrl="Y" original="sproctm_processFile_multifase">Procesar importación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7B655F5E8E9B477CBC788FB0D31BAA51" trl="N">
+    <value column="Name" isTrl="Y" original="sproctm_posted_det_project">Contabilizar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8C6FF434ADCC4677AEAA537FC3B284B4" trl="N">
+    <value column="Name" isTrl="Y" original="sproctm_liquidate_proj_sett">Liquidar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="943C8F5BEAAE44298C2572C727CF5614" trl="N">
+    <value column="Name" isTrl="N" original="ProcessFileDetails">ProcessFileDetails</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9C5952A764B54278877B6EC5C009743C" trl="N">
+    <value column="Name" isTrl="N" original="Crear Presupuesto">Crear Presupuesto</value>
+    <value column="Description" isTrl="N" original="Si no marca el botón actualizar se creará una nueva cotización">Si no marca el botón actualizar se creará una nueva cotización</value>
+    <value column="Help" isTrl="N" original="Si no marca el botón actualizar se creará una nueva cotización">Si no marca el botón actualizar se creará una nueva cotización</value>
+  </row>
+  <row id="9EBF06C8EE5F4F96A5525CD92D3A7508" trl="N">
+    <value column="Name" isTrl="Y" original="sproctm_posted_wf_project">Contabilizar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AF8EE510E85944D3B2AF4A458A2B8227" trl="N">
+    <value column="Name" isTrl="Y" original="sproctm_loadlines_proj_sett">Cargar Lineas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B768F742E29F443DA3674015E7A0F8C6" trl="N">
+    <value column="Name" isTrl="N" original="ADD_Requisition">ADD_Requisition</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BAB1653EE11547D69F6EFFE837728D36" trl="Y">
+    <value column="Name" isTrl="Y" original="Complete Details">Completar detalles</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F3D2D70E07914B0A9D2023D95EE4F5EA" trl="Y">
+    <value column="Name" isTrl="Y" original="sproctm_processFile_workforce">Procesar importación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F6B37A9B36A14F8ABF2D07515E2CEB99" trl="N">
+    <value column="Name" isTrl="Y" original="Complete Details.">Completar Detalles.</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

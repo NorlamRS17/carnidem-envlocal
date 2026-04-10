@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSIPICE_LOAD_ICE">
+    <function name="SSIPICE_LOAD_ICE" type="VARCHAR">
+      <parameter name="pinstanceid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[pInstance RECORD;
+		vMessageOK VARCHAR2(2000) := '';
+		vMessageError VARCHAR2(2000) := '';
+		vRecordID VARCHAR2(32);
+		vClientID VARCHAR2(32);
+		vOrgID VARCHAR2(32);
+		vUserID VARCHAR2(32);
+		vOrder RECORD;
+		vIsImport VARCHAR2(32);
+		vRecord RECORD;
+		vNetTotal NUMBER(10,2) := 0;
+		vTotalPriceActual NUMBER(10,2);
+		vTotalValuetICE NUMBER(10,2);
+	BEGIN
+		DBMS_OUTPUT.PUT_LINE( 'Updating PInstance - Processing ' || pInstanceID);
+		vMessageError := 'PInstanceNotFound';
+	 AD_UPDATE_PINSTANCE(pInstanceID, NULL, 'Y', NULL, NULL);
+		BEGIN
+			--Obtener los parametros
+			FOR pInstance IN (
+				SELECT
+					i.Record_ID,
+					i.AD_Client_ID,
+					i.AD_Org_ID,
+					i.AD_User_ID,
+					p.ParameterName,
+					p.P_String,
+					p.P_Number,
+					p.P_Date
+				FROM AD_PInstance AS i
+					LEFT JOIN AD_PInstance_Para AS p ON i.AD_PInstance_ID=p.AD_PInstance_ID
+				WHERE i.AD_PInstance_ID=pInstanceID
+				ORDER BY p.SeqNo
+			) LOOP
+				vRecordID := pInstance.Record_ID;
+				vClientID := pInstance.AD_Client_ID;
+				vOrgID := pInstance.AD_Org_ID;
+				vUserID := pInstance.AD_User_ID;
+			END LOOP;
+			
+			--Obtener el registro
+			SELECT * INTO vOrder FROM c_order WHERE c_order_id=vRecordID;
+			
+			--Verificar si el tipo de documento es de importacion
+			SELECT dt.em_ssip_isimports INTO vIsImport
+			FROM c_doctype AS dt
+				JOIN c_order AS o ON o.c_doctypetarget_id=dt.c_doctype_id
+			WHERE o.c_order_id=vRecordID;
+			
+			--Cambiar la orden a procesando 'N'
+			UPDATE c_order SET processing='Y' WHERE c_order_id=vRecordID;
+			
+			--Si el tipo de documento es de importacion
+			IF vIsImport='Y' THEN
+				--Limpiar campo valor ICE en las lineas del pedido de compra
+				UPDATE c_orderline SET em_ssipice_value_ice=NULL
+				WHERE c_order_id=vRecordID;
+				
+				--Actualizar campo valor ICE en las lineas del pedido de compra con productos que gravan ICE
+				UPDATE c_orderline SET em_ssipice_value_ice=
+					ROUND((m_product.em_ssipice_pvp_sri/1.12)/(1+(m_product.em_ssipice_percent_ice/100))
+					*(m_product.em_ssipice_percent_ice/100),2)*qtyordered
+				FROM m_product
+				WHERE c_orderline.m_product_id=m_product.m_product_id
+					AND c_orderline.c_order_id=vRecordID
+					AND m_product.em_ssipice_tax_ice='Y'
+					AND m_product.em_ssipice_percent_ice IS NOT NULL
+					AND m_product.em_ssipice_pvp_sri IS NOT NULL;
+					
+				--Cambiar la orden a procesando 'N'
+				UPDATE c_order SET processing='N' WHERE c_order_id=vRecordID;
+			END IF;
+			
+			DBMS_OUTPUT.PUT_LINE( 'Updating PInstance - Finished ' || vMessageOK);
+		 AD_UPDATE_PINSTANCE(pInstanceID, NULL, 'N', 1, vMessageOK);
+			RETURN TRUE;
+    	END;
+		
+		EXCEPTION WHEN OTHERS THEN
+      vMessageError := '@ERROR=' || SQLERRM;
+    	DBMS_OUTPUT.PUT_LINE( vMessageError);
+     AD_UPDATE_PINSTANCE(pInstanceID, NULL, 'N', 0, vMessageError);
+    	RETURN FALSE;
+END SSIPICE_LOAD_ICE
+]]></body>
+    </function>
+  </database>

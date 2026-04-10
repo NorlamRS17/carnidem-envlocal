@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="SdcBankTXTDPHData" package="ec.com.sidesoft.debit.collection.actionHandler" accessModifier="public">
+   <SqlClassComment></SqlClassComment>
+
+  <SqlMethod name="selectgeneral" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	SELECT 'CO' as c1,''documentno,'' taxid,'USD' as c6
+	,'' as amount,'CTA' as c8,'' codebank, '' tipocuenta, '' accountno
+	,'' c12,'' taxidbank,'' partnername, '' address ,'' phone,'' ciudad
+	, 'CARGA' c19,'CUENCA' c18,'' fecha, '' factura
+	FROM dual
+      ]]>
+    </Sql>
+  </SqlMethod>
+  <SqlMethod name="selectdetaill" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	SELECT 'CO' as c1,c.documentno,bp.taxid,'USD' as c6
+	,ROUND(c.outstandingamt,2) as amount,'CTA' as c8,COALESCE(bt.code,'') AS codebank
+	,CASE WHEN bpb.bankaccounttype='C' THEN 'CTE' WHEN bpb.bankaccounttype='S' THEN 'AHO' ELSE '' END AS tipocuenta
+	,bpb.accountno
+	,CASE WHEN LENGTH(bp.taxid)=10 THEN 'c' WHEN LENGTH(bp.taxid)=13 THEN 'r' ELSE 'p' END as c12
+	,bp.taxid as taxidbank,bp.name as partnername,l.address1 as address, bpl.phone,COALESCE(ct.name,'') as ciudad
+	, 'CARGA' c18,'CUENCA' c19,slci_date_name_month(TRUNC(NOW()),'es_EC') fecha, c.documentno as factura
+	FROM sdc_dc_propocollect c
+		JOIN c_bpartner bp ON bp.c_bpartner_id=c.c_bpartner_id
+		JOIN c_invoice i ON i.c_bpartner_id=bp.c_bpartner_id AND i.documentno=c.documentno
+		JOIN c_bpartner_location bpl ON bpl.c_bpartner_location_id=i.c_bpartner_location_id
+		JOIN c_location l ON l.c_location_id=bpl.c_location_id
+		LEFT JOIN secpm_canton ct ON ct.secpm_canton_id=bpl.em_secpm_canton_id
+		JOIN c_bp_bankaccount bpb ON bpb.c_bpartner_id=bp.c_bpartner_id
+		JOIN ssfi_banktransfer bt ON bt.ssfi_banktransfer_id=bpb.em_ssfi_banktransfer_id
+	WHERE sdc_debitcollect_id = ?
+		AND bp.em_sdc_debits='Y'
+	ORDER BY c.documentno,duedate
+      ]]>
+    </Sql>
+    <Parameter name="recordid"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectsummary" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	SELECT 'CO' as c1,i.documentno,bp.taxid,'USD' as c6
+	,SUM(ROUND(c.outstandingamt,2)) as amount,'CTA' as c8,COALESCE(bt.code,'') AS codebank
+	,CASE WHEN bpb.bankaccounttype='C' THEN 'CTE' WHEN bpb.bankaccounttype='S' THEN 'AHO' ELSE '' END AS tipocuenta
+	,bpb.accountno
+	,CASE WHEN LENGTH(bp.taxid)=10 THEN 'c' WHEN LENGTH(bp.taxid)=13 THEN 'r' ELSE 'p' END as c12
+	,bp.taxid as taxidbank,bp.name as partnername,l.address1 as address, bpl.phone,COALESCE(ct.name,'') as ciudad
+	, 'CARGA' c18,'CUENCA' c19,slci_date_name_month(TRUNC(NOW()),'es_EC') fecha, i.documentno as factura
+	FROM sdc_dc_propocollect c
+		JOIN c_bpartner bp ON bp.c_bpartner_id=c.c_bpartner_id
+		JOIN c_invoice i ON i.c_bpartner_id=bp.c_bpartner_id AND i.documentno=c.documentno
+		JOIN c_bpartner_location bpl ON bpl.c_bpartner_location_id=i.c_bpartner_location_id
+		JOIN c_location l ON l.c_location_id=bpl.c_location_id
+		LEFT JOIN secpm_canton ct ON ct.secpm_canton_id=bpl.em_secpm_canton_id
+		JOIN c_bp_bankaccount bpb ON bpb.c_bpartner_id=bp.c_bpartner_id
+		JOIN ssfi_banktransfer bt ON bt.ssfi_banktransfer_id=bpb.em_ssfi_banktransfer_id
+	WHERE sdc_debitcollect_id = ?
+		AND bp.em_sdc_debits='Y'
+	GROUP BY i.c_invoice_id,bp.c_bpartner_id,bpb.c_bp_bankaccount_id,bt.ssfi_banktransfer_id,
+		l.c_location_id,bpl.c_bpartner_location_id,ct.name
+      ]]>
+    </Sql>
+    <Parameter name="recordid"/>
+  </SqlMethod>
+
+
+</SqlClass>

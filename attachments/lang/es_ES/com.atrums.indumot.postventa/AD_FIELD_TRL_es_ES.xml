@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_FIELD" version="">
+  <row id="078001952BB74117991B81641A6EB369" trl="N">
+    <value column="Name" isTrl="N" original="N° Parte Reemplazo">N° Parte Reemplazo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="0D10129E45424E14AD60C21FE5A5CCB6" trl="N">
+    <value column="Name" isTrl="N" original="N° Parte">N° Parte</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="281E10C075DD424495D9D0ADAD0A0424" trl="N">
+    <value column="Name" isTrl="N" original="Precio FOB">Precio FOB</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2BA8767B2DC74A3FAA119D806245AC3C" trl="N">
+    <value column="Name" isTrl="N" original="Copiar Orden">Copiar Orden</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3226358F56A04F548A65A90B4A511CA3" trl="N">
+    <value column="Name" isTrl="N" original="Tipo Repuesto">Tipo Repuesto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4381619E95204AAC9AF0C40AD037C31F" trl="N">
+    <value column="Name" isTrl="N" original="Precio Ecuador">Precio Ecuador</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4F40D5C7E22D436DA92561F036A473AD" trl="N">
+    <value column="Name" isTrl="N" original="Pais Origen">Pais Origen</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6C3093BFB220406FB5BF28D392109098" trl="N">
+    <value column="Name" isTrl="N" original="Cliente">Cliente</value>
+    <value column="Description" isTrl="N" original="Persona que participa en operaciones diarias de negocios, como cliente, empleado, etc.">Persona que participa en operaciones diarias de negocios, como cliente, empleado, etc.</value>
+    <value column="Help" isTrl="N" original="Un tercero es cualquier entidad, organización o particular con quien se realizan operaciones y transacciones. Esto incluye proveedores, clientes y empleados.">Un tercero es cualquier entidad, organización o particular con quien se realizan operaciones y transacciones. Esto incluye proveedores, clientes y empleados.</value>
+  </row>
+  <row id="94607B70BB11452E8DCF459BBCC18FEE" trl="N">
+    <value column="Name" isTrl="N" original="No. Orden de Trabajo">No. Orden de Trabajo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="99EDEA0E969F453BB424AD4DA89E9F74" trl="N">
+    <value column="Name" isTrl="N" original="Email (Facturación Electrónica)">Email (Facturación Electrónica)</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A606717B15474F23B4EE1DD7C2F1A2E4" trl="N">
+    <value column="Name" isTrl="N" original="Descripcion Pieza">Descripcion Pieza</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

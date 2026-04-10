@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="04E30086D2F648D78FCDDA37A96251F1" trl="Y">
+    <value column="Name" isTrl="Y" original="Brand">Marca</value>
+    <value column="PrintName" isTrl="Y" original="Brand">Marca</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="09CB0AD9A6AD4DAABC389A29D459039F" trl="Y">
+    <value column="Name" isTrl="Y" original="Origin">Origen</value>
+    <value column="PrintName" isTrl="Y" original="Origin">Origen</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="0C0133CF515741A39E167D9BC42CBE4F" trl="N">
+    <value column="Name" isTrl="N" original="Satmac_Contract_ID">Satmac_Contract_ID</value>
+    <value column="PrintName" isTrl="N" original="Satmac_Contract_ID">Satmac_Contract_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="203CAE7ADFD24899BAFABD7D196F57B6" trl="Y">
+    <value column="Name" isTrl="Y" original="Machine Type">Tipo de Máquina</value>
+    <value column="PrintName" isTrl="Y" original="Machine Type">Tipo de Máquina</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="29B3DD42E14D436AB32F35CA87836545" trl="Y">
+    <value column="Name" isTrl="Y" original="Invoice">Facturar</value>
+    <value column="PrintName" isTrl="Y" original="Invoice">Facturar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4D887A8286154A369FC0BED19D8D7B56" trl="Y">
+    <value column="Name" isTrl="Y" original="No. of months">No. de meses</value>
+    <value column="PrintName" isTrl="Y" original="No. of months">No. de meses</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5097F1191E604A73AF4F8F58062971B6" trl="Y">
+    <value column="Name" isTrl="Y" original="Type of contract">Tipo de contrato</value>
+    <value column="PrintName" isTrl="Y" original="Type of contract">Tipo de contrato</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="50D4ACBD46E3409084A8BFBE6456E56B" trl="N">
+    <value column="Name" isTrl="N" original="EM_Satmac_Project_ID">EM_Satmac_Project_ID</value>
+    <value column="PrintName" isTrl="N" original="EM_Satmac_Project_ID">EM_Satmac_Project_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="536157E3114340A2B3769A0FDDB2E46D" trl="N">
+    <value column="Name" isTrl="N" original="Satmac_So_Transfer_Line_ID">Satmac_So_Transfer_Line_ID</value>
+    <value column="PrintName" isTrl="N" original="Satmac_So_Transfer_Line_ID">Satmac_So_Transfer_Line_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="553AAE4832E54EAC8C052AEE4D00E2D7" trl="N">
+    <value column="Name" isTrl="N" original="Sswos_So_Transfer_ID">Sswos_So_Transfer_ID</value>
+    <value column="PrintName" isTrl="N" original="Sswos_So_Transfer_ID">Sswos_So_Transfer_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="56A9511F0C8F4F7798024D3CAD872B2A" trl="N">
+    <value column="Name" isTrl="N" original="Type_Service">Type_Service</value>
+    <value column="PrintName" isTrl="N" original="Type_Service">Type_Service</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="57C7A90A862947CE8B666430B07C593A" trl="N">
+    <value column="Name" isTrl="N" original="EM_Satmac_Name">EM_Satmac_Name</value>
+    <value column="PrintName" isTrl="N" original="EM_Satmac_Name">EM_Satmac_Name</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="59E29AB600FC4D198A87A5A66C77E194" trl="N">
+    <value column="Name" isTrl="N" original="Satmac_Machine_Type_ID">Satmac_Machine_Type_ID</value>
+    <value column="PrintName" isTrl="N" original="Satmac_Machine_Type_ID">Satmac_Machine_Type_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5E46D4F148234F9DB33CF7BB65E85F66" trl="Y">
+    <value column="Name" isTrl="Y" original="Contract">Contrato</value>
+    <value column="PrintName" isTrl="Y" original="Contract">Contrato</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="698968CFB4534BBDBB4E1DCCD17C702A" trl="Y">
+    <value column="Name" isTrl="Y" original="Reactivate">Reactivar</value>
+    <value column="PrintName" isTrl="Y" original="Reactivate">Reactivar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="71ACC0BBCFEE43C881D08D9FB98A2521" trl="Y">
+    <value column="Name" isTrl="Y" original="Provider">Proveedor</value>
+    <value column="PrintName" isTrl="Y" original="Provider">Proveedor</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="71C2DF5D7DC64ED4AB168BABED394B41" trl="Y">
+    <value column="Name" isTrl="Y" original="Maintenance date">Fecha de mantenimiento</value>
+    <value column="PrintName" isTrl="Y" original="Maintenance date">Fecha de mantenimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7944FED052354E0E8A9F4EA86E824234" trl="N">
+    <value column="Name" isTrl="N" original="BTN_Load_Machines">BTN_Load_Machines</value>
+    <value column="PrintName" isTrl="N" original="BTN_Load_Machines">BTN_Load_Machines</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8745082A53C54F2B8BC130C5A13E5353" trl="Y">
+    <value column="Name" isTrl="Y" original="Serial No.">No. de Serie</value>
+    <value column="PrintName" isTrl="Y" original="Serial No.">No. de Serie</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B0E414873D6C4D06B4D223E2AFE120FE" trl="Y">
+    <value column="Name" isTrl="Y" original="Model">Modelo</value>
+    <value column="PrintName" isTrl="Y" original="Model">Modelo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BA36686409834D70ACC66CDC2AED9833" trl="N">
+    <value column="Name" isTrl="N" original="Satmac_Maintenance_Plan_ID">Satmac_Maintenance_Plan_ID</value>
+    <value column="PrintName" isTrl="N" original="Satmac_Maintenance_Plan_ID">Satmac_Maintenance_Plan_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C414075A55E64DA28B66358AA90A6464" trl="Y">
+    <value column="Name" isTrl="Y" original="Contract Project">Proyecto</value>
+    <value column="PrintName" isTrl="Y" original="Contract Project">Proyecto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C43BD5E8DD6D48F69A1D802E73FE6D4A" trl="Y">
+    <value column="Name" isTrl="Y" original="Machine name">Nombre de la máquina</value>
+    <value column="PrintName" isTrl="Y" original="Machine name">Nombre de la máquina</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D709F53208194C47B28725F3BE5219E3" trl="Y">
+    <value column="Name" isTrl="Y" original="End_Date">Fecha fin</value>
+    <value column="PrintName" isTrl="Y" original="End_Date">Fecha fin</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E2D330FFE6B84F8AB6D1CEF0C30244A6" trl="Y">
+    <value column="Name" isTrl="Y" original="Machine">Máquina</value>
+    <value column="PrintName" isTrl="Y" original="Machine">Máquina</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E5F8B83D660742BE9F5500B591BEE9E0" trl="Y">
+    <value column="Name" isTrl="Y" original="Year">Año</value>
+    <value column="PrintName" isTrl="Y" original="Year">Año</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F67730D64432467FB1188D59CE93C61E" trl="Y">
+    <value column="Name" isTrl="Y" original="Process">Registrar</value>
+    <value column="PrintName" isTrl="Y" original="Process">Registrar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FC4AA32444F74C3F888EC28DE70C0B79" trl="N">
+    <value column="Name" isTrl="N" original="Satmac_Machine_ID">Satmac_Machine_ID</value>
+    <value column="PrintName" isTrl="N" original="Satmac_Machine_ID">Satmac_Machine_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

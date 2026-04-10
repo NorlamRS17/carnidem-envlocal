@@ -10,6 +10,11 @@
     <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
   </row>
+  <row id="7C1F44CF961845F392196D63DD8625ED" trl="N">
+    <value column="Name" isTrl="N" original="ManufacturingWorkRequirement">ManufacturingWorkRequirement</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
   <row id="98D8DE62BAAA40EF90A179CFDB3FE01F" trl="Y">
     <value column="Name" isTrl="N" original="Lista Lotes">Lista Lotes</value>
     <value column="Description" isTrl="N" original=""/>
@@ -17,6 +22,11 @@
   </row>
   <row id="A520C920E44949B6A858421A1D12781B" trl="N">
     <value column="Name" isTrl="N" original="crprod selector transaction">crprod selector transaction</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A90688F9887B4353BA9ACAB063AD7535" trl="N">
+    <value column="Name" isTrl="N" original="crprod_mproduct">crprod_mproduct</value>
     <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
   </row>

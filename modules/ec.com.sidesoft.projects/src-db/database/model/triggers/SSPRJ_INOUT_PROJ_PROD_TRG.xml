@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPRJ_INOUT_PROJ_PROD_TRG">
+    <trigger name="SSPRJ_INOUT_PROJ_PROD_TRG" table="M_INOUT" fires="before" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[    vSymbol NUMBER;
+    cRow RECORD;
+    vNewQty NUMBER;
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+    
+    IF UPDATING THEN
+        IF :OLD.docstatus = :NEW.docstatus OR :NEW.docstatus NOT IN ('CO','VO') THEN
+            RETURN NEW;
+        END IF;
+    
+        vSymbol := 1;
+        IF :NEW.docstatus = 'VO' THEN
+            vSymbol := -1;
+        END IF;
+        
+        FOR cRow IN (
+            SELECT iol.line, iol.movementqty, tp.sproctm_task_prod_id, tp.qty, tp.em_ssprj_qty_consumed
+            FROM m_inoutline iol
+                JOIN sproctm_task_prod tp ON tp.sproctm_task_prod_id = iol.em_ssprj_task_prod_id
+            WHERE iol.m_inout_id = :NEW.m_inout_id
+        ) LOOP
+            vNewQty := cRow.em_ssprj_qty_consumed + (cRow.movementqty * vSymbol);
+            IF vNewQty > cRow.qty THEN
+                RAISE_APPLICATION_ERROR(-20000, 'La línea '||cRow.line||' excede la cantidad requerida por la línea de producto en el proyecto');
+            END IF;
+            
+            UPDATE sproctm_task_prod SET em_ssprj_qty_consumed = vNewQty WHERE sproctm_task_prod_id = cRow.sproctm_task_prod_id;
+        END LOOP;
+    END IF;
+
+    END SSPRJ_INOUT_PROJ_PROD_TRG
+]]></body>
+    </trigger>
+  </database>

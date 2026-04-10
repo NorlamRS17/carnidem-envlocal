@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="3C6EE8D28EFE470C8DAB7FC1CF9504D8" trl="N">
+    <value column="Name" isTrl="N" original="Credit Limit Control Process">Credit Limit Control Process</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="52499C8B90E24F7291507539E69C830C" trl="N">
+    <value column="Name" isTrl="N" original="Credit Limit Control">Credit Limit Control</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DCD7B19E655245F28AADC276F216850F" trl="Y">
+    <value column="Name" isTrl="Y" original="ssfc_DelRecErrorsTPV">Eliminación de registros de error TPV</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

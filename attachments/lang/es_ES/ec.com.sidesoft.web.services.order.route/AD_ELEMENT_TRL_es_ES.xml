@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0B3117D6B45145EE83CB2AB71F6F4641" trl="Y">
+    <value column="Name" isTrl="Y" original="Delivery time">Hora de entrega</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssfor_Isdeliver_Time">Hora de entrega</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7B9C54094BE842168C612F97DBC7F37B" trl="Y">
+    <value column="Name" isTrl="Y" original="Deliver in route">Entregar en ruta</value>
+    <value column="PrintName" isTrl="Y" original="Deliver in route">Entregar en ruta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="90F85A91514547E390B7B223D35F31AA" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssfor_Onroute">En ruta</value>
+    <value column="PrintName" isTrl="Y" original="Onroute">En ruta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9888E1B0378945E6B2618C5859B8B11C" trl="N">
+    <value column="Name" isTrl="N" original="Dispatcher">Dispatcher</value>
+    <value column="PrintName" isTrl="N" original="Dispatcher">Dispatcher</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A0E80D1FF035447D842DE47159A75C67" trl="N">
+    <value column="Name" isTrl="N" original="Route">Route</value>
+    <value column="PrintName" isTrl="N" original="Route">Route</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B167DD46BA8B46C19EEA7F6771358CFD" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssfor_C_Doctypetarget_ID">Documento Transacción</value>
+    <value column="PrintName" isTrl="Y" original="Doctypetarget">Documento Transacción</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F3F7B3BCD69F4BE2BCEE94838ADE3626" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssfor_M_Warehouse_ID">Almacén</value>
+    <value column="PrintName" isTrl="Y" original="Warehouse">Almacén</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

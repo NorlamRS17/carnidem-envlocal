@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ATINDPO_POSTVENTALINEA_TRG">
+    <trigger name="ATINDPO_POSTVENTALINEA_TRG" table="ATINDPO_POSTVENTALINEA" fires="after" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[v_mensaje VARCHAR;
+
+v_subtotal NUMBER;
+v_total NUMBER;
+v_rate NUMBER;
+v_sub_linea NUMBER;
+v_tot_linea NUMBER;
+Cur_Lineas RECORD;
+
+
+BEGIN
+
+		IF(INSERTING OR UPDATING)THEN
+            
+            v_sub_linea := 0;
+            v_tot_linea := 0;
+			
+            FOR Cur_Lineas IN (select m_product_id, c_tax_id, atindpo_linenetamt
+                                from atindpo_postventalinea
+                                where atindpo_postventa_id = :new.atindpo_postventa_id)
+            LOOP
+
+                select coalesce(rate,0) into v_rate from c_tax where c_tax_id = Cur_Lineas.c_tax_id;
+                
+                v_tot_linea := round((v_tot_linea + (Cur_Lineas.atindpo_linenetamt * (1+(v_rate/100)))),2);
+
+                v_sub_linea := round((v_sub_linea + Cur_Lineas.atindpo_linenetamt),2);
+                
+
+            END LOOP;
+
+            update atindpo_postventa
+            set totallines = v_sub_linea, grandtotal = v_tot_linea
+            where atindpo_postventa_id = :new.atindpo_postventa_id;
+            
+
+
+
+		RETURN NEW;
+			
+		END IF;
+
+        IF(DELETING) THEN
+             v_sub_linea := 0;
+            v_tot_linea := 0;
+			
+            FOR Cur_Lineas IN (select m_product_id, c_tax_id, atindpo_linenetamt
+                                from atindpo_postventalinea
+                                where atindpo_postventa_id = :old.atindpo_postventa_id)
+            LOOP
+
+                select coalesce(rate,0) into v_rate from c_tax where c_tax_id = Cur_Lineas.c_tax_id;
+                
+                v_tot_linea := v_tot_linea + round((Cur_Lineas.atindpo_linenetamt * (1+round((v_rate/100),2))),2);
+
+                v_sub_linea := v_sub_linea + round(Cur_Lineas.atindpo_linenetamt,2);
+                
+
+            END LOOP;
+
+            update atindpo_postventa
+            set totallines = v_sub_linea, grandtotal = v_tot_linea
+            where atindpo_postventa_id = :old.atindpo_postventa_id;
+
+        END IF;
+		
+
+END ATINDPO_POSTVENTALINEA_TRG
+]]></body>
+    </trigger>
+  </database>

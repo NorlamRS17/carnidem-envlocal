@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="12D7FAEB1BCB49989004B6885811F378" trl="N">
+    <value column="Name" isTrl="N" original="Months not consideration">Meses no considerar</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="24B6CF6EAD3F42DCB8EB5835B1FB3342" trl="N">
+    <value column="Name" isTrl="N" original="Stock Security">Stock de Securidad</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="37FA6E22466E43888DA9B99780B21ED5" trl="N">
+    <value column="Name" isTrl="N" original="Analysis">Análisis</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="93D06EE24E334FA2B66F120A974ED82C" trl="N">
+    <value column="Name" isTrl="N" original="Analysis Simulation MRP">Análisis de Simulación MRP</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FF2B4C572314458C95BA7C42370F40EF" trl="N">
+    <value column="Name" isTrl="N" original="Lines Simulation">Líneas</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

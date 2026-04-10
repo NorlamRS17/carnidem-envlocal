@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="0CE3937A1801491080B569828B66D5C1" trl="N">
+    <value column="Name" isTrl="N" original="Color">Color</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="35E62FC6EC854270B65BADFA7FC4E076" trl="N">
+    <value column="Name" isTrl="Y" original="Change status from Invoiced to Delivered">Cambiar estado de Facturada a Entregada</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="45A4139F5DA44AE99F79D793D77C7936" trl="Y">
+    <value column="Name" isTrl="Y" original="Vehicle Recall">Vehículos Recall</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="49BD6C35475D41A6BE7663AF4066AFD6" trl="N">
+    <value column="Name" isTrl="Y" original="Year">Año</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9EE89DC93E4B4E6CA0E7C1BCAB6F1B14" trl="N">
+    <value column="Name" isTrl="Y" original="Origin">Origen</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AA53198035564569BA2391E43E575332" trl="N">
+    <value column="Name" isTrl="Y" original="Vehicles">Vehículos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DC153688F8F3473FB80A29321BB02711" trl="N">
+    <value column="Name" isTrl="Y" original="Class">Clase</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F07D248511A44D0D918E3DE8D9EA82BD" trl="N">
+    <value column="Name" isTrl="Y" original="Service order transfer">Configuración orden de servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F3570281D87E4B1D99623B08BC77CB5B" trl="Y">
+    <value column="Name" isTrl="Y" original="Settings Reports">Impresión Documentos O. Servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

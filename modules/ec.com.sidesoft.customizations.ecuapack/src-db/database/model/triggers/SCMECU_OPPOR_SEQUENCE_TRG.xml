@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCMECU_OPPOR_SEQUENCE_TRG">
+    <trigger name="SCMECU_OPPOR_SEQUENCE_TRG" table="OPCRM_OPPORTUNITIES" fires="before" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[	rSeq RECORD;
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+	
+	IF INSERTING THEN
+	    
+        SELECT s.* INTO rSeq
+        FROM ad_sequence s
+            JOIN c_doctype dt ON dt.docnosequence_id = s.ad_sequence_id
+        WHERE dt.c_doctype_id = :NEW.em_scmecu_doctype_id;
+        
+        IF rSeq.name IS NOT NULL THEN
+            
+            SELECT ad_sequence_doc(rSeq.name, :NEW.ad_client_id, 'Y') INTO :NEW.em_scmecu_documentno;
+            
+        END IF;
+
+	END IF;
+
+	END SCMECU_OPPOR_SEQUENCE_TRG
+]]></body>
+    </trigger>
+  </database>

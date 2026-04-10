@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="BA2A79F7072E4F9D930DD57A0DA04E15" trl="N">
+    <value column="Name" isTrl="N" original="Ssappor_type">Ssappor_type</value>
+    <value column="Description" isTrl="N" original="Ssappor_type">Ssappor_type</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DB90C067F8C44F36AE8B2DD9AB2152BD" trl="N">
+    <value column="Name" isTrl="N" original="Ssappor_Log">Ssappor_Log</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

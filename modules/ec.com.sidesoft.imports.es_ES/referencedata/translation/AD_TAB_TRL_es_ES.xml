@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="1BAFEBEBD4414D63B373CECFB9E14980" trl="N">
+    <value column="Name" isTrl="N" original="Tariff Items">Tariff Items</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2C4D66D5B0884462B15656A02F100E93" trl="N">
+    <value column="Name" isTrl="Y" original="Import Data">Datos de importación</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2E7FC09882A2466580AE5BAF448C9C58" trl="N">
+    <value column="Name" isTrl="N" original="Means Transport">Means Transport</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4FAD870ABFF444F4AF0189B9BA835217" trl="N">
+    <value column="Name" isTrl="N" original="Product Tariffs">Product Tariffs</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6344AA8EAFAE478BBBE4E604792AB819" trl="N">
+    <value column="Name" isTrl="Y" original="Cost Import">Costos de importación</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="69ECC98A91C345B48AB25D40DC1B6110" trl="N">
+    <value column="Name" isTrl="N" original="Tax Rates">Tax Rates</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="82FAF6839FAB4AF98C45123E802B9E7F" trl="N">
+    <value column="Name" isTrl="N" original="Port Type">Port Type</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BD109692290F4082B931B22F39C897D5" trl="N">
+    <value column="Name" isTrl="N" original="Imports">Imports</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FCC8C38DA6B64724B61BAD4B411802A3" trl="N">
+    <value column="Name" isTrl="N" original="Additional Costs">Additional Costs</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

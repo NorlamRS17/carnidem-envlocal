@@ -1,0 +1,277 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SPROCTM_ADD_REQUISITION">
+    <function name="SPROCTM_ADD_REQUISITION" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_ResultStr VARCHAR2(2000):='';
+  v_Message VARCHAR2(2000):='';
+  v_Result NUMBER:=1; -- 0=failure
+  v_Record_ID VARCHAR2(32);
+  v_AD_User_ID VARCHAR2(32);
+  v_AD_Client_ID VARCHAR2(32);
+  v_AD_Org_ID VARCHAR2(32);
+  v_include_pstock VARCHAR2(1); 
+    v_total_tprod NUMBER;  -- OBTG:NUMBER
+    v_header_id VARCHAR2(32);
+    v_DocumentNo VARCHAR2(60) ; 
+    v_c_project_id VARCHAR2(32); 
+    v_c_projectphase_id VARCHAR2(32);
+    v_c_projecttask_id VARCHAR2(32);
+    v_line_id  VARCHAR2(32);
+    vLine NUMBER;  -- OBTG:NUMBER
+    v_sproctm_task_prod_id VARCHAR2(32);
+    v_p_org  VARCHAR2(32);
+    v_count_validator NUMBER;  -- OBTG:NUMBER
+    v_descriptionline VARCHAR2(160) ; 
+    v_productStockWarehouseID VARCHAR2(32);
+    v_qtyonhand_stock NUMBER;  -- OBTG:NUMBER
+    v_em_sproctm_task_prod_id  VARCHAR2(32);
+    v_totalQty NUMBER;  -- OBTG:NUMBER
+  TYPE RECORD IS REF CURSOR;
+    Cur_Parameter RECORD;
+    Cur_tprod RECORD;
+
+BEGIN
+
+  FOR Cur_Parameter IN
+      (SELECT i.Record_ID, i.AD_User_ID, i.AD_Client_ID, i.AD_Org_ID, p.ParameterName,
+        p.P_String, p.P_Number, p.P_Date, p.P_Date_To
+      FROM AD_PINSTANCE i
+      LEFT JOIN AD_PINSTANCE_PARA p ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=  p_PInstance_ID
+      ORDER BY p.SeqNo
+      ) 
+    LOOP
+      v_Record_ID:=Cur_Parameter.Record_ID;
+      v_AD_User_ID:=Cur_Parameter.AD_User_ID;
+      v_AD_Client_ID:=Cur_Parameter.AD_Client_ID;
+      v_AD_Org_ID:=Cur_Parameter.AD_Org_ID;
+      v_include_pstock:=Cur_Parameter.P_String;
+
+    END LOOP; -- Get Parameter
+    v_ResultStr := 'Inicio del proceso';
+    v_count_validator := 1;
+
+            -- TODAS LAS LINEAS DE LA TAREA
+            -- DETERMINAR SI AGREGA TAMBN PRODUCTOS CON STOCK  
+            FOR Cur_tprod IN
+                (
+                   select p.ad_org_id , tp.sproctm_task_prod_id,
+                                tp.m_product_id, p.c_project_id , pp.c_projectphase_id, t.c_projecttask_id
+                                , tp.ad_org_id , tp.Requirements_Date, tp.qty , tp.C_Uom_ID
+                                , p.m_warehouse_id
+                                    from sproctm_task_prod tp
+                                    inner join c_projecttask t on t.c_projecttask_id = tp.c_projecttask_id
+                                    inner join c_projectphase pp on pp.c_projectphase_id = t.c_projectphase_id
+                                    inner join c_project p on p.c_project_id = pp.c_project_id
+                                    inner join m_product mp on mp.m_product_id = tp.m_product_id
+                                    where t.c_projecttask_id  = v_Record_ID
+                                    AND COALESCE(tp.reqstatus, '') in (null, '')
+                                    AND tp.sproctm_task_prod_id not in (
+                                    select  em_sproctm_task_prod_id from M_RequisitionLine
+                                         where em_sproctm_task_prod_id is not null)
+                                 ORDER BY qty 
+
+                )
+                LOOP
+
+                                -- Determinar si la linea ya ha sido agregada no volverla agregar en una nueva necesidad
+                            SELECT em_sproctm_task_prod_id 
+                            INTO v_em_sproctm_task_prod_id
+                            FROM M_RequisitionLine
+                            WHERE em_sproctm_task_prod_id =  Cur_tprod.sproctm_task_prod_id;
+                            -- Excluir productos ya en necesidad 
+                            
+                            IF(v_em_sproctm_task_prod_id is null) THEN 
+                                
+                                -- Verificar si el producto tiene liena de stock (hueco) enalzado al alamacen del proyecto
+                                SELECT mw.m_warehouse_id   
+                                into v_productStockWarehouseID
+                                FROM m_storage_detail sd
+                                inner join m_locator ml on ml.m_locator_id = sd.m_locator_id
+                                inner join m_warehouse mw on mw.m_warehouse_id = ml.m_warehouse_id
+                                where sd.m_product_id = Cur_tprod.m_product_id
+                                AND mw.m_warehouse_id = Cur_tprod.m_warehouse_id GROUP BY mw.m_warehouse_id;
+
+                                SELECT COALESCE(MAX(line),0)+10 INTO vLine FROM m_requisitionline WHERE m_requisition_id=v_header_id;
+                                v_line_id = get_uuid();
+                                
+                                -- Verificar la cantidad de stock en mano disponible del producto
+                                select qtyonhand 
+                                into v_qtyonhand_stock
+                                from  M_Storage_Detail md
+                                inner join m_product mp on mp.m_product_id = md.m_product_id
+                                inner join m_locator ml on ml.m_locator_id = md.m_locator_id
+                                Where mp.m_product_id =  Cur_tprod.m_product_id 
+                                and ml.m_warehouse_id = Cur_tprod.m_warehouse_id;
+
+                                IF(v_include_pstock = 'N') THEN
+                                    IF( v_qtyonhand_stock is not null AND v_qtyonhand_stock > 0) THEN
+                                        v_descriptionline =  ('Stock disponible ' || v_qtyonhand_stock ||  ' a la fecha ' || now());
+                                        ELSE
+                                        v_descriptionline = null;
+                                    END IF;
+                                    
+                                    IF(Cur_tprod.qty > v_qtyonhand_stock AND v_qtyonhand_stock is not null) THEN
+                                        v_totalQty = Cur_tprod.qty - v_qtyonhand_stock ;
+                                        ELSE
+                                        v_totalQty = COALESCE(Cur_tprod.qty,0);
+                                    END IF;
+
+                                    IF
+                                        Cur_tprod.m_product_id is not null
+                                        AND (v_qtyonhand_stock is null OR v_qtyonhand_stock <= 0 OR Cur_tprod.qty > v_qtyonhand_stock)
+                                    THEN
+                                        IF v_header_id IS NULL THEN
+                                            v_header_id :=  get_uuid();
+                                            
+                                            SELECT * INTO  v_DocumentNo 
+                                            FROM Ad_Sequence_Doc('DocumentNo_M_Requisition', v_AD_Client_ID, 'Y') ;
+
+                                            INSERT INTO m_requisition(
+                                                m_requisition_id, ad_client_id, ad_org_id, isactive, 
+                                                created, createdby, updated, updatedby,
+                                                description, documentno, c_bpartner_id, m_pricelist_id,
+                                                c_currency_id, createpo, docstatus, docaction,
+                                                processed, ad_user_id, processing, em_sproctm_c_project_id,
+                                                em_sproctm_c_projectphase_id, em_sproctm_c_projecttask_id
+                                            ) VALUES (
+                                                v_header_id, v_AD_Client_ID, Cur_tprod.ad_org_id, 'Y', 
+                                                now(), v_AD_User_ID, now(), v_AD_User_ID,
+                                                null, v_DocumentNo, null,  null,
+                                                '100', 'N', 'DR', 'CO',
+                                                'N', '100', 'N', Cur_tprod.c_project_id,
+                                                Cur_tprod.c_projectphase_id, Cur_tprod.c_projecttask_id 
+                                            );
+                                        END IF;
+                            
+                                        INSERT INTO m_requisitionline (
+                                            m_requisitionline_id, ad_client_id, ad_org_id, isactive, 
+                                            created, createdby, updated, updatedby, 
+                                            m_requisition_id, m_product_id, qty, pricelist, linenetamt,
+                                            c_bpartner_id, c_uom_id, m_product_uom_id, quantityorder,
+                                            m_attributesetinstance_id, reqstatus, orderedqty, description,
+                                            changestatus, internalnotes, suppliernotes, dateplanned,
+                                            needbydate, priceactual, discount, c_currency_id,
+                                            lockedby, lockqty, lockprice, m_pricelist_id,
+                                            lockdate, lockcause, line, em_sproctm_c_project_id,
+                                            em_sproctm_c_projectphase_id, em_sproctm_c_projecttask_id, em_sproctm_task_prod_id
+                                        ) VALUES (
+                                            v_line_id, v_AD_Client_ID, Cur_tprod.ad_org_id, 'Y',
+                                            now(), v_AD_User_ID, now(), v_AD_User_ID,
+                                            v_header_id, Cur_tprod.m_product_id, v_totalQty, null,
+                                            0, null, Cur_tprod.C_Uom_ID, null,
+                                            null, null, 'O', 0,
+                                            v_descriptionline, 'N', null, null,
+                                            null, COALESCE(Cur_tprod.Requirements_Date, now()), null, null,
+                                            '100', null, null, null, 
+                                            null, null, null, vLine,
+                                            Cur_tprod.c_project_id, Cur_tprod.c_projectphase_id, Cur_tprod.c_projecttask_id, Cur_tprod.sproctm_task_prod_id
+                                        );
+                                    END IF;
+
+                                END IF;
+                                
+                                IF(v_include_pstock = 'Y') THEN
+                                    -- Agregar todos los productos incluido la nota de productos con stcok
+                
+                                    IF( v_qtyonhand_stock is not null AND v_qtyonhand_stock > 0) THEN
+                                        v_descriptionline =  ('Stock disponible ' || v_qtyonhand_stock ||  ' a la fecha ' || now());
+                                        ELSE
+                                        v_descriptionline = null;
+                                    END IF;
+                                    
+                                 IF(v_count_validator = 1) THEN
+                                        IF(Cur_tprod.m_product_id is not null ) THEN
+                                            v_header_id :=  get_uuid();
+                                            
+                                            SELECT * INTO  v_DocumentNo 
+                                            FROM Ad_Sequence_Doc('DocumentNo_M_Requisition', v_AD_Client_ID, 'Y') ;
+
+                                            INSERT INTO m_requisition(
+                                            m_requisition_id, ad_client_id, ad_org_id, isactive, 
+                                            created, createdby, updated, updatedby, description, documentno, 
+                                            c_bpartner_id, m_pricelist_id, c_currency_id, 
+                                            createpo, docstatus, docaction, processed, ad_user_id, processing, 
+                                            em_sproctm_c_project_id, em_sproctm_c_projectphase_id, em_sproctm_c_projecttask_id
+                                            )
+                                            VALUES (v_header_id, v_AD_Client_ID, Cur_tprod.ad_org_id, 'Y', 
+                                            now(), v_AD_User_ID, now(), v_AD_User_ID, null, v_DocumentNo, 
+                                            null,  null, '100', 
+                                            'N', 'DR', 'CO', 'N', '100', 'N', 
+
+                                            Cur_tprod.c_project_id, Cur_tprod.c_projectphase_id, Cur_tprod.c_projecttask_id 
+                                            );
+                                        END IF;
+                                    END IF;
+                            
+                                    INSERT INTO m_requisitionline(
+                                            m_requisitionline_id, ad_client_id, ad_org_id, isactive, 
+                                            created, createdby, updated, updatedby, 
+                                            m_requisition_id, m_product_id, qty, 
+                                            pricelist, linenetamt, c_bpartner_id,
+                                            c_uom_id, m_product_uom_id, quantityorder,
+                                            m_attributesetinstance_id, reqstatus,
+                                            orderedqty, description, changestatus,
+                                            internalnotes, suppliernotes, dateplanned,
+                                            needbydate, priceactual, discount,
+                                            c_currency_id, lockedby, lockqty, lockprice,
+                                            m_pricelist_id, lockdate, lockcause 
+                                            , line , em_sproctm_c_project_id, em_sproctm_c_projectphase_id, em_sproctm_c_projecttask_id
+                                            , em_sproctm_task_prod_id
+                                            )
+                                            VALUES (v_line_id , v_AD_Client_ID, Cur_tprod.ad_org_id, 'Y',
+                                            now(), v_AD_User_ID, now(), v_AD_User_ID,
+                                            v_header_id, Cur_tprod.m_product_id , Cur_tprod.qty,
+                                            null , 0, null, 
+                                            Cur_tprod.C_Uom_ID , null, null,
+                                            null, 'O', 
+                                            0, v_descriptionline, 'N',
+                                            null, null, null,
+                                            COALESCE(Cur_tprod.Requirements_Date, now()), null, null,
+                                            '100', null, null, null, 
+                                            null, null, null 
+                                            , vLine , Cur_tprod.c_project_id, Cur_tprod.c_projectphase_id, Cur_tprod.c_projecttask_id
+                                            , Cur_tprod.sproctm_task_prod_id
+                                            );
+
+                                            IF( CHAR_LENGTH(v_descriptionline) > 1 ) THEN
+                                                INSERT INTO public.obuiapp_note(
+                                                obuiapp_note_id, ad_client_id, ad_org_id, ad_table_id, record_id, note, 
+                                                isactive, created, createdby, updated, updatedby)
+                                                VALUES (get_uuid(), v_AD_Client_ID, Cur_tprod.ad_org_id, '800214', v_line_id, ('Stock disponible ' || v_qtyonhand_stock ||  ' a la fecha ' || now()), 
+                                                'Y',now(), v_AD_User_ID, now(), v_AD_User_ID);
+                                            END IF;
+                                            
+                                            IF(v_count_validator = 1) THEN
+                                                UPDATE c_projecttask 
+                                                set EM_Sproctm_Add_Requisition = 'Y'
+                                                where c_projecttask_id  = v_Record_ID;
+                                            END IF;
+
+                                END IF;
+                                v_count_validator = v_count_validator + 1 ;
+                            END IF;               
+                                            
+                END LOOP;
+                      
+      IF(v_DocumentNo IS NOT NULL) THEN
+        v_Message:='@DocumentNo@: ' || v_DocumentNo;
+        ELSE
+        v_Message:='Ya se han generado necesidades para todos los productos.';
+      END IF;
+    --<<FINISH_PROCESS>>
+    --  Update AD_PInstance
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message) ;
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', v_Result, v_Message) ;
+    RETURN;
+
+EXCEPTION
+WHEN OTHERS THEN
+  DBMS_OUTPUT.PUT_LINE('sproctm_add_requisition exception: '|| v_ResultStr);
+  RAISE;
+END SPROCTM_ADD_REQUISITION
+]]></body>
+    </function>
+  </database>

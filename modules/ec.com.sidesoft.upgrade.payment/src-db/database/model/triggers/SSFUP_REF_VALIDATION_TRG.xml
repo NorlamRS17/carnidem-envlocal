@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSFUP_REF_VALIDATION_TRG">
+    <trigger name="SSFUP_REF_VALIDATION_TRG" table="FIN_PAYMENT" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+V_countlines NUMBER;
+	
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+	
+	IF (INSERTING)THEN
+		IF ((:NEW.fin_paymentmethod_id='6B69CFFF920949E692F38105ECEA0722' or
+		   :NEW.fin_paymentmethod_id='BFA118294E7B4DF68E19403FD5E36025' or
+		   :NEW.fin_paymentmethod_id='05EEBB40AE734CFA9E92E9CE8BB0AD99' ) and :NEW.isreceipt='Y')   THEN  
+		
+			SELECT count(*)
+		    	INTO V_countlines
+		    	FROM FIN_Payment
+		    	WHERE Referenceno = :new.Referenceno
+		    	AND Fin_Financial_Account_id = :new.Fin_Financial_Account_id;
+			
+			IF V_countlines > 0 THEN
+				RAISE_APPLICATION_ERROR(-20000, 'El numero de registro, ya existe para esta cuenta financiera');
+    			END IF;
+		END IF;
+	END IF;-- End (TG_OP = 'INSERT')
+	
+	IF (UPDATING)THEN
+		IF ((:NEW.fin_paymentmethod_id='6B69CFFF920949E692F38105ECEA0722' or
+		   :NEW.fin_paymentmethod_id='BFA118294E7B4DF68E19403FD5E36025' or
+		   :NEW.fin_paymentmethod_id='05EEBB40AE734CFA9E92E9CE8BB0AD99' ) and :NEW.isreceipt='Y')   THEN  
+		
+			SELECT count(*)
+		    	INTO V_countlines
+		    	FROM FIN_Payment
+		    	WHERE fin_payment_id <> :new.fin_payment_id
+		    	AND Referenceno = :new.Referenceno
+		    	AND Fin_Financial_Account_id = :new.Fin_Financial_Account_id;
+			
+			IF V_countlines > 0 THEN
+				RAISE_APPLICATION_ERROR(-20000, 'El numero de registro, ya existe para esta cuenta financiera');
+    			END IF;
+		END IF;
+	END IF;-- End (TG_OP = 'UPDATE')
+	
+    END SSFUP_REF_VALIDATION_TRG
+]]></body>
+    </trigger>
+  </database>

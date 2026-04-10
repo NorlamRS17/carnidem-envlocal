@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="6E4C8542B87C42E79CE28768C791062F" trl="N">
+    <value column="MsgText" isTrl="N" original="A configuration for this java class is already defined. &#10;Remember that you can safely change the already created configuration for this class instead of creating a new record.">A configuration for this java class is already defined. 
+Remember that you can safely change the already created configuration for this class instead of creating a new record.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

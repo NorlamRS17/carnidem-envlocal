@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ATVEF_ACT_PAGOS_TRG">
+    <trigger name="ATVEF_ACT_PAGOS_TRG" table="FIN_PAYMENT_SCHEDULE" fires="before" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[
+v_client_id varchar(32);
+v_org_id varchar(32);
+v_order_id varchar(32);
+v_dateinvoiced DATE;
+v_issotrx varchar(1);
+
+
+v_entrada NUMBER;
+v_cuota NUMBER;
+v_valorcuota NUMBER;
+
+v_dd varchar(2);
+v_mm varchar(2);
+v_yy varchar(4);
+Cur_fechas record;
+
+BEGIN
+    IF (INSERTING) THEN
+    
+        select ad_client_id, ad_org_id, c_order_id, dateinvoiced, issotrx
+        into v_client_id, v_org_id, v_order_id, v_dateinvoiced, v_issotrx
+        from c_invoice
+        where c_invoice_id = :new.c_invoice_id;
+
+        select a.entrada, a.cuota, a.vcuota
+        into v_entrada, v_cuota, v_valorcuota 
+        from (
+        select sum(em_atvef_entrada) as entrada, em_atvef_cuota as cuota, sum(em_atvef_valorcuota) as vcuota
+        from c_orderline
+        where c_order_id = v_order_id 
+        group by 2) a ;
+
+		if (v_issotrx='Y' and v_cuota > 0)	then
+            
+			if (:new.duedate+0 = v_dateinvoiced+0) then
+
+					:new.amount := v_entrada;
+                    :new.outstandingamt := v_entrada;
+					:new.em_atvef_iscredito := 'Y';
+					
+			end IF;			
+			if (:new.duedate+0 > v_dateinvoiced+0) then
+
+                    :new.amount := v_valorcuota;
+                    :new.outstandingamt := v_valorcuota;
+					:new.em_atvef_iscredito := 'Y';
+
+            end if;
+		
+		end if;
+
+    RETURN NEW; 
+
+    END IF;
+END ATVEF_ACT_PAGOS_TRG
+]]></body>
+    </trigger>
+  </database>

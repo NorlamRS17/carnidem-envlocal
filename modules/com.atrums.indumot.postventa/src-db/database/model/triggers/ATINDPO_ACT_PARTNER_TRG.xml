@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ATINDPO_ACT_PARTNER_TRG">
+    <trigger name="ATINDPO_ACT_PARTNER_TRG" table="ATINDPO_POSTVENTA" fires="before" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+v_correo varchar(90);  
+
+
+BEGIN
+
+
+	IF (UPDATING) THEN
+
+        IF :new.ad_client_id='1F7598333F69476DB30ABDFB61892E41' and :new.docstatus='TL' then
+
+
+            update c_bpartner 
+            set em_atimdm_email=:new.email
+            where c_bpartner_id=:new.c_bpartner_id;
+
+        end if;
+
+        RETURN NEW;
+
+	end if;
+    
+
+	END ATINDPO_ACT_PARTNER_TRG
+]]></body>
+    </trigger>
+  </database>

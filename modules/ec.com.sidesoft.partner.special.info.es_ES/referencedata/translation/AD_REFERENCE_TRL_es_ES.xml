@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="13D5D74388E04DE3BFB7D68567628F4D" trl="N">
+    <value column="Name" isTrl="N" original="ThirdPriceList">ThirdPriceList</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="1E22D11A5E474C06BB552D96AA145160" trl="N">
+    <value column="Name" isTrl="N" original="Partner Origin">Partner Origin</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="70A16064823B4CD9B16930281085030F" trl="Y">
+    <value column="Name" isTrl="Y" original="Selector Country">Selector Pais</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A03A49B204274E6496F811851BFBF583" trl="N">
+    <value column="Name" isTrl="N" original="Selector Region">Selector Region</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B26C5F250F5645C08C2F01C3FC24DCBD" trl="N">
+    <value column="Name" isTrl="N" original="Selector Canton">Selector Canton</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

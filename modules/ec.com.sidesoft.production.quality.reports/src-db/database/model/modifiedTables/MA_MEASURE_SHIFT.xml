@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE MA_MEASURE_SHIFT">
+    <table name="MA_MEASURE_SHIFT" primaryKey="MA_MEASURE_SHIFT_KEY">
+      <column name="EM_SSPQR_QUALITY_REPORT" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSPQR_QUALITY_CONTROL_RPT" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

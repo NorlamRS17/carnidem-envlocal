@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="04FC52864B14410D9605B1B1B08A0732" trl="N">
+    <value column="Name" isTrl="Y" original="Liquidation Projects">Liquidación de Proyectos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1992D56F234B4502A03413ECE87B74F4" trl="N">
+    <value column="Name" isTrl="Y" original="Movements Product">Movimientos de Productos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="37F35BFDAF554687AD85678DED614B3F" trl="N">
+    <value column="Name" isTrl="Y" original="Invoice">Facturas</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="5089F8E3B4B540D68BF09C86F1A9E42F" trl="N">
+    <value column="Name" isTrl="Y" original="Payments">Pagos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="64953E91998C43D88105E4D6B42AF63C" trl="Y">
+    <value column="Name" isTrl="Y" original="Liquidation Projects Account">Reporte Cuadre Liquidación de Proyectos</value>
+    <value column="Description" isTrl="N" original="">Reporte Cuadre Liquidación de Proyectos</value>
+  </row>
+  <row id="6C8147BA8ABB448382A0ADB3C1C1552F" trl="N">
+    <value column="Name" isTrl="Y" original="Analysis tools">Herramientas de Análisis</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="9FE68A79701946D69FFF1A934055E43A" trl="N">
+    <value column="Name" isTrl="Y" original="Consumptions">Consumos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B9E427164000432991EE578C57F6F0D4" trl="N">
+    <value column="Name" isTrl="Y" original="Transacctions">Transacciones</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D2AE97FA466E4F8C812403A47EA1A986" trl="N">
+    <value column="Name" isTrl="N" original="Material Consumption in Projects">Material de Consumos en Proyectos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="EB1F17BACF4D406A8F4B0CB104BB275E" trl="N">
+    <value column="Name" isTrl="Y" original="Report of Materials Consumed in Projects">Reporte de Materiales Consumidos en Proyectos</value>
+    <value column="Description" isTrl="Y" original="Report of Materials Consumed in Projects">Reporte de Materiales Consumidos en Proyectos</value>
+  </row>
+  <row id="EE09BA0CC4764773BD00EC0570FC3940" trl="N">
+    <value column="Name" isTrl="Y" original="Liquidation Projects">Liquidación de Proyectos</value>
+    <value column="Description" isTrl="Y" original="Liquidation Projects">Liquidación de Proyectos</value>
+  </row>
+</compiereTrl>

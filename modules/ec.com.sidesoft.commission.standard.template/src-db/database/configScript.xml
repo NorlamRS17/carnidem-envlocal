@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.33196"/>
+    <removeTriggerChange triggerName="C_COMMISSIONDETAIL_TRG"/>
+    <removeTriggerChange triggerName="C_COMMISSIONAMT_TRG"/>
+    <columnDataChange tablename="AD_PROCESS" columnname="PROCEDURENAME" pkRow="123">
+      <oldValue><![CDATA[C_Commission_Process]]></oldValue>
+      <newValue><![CDATA[scomst_commission_process]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="1F9D4FF0BA794C33A67EA8B14565FF1A">
+      <oldValue/>
+      <newValue><![CDATA[20]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="SEQNO" pkRow="D57B57E8A7BF495CB30C239E11AE3F0C">
+      <oldValue/>
+      <newValue><![CDATA[10]]></newValue>
+    </columnDataChange>
+  </vector>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="58ED8F75ACA24A7AB596CD058690C1AE" trl="N">
+    <value column="Name" isTrl="Y" original="Create Notification Mobile">Crear notificaciones móvil</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8762704919A04124BA10BB238B181391" trl="N">
+    <value column="Name" isTrl="N" original="Log">Log</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8BA0E370CDEA4F70A94CE90BA2D1C66C" trl="N">
+    <value column="Name" isTrl="N" original="Record of Devices Mobile">Record of Devices Mobile</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A98935C3277E44D787D781D75CD3DD9E" trl="N">
+    <value column="Name" isTrl="N" original="Setup Push Notificacions Mobile">Setup Push Notificacions Mobile</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D9D49FC392A3417B8DB241D6FC076B1D" trl="N">
+    <value column="Name" isTrl="Y" original="Notification Type">Tipo de notificaciones</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

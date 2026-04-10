@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_COMMISSIONAMT">
+    <table name="C_COMMISSIONAMT" primaryKey="C_COMMISSIONAMT_KEY">
+      <column name="EM_SCOMST_SALE_PERCENTAGE" primaryKey="false" required="true" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCOMST_OPERATING_PROFIT" primaryKey="false" required="true" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

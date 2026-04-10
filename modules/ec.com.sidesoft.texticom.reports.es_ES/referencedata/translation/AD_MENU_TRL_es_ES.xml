@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="0A66ACBB96644CEABAB7683828297764" trl="Y">
+    <value column="Name" isTrl="Y" original="Suppliers Analysis Report"> Reporte Análisis Proveedores</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="37096C404D6D4E52A7AC59DD5CE17276" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Production Incident">Reporte de Incidencias de Producción</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3735374FABE24538B63DD5777D24FF18" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Efficiency by standard time">Reporte Eficiencia por tiempo estándar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="946D91515C6441CCB53271DEFD804C07" trl="Y">
+    <value column="Name" isTrl="Y" original="Compliance with the Production Projection">Cumplimiento de la Proyección de Producción</value>
+    <value column="Description" isTrl="N" original="">Cumplimiento de la Proyección de Producción</value>
+  </row>
+  <row id="D943177429734E318454AE4E743A4490" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Cost Production">Reporte de Costos de producción</value>
+    <value column="Description" isTrl="Y" original="Report Cost Production">Reporte de Costos de producción</value>
+  </row>
+  <row id="DEF6656784EF44B28DAC0E16B804100E" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Productive process losses">Reporte Mermas de procesos productivos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E567DF74319D4606AA423226AF42D5D6" trl="N">
+    <value column="Name" isTrl="N" original="Report of Rejected -  Productive process losse">Mermas de procesos productivos en MP y PP</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

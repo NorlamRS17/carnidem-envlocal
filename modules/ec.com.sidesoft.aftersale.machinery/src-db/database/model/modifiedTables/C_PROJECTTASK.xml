@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_PROJECTTASK">
+    <table name="C_PROJECTTASK" primaryKey="C_PROJECTTASK_KEY">
+      <column name="EM_SATMAC_MACHINE_TYPE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_BRAND_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_MODEL_PROD_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_YEAR_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_CHASSIS_NUMBER" primaryKey="false" required="false" type="VARCHAR" size="40" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="M_BRAND" name="EM_SATMAC_PT_BRAND">
+        <reference local="EM_SATMAC_BRAND_ID" foreign="M_BRAND_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SSFI_MODEL_PROD" name="EM_SATMAC_PT_MP">
+        <reference local="EM_SATMAC_MODEL_PROD_ID" foreign="SSFI_MODEL_PROD_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SATMAC_MACHINE_TYPE" name="EM_SATMAC_PT_MT">
+        <reference local="EM_SATMAC_MACHINE_TYPE_ID" foreign="SATMAC_MACHINE_TYPE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SSWOS_YEAR" name="EM_SATMAC_PT_YEAR">
+        <reference local="EM_SATMAC_YEAR_ID" foreign="SSWOS_YEAR_ID"/>
+      </foreign-key>
+    </table>
+  </database>

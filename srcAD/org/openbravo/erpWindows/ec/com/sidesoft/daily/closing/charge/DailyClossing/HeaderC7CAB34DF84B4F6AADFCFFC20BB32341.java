@@ -67,6 +67,16 @@ public class HeaderC7CAB34DF84B4F6AADFCFFC20BB32341 extends HttpSecureAppServlet
       } catch (PropertyException e) {
       }
      
+      if (command.contains("4C9D881D914F4400ADA040213824C763")) {
+        SessionInfo.setProcessType("P");
+        SessionInfo.setProcessId("4C9D881D914F4400ADA040213824C763");
+        SessionInfo.setModuleId("72602842E30E4CC8A7478C255F7CD804");
+        if (securedProcess || explicitAccess.contains("4C9D881D914F4400ADA040213824C763")) {
+          classInfo.type = "P";
+          classInfo.id = "4C9D881D914F4400ADA040213824C763";
+        }
+      }
+     
 
      
       if (explicitAccess.contains("1715C3DFAAD94C1B8628D881A6EBBCFF") || (securedProcess && command.contains("1715C3DFAAD94C1B8628D881A6EBBCFF"))) {
@@ -95,6 +105,35 @@ public class HeaderC7CAB34DF84B4F6AADFCFFC20BB32341 extends HttpSecureAppServlet
         "LAST", "SAVE_NEW_RELATION", "SAVE_NEW_NEW", "SAVE_NEW_EDIT", "SAVE_EDIT_RELATION",
         "SAVE_EDIT_NEW", "SAVE_EDIT_EDIT", "SAVE_EDIT_NEXT", "DELETE", "SAVE_XHR")) {
       throw new OBException("2.50 style command is no longer supported: " + vars.getCommand());
+
+     } else if (vars.commandIn("BUTTONReadytoprocess4C9D881D914F4400ADA040213824C763")) {
+        vars.setSessionValue("button4C9D881D914F4400ADA040213824C763.strreadytoprocess", vars.getStringParameter("inpreadytoprocess"));
+        vars.setSessionValue("button4C9D881D914F4400ADA040213824C763.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
+        vars.setSessionValue("button4C9D881D914F4400ADA040213824C763.strOrg", vars.getStringParameter("inpadOrgId"));
+        vars.setSessionValue("button4C9D881D914F4400ADA040213824C763.strClient", vars.getStringParameter("inpadClientId"));
+        
+        
+        HashMap<String, String> p = new HashMap<String, String>();
+        
+        
+        //Save in session needed params for combos if needed
+        vars.setSessionObject("button4C9D881D914F4400ADA040213824C763.originalParams", FieldProviderFactory.getFieldProvider(p));
+        printPageButtonFS(response, vars, "4C9D881D914F4400ADA040213824C763", request.getServletPath());    
+     } else if (vars.commandIn("BUTTON4C9D881D914F4400ADA040213824C763")) {
+        String strSdcc_Daily_Clossing_ID = vars.getGlobalVariable("inpsdccDailyClossingId", windowId + "|Sdcc_Daily_Clossing_ID", "");
+        String strreadytoprocess = vars.getSessionValue("button4C9D881D914F4400ADA040213824C763.strreadytoprocess");
+        String strProcessing = vars.getSessionValue("button4C9D881D914F4400ADA040213824C763.strProcessing");
+        String strOrg = vars.getSessionValue("button4C9D881D914F4400ADA040213824C763.strOrg");
+        String strClient = vars.getSessionValue("button4C9D881D914F4400ADA040213824C763.strClient");
+        
+        
+        if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
+          OBError myError = Utility.translateError(this, vars, vars.getLanguage(), Utility.messageBD(this, "NoWriteAccess", vars.getLanguage()));
+          vars.setMessage(tabId, myError);
+          printPageClosePopUp(response, vars);
+        }else{       
+          printPageButtonReadytoprocess4C9D881D914F4400ADA040213824C763(response, vars, strSdcc_Daily_Clossing_ID, strreadytoprocess, strProcessing);
+        }
 
     } else if (vars.commandIn("BUTTONExecutepayment1715C3DFAAD94C1B8628D881A6EBBCFF")) {
         vars.setSessionValue("button1715C3DFAAD94C1B8628D881A6EBBCFF.strexecutepayment", vars.getStringParameter("inpexecutepayment"));
@@ -125,6 +164,34 @@ public class HeaderC7CAB34DF84B4F6AADFCFFC20BB32341 extends HttpSecureAppServlet
           printPageButtonExecutepayment1715C3DFAAD94C1B8628D881A6EBBCFF(response, vars, strSdcc_Daily_Clossing_ID, strexecutepayment, strProcessing);
         }
 
+    } else if (vars.commandIn("SAVE_BUTTONReadytoprocess4C9D881D914F4400ADA040213824C763")) {
+        String strSdcc_Daily_Clossing_ID = vars.getGlobalVariable("inpKey", windowId + "|Sdcc_Daily_Clossing_ID", "");
+        String strreadytoprocess = vars.getStringParameter("inpreadytoprocess");
+        String strProcessing = vars.getStringParameter("inpprocessing");
+        OBError myMessage = null;
+        try {
+          String pinstance = SequenceIdData.getUUID();
+          PInstanceProcessData.insertPInstance(this, pinstance, "4C9D881D914F4400ADA040213824C763", (("Sdcc_Daily_Clossing_ID".equalsIgnoreCase("AD_Language"))?"0":strSdcc_Daily_Clossing_ID), strProcessing, vars.getUser(), vars.getClient(), vars.getOrg());
+          
+          
+          ProcessBundle bundle = ProcessBundle.pinstance(pinstance, vars, this);
+          new ProcessRunner(bundle).execute(this);
+          
+          PInstanceProcessData[] pinstanceData = PInstanceProcessData.select(this, pinstance);
+          myMessage = Utility.getProcessInstanceMessage(this, vars, pinstanceData);
+        } catch (ServletException ex) {
+          myMessage = Utility.translateError(this, vars, vars.getLanguage(), ex.getMessage());
+          if (!myMessage.isConnectionAvailable()) {
+            bdErrorConnection(response);
+            return;
+          } else vars.setMessage(tabId, myMessage);
+        }
+        //close popup
+        if (myMessage!=null) {
+          if (log4j.isDebugEnabled()) log4j.debug(myMessage.getMessage());
+          vars.setMessage(tabId, myMessage);
+        }
+        printPageClosePopUp(response, vars);
 
     } else if (vars.commandIn("SAVE_BUTTONExecutepayment1715C3DFAAD94C1B8628D881A6EBBCFF")) {
         String strSdcc_Daily_Clossing_ID = vars.getGlobalVariable("inpKey", windowId + "|Sdcc_Daily_Clossing_ID", "");
@@ -183,6 +250,43 @@ public class HeaderC7CAB34DF84B4F6AADFCFFC20BB32341 extends HttpSecureAppServlet
     out.close();
   }
 
+    private void printPageButtonReadytoprocess4C9D881D914F4400ADA040213824C763(HttpServletResponse response, VariablesSecureApp vars, String strSdcc_Daily_Clossing_ID, String strreadytoprocess, String strProcessing)
+    throws IOException, ServletException {
+      log4j.debug("Output: Button process 4C9D881D914F4400ADA040213824C763");
+      String[] discard = {"newDiscard"};
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/Readytoprocess4C9D881D914F4400ADA040213824C763", discard).createXmlDocument();
+      xmlDocument.setParameter("key", strSdcc_Daily_Clossing_ID);
+      xmlDocument.setParameter("processing", strProcessing);
+      xmlDocument.setParameter("form", "HeaderC7CAB34DF84B4F6AADFCFFC20BB32341_Edition.html");
+      xmlDocument.setParameter("window", windowId);
+      xmlDocument.setParameter("css", vars.getTheme());
+      xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
+      xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
+      xmlDocument.setParameter("processId", "4C9D881D914F4400ADA040213824C763");
+      xmlDocument.setParameter("cancel", Utility.messageBD(this, "Cancel", vars.getLanguage()));
+      xmlDocument.setParameter("ok", Utility.messageBD(this, "OK", vars.getLanguage()));
+      
+      {
+        OBError myMessage = vars.getMessage("4C9D881D914F4400ADA040213824C763");
+        vars.removeMessage("4C9D881D914F4400ADA040213824C763");
+        if (myMessage!=null) {
+          xmlDocument.setParameter("messageType", myMessage.getType());
+          xmlDocument.setParameter("messageTitle", myMessage.getTitle());
+          xmlDocument.setParameter("messageMessage", myMessage.getMessage());
+        }
+      }
+
+          try {
+    } catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+
+      
+      out.println(xmlDocument.print());
+      out.close();
+    }
 
 
     void printPageButtonExecutepayment1715C3DFAAD94C1B8628D881A6EBBCFF(HttpServletResponse response, VariablesSecureApp vars, String strSdcc_Daily_Clossing_ID, String strexecutepayment, String strProcessing)

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="025417F56801483C974FFB8C629141B1" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Hasta:">Fecha Hasta:</value>
+  </row>
+  <row id="15A97AC1F29648C1AE74D17EA2BD9F5D" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Desde:">Fecha Desde:</value>
+  </row>
+  <row id="353A785F7ED84CECB4D8ED7553D582FD" trl="N">
+    <value column="Text" isTrl="N" original="Parte de Trabajo">Parte de Trabajo</value>
+  </row>
+  <row id="59C34027229A49F1A14CE64B71484122" trl="N">
+    <value column="Text" isTrl="N" original="Producto">Producto</value>
+  </row>
+  <row id="5A20D5C0BEE748C9BA958884396EDC42" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad rechazada">Cantidad rechazada</value>
+  </row>
+  <row id="6A87568E99BF43109F87FE13E7539457" trl="N">
+    <value column="Text" isTrl="N" original="Tipo de envase">Tipo de envase</value>
+  </row>
+  <row id="6E2B29579BE540BB8A2639CE3D9E4AD4" trl="N">
+    <value column="Text" isTrl="N" original="Producto:">Producto:</value>
+  </row>
+  <row id="8F18F2900FB6424DBD0D8EEC19D1D9E5" trl="N">
+    <value column="Text" isTrl="N" original="Elaborado por:">Elaborado por:</value>
+  </row>
+  <row id="951A512D47FB41128F86CCCC770B64E9" trl="N">
+    <value column="Text" isTrl="N" original="Tipo de Produccion">Tipo de Produccion</value>
+  </row>
+  <row id="97F768BB08834CF8B1E293CFB2DDB6DA" trl="N">
+    <value column="Text" isTrl="N" original="Hueco">Hueco</value>
+  </row>
+  <row id="B0213EAD809F4B0F96257EDE21050DCD" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad Total">Cantidad Total</value>
+  </row>
+  <row id="BD232E87C83143749CF842BF9FB8E9F6" trl="N">
+    <value column="Text" isTrl="N" original="Valor de atributo">Valor de atributo</value>
+  </row>
+  <row id="C839FD2605204C5EBEDD782063D52DF9" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Produccion">Cant. Produccion</value>
+  </row>
+  <row id="DFE7CDF775D94317BBAFE8901336BC50" trl="N">
+    <value column="Text" isTrl="N" original="Tipo de envase:">Tipo de envase:</value>
+  </row>
+  <row id="E308F63B17184105BF34EA11C7826F6C" trl="N">
+    <value column="Text" isTrl="N" original="REPORTE DE PRODUCCIONES POR TIPO DE ENVASE">REPORTE DE PRODUCCIONES POR TIPO DE ENVASE</value>
+  </row>
+  <row id="EE78CD5276A948798E8F65A01609C2DA" trl="N">
+    <value column="Text" isTrl="N" original="Autorizado Por:">Autorizado Por:</value>
+  </row>
+  <row id="FDA1F725D0A8452F8CC57475D3C2E1B6" trl="N">
+    <value column="Text" isTrl="N" original="Fecha movimiento parte de trabajo">Fecha movimiento parte de trabajo</value>
+  </row>
+</compiereTrl>

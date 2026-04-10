@@ -1177,8 +1177,8 @@ public class FIN_AddPayment {
         String strDifference = "";
         if (firstLoad && (selectedScheduledPaymentDetails.contains(FIN_PaymentScheduleDetails[i]))
             && paymentProposal != null) {
-//          strPaymentAmt = dao.getPaymentProposalDetailAmount(FIN_PaymentScheduleDetails[i],
-//              paymentProposal);
+          strPaymentAmt = dao.getPaymentProposalDetailAmount(FIN_PaymentScheduleDetails[i],
+              paymentProposal);
         } else {
           strPaymentAmt = vars.getNumericParameter("inpPaymentAmount"
               + FIN_PaymentScheduleDetails[i].getId(), "");

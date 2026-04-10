@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="1471410D4FE84CD297B846058A552790" trl="Y">
+    <value column="Name" isTrl="Y" original="M_Production_Nomenclature_ID">Parte de trabajo</value>
+    <value column="PrintName" isTrl="Y" original="M_Production_Nomenclature_ID">Parte de trabajo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="46E850F848DC4D198E0C777C3D55C2DD" trl="Y">
+    <value column="Name" isTrl="Y" original="Number of labels">Número de etiquetas</value>
+    <value column="PrintName" isTrl="Y" original="Number of labels">Número de etiquetas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="928F4E48918D4BC3ABC4D3E13105BDD3" trl="Y">
+    <value column="Name" isTrl="Y" original="C_Uom_Nomenclature">Presentación</value>
+    <value column="PrintName" isTrl="Y" original="C_Uom_Nomenclature">Presentación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

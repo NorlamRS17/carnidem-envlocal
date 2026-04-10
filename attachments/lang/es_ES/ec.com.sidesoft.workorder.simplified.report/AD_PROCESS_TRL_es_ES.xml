@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="63E085382BE84B58B7C104E2200B2B7D" trl="N">
+    <value column="Name" isTrl="N" original="Print Order Service">Print Order Service</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6B1DA206C72C45DB9AB70A60355BF1DE" trl="N">
+    <value column="Name" isTrl="Y" original="Report of demand for spare parts by period">Reporte de Demanda de repuestos por periodo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

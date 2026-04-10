@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="2D0C628E437F45678DA46485928E1E68" trl="N">
+    <value column="Name" isTrl="N" original="MRP Simulation">MRP Simulation</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="38C6DD45C80B43C8A46FD74C561BC8AA" trl="N">
+    <value column="Name" isTrl="N" original="Create Orders">Create Orders</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="4B8CB07D0447441E995CA74C26887051" trl="N">
+    <value column="Name" isTrl="N" original="Reactive">Reactive</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="82F3363212344716B480BBB575809D08" trl="N">
+    <value column="Name" isTrl="N" original="Plan production">Plan production</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="901CE1B49F81461FB54396FF1303031F" trl="N">
+    <value column="Name" isTrl="N" original="20 %">20 %</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C145D077D0C7443498D22A127B49E02E" trl="N">
+    <value column="Name" isTrl="N" original="Create Simulartion">Create Simulartion</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C2A275EC239A40BF89BBC5CCA4C20EE2" trl="N">
+    <value column="Name" isTrl="N" original="80 %">80 %</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUIAPP_PROCESS" version="">
+  <row id="00F62CB8602C449491B767E096B75B76" trl="N">
+    <value column="Name" isTrl="Y" original="sproctm_complete_detail_cost_prj">Complete</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="48D589DCB5EB412B9D107687173932CC" trl="N">
+    <value column="Name" isTrl="N" original="SPROCTM_Posted2">SPROCTM_Posted2</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C20BC43184D2450896B61924E17471D7" trl="N">
+    <value column="Name" isTrl="Y" original="sproctm_posted_details_js">Contabilizar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CFC32376CB714D4F9BDA35CB1FE3CFEB" trl="N">
+    <value column="Name" isTrl="Y" original="Add Requisition Prod">Crear necesidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DBF9A4B467EC41468A44B2B708580DEB" trl="N">
+    <value column="Name" isTrl="Y" original="sproctm_co_details">Completar detalles</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="F1CE3A8006C0466C838E532FEA41E976" trl="N">
+    <value column="Name" isTrl="N" original="Identity by Partner">Identity by Partner</value>
+    <value column="Description" isTrl="N" original="Identity by Partner">Identity by Partner</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F33DDE85384D469DAC372351F7DD9414" trl="N">
+    <value column="Name" isTrl="N" original="Portfolio Partners ">Portfolio Partners </value>
+    <value column="Description" isTrl="N" original="Portfolio Partners ">Portfolio Partners </value>
+    <value column="Help" isTrl="N" original="This is a Selector Option developed for module &quot;Sidesoft San Felipe Portfolio&quot; to avoid dependencies">This is a Selector Option developed for module "Sidesoft San Felipe Portfolio" to avoid dependencies</value>
+  </row>
+</compiereTrl>

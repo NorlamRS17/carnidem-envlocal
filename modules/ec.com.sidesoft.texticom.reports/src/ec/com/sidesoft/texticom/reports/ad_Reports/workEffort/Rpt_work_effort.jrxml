@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_work_effort" pageWidth="595" pageHeight="842" whenNoDataType="BlankPage" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="0a9e7a3a-4591-40f3-950f-4bb40099ac9f">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="13"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.sheet.names.all" value="Informe de parte de trabajo"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="document_id" class="java.lang.String"/>
+	<parameter name="ma_workrequirement_id" class="java.lang.String"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/opt/EntornosOP/webapps/indumot/src-loc/design"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+p.ad_org_id,
+p.documentno,
+to_char(pl.starttime,'dd/MM/yyyy') as starttime,
+to_char(pl.endtime,'dd/MM/yyyy') as endtime,
+w.documentno as docno_requirement,
+mp.value as code,
+mp.name as name_plan,
+pr.name as area,
+to_char(w.launchdate,'dd/MM/yyyy') as launchdate,
+mp.secondaryunit
+FROM m_production p
+LEFT JOIN m_productionplan pl on pl.m_production_id=p.m_production_id
+LEFT JOIN ma_wrphase mw on mw.ma_wrphase_id=pl.ma_wrphase_id
+LEFT JOIN ma_workrequirement w on w.ma_workrequirement_id=mw.ma_workrequirement_id
+LEFT JOIN ma_processplan mp on mp.ma_processplan_id=w.ma_processplan_id
+LEFT JOIN ma_process pr on pr.ma_process_id=mw.ma_process_id
+WHERE
+p.m_production_id=$P{document_id}]]>
+	</queryString>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="starttime" class="java.lang.String"/>
+	<field name="endtime" class="java.lang.String"/>
+	<field name="docno_requirement" class="java.lang.String"/>
+	<field name="code" class="java.lang.String"/>
+	<field name="name_plan" class="java.lang.String"/>
+	<field name="area" class="java.lang.String"/>
+	<field name="launchdate" class="java.lang.String"/>
+	<field name="secondaryunit" class="java.lang.String"/>
+	<variable name="REPORT_PAGE" class="java.lang.Integer" resetType="None" incrementType="Page">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="116" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" isUsingCache="true" onErrorType="Blank">
+				<reportElement key="image-1" x="0" y="0" width="90" height="51" uuid="574ed6fa-15c7-4f4e-8cba-d811c0fde430"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<graphicElement>
+					<pen lineWidth="1.0"/>
+				</graphicElement>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{ad_org_id})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement key="textField" x="0" y="51" width="90" height="17" uuid="0d1ac055-685d-4300-b84d-108b5c8bbf13"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F-PR-002]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="410" y="0" width="75" height="17" uuid="1ddafb9b-c3f4-4bdd-bddb-5018fe34d61d"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Creación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="410" y="17" width="75" height="17" uuid="f1b3a78a-2fc9-4c3f-8efc-2554dff6a163"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Revisión:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="410" y="34" width="75" height="17" uuid="c8a6876e-6741-4067-8777-75616ebb1ec8"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Versión:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="410" y="51" width="75" height="17" uuid="e3827730-4fd7-4d3d-8fe1-559051216fde"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Págs.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="485" y="0" width="50" height="17" uuid="39f9523d-1237-4c54-ade8-4ad0204a25c4"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[2020-11-09]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="485" y="17" width="50" height="17" uuid="71765509-4071-4bd7-b56c-59a05c7673e5"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[2021-07-02]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="485" y="34" width="50" height="17" uuid="bee162fd-9855-4f29-90cd-dec495839698"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<textField evaluationTime="Auto">
+				<reportElement key="staticText-6" x="485" y="51" width="50" height="17" uuid="853d2f7b-a2b7-409e-9762-7bff9f6aab54"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_PAGE} + "/"+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-6" x="90" y="0" width="320" height="17" uuid="60574534-19cd-431a-b5ae-c8614b26dd31"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REGISTRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="90" y="51" width="320" height="17" uuid="311f7955-18ff-4dd9-9f8a-01ea337894cc"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Norma de Referencia: ISO 9001]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="90" y="17" width="320" height="34" uuid="1a08e13e-f392-49a8-b75d-33c704a5ed2a"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[“Informe de Producción”]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-6" x="0" y="85" width="325" height="17" uuid="10f15833-d930-4ed3-be38-5d1f3c0d254e"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INFORME DE PARTE DE TRABAJO No.	]]></text>
+			</staticText>
+			<textField>
+				<reportElement key="staticText-6" x="325" y="85" width="210" height="17" uuid="26446b20-3ea4-4439-994b-c63b3aa3ce79"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="10" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-6" x="0" y="68" width="535" height="17" uuid="e06574f9-e383-48aa-b977-ee7e12c7e98c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<subreport>
+				<reportElement positionType="Float" x="0" y="102" width="535" height="14" uuid="e792796f-2018-4196-ae52-8965167083b9"/>
+				<subreportParameter name="ma_workrequirement_id">
+					<subreportParameterExpression><![CDATA[$P{ma_workrequirement_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="document_id">
+					<subreportParameterExpression><![CDATA[$P{document_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BASE_DESIGN">
+					<subreportParameterExpression><![CDATA[$P{BASE_DESIGN}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/texticom/reports/ad_Reports/workEffort/Sub_Rpt_work_effortInfo.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<detail>
+		<band height="17">
+			<staticText>
+				<reportElement key="staticText-6" positionType="Float" x="0" y="0" width="535" height="17" uuid="26910c53-a02a-46dc-9608-cda737ba47dc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+		<band height="14">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="535" height="14" uuid="edcab8b7-102e-4f71-8fc1-0b8c5fcbdeb0"/>
+				<subreportParameter name="ma_workrequirement_id">
+					<subreportParameterExpression><![CDATA[$P{ma_workrequirement_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="document_id">
+					<subreportParameterExpression><![CDATA[$P{document_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BASE_DESIGN">
+					<subreportParameterExpression><![CDATA[$P{BASE_DESIGN}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/texticom/reports/ad_Reports/workEffort/Sub_Rpt_values.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="17">
+			<staticText>
+				<reportElement key="staticText-6" positionType="Float" x="0" y="0" width="535" height="17" uuid="26910c53-a02a-46dc-9608-cda737ba47dc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+		<band height="14">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="535" height="14" uuid="edcab8b7-102e-4f71-8fc1-0b8c5fcbdeb0"/>
+				<subreportParameter name="ma_workrequirement_id">
+					<subreportParameterExpression><![CDATA[$P{ma_workrequirement_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="document_id">
+					<subreportParameterExpression><![CDATA[$P{document_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BASE_DESIGN">
+					<subreportParameterExpression><![CDATA[$P{BASE_DESIGN}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/texticom/reports/ad_Reports/workEffort/Sub_Rpt_requirement.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="17">
+			<staticText>
+				<reportElement key="staticText-6" x="0" y="0" width="535" height="17" uuid="f4664b86-a09a-4c87-95b3-5f558e0b526b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incidencias]]></text>
+			</staticText>
+		</band>
+		<band height="14">
+			<subreport>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="14" uuid="e0ba01f3-ebad-4df8-b365-89805c1e16a7"/>
+				<subreportParameter name="document_id">
+					<subreportParameterExpression><![CDATA[$P{document_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/texticom/reports/ad_Reports/workEffort/Sub_Rpt_incidence.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="17">
+			<staticText>
+				<reportElement key="staticText-6" x="0" y="0" width="535" height="17" uuid="a6181ccb-79e3-400f-bce1-4035c10d5e53"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Operadores]]></text>
+			</staticText>
+		</band>
+		<band height="14">
+			<subreport>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="14" uuid="e87dc0ea-9a0f-4eb1-997a-684d84f27044"/>
+				<subreportParameter name="document_id">
+					<subreportParameterExpression><![CDATA[$P{document_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/texticom/reports/ad_Reports/workEffort/Sub_Rpt_employee.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="17">
+			<textField>
+				<reportElement key="staticText-6" x="0" y="0" width="204" height="17" uuid="31f3dd01-cae7-4158-9d8a-a775d76e492c"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Firma Entrega"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="staticText-6" x="410" y="0" width="125" height="17" uuid="9660d6a2-43b1-4deb-8dcd-05d8f0b34f50"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Firma Recibe"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement key="staticText-6" x="204" y="0" width="206" height="17" uuid="8c872d15-ace1-4176-822b-0de9b3e2af75"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="44">
+			<staticText>
+				<reportElement key="staticText-6" x="0" y="0" width="535" height="44" uuid="a61cabef-4bd6-4133-baa7-8e81a0e44099"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

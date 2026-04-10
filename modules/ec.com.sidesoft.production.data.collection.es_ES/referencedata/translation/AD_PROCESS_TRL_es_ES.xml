@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="7B8A72FD4DBB46659BDAC951E0B188D2" trl="Y">
+    <value column="Name" isTrl="Y" original="Change to Complete pcc">Completar</value>
+    <value column="Description" isTrl="Y" original="Change to Complete pcc">Completar</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BF4BE774FC1A42408517BB2C189CD4D0" trl="Y">
+    <value column="Name" isTrl="Y" original="Change to Cancelled PCC">Anular</value>
+    <value column="Description" isTrl="Y" original="Change to Cancelled PCC">Anular</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

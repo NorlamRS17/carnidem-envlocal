@@ -3427,7 +3427,7 @@ where io.m_inout_id = @m_inout_id@]]></CODE>
 <!--A72A59A036BB47B09105AC5C3361C99C-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
 <!--A72A59A036BB47B09105AC5C3361C99C-->  <AD_TAB_ID><![CDATA[2845D761A8394468BD3BA4710AA888D4]]></AD_TAB_ID>
 <!--A72A59A036BB47B09105AC5C3361C99C-->  <NAME><![CDATA[HasTransaction]]></NAME>
-<!--A72A59A036BB47B09105AC5C3361C99C-->  <CODE><![CDATA[@SQL=SELECT CASE WHEN EXISTS (SELECT 1 FROM aprm_finacc_transaction_v v JOIN fin_finacc_transaction t ON v.aprm_finacc_transaction_v_id = t.fin_finacc_transaction_id  WHERE v.fin_financial_account_id = @fin_financial_account_id@ ) THEN 1 ELSE 0 END AS existe]]></CODE>
+<!--A72A59A036BB47B09105AC5C3361C99C-->  <CODE><![CDATA[@SQL=SELECT count(*) FROM aprm_finacc_transaction_v inner join fin_finacc_transaction ON aprm_finacc_transaction_v.aprm_finacc_transaction_v_id = fin_finacc_transaction.fin_finacc_transaction_id WHERE aprm_finacc_transaction_v.fin_financial_account_id=@fin_financial_account_id@]]></CODE>
 <!--A72A59A036BB47B09105AC5C3361C99C-->  <AD_MODULE_ID><![CDATA[0]]></AD_MODULE_ID>
 <!--A72A59A036BB47B09105AC5C3361C99C--></AD_AUXILIARINPUT>
 

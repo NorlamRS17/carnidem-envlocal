@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSFC_CREDIT_LIMIT_CONTROL">
+    <function name="SSFC_CREDIT_LIMIT_CONTROL" type="VARCHAR">
+      <parameter name="p_ad_client_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[cPartner RECORD;
+v_countExist NUMBER;
+BEGIN
+
+-- ALTER TABLE public.c_bpartner
+-- DROP CONSTRAINT c_bpartner_cusblocking_chk;
+    
+For cPartner in(
+			select 
+			sum((case when ps.outstandingamt = 0 then 0 else(select ssfc_days_over_due(ps.fin_payment_schedule_id) from dual) end)) as numberoverday
+			--c.documentno, 
+			,c.c_bpartner_id
+			,bp.name as partnername
+			,bp.C_PaymentTerm_ID as payterm_id
+			,pt.netdays as netdays
+			from fin_payment_schedule ps
+			join c_invoice c on c.c_invoice_id = ps.c_invoice_id
+			join c_bpartner bp on bp.c_bpartner_id = c.c_bpartner_id
+			left join c_paymentterm pt on pt.C_PaymentTerm_ID = bp.C_PaymentTerm_ID
+			where c.docstatus = 'CO'
+			and c.issotrx = 'Y'
+			group by c.c_bpartner_id, bp.name, bp.C_PaymentTerm_ID, pt.netdays
+
+		)
+		Loop
+
+			if cPartner.numberoverday > cPartner.netdays then
+				update c_bpartner
+				set customer_blocking = 'Y'
+				where c_bpartner_id = cPartner.c_bpartner_id;
+			Else
+				update c_bpartner
+				set customer_blocking = 'N'
+				where c_bpartner_id = cPartner.c_bpartner_id;
+			End If;
+			
+		End Loop;
+			
+-- ALTER TABLE public.c_bpartner
+-- ADD CONSTRAINT c_bpartner_cusblocking_chk CHECK 
+--     (customer_blocking = 'N' OR so_order_blocking = 'Y' OR so_goods_blocking = 'Y' 
+--      OR so_invoice_blocking = 'Y' OR so_payment_blocking = 'N');
+	 
+	RETURN NULL;
+END SSFC_CREDIT_LIMIT_CONTROL
+]]></body>
+    </function>
+  </database>

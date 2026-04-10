@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSIA_MANDATORY_ATTRIBUTE_TRG">
+    <trigger name="SSIA_MANDATORY_ATTRIBUTE_TRG" table="M_INVENTORY" fires="after" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[    rAtribute RECORD;
+	msj_error VARCHAR(2000); 
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+	
+	IF UPDATING AND :OLD.processed <> :NEW.processed THEN  
+		FOR rAtribute IN (
+	    	SELECT mil.line, ma.ismandatory, mp.m_product_id ,mp.name, mil.M_AttributeSetInstance_ID, mau.M_Attribute_id
+        	FROM M_Inventory mi
+            JOIN M_InventoryLine mil ON mi.M_Inventory_id = mil.M_Inventory_id
+       	    JOIN M_Product mp ON mil.m_product_id = mp.m_product_id
+        	JOIN M_AttributeSet mas ON mas.M_AttributeSet_id = mp.M_AttributeSet_id 
+        	JOIN M_AttributeUse mau ON mau.M_AttributeSet_id = mas.M_AttributeSet_id
+        	JOIN M_Attribute ma ON ma.M_Attribute_id = mau.M_Attribute_id
+			WHERE mi.M_Inventory_id = :OLD.M_Inventory_id
+			ORDER BY mil.line ASC
+    	) LOOP
+        	IF  rAtribute.ismandatory = 'Y' and 
+			rAtribute.M_AttributeSetInstance_ID IS NULL and rAtribute.M_Attribute_id <> '0'
+			THEN
+                msj_error := 'En la linea ' || ratribute.line || ' el producto '||ratribute.name|| ' no tiene valor de atributos.';
+                RAISE msj_error;        	
+			END IF;
+    	END LOOP;
+	END IF;	     	
+
+    END SSIA_MANDATORY_ATTRIBUTE_TRG
+]]></body>
+    </trigger>
+  </database>

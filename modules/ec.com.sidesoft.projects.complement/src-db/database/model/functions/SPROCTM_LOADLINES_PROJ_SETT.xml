@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SPROCTM_LOADLINES_PROJ_SETT">
+    <function name="SPROCTM_LOADLINES_PROJ_SETT" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_Record_ID VARCHAR2(32);
+v_AD_User_ID VARCHAR2(32);
+v_AD_Client_ID VARCHAR2(32);
+v_AD_Org_ID VARCHAR2(32);
+v_ResultStr VARCHAR2(2000):='';
+v_Result NUMBER:=1; -- 0=failure
+v_posted VARCHAR2(32);
+v_dateto DATE;   
+v_c_project_id VARCHAR2(32);
+v_c_projectphase_id VARCHAR2(32);
+v_c_projecttask_id VARCHAR2(32);
+v_ad_tab_mo VARCHAR2(32) = '159A349996134E10911CDC8384217A61';
+v_ad_tab_cif VARCHAR2(32)= '48141C6F643C419AA539E035A658A22D';
+v_ad_tab_maq VARCHAR2(32)= '072C2C18626D4BB5AE2E8BAC2770618E';
+
+TYPE RECORD IS REF CURSOR;
+Cur_Params RECORD;
+Cur_WF_detail RECORD;
+Cur_CIF_detail RECORD;
+Cur_MAQ_detail RECORD;
+
+BEGIN
+
+  FOR Cur_Params IN (
+    SELECT i.Record_ID, i.AD_User_ID, i.AD_Client_ID, i.AD_Org_ID, p.ParameterName,
+        p.P_String, p.P_Number, p.P_Date, p.P_Date_To
+      FROM AD_PINSTANCE i
+      LEFT JOIN AD_PINSTANCE_PARA p ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=  p_ep_instance
+      ORDER BY p.SeqNo
+    ) LOOP
+
+    v_Record_ID := Cur_Params.Record_ID;
+    v_AD_User_ID := Cur_Params.AD_User_ID;
+    v_AD_Client_ID := Cur_Params.AD_Client_ID;
+    v_AD_Org_ID := Cur_Params.AD_Org_ID;
+  END LOOP;
+  v_ResultStr := 'Inicio del proceso';
+    SELECT  dateto, COALESCE(c_project_id,''), COALESCE(c_projectphase_id,''), 
+    COALESCE(c_projecttask_id,'') ,	ad_org_id, ad_client_id
+    INTO v_dateto, v_c_project_id, v_c_projectphase_id, v_c_projecttask_id
+	from sproctm_settlement_cost where  sproctm_settlement_cost_id = v_Record_ID;
+
+    -- Eliminar las lineas de MO, CIF , MAQ en Liquides coste proyecto
+    DELETE FROM sproctm_settl_cost_ln WHERE sproctm_settlement_cost_id = v_Record_ID;
+    -- Verificar si el proceso es por todo el proyecto o por tara o fase determinada en la Liquidacion
+    For Cur_WF_detail IN (
+        -- Mano de Obra
+        select 	wd.hours, wd.cost, wd.total_cost, wd.date , wd.sproctm_detail_cost_id
+        from sproctm_detail_cost wd
+            join sproctm_task_workforce tw on tw.sproctm_task_workforce_id = wd.record_id
+            join c_projecttask pt on pt.c_projecttask_id = tw.c_projecttask_id
+            join c_projectphase pp on pp.c_projectphase_id = pt.c_projectphase_id
+        where pp.c_project_id = v_c_project_id AND wd.settlement = 'N' AND wd.status = 'CO'
+            AND CASE WHEN COALESCE(v_c_projectphase_id,'') != ''  THEN pp.c_projectphase_id = v_c_projectphase_id ELSE TRUE END
+            AND CASE WHEN COALESCE(v_c_projecttask_id,'') != ''  THEN pt.c_projecttask_id = v_c_projecttask_id ELSE TRUE END
+        AND wd.date <= v_dateto
+    ) LOOP
+
+        INSERT INTO sproctm_settl_cost_ln (
+            sproctm_settl_cost_ln_id, ad_client_id, ad_org_id, isactive,
+            created, createdby, updated, updatedby,
+            sproctm_settlement_cost_id, Sproctm_Detail_Cost_ID, hours,
+            cost, total_cost, ad_tab_id
+        ) VALUES (get_uuid(), v_AD_Client_ID, v_AD_Org_ID, 'Y',
+            now(), v_AD_User_ID, now(), v_AD_User_ID,
+            v_Record_ID, Cur_WF_detail.sproctm_detail_cost_id , Cur_WF_detail.hours,
+            Cur_WF_detail.cost, Cur_WF_detail.total_cost , v_ad_tab_mo
+        );
+
+        UPDATE sproctm_settlement_cost set total_mo = (
+            select sum(total_cost)
+            from sproctm_settl_cost_ln where sproctm_settlement_cost_id = v_Record_ID
+            and ad_tab_id = v_ad_tab_mo
+        ) 
+        where sproctm_settlement_cost_id = v_Record_ID ;
+    END LOOP;
+
+   
+    For Cur_CIF_detail IN (
+        -- Costos indirectos
+        select 	wd.hours, wd.cost, wd.total_cost, wd.date , wd.sproctm_detail_cost_id
+        from sproctm_detail_cost wd
+            join sproctm_task_cif cif on cif.sproctm_task_cif_id = wd.record_id
+            join c_projecttask pt on pt.c_projecttask_id = cif.c_projecttask_id
+            join c_projectphase pp on pp.c_projectphase_id = pt.c_projectphase_id
+        where pp.c_project_id = v_c_project_id AND wd.settlement = 'N' AND wd.status = 'CO'
+            AND CASE WHEN COALESCE(v_c_projectphase_id,'') != '' THEN pp.c_projectphase_id = v_c_projectphase_id ELSE TRUE END
+            AND CASE WHEN COALESCE(v_c_projecttask_id,'') != ''  THEN pt.c_projecttask_id = v_c_projecttask_id ELSE TRUE END
+            AND wd.date <= v_dateto
+    ) LOOP
+
+        INSERT INTO sproctm_settl_cost_ln (
+            sproctm_settl_cost_ln_id, ad_client_id, ad_org_id, isactive,
+            created, createdby, updated, updatedby,
+            sproctm_settlement_cost_id, Sproctm_Detail_Cost_ID, hours,
+            cost, total_cost, ad_tab_id
+        ) VALUES (
+            get_uuid(), v_AD_Client_ID, v_AD_Org_ID, 'Y',
+            now(), v_AD_User_ID, now(), v_AD_User_ID,
+            v_Record_ID, Cur_CIF_detail.sproctm_detail_cost_id , Cur_CIF_detail.hours,
+            Cur_CIF_detail.cost, Cur_CIF_detail.total_cost , v_ad_tab_cif
+        );
+
+        UPDATE sproctm_settlement_cost set total_cif = (
+            select sum(total_cost)
+            from sproctm_settl_cost_ln where sproctm_settlement_cost_id = v_Record_ID
+            and ad_tab_id = v_ad_tab_cif
+        ) where sproctm_settlement_cost_id = v_Record_ID;
+    END LOOP;
+
+
+    For Cur_MAQ_detail IN (
+        -- Maquina
+        select 	wd.hours, wd.cost, wd.total_cost, wd.date , wd.sproctm_detail_cost_id
+        from sproctm_detail_cost wd
+            join sproctm_task_machine maq on maq.sproctm_task_machine_id = wd.record_id
+            join c_projecttask pt on pt.c_projecttask_id = maq.c_projecttask_id
+            join c_projectphase pp on pp.c_projectphase_id = pt.c_projectphase_id
+        where pp.c_project_id = v_c_project_id AND wd.settlement = 'N' AND wd.status = 'CO'
+            AND CASE WHEN COALESCE(v_c_projectphase_id,'') != '' THEN pp.c_projectphase_id = v_c_projectphase_id ELSE TRUE END
+            AND CASE WHEN COALESCE(v_c_projecttask_id,'') != ''  THEN pt.c_projecttask_id = v_c_projecttask_id ELSE TRUE END
+            AND wd.date <= v_dateto
+    ) LOOP
+
+        INSERT INTO sproctm_settl_cost_ln (
+            sproctm_settl_cost_ln_id, ad_client_id, ad_org_id, isactive,
+            created, createdby, updated, updatedby,
+            sproctm_settlement_cost_id, Sproctm_Detail_Cost_ID, hours,
+            cost, total_cost, ad_tab_id
+        ) VALUES (
+            get_uuid(), v_AD_Client_ID, v_AD_Org_ID, 'Y',
+            now(), v_AD_User_ID, now(), v_AD_User_ID,
+            v_Record_ID, Cur_MAQ_detail.sproctm_detail_cost_id , Cur_MAQ_detail.hours,
+            Cur_MAQ_detail.cost, Cur_MAQ_detail.total_cost , v_ad_tab_maq
+        );
+
+        UPDATE sproctm_settlement_cost set total_maq = (
+            select sum(total_cost)
+            from sproctm_settl_cost_ln where sproctm_settlement_cost_id = v_Record_ID
+            and ad_tab_id = v_ad_tab_maq
+        )
+        where sproctm_settlement_cost_id = v_Record_ID
+        ;
+    END LOOP;
+
+ 
+  v_ResultStr := 'Completado exitosamente';
+    --<<FINISH_PROCESS>>
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_ResultStr) ; --OBTG:-20000--
+    AD_UPDATE_PINSTANCE(p_ep_instance, NULL, 'N', v_Result, v_ResultStr) ;
+    RETURN;
+
+EXCEPTION
+WHEN OTHERS THEN
+  DBMS_OUTPUT.PUT_LINE('sproctm_loadlines_proj_sett exception: '|| v_ResultStr);
+  RAISE;
+END SPROCTM_LOADLINES_PROJ_SETT
+]]></body>
+    </function>
+  </database>

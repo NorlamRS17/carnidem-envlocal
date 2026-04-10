@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE MA_CCP_GROUP">
+    <table name="MA_CCP_GROUP" primaryKey="MA_CCP_GROUP_KEY">
+      <column name="EM_SPQULY_QUALITYCONTROLTYPE" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

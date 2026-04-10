@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_PROCESS" columnname="PROCEDURENAME" pkRow="4E8E7B1290BD4B5798ACD75A83DCC65D">
+      <oldValue><![CDATA[ssimacc_loadcosts]]></oldValue>
+      <newValue><![CDATA[ssimpcn_loadcosts]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MODEL_OBJECT" columnname="CLASSNAME" pkRow="8341C476FC3A46D6B77BD3224EF2853D">
+      <oldValue><![CDATA[ec.com.sidesoft.imports.report.ad_reports.ImportCostReport]]></oldValue>
+      <newValue><![CDATA[ec.com.sidesoft.imports.consolidation.ad_reports.ImportCostReport]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="163212BCD9ED46F58C40DC9EF3603DAE">
+      <oldValue><![CDATA[@EM_Ssip_Importtype@='Y']]></oldValue>
+      <newValue><![CDATA[@EM_Ssip_Importtype@='Y' & @EM_Ssimpcn_Type@='D']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="A7E134B04D67D632E040007F010037B3">
+      <oldValue><![CDATA[@$Element_MC@='Y' & @EM_Ssip_Importcosts@='Y']]></oldValue>
+      <newValue><![CDATA[@$Element_MC@='Y' & @EM_Ssip_Importcosts@='Y' & @EM_Ssimpcn_Type@='D']]></newValue>
+    </columnDataChange>
+  </vector>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="00290229CFB74DB2A59A5F2EC579A5E0" trl="N">
+    <value column="Name" isTrl="N" original="Warehouse Organization">Warehouse Organization</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="706F620212714A3EB13BF67ED90623FF" trl="N">
+    <value column="Name" isTrl="N" original="Business Partner">Business Partner</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DF8217EAE1F1422F806E201DDD25F6F4" trl="N">
+    <value column="Name" isTrl="N" original="Orden de servicio">Orden de servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

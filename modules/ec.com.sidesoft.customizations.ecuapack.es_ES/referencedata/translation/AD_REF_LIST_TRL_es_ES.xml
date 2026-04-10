@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="17417162CCF24807ABB6A3683C74C663" trl="Y">
+    <value column="Name" isTrl="Y" original="Import projects">Proyectos importación</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3E45655636704D4DB44C5CF67B62F9B6" trl="Y">
+    <value column="Name" isTrl="Y" original="Spare parts">Repuestos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="BD175CBBBC554D549D559B6FBD1F08A6" trl="Y">
+    <value column="Name" isTrl="N" original="Proyectos mixtos">Proyectos mixtos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

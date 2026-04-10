@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ATINDPO_POSTVENTALINEA1_TRG">
+    <trigger name="ATINDPO_POSTVENTALINEA1_TRG" table="ATINDPO_POSTVENTALINEA" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[v_mensaje VARCHAR;
+
+v_subtotal NUMBER;
+v_total NUMBER;
+v_rate NUMBER;
+v_sub_linea NUMBER;
+v_tot_linea NUMBER;
+Cur_Lineas RECORD;
+
+BEGIN
+
+		IF(INSERTING OR UPDATING)THEN
+            
+            select coalesce(rate,0) into v_rate from c_tax where c_tax_id = :new.c_tax_id;
+
+            :new.atindpo_valdescuento := round(((:new.cantidad*:new.atindpo_pricelist*:new.atindpo_discount)/100),2);
+            :new.atindpo_iva:=round((:new.atindpo_linenetamt*(v_rate/100)),3);
+            :new.atindpo_total:=round((:new.atindpo_linenetamt+(:new.atindpo_linenetamt*(v_rate/100))),3);
+            RETURN NEW;
+			
+		END IF;
+		
+
+END ATINDPO_POSTVENTALINEA1_TRG
+]]></body>
+    </trigger>
+  </database>

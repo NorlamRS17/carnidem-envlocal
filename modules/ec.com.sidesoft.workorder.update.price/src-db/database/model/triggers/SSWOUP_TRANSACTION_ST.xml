@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSWOUP_TRANSACTION_ST">
+    <trigger name="SSWOUP_TRANSACTION_ST" table="SSWOUP_UPD_PRICE_LINE" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[    vStatus VARCHAR2(60);
+BEGIN
+
+    IF (DELETING) THEN
+        SELECT status INTO vStatus FROM sswoup_update_price_wo up 
+		left join sswoup_upd_price_line upl on upl.sswoup_update_price_wo_id = up.sswoup_update_price_wo_id
+		WHERE sswoup_upd_price_line_id=:OLD.sswoup_upd_price_line_id;
+        IF (vStatus = 'SSWOUP_PR') THEN
+            RAISE_APPLICATION_ERROR(-20000, '@sswoup_isprocess@') ;
+        END IF;
+    END IF;
+    RETURN OLD;
+
+END SSWOUP_TRANSACTION_ST
+]]></body>
+    </trigger>
+  </database>

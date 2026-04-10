@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="0E6EE63BF58B4FACBFCA56E41C6164D8" trl="Y">
+    <value column="Name" isTrl="Y" original="Collections in Transit">Cobros en Tránsito</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E8923C3D42C84DEA8F0F4DC106692D8B" trl="Y">
+    <value column="Name" isTrl="Y" original="In-Transit Collection Setup">Configuración de cobros en tránsito</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

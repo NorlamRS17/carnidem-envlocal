@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2010 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+<SqlClass name="OrderouteData" package="ec.com.sidesoft.web.services.order.route.service">
+   <SqlClassComment></SqlClassComment>
+   <SqlMethod name="selectOrders" type="preparedStatement" return="multiple">
+      <SqlMethodComment></SqlMethodComment>
+      <Sql>
+      <![CDATA[
+     SELECT 
+	    co.c_order_id AS orderid,
+	    co.documentno AS documentno,
+	    co.dateordered AS created,
+	    co.datepromised AS deliverydate,
+	    co.em_ssfor_isdeliver_route as deliveryroute,
+		co.em_ssfor_isdeliver_web as deliveryweb,
+	    TO_CHAR(co.em_ssfor_isdeliver_time, 'DD-MM-YYYY HH24:MI:SS') as deliverytime,
+	    co.isdelivered  as isdelivered,
+	    co.grandtotal AS total,
+	    co.docstatus AS status,
+	    co.em_ssfor_onroute AS onroute,
+	    co.description AS description,
+	    co.em_ssfor_route AS route,
+	    ao.name as nameorg,
+	    ao.ad_org_id as orgid,
+	    ao.description as descriptionorg,
+	    mi.m_inout_id AS shipmentinout,
+	    cb.c_bpartner_id AS partnerid,
+	    cb.name AS partnername,
+	    cb.taxid AS taxid,
+	    cb.em_sspsi_origin as bpartnerorigin,
+	    us.user1_id AS user1,
+	    us.name AS user1name,
+	    ci.c_invoice_id AS invoice,
+	    ''::text as deliverystatus,
+	    ''::text as address,
+	    ''::text as latitude,
+	    ''::text as longitude,
+	    ''::text as phone,
+	    ''::text as phone2,
+	    ''::text as product,
+	    ''::text as aum,
+	    ''::text as operativeqty,
+	    ''::text as qtyordered
+	FROM 
+	    c_order co 
+	    LEFT JOIN
+    	ad_org ao ON ao.ad_org_id = co.ad_org_id
+	    LEFT JOIN
+    	c_doctype ct ON ct.c_doctype_id = co.c_doctype_id
+		LEFT JOIN 
+		    c_bpartner cb ON co.c_bpartner_id = cb.c_bpartner_id
+		LEFT JOIN 
+		    user1 us ON us.user1_id = co.user1_id 
+		LEFT JOIN 
+		    m_inout mi ON mi.c_order_id = co.c_order_id
+		LEFT JOIN 
+		    c_invoice ci ON ci.c_order_id = co.c_order_id
+		WHERE 
+		ct.docbasetype = 'SOO'
+		AND
+		ct.issotrx = 'Y'
+		AND 
+		ct.isreturn = 'N' 
+		AND
+		(
+			CASE 
+				WHEN ? = 'Y' then co.datepromised::date BETWEEN ?::date AND ?::date
+				ELSE TRUE
+			END
+		)
+		    AND (
+		        CASE 
+		            WHEN ? = 'Y' THEN co.em_ssfor_onroute = ?
+		            ELSE TRUE
+		        END
+		    )
+		    AND (
+		        CASE
+		            WHEN ? = 'Y' THEN 
+		                CASE 
+		                    WHEN ? = 'DY' THEN ci.c_invoice_id IS NOT NULL
+		                    ELSE ci.c_invoice_id IS NULL
+		                END
+		            ELSE TRUE
+		        END
+		    )
+		    AND (
+		        CASE
+		            WHEN ? = 'Y' THEN co.docstatus = ?
+		            ELSE TRUE
+		        END
+		    )
+		    AND
+		    (
+		        CASE
+		            WHEN ? = 'Y' THEN co.docstatus in('CO','CL')
+		            ELSE TRUE
+		        END
+		    )
+		    AND
+		    (
+		        CASE
+		            WHEN ? = 'Y' THEN co.em_ssfor_route = ?
+		            ELSE TRUE
+		        END
+		    )
+		    AND 1=1
+        ]]> 
+        </Sql>
+        <Parameter name="is_date"/>
+        <Parameter name="date_from"/>
+        <Parameter name="date_to"/>
+        <Parameter name="is_onroute"/>
+        <Parameter name="on_route"/>
+        <Parameter name="is_dispatch"/>
+        <Parameter name="is_dispatch_op"/>
+        <Parameter name="is_status"/>
+        <Parameter name="status"/>
+        <Parameter name="orders"/>
+        <Parameter name="is_route"/>
+        <Parameter name="route"/>
+        <Parameter name="limit" optional="true" after="AND 1=1"><![CDATA[ order by co.datepromised desc limit 1000 ]]></Parameter>
+        
+        
+   </SqlMethod>
+   <SqlMethod name="getdeliveryStatus" type="preparedStatement" return="String" default="">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+        select case when sum(abs(ol.qtyordered)) = 0 or co.iscancelled = 'Y' or co.cancelledorder_id is not null then 0 else 
+		round(coalesce(sum(abs(ol.qtydelivered)), 0)/sum(abs(ol.qtyordered)) * 100, 0) end  as deliverystatus 
+		from c_orderline ol 
+		left join c_order co on ol.c_order_id = co.c_order_id 
+		where ol.c_order_id= ? 
+		and ol.c_order_discount_id is null 
+		group by co.c_order_id
+    </Sql>
+    <Parameter name="c_order_id"/>
+  </SqlMethod>
+  <SqlMethod name="getInvoiceStatus" type="preparedStatement" return="String" default="">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+        select case when sum(abs(ol.qtyordered)) = 0 or iscancelled = 'Y' or cancelledorder_id is not null then 0 else 
+		round(coalesce(sum(abs(ol.qtyinvoiced)), 0)/sum(abs(ol.qtyordered)) * 100, 0)  end as invoicestatus
+		from c_orderline ol
+		left join c_order co on ol.c_order_id = co.c_order_id
+		where ol.c_order_id= ?
+		and  ol.c_order_discount_id is null
+		group by co.c_order_id
+    </Sql>
+    <Parameter name="c_order_id"/>
+  </SqlMethod>
+  <SqlMethod name="getAddress" type="preparedStatement" return="multiple" default="">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+       	select 
+		 COALESCE(string_agg(cbl.name,'||'),'')  as address,
+		 COALESCE(string_agg(cbl.em_sspsi_latitude,'||'),'') as latitude,
+		 COALESCE(string_agg(cbl.em_sspsi_longitude,'||'),'') as longitude,
+		 COALESCE(string_agg(cbl.phone,'||'),'') as phone,
+		 COALESCE(string_agg(cbl.phone2,'||'),'') as phone2
+		from c_bpartner_location cbl 
+		left join c_order co on cbl.c_bpartner_location_id = co.c_bpartner_location_id
+		where co.c_order_id=? and co.issotrx='Y'
+		group by cbl.c_bpartner_id
+    </Sql>
+     <Parameter name="c_bpartner_id"/>
+  </SqlMethod>
+  <SqlMethod name="getClients" type="preparedStatement" return="multiple" default="">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+    <![CDATA[
+    SELECT
+    count(co.c_order_id) AS orderid,
+    count(co.documentno) AS documentno,
+    count(co.dateordered) AS created,
+    count(co.isdelivered)  as isdelivered,
+    count(co.em_ssfor_isdeliver_route) as deliveryroute,
+	count(co.em_ssfor_isdeliver_web) as deliveryweb,
+    count(co.datepromised) AS deliverydate,
+    count(co.grandtotal) AS total,
+    count(co.docstatus) AS status,
+    count(co.em_ssfor_onroute) AS onroute,
+    count(co.description) AS description,
+    count(co.em_ssfor_route) AS route,
+    count(ao.name) as nameorg,
+	count(ao.ad_org_id) as orgid,
+	count(ao.description) as descriptionorg,
+    count(mi.m_inout_id) AS shipmentinout,
+    cb.c_bpartner_id AS partnerid,
+    cb.name AS partnername,
+    cb.taxid AS taxid,
+    cb.em_sspsi_origin as bpartnerorigin,
+    count(us.user1_id) AS user1,
+    count(us.name) AS user1name,
+    count(ci.c_invoice_id) AS invoice,
+    ''::text AS deliverystatus,
+    ''::text AS address,
+    ''::text AS latitude,
+    ''::text AS longitude,
+    ''::text as phone,
+	''::text as phone2
+	FROM
+	    c_order co
+	LEFT JOIN
+    	ad_org ao ON ao.ad_org_id = co.ad_org_id
+	LEFT JOIN
+	    c_bpartner cb ON co.c_bpartner_id = cb.c_bpartner_id
+	LEFT JOIN
+	    user1 us ON us.user1_id = co.user1_id
+	LEFT JOIN
+	    m_inout mi ON mi.c_order_id = co.c_order_id
+	LEFT JOIN
+	    c_invoice ci ON ci.c_order_id = co.c_order_id
+	    WHERE
+		    (
+		        CASE
+		            WHEN ? = 'Y' THEN co.em_ssfor_route = ?
+		            ELSE TRUE
+		        END
+		    )
+		group by cb.c_bpartner_id,cb.name,cb.taxid
+		]]>
+    </Sql>
+    <Parameter name="is_route"/>
+    <Parameter name="route"/>
+  </SqlMethod>
+  <SqlMethod name="getOrderLines" type="preparedStatement" return="multiple" default="">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+    <![CDATA[
+	select p.name as product, 
+	u.name as aum, 
+	ol.aumqty as operativeqty, 
+	ol.qtyordered as qtyordered 
+	from c_orderline ol 
+	left join m_product p on p.m_product_id = ol.m_product_id 
+	left join c_uom u on u.c_uom_id = ol.C_Aum 
+	where ol.c_order_id = ?
+	]]>
+    </Sql>
+    <Parameter name="c_order_id"/>
+  </SqlMethod>
+</SqlClass>

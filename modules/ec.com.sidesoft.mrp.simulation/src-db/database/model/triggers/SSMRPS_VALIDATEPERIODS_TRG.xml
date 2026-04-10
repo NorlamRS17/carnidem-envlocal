@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSMRPS_VALIDATEPERIODS_TRG">
+    <trigger name="SSMRPS_VALIDATEPERIODS_TRG" table="SSMRPS_ASIMULATION_PROD" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+
+     
+  v_DateFrom DATE;
+  v_DateTo DATE;
+  v_DateProjection DATE;
+
+  v_PeriodFromID character varying(32); --OBTG:VARCHAR2--
+  v_PeriodToID character varying(32);   --OBTG:VARCHAR2--
+  v_PeriodProjectionID character varying(32);  --OBTG:VARCHAR2--
+  v_Message character varying(60);   	       --OBTG:VARCHAR2--
+  
+BEGIN
+
+
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+    
+    IF (UPDATING OR INSERTING) THEN
+
+
+	v_PeriodFromID:=:new.c_periodfrom_id;
+	v_PeriodToID:=:new.c_periodto_id;
+	v_PeriodProjectionID:=:new.c_periodprojection_id;
+  
+		-- Get Date From
+		select coalesce((select TO_DATE(startdate) from c_period where c_period_id = v_PeriodFromID),null)
+		into v_DateFrom
+		from dual;
+
+		-- Get Date to
+		select coalesce((select TO_DATE(enddate) from c_period where c_period_id = v_PeriodToID),null)
+		into v_DateTo
+		from dual;
+
+		-- Get Date From
+		select coalesce((select TO_DATE(enddate) from c_period where c_period_id = v_PeriodProjectionID),null)
+		into v_DateProjection
+		from dual;
+
+		--RAISE_APPLICATION_ERROR(-20000, '@Error en los filtros de fecha.@') ;
+
+
+		select
+		(case when (fechai < fechaf) AND (fechaf < fechap) AND (fechap > fechaf)  then 'Sucess'
+			else 'Error'
+		end) as mensaje 
+		INTO v_Message
+		from
+		(
+			select 
+			v_DateFrom as fechai,
+			v_DateTo as fechaf,
+			v_DateProjection as fechap
+			from dual
+		) validDate;
+
+		IF (v_Message='Error') THEN
+			RAISE_APPLICATION_ERROR(-20000, '@Ssmrps_ValidateDates@') ;
+		END IF;
+
+			
+
+    END IF;
+    
+END SSMRPS_VALIDATEPERIODS_TRG
+]]></body>
+    </trigger>
+  </database>

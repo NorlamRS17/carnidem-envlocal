@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_ATIMV_FacturaM_valordesc" pageWidth="144" pageHeight="42" orientation="Landscape" columnWidth="144" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/Desarrollo/OpenbravoERPIndumoto/modules/com.atrums.indumot.formatoimpresion/src"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select coalesce(sum(d.discount),0)as "TOTAL_DESC",
+c.grandtotal as "TOTAL"
+from c_invoice c left join c_invoice_discount cd on(c.c_invoice_id=cd.c_invoice_id)
+left join c_discount d on(cd.c_discount_id=d.c_discount_id)
+left join c_invoiceline cl on (cl.m_product_id=d.m_product_id)
+where c.c_invoice_id=$P{DOCUMENT_ID}
+group by c.grandtotal]]>
+	</queryString>
+	<field name="TOTAL_DESC" class="java.math.BigDecimal"/>
+	<field name="TOTAL" class="java.math.BigDecimal"/>
+	<columnHeader>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="4" width="63" height="14"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<text><![CDATA[DESCUENTOS]]></text>
+			</staticText>
+			<textField pattern="###0.00">
+				<reportElement x="73" y="4" width="71" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="DejaVu Serif" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTAL_DESC}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="23" width="144" height="15"/>
+				<subreportParameter name="DOCUMENT_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BASE_DESIGN">
+					<subreportParameterExpression><![CDATA[$P{BASE_DESIGN}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{BASE_DESIGN} + "/com/atrums/indumot/formatoimpresion/cobros/erpCommon/ad_reports/Rpt_ATIMV_FacturaM_ivatotal.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</columnHeader>
+</jasperReport>

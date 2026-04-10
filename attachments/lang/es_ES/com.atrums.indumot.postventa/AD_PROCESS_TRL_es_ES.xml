@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_PROCESS" version="">
+  <row id="1261F66A95774B67A55DC49E6943B775" trl="N">
+    <value column="Name" isTrl="N" original="Copiar Orden">Copiar Orden</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="159713CC430A4AAC98FADA0234E3758C" trl="N">
+    <value column="Name" isTrl="N" original="Postventa  Cambio Estado">Postventa  Cambio Estado</value>
+    <value column="Description" isTrl="N" original=" Postventa  Cambio Estado"> Postventa  Cambio Estado</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3F5F6606903842208BFC3C537453315F" trl="N">
+    <value column="Name" isTrl="N" original="Crear Factura Orden">Crear Factura Orden</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4F6EA3F0B3C443A5BAF713F465600CED" trl="N">
+    <value column="Name" isTrl="N" original="Imprimir Pre-Factura">Imprimir Pre-Factura</value>
+    <value column="Description" isTrl="N" original="Imprimir Pre-Factura">Imprimir Pre-Factura</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7C2D8A4E79D147EE9C7C19012CF43F27" trl="N">
+    <value column="Name" isTrl="N" original="Carga Repuesto">Carga Repuesto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9F16C4D725F142629FF83F2A7F2C06ED" trl="N">
+    <value column="Name" isTrl="N" original="Despacho Bodega">Despacho Bodega</value>
+    <value column="Description" isTrl="N" original="Despacho Bodega">Despacho Bodega</value>
+    <value column="Help" isTrl="N" original="¿Desea realizar el despacho de estos productos?">¿Desea realizar el despacho de estos productos?</value>
+  </row>
+  <row id="B0DE9FAF760B48198DDCE23A82A7D0A8" trl="N">
+    <value column="Name" isTrl="N" original="Productos y Sustitutos">Productos y Sustitutos</value>
+    <value column="Description" isTrl="N" original=" Productos y Sustitutos"> Productos y Sustitutos</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B6975D44FE1B44CE934651098191751C" trl="N">
+    <value column="Name" isTrl="N" original="Imprime Orden Servicio">Imprime Orden Servicio</value>
+    <value column="Description" isTrl="N" original="Imprime Orden Servicio">Imprime Orden Servicio</value>
+    <value column="Help" isTrl="N" original="Imprime Orden Servicio">Imprime Orden Servicio</value>
+  </row>
+  <row id="D62DA0BBCC344227A6BCB172734FC7CB" trl="N">
+    <value column="Name" isTrl="N" original="Borrar Datos ">Borrar Datos </value>
+    <value column="Description" isTrl="N" original="Borrar Datos ">Borrar Datos </value>
+    <value column="Help" isTrl="N" original="¿Está seguro de borrar los registros de reemplazos?">¿Está seguro de borrar los registros de reemplazos?</value>
+  </row>
+</compiereTrl>

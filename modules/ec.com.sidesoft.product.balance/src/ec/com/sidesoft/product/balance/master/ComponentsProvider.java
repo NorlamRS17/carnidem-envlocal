@@ -29,4 +29,9 @@ public class ComponentsProvider extends BaseComponentProvider {
 		return globalResources;
 	}
 
+	@Override
+	public List<String> getTestResources() {
+		return Collections.emptyList();
+	}
+
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE OBPOS_ERRORS">
+    <table name="OBPOS_ERRORS" primaryKey="OBPOS_ERRORS_KEY">
+      <column name="EM_SPOBE_PROCESS_ERROR" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

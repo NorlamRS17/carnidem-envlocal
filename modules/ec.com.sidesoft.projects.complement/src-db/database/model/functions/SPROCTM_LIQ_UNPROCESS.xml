@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SPROCTM_LIQ_UNPROCESS">
+    <function name="SPROCTM_LIQ_UNPROCESS" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[p_record_id VARCHAR(60);
+    p_docAction VARCHAR(60);
+    p_user VARCHAR(60);
+
+    v_ResultStr VARCHAR2(2000):='';
+    v_order_id VARCHAR2(32);
+    v_exist NUMBER;
+
+TYPE RECORD IS REF CURSOR;
+Cur_Params RECORD;
+Cur_liquidation RECORD;
+BEGIN
+
+  FOR Cur_Params IN (
+    SELECT *
+    FROM ad_ep_instance_para
+    WHERE ad_ep_instance_id = p_ep_instance
+    ) LOOP
+    IF (cur_params.parametername LIKE 'DocAction') THEN
+      p_docaction := Cur_Params.p_string;
+    ELSIF (cur_params.parametername LIKE 'Record_ID') THEN
+      p_record_id := cur_params.p_string;
+    ELSIF (cur_params.parametername LIKE 'User') THEN
+      p_user := cur_params.p_string;
+    END IF;
+  END LOOP;
+  v_ResultStr := 'Inicio del proceso';
+
+    FOR Cur_liquidation IN (
+  	select 
+	 mi.c_project_id
+	, mi.m_inout_id
+	, mi.EM_Sproctm_C_Projectphase_ID
+	, mi.EM_Sproctm_C_Projecttask_ID
+    , mp.m_product_id
+	from sstpc_consumption_line cl
+	inner join sstpc_liquidation_projects lp on lp.sstpc_liquidation_projects_id = cl.sstpc_liquidation_projects_id
+	inner join m_inoutline mi on mi.m_inoutline_id = cl.m_inoutline_id
+	inner join m_inout m on m.m_inout_id = mi.m_inout_id
+	inner join m_product mp on mp.m_product_id = cl.m_product_id
+	where lp.sstpc_liquidation_projects_id = p_record_id 
+  )
+  LOOP
+
+    DELETE FROM sproctm_inventory_settl 
+    WHERE sstpc_liquidation_projects_id = p_record_id
+    AND c_projectphase_id = Cur_liquidation.EM_Sproctm_C_Projectphase_ID
+    AND c_projecttask_id = Cur_liquidation.EM_Sproctm_C_Projecttask_ID
+    AND m_product_id = Cur_liquidation.m_product_id;
+
+  END LOOP;
+  v_ResultStr := 'Completado exitosamente';
+EXCEPTION
+WHEN OTHERS THEN
+  DBMS_OUTPUT.PUT_LINE('sproctm_liq_unprocess exception: '|| v_ResultStr);
+  RAISE;
+END SPROCTM_LIQ_UNPROCESS
+]]></body>
+    </function>
+  </database>

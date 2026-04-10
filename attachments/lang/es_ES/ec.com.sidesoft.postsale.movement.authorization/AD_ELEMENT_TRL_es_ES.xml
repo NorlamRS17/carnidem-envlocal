@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="258449F09E7D4ACDA4E4C3101721DD92" trl="Y">
+    <value column="Name" isTrl="Y" original="Wharehouse User">Bodeguero</value>
+    <value column="PrintName" isTrl="Y" original="Wharehouse User">Bodeguero</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2801A6B6891B4437937F7E02154232C9" trl="Y">
+    <value column="Name" isTrl="Y" original="Transfer Status">Estado de Transferencia</value>
+    <value column="PrintName" isTrl="Y" original="Transfer Status">Estado de Transferencia</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7808E121DE2248429AA15020C7542A44" trl="Y">
+    <value column="Name" isTrl="Y" original="Quantity to Return">Cantidad a Devolver</value>
+    <value column="PrintName" isTrl="Y" original="Quantity to Return">Cantidad a Devolver</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7A21748C91F94F15AD062FB94FED6689" trl="Y">
+    <value column="Name" isTrl="Y" original="Return Quantity">Cantidad de Devuelta</value>
+    <value column="PrintName" isTrl="Y" original="Return Quantity">Cantidad de Devuelta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D91E8328AB764BB7B0441DD1734BF76F" trl="Y">
+    <value column="Name" isTrl="Y" original="Service Order Line">Línea de Orden de Servicio</value>
+    <value column="PrintName" isTrl="Y" original="Service Order Line">Línea de Orden de Servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSTPC_PRODUCT_CAT_ACCT_COPY1">
+    <function name="SSTPC_PRODUCT_CAT_ACCT_COPY1" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_product_category_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[BEGIN
+
+
+ SSTPC_PRODUCT_CAT_ACCT_COPY2(pinstance_id, p_product_category_id, NULL);
+END SSTPC_PRODUCT_CAT_ACCT_COPY1
+]]></body>
+    </function>
+  </database>

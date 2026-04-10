@@ -111,10 +111,10 @@ public class AuditTrailPopup extends HttpSecureAppServlet {
     VariablesSecureApp vars = new VariablesSecureApp(request);
 
     // Prevent execution in Community instances
-    if (!ActivationKey.getInstance().isActive()) {
-      licenseError(classInfo.type, classInfo.id, FeatureRestriction.TIER1_RESTRICTION, response,
-          request, vars, true);
-    }
+    // if (!ActivationKey.getInstance().isActive()) {
+    //   licenseError(classInfo.type, classInfo.id, FeatureRestriction.TIER1_RESTRICTION, response,
+    //       request, vars, true);
+    // }
 
     String accesTabId = vars.getGlobalVariable("inpTabId", "AuditTrail.tabId", IsIDFilter.instance);
     if (!hasGeneralAccess(vars, "W", accesTabId)) {

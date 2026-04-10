@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="17B048B4022442F7A7895BB2D81D8F77" trl="Y">
+    <value column="Name" isTrl="Y" original="Update prices in O / Service from CSV file">Actualizar precios en O/Servicio desde archivo CSV</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D2632BFE58A34819B707A71EB19EBB16" trl="Y">
+    <value column="Name" isTrl="Y" original="update prices">Actualizar Precios en ordenes de Servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

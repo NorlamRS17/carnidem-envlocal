@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="DB2C50639DA742E6890ED59EFC808554" trl="Y">
+    <value column="Name" isTrl="Y" original="Create Movement Lines">Crear Lineas</value>
+    <value column="Description" isTrl="Y" original="Create Movement Lines">Crear Lineas</value>
+    <value column="Help" isTrl="Y" original="This is a button that call information to fill lines depending to field receiption date">Este es un boton que llena las lineas segun los pedidos de venta con fecha maxima de recepcion semejante a la fecha de recepcion del movimiento</value>
+  </row>
+</compiereTrl>

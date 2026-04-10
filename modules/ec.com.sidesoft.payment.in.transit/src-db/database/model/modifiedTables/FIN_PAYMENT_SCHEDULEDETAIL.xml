@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_PAYMENT_SCHEDULEDETAIL">
+    <table name="FIN_PAYMENT_SCHEDULEDETAIL" primaryKey="FIN_PAYMENT_SCHEDULEDETAIL_KEY">
+      <column name="EM_SSPITRA_CT_DETAIL_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="SSPITRA_CT_DETAIL" name="EM_SSPITRA_PSD_CTD">
+        <reference local="EM_SSPITRA_CT_DETAIL_ID" foreign="SSPITRA_CT_DETAIL_ID"/>
+      </foreign-key>
+    </table>
+  </database>

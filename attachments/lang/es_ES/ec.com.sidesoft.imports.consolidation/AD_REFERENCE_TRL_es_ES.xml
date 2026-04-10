@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="889CECFC9A3D4F12B23575621F34F42A" trl="N">
+    <value column="Name" isTrl="N" original="Ssimpcn_Type">Ssimpcn_Type</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D8867C98018F4F78B9DB8B12E47F99F9" trl="N">
+    <value column="Name" isTrl="N" original="ssimpcn_imp_consolidation">ssimpcn_imp_consolidation</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

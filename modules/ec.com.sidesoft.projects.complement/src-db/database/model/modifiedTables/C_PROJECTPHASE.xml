@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_PROJECTPHASE">
+    <table name="C_PROJECTPHASE" primaryKey="C_PROJECTPHASE_KEY">
+      <column name="EM_SPROCTM_PRHASETYPE" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_C_ORDER_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_MARGIN" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_CREATE_QUOT" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_ASIGNED_CE" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_MA_COSTCENTER_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_PHASE_EXECUTE" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_GENERATED_EXEC" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="MA_COSTCENTER" name="EM_SPROCTM_COSTCENTER_K">
+        <reference local="EM_SPROCTM_MA_COSTCENTER_ID" foreign="MA_COSTCENTER_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_ORDER" name="EM_SPROCTM_ORDER_K">
+        <reference local="EM_SPROCTM_C_ORDER_ID" foreign="C_ORDER_ID"/>
+      </foreign-key>
+    </table>
+  </database>

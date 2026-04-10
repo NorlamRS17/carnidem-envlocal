@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="7282B241EFC84418AA5AC81D352423C6" trl="N">
+    <value column="Name" isTrl="Y" original="Print Documents">Imprimir Documentos</value>
+    <value column="PrintName" isTrl="Y" original="Print Documents">Imprimir Documentos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9FA17FFF404349DBBE6720A327EDFEBF" trl="N">
+    <value column="Name" isTrl="Y" original="Start Date">Fecha Desde</value>
+    <value column="PrintName" isTrl="Y" original="Start Date">Fecha Desde</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E66F6A67D1C745FDACC91FBE53840321" trl="N">
+    <value column="Name" isTrl="Y" original="Category">Categoría</value>
+    <value column="PrintName" isTrl="Y" original="Category">Categoría</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FDBFF7D33EFE42C494C93330E9FA844E" trl="N">
+    <value column="Name" isTrl="Y" original="End Date">Fecha Hasta</value>
+    <value column="PrintName" isTrl="Y" original="End Date">Fecha Hasta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

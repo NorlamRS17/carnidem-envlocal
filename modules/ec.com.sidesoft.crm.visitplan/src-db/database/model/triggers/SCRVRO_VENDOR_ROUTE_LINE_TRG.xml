@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCRVRO_VENDOR_ROUTE_LINE_TRG">
+    <trigger name="SCRVRO_VENDOR_ROUTE_LINE_TRG" table="SCRVRO_VENDOR_ROUTE_LINE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	vCheck NUMBER;
+BEGIN
+
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+	
+	IF TG_OP IN ('INSERT','UPDATE') THEN
+		SELECT SUM(number_weeks) INTO vCheck FROM scrvro_vendor_route_line WHERE isactive='Y'
+			AND scrvro_vendor_route_id=:NEW.scrvro_vendor_route_id AND scrvro_vendor_route_line_id!=:NEW.scrvro_vendor_route_line_id;
+		IF :NEW.isactive='Y' AND vCheck+:NEW.number_weeks > 4 THEN
+			RAISE_APPLICATION_ERROR(-20000, '@Scrvro_MaxNumberWeeks@') ;
+		END IF;
+	END IF;
+	
+	END SCRVRO_VENDOR_ROUTE_LINE_TRG
+]]></body>
+    </trigger>
+  </database>

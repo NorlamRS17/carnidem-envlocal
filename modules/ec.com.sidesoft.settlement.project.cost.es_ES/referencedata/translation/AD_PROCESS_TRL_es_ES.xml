@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="2500E020BC8B488890B979A835960469" trl="N">
+    <value column="Name" isTrl="Y" original="Liquidate">Liquidar</value>
+    <value column="Description" isTrl="Y" original="Liquidate">Liquidar</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3FE1B414BBD44251872E6FBE86DBE82A" trl="N">
+    <value column="Name" isTrl="N" original="Liquidation Projects Account">Liquidation Projects Account</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4EA2E6B1AFF1414BA63BF49574C44C76" trl="N">
+    <value column="Name" isTrl="Y" original="Unprocess">Desprocesar</value>
+    <value column="Description" isTrl="Y" original="Unprocess">Desprocesar</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8155FDDF32BB4AE1B2FBAB82771067FA" trl="N">
+    <value column="Name" isTrl="N" original="Print Generic Liquidation Project">Print Generic Liquidation Project</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8D9C5703D2BE46A6BF86660EF72CC09F" trl="N">
+    <value column="Name" isTrl="Y" original="Pre Liquidation">Pre Liquidación</value>
+    <value column="Description" isTrl="Y" original="Pre Liquidation">Pre Liquidación</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AD430F4B1E364B38845E06BC3A60B41D" trl="N">
+    <value column="Name" isTrl="Y" original="Report of Materials Consumed in Projects">Reporte de Materiales Consumidos en Proyectos</value>
+    <value column="Description" isTrl="Y" original="Report of Materials Consumed in Projects">Reporte de Materiales Consumidos en Proyectos</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

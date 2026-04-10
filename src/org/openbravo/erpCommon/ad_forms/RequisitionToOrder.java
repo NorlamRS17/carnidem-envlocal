@@ -257,6 +257,28 @@ public class RequisitionToOrder extends HttpSecureAppServlet {
     } catch (Exception ex) {
       throw new ServletException(ex);
     }
+    try {
+        ComboTableData comboTableData = new ComboTableData(vars, this, "TABLEDIR", "M_Product_Category_ID", "",
+            null, Utility.getContext(this, vars, "#User_Org",
+                "RequisitionToOrder"), Utility.getContext(this, vars, "#User_Client",
+                "RequisitionToOrder"), 0);
+        Utility.fillSQLParameters(this, vars, null, comboTableData, "RequisitionToOrder", null);
+        xmlDocument.setData("reportM_Product_Category_ID", "liststructure", comboTableData.select(false));
+        comboTableData = null;
+      } catch (Exception ex) {
+        throw new ServletException(ex);
+      }
+    try {
+        ComboTableData comboTableData = new ComboTableData(vars, this, "TABLEDIR", "C_Project_ID", "",
+            null, Utility.getContext(this, vars, "#User_Org",
+                "RequisitionToOrder"), Utility.getContext(this, vars, "#User_Client",
+                "RequisitionToOrder"), 0);
+        Utility.fillSQLParameters(this, vars, null, comboTableData, "RequisitionToOrder", null);
+        xmlDocument.setData("reportC_Project_ID", "liststructure", comboTableData.select(false));
+        comboTableData = null;
+      } catch (Exception ex) {
+        throw new ServletException(ex);
+      }
 
     boolean uomManagementPreference = UOMUtil.isUomManagementEnabled();
 

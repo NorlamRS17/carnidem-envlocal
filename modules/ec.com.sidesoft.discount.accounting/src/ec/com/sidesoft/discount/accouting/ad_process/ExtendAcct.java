@@ -171,7 +171,6 @@ public class ExtendAcct implements AcctProcessTemplate {
 
 		Field f8 = acctServer.m_fact[i].getClass().getDeclaredField("m_lines");
 		f8.setAccessible(true);
-		@SuppressWarnings("unchecked")
 		ArrayList<Object> arrayList = (ArrayList<Object>) f8.get(acctServer.m_fact[i]);
 		arrayList.add(newline);
 		f8.set(acctServer.m_fact[i], arrayList);

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="SdcValidPaymentData" package="ec.com.sidesoft.debit.collection.ad_process" accessModifier="public">
+	<SqlClassComment></SqlClassComment>
+
+	<SqlMethod name="updateLine" type="preparedStatement" return="rowCount">
+		<SqlMethodComment></SqlMethodComment>
+		<Sql>
+			<![CDATA[
+				UPDATE
+					sdc_dc_propocollect
+				SET
+					ispaid = ?,
+					updatedby = ?,
+					updated = TO_DATE(NOW()),
+					description = TRIM(?)
+				WHERE
+					sdc_debitcollect_id = ?
+					AND isreconciled = 'Y'
+					AND TRIM(referenceno) = TRIM(?);
+			]]>
+		</Sql>
+		<Parameter name="status"/>
+		<Parameter name="user_id"/>
+		<Parameter name="description"/>
+		<Parameter name="sdc_debitcollect_id"/>
+		<Parameter name="referenceno"/>
+	</SqlMethod>
+	<SqlMethod name="updateDetailLine" type="preparedStatement" return="rowCount">
+		<SqlMethodComment></SqlMethodComment>
+		<Sql>
+			<![CDATA[
+				UPDATE
+					sdc_dc_detail
+				SET
+					ispaid = ?,
+					updatedby = ?,
+					updated = TO_DATE(NOW()),
+					description = TRIM(?)
+				WHERE
+					sdc_debitcollect_id = ?
+					AND TRIM(referenceno) = TRIM(?);
+			]]>
+		</Sql>
+		<Parameter name="status"/>
+		<Parameter name="user_id"/>
+		<Parameter name="description"/>
+		<Parameter name="sdc_debitcollect_id"/>
+		<Parameter name="referenceno"/>
+	</SqlMethod>
+</SqlClass>

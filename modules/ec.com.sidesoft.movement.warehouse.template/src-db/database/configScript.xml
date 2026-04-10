@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="4CCD0D35973246EBAA1DFE1FD8F1BA06">
+      <oldValue><![CDATA[55]]></oldValue>
+      <newValue><![CDATA[52]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="C9EF1F7ADE9A4E3AAB82EA4214637806">
+      <oldValue><![CDATA[57]]></oldValue>
+      <newValue><![CDATA[53]]></newValue>
+    </columnDataChange>
+  </vector>

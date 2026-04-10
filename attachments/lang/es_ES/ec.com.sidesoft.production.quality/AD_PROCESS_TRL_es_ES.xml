@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="1BBCBBD0C2AC48D0B2D8076FAE5CCFCB" trl="N">
+    <value column="Name" isTrl="N" original="Edit CCP Measured Values">Edit CCP Measured Values</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="46F37B699C3A41559E774EF74706B4BF" trl="N">
+    <value column="Name" isTrl="N" original="Explode Measure Shift">Explode Measure Shift</value>
+    <value column="Description" isTrl="N" original="Explode Measure Shift">Explode Measure Shift</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CBE407ACC74141A4AA156EF311577AAF" trl="N">
+    <value column="Name" isTrl="N" original="REPORTE DE CUADRE DE MATERIA PRIMA">REPORTE DE CUADRE DE MATERIA PRIMA</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

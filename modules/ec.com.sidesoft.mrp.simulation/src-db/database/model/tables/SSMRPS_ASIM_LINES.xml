@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+  <database name="TABLE SSMRPS_ASIM_LINES">
+    <table name="SSMRPS_ASIM_LINES" primaryKey="SSMRPS_ASIM_LINES_KEY">
+      <column name="SSMRPS_ASIM_LINES_ID" primaryKey="true" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_CLIENT_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AD_ORG_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ISACTIVE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="CREATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATED" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="UPDATEDBY" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="SSMRPS_ASIMULATION_PROD_ID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="STOCK_MIN" primaryKey="false" required="false" type="DECIMAL" size="15,2" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="STOCK_TOTAL" primaryKey="false" required="false" type="DECIMAL" size="15,2" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="AVG_SALES" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE1" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE2" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE3" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE4" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE5" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE6" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE7" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE8" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE9" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE10" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE11" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="ORDERPURCHASE12" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="STOCK_SECURITY" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="QTYORDERED" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="QTYORDERED_ROUND" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="FINALORDER" primaryKey="false" required="false" type="DECIMAL" size="15,4" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="YEARSALES" primaryKey="false" required="true" type="DECIMAL" size="12,0" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="MONTHSALES" primaryKey="false" required="true" type="DECIMAL" size="12,0" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="PRODUCTID" primaryKey="false" required="true" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="DURATION" primaryKey="false" required="true" type="DECIMAL" size="12,4" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="STOCK_TOTAL2" primaryKey="false" required="true" type="DECIMAL" size="12,4" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="NECESSARY_QTY" primaryKey="false" required="true" type="DECIMAL" size="12,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="TYPE_PARETO" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="PARETO" primaryKey="false" required="true" type="DECIMAL" size="12,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="PARETO_TOTAL" primaryKey="false" required="true" type="DECIMAL" size="12,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="QTYORDEREDPURCHASE" primaryKey="false" required="false" type="DECIMAL" size="12,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="QTYORDEREDSALES" primaryKey="false" required="false" type="DECIMAL" size="12,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="PARTIAL_ORDERED" primaryKey="false" required="false" type="DECIMAL" size="12,5" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="AD_CLIENT" name="SSMRPS_ASIM_LINES_AD_CLIENT">
+        <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_ORG" name="SSMRPS_ASIM_LINES_AD_ORG">
+        <reference local="AD_ORG_ID" foreign="AD_ORG_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SSMRPS_ASIMULATION_PROD" name="SSMRPS_ASIM_LINES_ASIM">
+        <reference local="SSMRPS_ASIMULATION_PROD_ID" foreign="SSMRPS_ASIMULATION_PROD_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="M_PRODUCT" name="SSMRPS_ASIM_LINES_PROD">
+        <reference local="PRODUCTID" foreign="M_PRODUCT_ID"/>
+      </foreign-key>
+      <index name="SSMRPS_ASIM_LINES_IDX" unique="false">
+        <index-column name="SSMRPS_ASIMULATION_PROD_ID"/>
+      </index>
+      <check name="SSMRPS_ASIM_LINES_ISACTIVE_CHK"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
+    </table>
+  </database>

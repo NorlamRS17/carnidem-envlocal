@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SPROCTM_CO_ALL_DETAILS">
+    <function name="SPROCTM_CO_ALL_DETAILS" type="VARCHAR">
+      <parameter name="vid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="vuserid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="vclientid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_RECORD_ID VARCHAR(32) := vid;
+    v_AD_User_ID VARCHAR2(32) := vuserid;
+    v_actual_state VARCHAR2(60);
+    v_hours NUMBER;
+    v_Total_Cost_detail NUMBER;
+    v_cost NUMBER;
+    v_hours_co NUMBER;
+    v_cost_co NUMBER;
+    v_total_cost_co NUMBER;
+    v_Total NUMBER; --OBTG:NUMBER--
+
+    TYPE RECORD IS REF CURSOR;
+	Cur_tprod RECORD;
+    Cur_Details_MO RECORD;
+    Cur_Totals_MO RECORD;
+    Cur_Details_CIF RECORD;
+    Cur_Totals_CIF RECORD;
+    Cur_Details_MAQ RECORD;
+    Cur_Totals_MAQ RECORD;
+
+
+BEGIN
+	BEGIN
+        -- PROCESO REUTILZIADO POR MO - CIF - MAQ 
+        -- Determinar de ue tab se ejcuta la accion 
+
+        -- MANO DE OBRA
+        FOR Cur_Details_MO IN
+            (   SELECT sproctm_detail_cost_id, complete, hours, cost,  Total_Cost
+                , record_id from sproctm_detail_cost  
+                WHERE record_id in ( v_Record_ID)
+                AND complete = 'DR' 
+            )
+            LOOP
+                UPDATE sproctm_detail_cost set complete = 'CO'  
+                , status='CO', updated = now() , updatedby = v_AD_User_ID
+                where sproctm_detail_cost_id = Cur_Details_MO.sproctm_detail_cost_id;
+        END LOOP;
+
+        --ACTUALIZACION DE TOTALES
+        FOR Cur_Totals_MO IN
+            (   -- TOTALES ACUMULADOS POR TAREAS COMPLETADAS
+            SELECT COALESCE(SUM(hours),0) as t_hours_co,
+                COALESCE(SUM(cost), 0) as t_cost_co, 
+                COALESCE(SUM(total_cost), 0) as t_total_cost_co,
+                record_id
+            from sproctm_detail_cost where record_id in 
+                (v_Record_ID)
+            GROUP BY record_id 
+            )
+            LOOP
+                -- TOTALES ACTUALIZADOS
+                UPDATE sproctm_task_workforce  
+                SET QTY_Executed = Cur_Totals_MO.t_hours_co 
+                , Total_Cost = Cur_Totals_MO.t_total_cost_co 
+                WHERE sproctm_task_workforce_ID = Cur_Totals_MO.record_id;
+
+        END LOOP;
+
+
+        -- COSTOS INDIRECTOS
+        FOR Cur_Details_CIF IN
+            (   SELECT sproctm_detail_cost_id, complete, hours, cost,  Total_Cost
+                , record_id from sproctm_detail_cost  
+                WHERE record_id in ( SELECT sproctm_task_cif_id from sproctm_task_cif 
+                        WHERE c_projecttask_id = v_Record_ID )
+                AND complete = 'DR' 
+            )
+            LOOP
+                UPDATE sproctm_detail_cost set complete = 'CO'  
+                , status='CO', updated = now() , updatedby = v_AD_User_ID
+                where sproctm_detail_cost_id = Cur_Details_CIF.sproctm_detail_cost_id;
+        END LOOP;
+
+        --ACTUALIZACION DE TOTALES
+        FOR Cur_Totals_CIF IN
+            (   -- TOTALES ACUMULADOS POR TAREAS COMPLETADAS
+            SELECT COALESCE(SUM(hours),0) as t_hours_co,
+            COALESCE(SUM(cost), 0) as t_cost_co, 
+            COALESCE(SUM(total_cost), 0) as t_total_cost_co,
+            record_id
+            from sproctm_detail_cost where record_id in 
+                (v_Record_ID)
+            GROUP BY record_id 
+
+            )
+            LOOP
+                -- TOTALES ACTUALIZADOS
+                UPDATE sproctm_task_cif  
+                SET Uomcost_Executed = Cur_Totals_CIF.t_hours_co 
+                , Total_Cost_Executed = Cur_Totals_CIF.t_total_cost_co 
+                WHERE sproctm_task_cif_ID = Cur_Totals_CIF.record_id;
+
+        END LOOP;
+
+
+        -- MAQUINARIA
+        FOR Cur_Details_MAQ IN
+            (   SELECT sproctm_detail_cost_id, complete, hours, cost,  Total_Cost
+                , record_id from sproctm_detail_cost  
+                WHERE record_id in ( SELECT sproctm_task_machine_id from sproctm_task_machine 
+                        WHERE  C_Projecttask_ID = v_Record_ID )
+                AND complete = 'DR' 
+            )
+            LOOP
+                UPDATE sproctm_detail_cost set complete = 'CO'  
+                , status='CO', updated = now() , updatedby = v_AD_User_ID
+                where sproctm_detail_cost_id = Cur_Details_MAQ.sproctm_detail_cost_id;
+        END LOOP;
+
+        --ACTUALIZACION DE TOTALES
+        FOR Cur_Totals_MAQ IN
+            (   -- TOTALES ACUMULADOS POR TAREAS COMPLETADAS
+            SELECT COALESCE(SUM(hours),0) as t_hours_co,
+             COALESCE(SUM(cost), 0) as t_cost_co, 
+             COALESCE(SUM(total_cost), 0) as t_total_cost_co,
+             record_id
+            from sproctm_detail_cost where record_id in 
+                (v_Record_ID)
+            GROUP BY record_id 
+
+            )
+            LOOP
+                -- TOTALES ACTUALIZADOS
+                UPDATE sproctm_task_machine  
+                SET Units_Cost_Executed = Cur_Totals_MAQ.t_hours_co 
+                , Total_Cost_Executed = Cur_Totals_MAQ.t_total_cost_co 
+                WHERE sproctm_task_machine_id = Cur_Totals_MAQ.record_id;
+
+        END LOOP;
+
+
+        -------------------
+
+        v_actual_state = 'Completado';
+		RETURN 'Cambio estado del documento a: ' || v_actual_state;
+	END;
+	EXCEPTION WHEN OTHERS THEN
+	RETURN SQLERRM;
+END SPROCTM_CO_ALL_DETAILS
+]]></body>
+    </function>
+  </database>

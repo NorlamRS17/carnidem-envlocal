@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="16BDEFF63ECA49319045E4279B1747CC" trl="N">
+    <value column="Name" isTrl="N" original="Analysis tools">Analysis tools</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="23C4BF2AC5B04F3C981EEDDCFA8EBB9D" trl="Y">
+    <value column="Name" isTrl="Y" original="Analysis tools">Herramientas de análisis</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="954E743CCAF647AE86F234B94BEB794F" trl="Y">
+    <value column="Name" isTrl="Y" original="Web Services Configuration">Configuración de servicios web</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

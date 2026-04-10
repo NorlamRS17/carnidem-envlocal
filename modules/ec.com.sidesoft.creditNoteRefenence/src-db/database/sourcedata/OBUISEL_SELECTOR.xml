@@ -19,7 +19,7 @@
 <!--EED6A215F614483FBE98F1129D548351-->  <POPUPTEXTMATCHSTYLE><![CDATA[substring]]></POPUPTEXTMATCHSTYLE>
 <!--EED6A215F614483FBE98F1129D548351-->  <HQL><![CDATA[SELECT e.id as id , e.businessPartner.id, e.salesTransaction, (e.documentNo ||'-'|| e.invoiceDate  ||'-'|| e.grandTotalAmount ) as reference
 FROM Invoice e 
-where @additional_filters@]]></HQL>
+where @additional_filters@ order by e.invoiceDate DESC]]></HQL>
 <!--EED6A215F614483FBE98F1129D548351-->  <ENTITY_ALIAS><![CDATA[e]]></ENTITY_ALIAS>
 <!--EED6A215F614483FBE98F1129D548351-->  <CUSTOM_QUERY><![CDATA[Y]]></CUSTOM_QUERY>
 <!--EED6A215F614483FBE98F1129D548351--></OBUISEL_SELECTOR>

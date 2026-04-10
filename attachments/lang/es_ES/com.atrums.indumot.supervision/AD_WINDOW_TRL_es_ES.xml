@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_WINDOW" version="">
+  <row id="2AFA4E7FF65B4B66B203B17488AEC66B" trl="N">
+    <value column="Name" isTrl="N" original="Organizaciones Ordenes de Servicio">Organizaciones Ordenes de Servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AD74589769FA44E094FBEE721A02DF84" trl="N">
+    <value column="Name" isTrl="N" original="Orden de Servicio (Supervision)">Orden de Servicio (Supervision)</value>
+    <value column="Description" isTrl="N" original="Orden de Servicio (Supervision de Cajas)">Orden de Servicio (Supervision de Cajas)</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DBB32F2F3D0140CB8450D968D518FC33" trl="N">
+    <value column="Name" isTrl="N" original="Orden de Servicio (Consolidación)">Orden de Servicio (Consolidación)</value>
+    <value column="Description" isTrl="N" original="Orden de Servicio (Consolidación)">Orden de Servicio (Consolidación)</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DFFCB8D83BF746DABC68A94AA263EEC4" trl="N">
+    <value column="Name" isTrl="N" original="Tipo de Facturación (Consolidación)">Tipo de Facturación (Consolidación)</value>
+    <value column="Description" isTrl="N" original="Tipos de Facturación (Consolidación)">Tipos de Facturación (Consolidación)</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

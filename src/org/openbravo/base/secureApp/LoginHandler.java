@@ -56,7 +56,6 @@ import org.openbravo.server.ServerControllerHandler;
 import org.openbravo.service.db.DalConnectionProvider;
 import org.openbravo.service.password.PasswordStrengthChecker;
 import org.openbravo.utils.FormatUtilities;
-import java.util.List;
 
 /**
  * 
@@ -584,53 +583,31 @@ public class LoginHandler extends HttpBaseServlet {
    *           ServletException is thrown in case that password could not be hashed
    * 
    */
-	private void updatePassword(String userId, String unHashedPassword, String language) throws ServletException {
-		try {
-
-			boolean isInstalled = isModuleInstalled("ec.com.sidesoft.user.advanced.security");
-
-			OBContext.setAdminMode();
-			final OBCriteria<User> obc = OBDal.getInstance().createCriteria(User.class);
-			obc.add(Restrictions.eq(User.PROPERTY_ID, userId));
-			obc.setFilterOnReadableClients(false);
-			obc.setFilterOnReadableOrganization(false);
-			final User userOB = (User) obc.uniqueResult();
-			String username = userOB.getUsername();
-			String oldPassword = userOB.getPassword();
-			String newPassword = FormatUtilities.sha1Base64(unHashedPassword);
-			if (!isInstalled) {
-				if (oldPassword.equals(newPassword)) {
-					throwChangePasswordException("CPDifferentPassword", "CPSamePasswordThanOld", language);
-				} else if (!passwordStrengthChecker.isStrongPassword(unHashedPassword)) {
-					throwChangePasswordException("CPWeakPasswordTitle", "CPPasswordNotStrongEnough", language);
-				} else {
-					userOB.setPassword(newPassword);
-					OBDal.getInstance().save(userOB);
-					OBDal.getInstance().flush();
-					OBDal.getInstance().commitAndClose();
-				}
-			} else {
-				String hql = "select s.passwordLength from SSUAS_security_config s";
-				Long passwordLength = (Long) OBDal.getInstance().getSession().createQuery(hql).setMaxResults(1)
-						.uniqueResult();
-
-				if (isPasswordReused(username, newPassword)) {
-					throwChangePasswordException("SSUAS_DifferentPassword", "SSUAS_SamePasswordThanOld", language);
-				} else if (!passwordStrengthChecker.isStrongPassword(unHashedPassword)) {
-					String message = Utility.messageBD(myPool, "SSUAS_PasswordNotStrongEnough", language);
-					message = message.replace("@lenght@", String.valueOf(passwordLength));
-					throwChangePasswordException("CPWeakPasswordTitle", message, language);
-				} else {
-					userOB.setPassword(newPassword);
-					OBDal.getInstance().save(userOB);
-					OBDal.getInstance().flush();
-					OBDal.getInstance().commitAndClose();
-				}
-			}
-		} finally {
-			OBContext.restorePreviousMode();
-		}
-	}
+  private void updatePassword(String userId, String unHashedPassword, String language)
+      throws ServletException {
+    try {
+      OBContext.setAdminMode();
+      final OBCriteria<User> obc = OBDal.getInstance().createCriteria(User.class);
+      obc.add(Restrictions.eq(User.PROPERTY_ID, userId));
+      obc.setFilterOnReadableClients(false);
+      obc.setFilterOnReadableOrganization(false);
+      final User userOB = (User) obc.uniqueResult();
+      String oldPassword = userOB.getPassword();
+      String newPassword = FormatUtilities.sha1Base64(unHashedPassword);
+      if (oldPassword.equals(newPassword)) {
+        throwChangePasswordException("CPDifferentPassword", "CPSamePasswordThanOld", language);
+      } else if (!passwordStrengthChecker.isStrongPassword(unHashedPassword)) {
+        throwChangePasswordException("CPWeakPasswordTitle", "CPPasswordNotStrongEnough", language);
+      } else {
+        userOB.setPassword(newPassword);
+        OBDal.getInstance().save(userOB);
+        OBDal.getInstance().flush();
+        OBDal.getInstance().commitAndClose();
+      }
+    } finally {
+      OBContext.restorePreviousMode();
+    }
+  }
 
   private void throwChangePasswordException(String titleKey, String messageKey, String language)
       throws ChangePasswordException {
@@ -640,41 +617,4 @@ public class LoginHandler extends HttpBaseServlet {
     errorMsg.setMessage(Utility.messageBD(myPool, messageKey, language));
     throw new ChangePasswordException(errorMsg.getMessage(), errorMsg);
   }
-	// Metodos auxiliares modulo de seguridad avanzada
-	public static boolean isModuleInstalled(String moduleJavaPackage) {
-		try {
-			String hql = "select count(m) from ADModule m where m.javaPackage = :javaPackage";
-			Long count = (Long) OBDal.getInstance().getSession().createQuery(hql)
-					.setParameter("javaPackage", moduleJavaPackage).uniqueResult();
-
-			if (count == null || count == 0) {
-				return false;
-			}
-			String configHql = "select count(c) from SSUAS_security_config c where c.active = 'Y' and c.passwordComplexity = 'AD'";
-			Long configCount = (Long) OBDal.getInstance().getSession().createQuery(configHql).uniqueResult();
-
-			return configCount != null && configCount > 0;
-
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	public static boolean isPasswordReused(String username, String newPassword) {
-		String hql = "select a.recordID, a.oldValue, a.newValue " + "from AD_Audit_Trail a "
-				+ "where a.table.id = :tableId " + "and a.column.id = :columnId " + "and a.recordID = ("
-				+ "select u.id from ADUser u where u.username = :username)";
-
-		@SuppressWarnings("unchecked")
-		List<Object[]> results = OBDal.getInstance().getSession().createQuery(hql).setParameter("tableId", "114")
-				.setParameter("columnId", "417").setParameter("username", username).list();
-
-		for (Object[] row : results) {
-			String newValue = (String) row[2];
-			if (newPassword.equals(newValue)) {
-				return true;
-			}
-		}
-		return false;
-	}
 }

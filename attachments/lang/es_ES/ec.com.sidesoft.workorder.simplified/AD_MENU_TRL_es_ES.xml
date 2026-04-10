@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="2B4A6E374051411FB163C03C05D07F02" trl="N">
+    <value column="Name" isTrl="Y" original="Service order transfer">Configuración orden de servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="51C0F705BEC4485993E22ED7340DA4EB" trl="N">
+    <value column="Name" isTrl="Y" original="Year">Año</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7CBBAC49A94B446BA9AD5F8C29D436B3" trl="N">
+    <value column="Name" isTrl="Y" original="Setup">Configuración</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="8D507402715D4249B04E54DDE944339E" trl="N">
+    <value column="Name" isTrl="Y" original="Service orders">Órdenes de servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="AC5EF00A55A642E4B5FD3349E7C893CC" trl="N">
+    <value column="Name" isTrl="Y" original="Analysis Tools">Herramientas de análisis</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B209425504174077A1EEE182F1F158FF" trl="Y">
+    <value column="Name" isTrl="Y" original="Settings Reports">Impresión Documentos O. Servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B84C21C56C664B3EBA4DF02876988E8C" trl="N">
+    <value column="Name" isTrl="Y" original="Origin">Origen</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="BC3B06B478454598AC899E6FA592FD8E" trl="N">
+    <value column="Name" isTrl="Y" original="Vehicles">Vehículos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C18F0090E321448AB38FC780EB3F2300" trl="Y">
+    <value column="Name" isTrl="Y" original="Vehicle Recall">Vehículos Recall</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="CBCD6CD40F1C4BC191125E95357A7E4A" trl="N">
+    <value column="Name" isTrl="Y" original="Class">Clase</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D976217CD9244B16864CBCD934920877" trl="N">
+    <value column="Name" isTrl="Y" original="Change status from Invoiced to Delivered">Cambiar estado de Facturada a Entregada</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E128468520154E4D9A1508751104780E" trl="N">
+    <value column="Name" isTrl="N" original="Color">Color</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F361809F2FE54FD087059F5E06A56E38" trl="N">
+    <value column="Name" isTrl="Y" original="Transactions">Transacciones</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="FB32E1D35CAE41259565B34DD8EC6E33" trl="N">
+    <value column="Name" isTrl="Y" original="Update prices Service orders">Actualizar precios Ordenes de servicios</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,272 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSIP_CHANGESTATUS">
+    <function name="SSIP_CHANGESTATUS" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[TYPE RECORD IS REF CURSOR;
+  Cur_Parameter RECORD;
+
+  Cur_Orderline RECORD;
+  Cur_Orderline2 RECORD;
+
+  --DECLARATE VAR
+  v_Client_ID VARCHAR2(32);
+
+  v_Org_ID VARCHAR2(32);
+
+  v_User_ID VARCHAR2(32) ;
+
+  v_ResultStr VARCHAR2(2000) := '';  
+
+  v_Record_ID  VARCHAR2(32);
+
+  v_Message VARCHAR2(2000):='';
+
+  V_Processing Varchar2(60);
+
+  V_Campign_id Varchar2(32);
+
+  V_Totallineamount NUMBER DEFAULT 0;
+
+  V_Totalline NUMBER DEFAULT 0;
+
+  V_Priceunit NUMBER DEFAULT 0;
+
+  V_Linenetamt NUMBER DEFAULT 0;
+
+  v_Cantproduct NUMBER DEFAULT 0;
+
+  v_Porcent NUMBER DEFAULT 0;
+
+  v_Representamount NUMBER DEFAULT 0;
+  
+  vModuleSsipiceExist BOOLEAN;
+  
+    vCalc           NUMBER(10,2);
+    vValueICE       NUMBER;
+    vRecord         RECORD;
+
+BEGIN
+
+  --  Update AD_PInstance
+
+  DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || PInstance_ID) ;
+
+  v_ResultStr := 'PInstanceNotFound';
+
+  AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+  BEGIN --BODY
+
+  -- Get Parameters
+  v_ResultStr := 'ReadingParameters';
+
+    FOR Cur_Parameter IN
+    
+      (SELECT i.Record_ID,
+
+        i.AD_User_ID,
+
+        i.AD_Client_ID,
+
+        i.AD_Org_ID
+
+      FROM AD_PInstance i
+
+      WHERE i.AD_PInstance_ID = PInstance_ID
+
+      )
+    LOOP
+      v_Record_ID := Cur_Parameter.Record_ID;
+
+      v_Client_ID := Cur_Parameter.AD_Client_ID;
+
+      v_Org_ID := Cur_Parameter.AD_Org_ID;
+
+      v_User_ID := Cur_Parameter.AD_User_ID;
+
+  END LOOP; -- End Get Parameter
+
+        SELECT em_ssip_importstatus, processing INTO vRecord FROM c_order WHERE c_order_id = v_Record_ID;
+
+        IF vRecord.processing = 'Y' THEN
+            v_Message := '@Processing@';
+            AD_UPDATE_PINSTANCE(Pinstance_Id, Null, 'N', 0, v_Message);
+            RETURN;
+        END IF;
+
+        IF vRecord.em_ssip_importstatus = 'LL' THEN
+            v_Message := '@SSIP_SettledDocument@';
+            AD_UPDATE_PINSTANCE(Pinstance_Id, Null, 'N', 0, v_Message);
+            RETURN;
+        END IF;
+
+-- Set processing 'Y'
+
+Update c_order c Set Processing = 'Y' Where c.c_order_id = V_Record_Id;
+
+	--Verificar si el modulo SSIPICE existe
+	SELECT COUNT(*)>0 INTO vModuleSsipiceExist FROM ad_module WHERE javapackage = 'ec.com.sidesoft.imports.ice';
+
+  	-- Get c_campingn_id
+    select  co.c_campaign_id
+
+    into  V_Campign_id
+
+    from c_order co
+
+    where co.c_order_id = v_Record_ID;
+
+  	--TOTAL LINE IMPORT COST
+
+  	select sum(ci.amountnet) as totalamount
+
+    into   V_Totallineamount
+
+    from ssip_costimport ci
+
+    where ci.c_order_id=v_Record_ID;
+
+	V_Totallineamount:=COALESCE(V_Totallineamount,0);
+	
+  	--Cant OrderLine
+
+  	select count(col.c_orderline_id) as cantline
+
+    into V_Totalline
+
+    from c_orderline as col
+
+    where col.c_order_id=v_Record_ID;
+
+    --LOGIC Apportionment IF LINE IS ONE
+
+    --GET TOTAL ORDER LINE AMOUNT
+
+      select sum(linenetamt) as linenetamt
+
+      into V_Linenetamt
+
+      from c_orderline  col
+
+      where col.c_order_id=v_Record_ID;
+      
+      
+    
+    IF V_Totalline=1 AND V_Totallineamount>0  THEN
+
+      --CANT PRODUCT LINE
+
+      select qtyordered
+
+      into v_Cantproduct
+
+      from c_orderline  col
+
+      where col.c_order_id=v_Record_ID;
+
+      IF (v_Cantproduct<>0) THEN
+	      --Calculate Unit Price
+
+	      V_Priceunit:=(((V_Totallineamount/V_Linenetamt)*V_Linenetamt)+V_Linenetamt)/v_Cantproduct;
+
+	      --UPDATE PRICE UNIT OR REAL PRICE
+
+	      IF V_Priceunit>0 THEN
+
+			--UPDATE REAL PRICE
+			--Validar que exista el modulo SSIPICE
+			IF vModuleSsipiceExist THEN
+				UPDATE c_orderline SET em_ssip_realcost=(V_Priceunit+COALESCE(em_ssipice_value_ice,0)) WHERE c_order_id=V_Record_Id;
+			ELSE
+				Update c_orderline col Set em_ssip_realcost = V_Priceunit Where col.c_order_id = V_Record_Id;
+			END IF;
+
+		-- SET STATUS IMPORT
+
+		Update c_order c Set em_ssip_importstatus ='PL' Where c.c_order_id = V_Record_Id;
+
+	      END IF;
+
+      END IF;
+
+    ELSE
+
+      IF V_Totalline>0 AND V_Totalline>1 THEN
+		
+      	FOR Cur_Orderline IN (
+
+         	SELECT col.c_orderline_id as id, col.qtyordered as qtyordered, col.linenetamt as linenetamt,col.em_ssip_preliquidated,col.priceactual
+
+        	FROM c_orderline col
+
+			where  col.c_order_id= V_Record_Id AND qtyordered<>0
+        )
+
+        LOOP
+			
+			IF vModuleSsipiceExist THEN
+				SELECT em_ssipice_value_ice INTO vValueICE FROM c_orderline WHERE c_orderline_id = Cur_Orderline.c_orderline_id;
+			END IF;
+
+			V_Priceunit:=(((V_Totallineamount/V_Linenetamt)*Cur_Orderline.linenetamt)+Cur_Orderline.linenetamt)/Cur_Orderline.qtyordered;
+
+			--UPDATE REAL PRICE
+			--Validar que exista el modulo SSIPICE
+			IF vModuleSsipiceExist THEN
+			    vCalc := ((V_Priceunit*Cur_Orderline.qtyordered)+COALESCE(vValueICE,0))/Cur_Orderline.qtyordered;
+				UPDATE c_orderline SET em_ssip_realcost=vCalc WHERE c_orderline_id=Cur_Orderline.id;
+			ELSE
+				Update c_orderline col Set em_ssip_realcost = V_Priceunit Where col.c_order_id = V_Record_Id and col.c_orderline_id=Cur_Orderline.id;
+			END IF;
+
+	END LOOP;
+      END IF;
+
+    END IF;
+
+    --ACTUALIZAR COSTO DE ORIGEN
+   	FOR Cur_Orderline2 IN (
+         	SELECT col.c_orderline_id as id,col.priceactual
+         	FROM c_orderline col
+		WHERE  col.c_order_id= V_Record_Id
+        ) LOOP
+	
+		UPDATE c_orderline col SET EM_Ssip_Costorigin = Cur_Orderline2.priceactual, em_ssip_preliquidated='Y' WHERE col.c_orderline_id=Cur_Orderline2.id;
+
+        END LOOP;
+
+-- Set processing 'N'
+
+Update c_order c Set Processing = 'N' Where c.c_order_id = V_Record_Id;
+
+  DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message) ;
+
+  AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, v_Message) ;
+
+  RETURN;
+
+  END; --BODY
+
+  EXCEPTION
+
+  WHEN OTHERS THEN
+
+    ROLLBACK;
+
+    -- Set processing 'N'
+
+    Update c_order c Set Processing = 'N' Where c.c_order_id = V_Record_Id;
+
+    v_ResultStr:= '@ERROR=' || SQLERRM;
+
+    DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+
+    RETURN;
+END SSIP_CHANGESTATUS
+]]></body>
+    </function>
+  </database>

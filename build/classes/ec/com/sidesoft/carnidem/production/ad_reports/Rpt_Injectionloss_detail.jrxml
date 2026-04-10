@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Subreporte de detalle para Rpt_Injectionloss.jrxml.
+     Muestra las líneas de producción (Orden, Producto, Parte, P+, Lote) de una
+     orden de fabricación específica donde el producto filtrado es P+.
+     Es embebido en la banda de detalle del reporte principal para lograr el
+     efecto "celdas combinadas" en las columnas de curados (lado derecho). -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+	name="Rpt_Injectionloss_detail"
+	pageWidth="702" pageHeight="842"
+	columnWidth="702"
+	leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0"
+	uuid="b2c3d4e5-f6a7-4b01-9002-000000000002">
+
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.wrap.text" value="false"/>
+
+	<!-- Identificador de la orden de fabricación padre -->
+	<parameter name="ma_workrequirement_id" class="java.lang.String"/>
+	<!-- Producto filtrado (el que es P+ en cocción) -->
+	<parameter name="crprod_mproduct_id" class="java.lang.String"/>
+
+	<queryString>
+		<![CDATA[SELECT
+			wr.documentno AS orden,
+			COALESCE(p.name, '') AS producto,
+			COALESCE(mp.documentno, '') AS parte,
+			mpl.movementqty AS p_mas,
+			COALESCE(asi.description, '') AS lote
+		FROM m_productionline mpl
+		JOIN m_productionplan mpp ON mpp.m_productionplan_id = mpl.m_productionplan_id
+		JOIN ma_wrphase mwp ON mwp.ma_wrphase_id = mpp.ma_wrphase_id
+		JOIN ma_workrequirement wr ON wr.ma_workrequirement_id = mwp.ma_workrequirement_id
+		JOIN m_production mp ON mp.m_production_id = mpp.m_production_id
+		LEFT JOIN m_product p ON p.m_product_id = mpl.m_product_id
+		LEFT JOIN m_attributesetinstance asi ON asi.m_attributesetinstance_id = mpl.m_attributesetinstance_id
+		WHERE mpl.m_product_id::text = $P{crprod_mproduct_id}
+			AND mpl.productiontype = '+'
+			AND wr.ma_workrequirement_id::text = $P{ma_workrequirement_id}
+		ORDER BY mp.documentno, mpl.m_productionline_id]]>
+	</queryString>
+
+	<field name="orden" class="java.lang.String"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="parte" class="java.lang.String"/>
+	<field name="p_mas" class="java.math.BigDecimal"/>
+	<field name="lote" class="java.lang.String"/>
+
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="80" height="20" backcolor="#FEFEFE" uuid="c2d3e4f5-a6b7-4c02-9003-000000000001"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orden}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="80" y="0" width="220" height="20" backcolor="#FEFEFE" uuid="c2d3e4f5-a6b7-4c02-9003-000000000002"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="300" y="0" width="120" height="20" backcolor="#FEFEFE" uuid="c2d3e4f5-a6b7-4c02-9003-000000000003"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{parte}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="420" y="0" width="120" height="20" backcolor="#FEFEFE" uuid="c2d3e4f5-a6b7-4c02-9003-000000000004"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p_mas}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="540" y="0" width="162" height="20" backcolor="#FEFEFE" uuid="c2d3e4f5-a6b7-4c02-9003-000000000005"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lote}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="013A7C9CCA2D4D729149C5A1FF9EB836" trl="Y">
+    <value column="Name" isTrl="Y" original="Print Cost Import Reports">Reporte Liquidación de Importación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6A91466FA8534422BF84C35F969D9FE7" trl="N">
+    <value column="Name" isTrl="Y" original="Import Reports">Reporte de Importaciones No Liquidadas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

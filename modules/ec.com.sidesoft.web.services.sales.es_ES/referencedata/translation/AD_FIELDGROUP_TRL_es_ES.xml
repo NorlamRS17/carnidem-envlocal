@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_FIELDGROUP" version="">
+  <row id="005127924BBC4D4B8AE3E08A2ACFDBDA" trl="Y">
+    <value column="Name" isTrl="Y" original="Payment Invoice">Cobros Cuotas</value>
+  </row>
+  <row id="9AD989A99C894B429A063108774B0EE0" trl="Y">
+    <value column="Name" isTrl="Y" original="WSL Reverse Payment">Reverso de Pago</value>
+  </row>
+</compiereTrl>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_PROCESS" columnname="JRNAME" pkRow="AEAD04EDF29A4F87BC47E593EEBE813D">
+      <oldValue><![CDATA[@basedesign@/com/sidesoft/inventory/movement/frominvoice/ad_reports/OrdersPendingDispatchInvoicing.jrxml]]></oldValue>
+      <newValue><![CDATA[@basedesign@/ec/com/sidesoft/sanfelipe/sales/ad_reports/OrdersPendingDispatchInvoicing.jrxml]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="4031">
+      <oldValue><![CDATA[@Processed@='Y']]></oldValue>
+      <newValue><![CDATA[(@Processed@='Y' | @GROSSPRICE@='Y')  | (@ssucp_allowPriceChangesOL@='N' & @Processed@='Y') |
+(@ssucp_allowPriceChangesOL@='N' & @Processed@='N') ]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="7891269C83E1655DE040007F010155CE">
+      <oldValue><![CDATA[@Slcb_ValidateReferenceCheck@='Y'|@Processed@='Y' | @Posted@='Y']]></oldValue>
+      <newValue><![CDATA[@Slcb_ValidateReferenceCheck@='Y'|@Status@='RPPC']]></newValue>
+    </columnDataChange>
+  </vector>

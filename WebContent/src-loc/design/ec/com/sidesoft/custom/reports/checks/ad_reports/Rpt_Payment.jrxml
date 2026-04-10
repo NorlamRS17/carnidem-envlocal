@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportPayments" pageWidth="612" pageHeight="793" columnWidth="584" leftMargin="14" rightMargin="14" topMargin="0" bottomMargin="107" uuid="c8f6a786-c9bf-4840-b588-33312ab5eb61">
+	<property name="ireport.zoom" value="1.3995221406292224"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="SUBREP_SubRpt_PaymentCont" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String"/>
+	<parameter name="BASE_WEB" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+ORG.ad_org_id as "organizationid",
+ORG.name AS "nombre_empresa",
+to_char(F.NAME) as "depositar_en",
+(CASE WHEN F.genericaccountno IS NULL THEN '' ELSE F.genericaccountno END) AS "cta_corriente",
+to_char(P.documentno) as documento,
+to_char('PROCESADO') as "estado",
+to_char(P.referenceno) as "referencia_no",
+coalesce(to_char(p.em_sescr_name),to_char(B.NAME)) as "pagar_a",
+b.taxid,
+to_char(P.paymentdate,'dd-TMMON-yyyy HH24:MI AM') as "fecha_cabecera",
+ (to_char(P.paymentdate,'YYYY') ||
+  case to_number(to_char(P.paymentdate,'mm'))
+    when 1 then '/ENERO/'
+    when 2 then '/FEBRERO/'
+    when 3 then '/MARZO/'
+    when 4 then '/ABRIL/'
+    when 5 then '/MAYO/'
+    when 6 then '/JUNIO/'
+    when 7 then '/JULIO/'
+    when 8 then '/AGOSTO/'
+    when 9 then '/SEPTIEMBRE/'
+    when 10 then '/OCTUBRE/'
+    when 11 then '/NOVIEMBRE/'
+    when 12 then '/DICIEMBRE/'
+  end
+  || to_char(P.paymentdate,'dd'))  as "fecha_footer",
+ (to_char(P.paymentdate,'YYYY/mm/dd')) as "fecha_footer2",
+ (to_char(P.paymentdate,'dd') ||
+  case to_number(to_char(P.paymentdate,'mm'))
+    when 1 then '-ENE-'
+    when 2 then '-FEB-'
+    when 3 then '-MAR-'
+    when 4 then '-ABR-'
+    when 5 then '-MAY-'
+    when 6 then '-JUN-'
+    when 7 then '-JUL-'
+    when 8 then '-AGO-'
+    when 9 then '-SEP-'
+    when 10 then '-OCT-'
+    when 11 then '-NOV-'
+    when 12 then '-DIC-'
+  end
+  || to_char(P.paymentdate,'yyyy')) as "fecha_recibo",
+to_char(P.paymentdate,'dd/MM/yyyy HH24:MI:SS') as "fecha_pago",
+P.amount as "importe",
+SESCR_convert_numbertoletters(P.amount) AS "monto_letras",
+(CASE WHEN P.description IS NULL THEN '' ELSE P.description END) AS "concepto",
+p.description as description
+,to_char(B.NAME) as "pagar_a2",
+clo.city as city
+from fin_payment P
+INNER JOIN ad_org ORG ON ORG.ad_org_id = P.ad_org_id
+INNER JOIN AD_OrgInfo orgi ON orgi.ad_org_id = ORG.ad_org_id
+INNER JOIN c_location clo ON clo.c_location_id = orgi.c_location_id
+LEFT JOIN c_doctype D on D.c_doctype_id = P.c_doctype_id
+LEFT JOIN c_bpartner B on B.c_bpartner_id = P.c_bpartner_id
+LEFT JOIN fin_financial_account F on F.fin_financial_account_id = P.fin_financial_account_id
+WHERE P.fin_payment_id = $P{DOCUMENT_ID}
+AND P.amount >0
+AND P.status in ('PWNC','PPM')]]>
+	</queryString>
+	<field name="organizationid" class="java.lang.String"/>
+	<field name="nombre_empresa" class="java.lang.String"/>
+	<field name="depositar_en" class="java.lang.String"/>
+	<field name="cta_corriente" class="java.lang.String"/>
+	<field name="documento" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="referencia_no" class="java.lang.String"/>
+	<field name="pagar_a" class="java.lang.String"/>
+	<field name="taxid" class="java.lang.String"/>
+	<field name="fecha_cabecera" class="java.lang.String"/>
+	<field name="fecha_footer" class="java.lang.String"/>
+	<field name="fecha_footer2" class="java.lang.String"/>
+	<field name="fecha_recibo" class="java.lang.String"/>
+	<field name="fecha_pago" class="java.lang.String"/>
+	<field name="importe" class="java.math.BigDecimal"/>
+	<field name="monto_letras" class="java.lang.String"/>
+	<field name="concepto" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="pagar_a2" class="java.lang.String"/>
+	<field name="city" class="java.lang.String"/>
+	<variable name="V_SUMDEBITO" class="java.math.BigDecimal" calculation="System"/>
+	<variable name="V_SUMCREDITO" class="java.math.BigDecimal" calculation="System"/>
+	<group name="organization">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<group name="CategoryGroup">
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="360" splitType="Stretch">
+			<textField>
+				<reportElement x="99" y="250" width="336" height="18" uuid="c303f56c-3b96-4044-aef1-66f8e0b48b4d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pagar_a2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="366" y="218" width="90" height="16" uuid="e781bdc4-9eaa-4059-af6a-cafffdc09cee"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_recibo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="197" y="38" width="293" height="17" uuid="cb486af7-2e16-4c93-b64e-451bc6fc27f1"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pagar_a}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="517" y="39" width="67" height="16" uuid="7d38ea68-d0cc-463a-a878-97c74c2d2802"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="197" y="68" width="387" height="25" uuid="4a79aeda-e5f3-4f1d-ba36-a53214e1c382"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{monto_letras}]]></textFieldExpression>
+			</textField>
+			<subreport isUsingCache="true">
+				<reportElement positionType="Float" x="0" y="322" width="584" height="38" uuid="f8e66494-81b7-4703-88f4-f27ae2e5997c"/>
+				<subreportParameter name="DOCUMENT_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="V_SUMDEB" toVariable="V_SUMDEBITO" calculation="Sum"/>
+				<returnValue subreportVariable="sumaCredito" toVariable="V_SUMCREDITO"/>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN} +"/ec/com/sidesoft/custom/reports/checks/ad_reports/SubRpt_PaymentCont.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="517" y="219" width="67" height="16" uuid="af282ea3-aa53-4547-8958-c1dc6ff7a23c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documento}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="517" y="234" width="67" height="16" uuid="6c807fd0-c89b-46b5-be20-2a213625ec92"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="456" y="252" width="128" height="16" uuid="2df61a04-4af6-4787-a87f-6e3982e35545"/>
+				<box>
+					<leftPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{taxid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="423" y="234" width="67" height="16" uuid="b1ce49eb-2f1a-4ab9-9b46-82717db7a1b4"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referencia_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="271" y="93" width="103" height="18" uuid="4cb41bb9-8466-40d0-a9cd-9104f851e6c4"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_footer2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="197" y="93" width="73" height="18" uuid="80cd27bd-3b09-493b-bc29-d327914b77eb"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{city}+","]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<lastPageFooter>
+		<band height="16"/>
+	</lastPageFooter>
+</jasperReport>

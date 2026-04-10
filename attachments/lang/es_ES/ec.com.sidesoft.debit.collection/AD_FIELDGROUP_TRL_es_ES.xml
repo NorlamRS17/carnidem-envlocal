@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_FIELDGROUP" version="">
+  <row id="8996C39545AA49518038E0815B13B2D5" trl="Y">
+    <value column="Name" isTrl="Y" original="Payment Data">Información Cobro</value>
+  </row>
+  <row id="913DB5675799473A96C16E191CB6AC3C" trl="Y">
+    <value column="Name" isTrl="Y" original="Load Data">Información Carga</value>
+  </row>
+  <row id="E1C31C5822B446769F42F58984DD8CCD" trl="Y">
+    <value column="Name" isTrl="Y" original="collection arrangements">Acuerdos de cobro</value>
+  </row>
+</compiereTrl>

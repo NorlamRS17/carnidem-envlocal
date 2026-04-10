@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="06CE9983C7504EF7BC4DC37E504882CC" trl="N">
+    <value column="MsgText" isTrl="N" original="Error generating de sequence">Error generating de sequence</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="103261316D9C4B4EACF24D2C07C30499" trl="N">
+    <value column="MsgText" isTrl="N" original="It has not been possible to generate Document Sequence">It has not been possible to generate Document Sequence</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="7611FCF3A0BD44D082716C0E05EEAAE1" trl="N">
+    <value column="MsgText" isTrl="N" original="Successfully generated">Successfully generated</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

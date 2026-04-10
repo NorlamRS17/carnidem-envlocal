@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSWOS_VEHICLE_TRG">
+    <trigger name="SSWOS_VEHICLE_TRG" table="ATINDPO_POSTVENTA" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[v_IsNew varchar(90):='Y';  
+Cur_Vehicle RECORD;
+v_count NUMBER;
+
+BEGIN
+
+
+	IF (INSERTING OR UPDATING ) THEN
+--		select * from atindpo_postventa where  v 
+		If (:NEW.em_sswos_new ='Y') Then
+		
+			SELECT COALESCE((Select COUNT(*) 
+					From sswos_vehicle  
+					Where chassis_number = :NEW.numerochasis
+						And plate = :NEW.placa )
+					,0) 
+				INTO v_count
+			From Dual;
+
+			If(v_count>0)Then
+				Update sswos_vehicle Set 
+					vehicle_type=:NEW.lstipovehiculo, 
+				       m_brand_id=:NEW.em_sswos_m_brand_id, ssfi_model_prod_id=:NEW.em_sswos_ssfi_model_prod_id, sswos_year_id=:NEW.em_sswos_year_id, engine_number=:NEW.numeromotor, 
+				       chassis_number=:NEW.numerochasis, plate=:NEW.placa, sswos_color_id=:NEW.em_sswos_color_id, kilometer_hours=:NEW.kmhoras, 
+				       sale_date=:NEW.fechaventa, ad_org_sale_id=:NEW.ad_org_venta_id, c_bpartner_id=:NEW.c_bpartner_id
+				 Where chassis_number = :NEW.numerochasis
+					And plate = :NEW.placa;
+			ELSE 
+				INSERT INTO public.sswos_vehicle(
+					sswos_vehicle_id, ad_client_id, ad_org_id, isactive, created, 
+					createdby, updated, updatedby, vehicle_type, m_brand_id, ssfi_model_prod_id, 
+					sswos_year_id, engine_number, chassis_number, plate, sswos_color_id, 
+					kilometer_hours, sale_date, ad_org_sale_id, c_bpartner_id)
+				VALUES (get_uuid(), :NEW.ad_client_id, :NEW.ad_org_id, :NEW.isactive, :NEW.created, 
+					:NEW.createdby, :NEW.updated, :NEW.updatedby, :NEW.lstipovehiculo, :NEW.em_sswos_m_brand_id, :NEW.em_sswos_ssfi_model_prod_id, 
+					:NEW.em_sswos_year_id, :NEW.numeromotor, :NEW.numerochasis, :NEW.placa, :NEW.em_sswos_color_id,
+					:NEW.kmhoras, :NEW.fechaventa, :NEW.ad_org_venta_id, :NEW.c_bpartner_id);
+			End If; -- END (v_count>0)
+		End If; -- END (NEW.em_sswos_new ='Y')
+	End If; -- END (TG_OP = 'INSERT' OR TG_OP = 'UPDATE' )
+	END SSWOS_VEHICLE_TRG
+]]></body>
+    </trigger>
+  </database>

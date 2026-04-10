@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SCMF_APPROVEFORECASTS">
+    <function name="SCMF_APPROVEFORECASTS" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_ResultStr VARCHAR2(2000):='';
+v_Message VARCHAR2(2000):='';
+
+	-- Parameter Variables
+v_Record_ID VARCHAR2(32);
+v_AD_Client_ID VARCHAR2(32);
+v_Client_ID		VARCHAR(32); 	--OBTG:VARCHAR2--
+v_Org_ID		VARCHAR(32); 	--OBTG:VARCHAR2--
+v_User_ID		VARCHAR(32); 	--OBTG:VARCHAR2--
+
+	TYPE RECORD IS REF CURSOR;
+    Cur_Parameter 	RECORD;
+	Cur_SalesForecast 	RECORD;
+
+  BEGIN
+
+    v_ResultStr:='PInstanceNotFound';
+    --PERFORM AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+  BEGIN 
+
+    -- Get Parameters
+    v_ResultStr := 'ReadingParameters';
+    
+    FOR Cur_Parameter IN
+      (SELECT i.Record_ID,
+        i.AD_User_ID,
+        i.AD_Client_ID,
+        i.AD_Org_ID 
+                          
+      FROM AD_PInstance i      
+      WHERE i.AD_PInstance_ID = p_PInstance_ID      
+      )
+    LOOP
+    
+      v_Record_ID := Cur_Parameter.Record_ID;      
+      v_Client_ID := Cur_Parameter.AD_Client_ID;
+      v_Org_ID := Cur_Parameter.AD_Org_ID;
+      v_User_ID := Cur_Parameter.AD_User_ID;
+           
+      
+    END LOOP; -- End Get Parameter
+
+	--<<START_PROCESS>>
+
+	SELECT * INTO Cur_SalesForecast FROM mrp_salesforecast WHERE mrp_salesforecast_ID = v_Record_ID;
+
+	IF (Cur_SalesForecast.EM_Ssmrp_Approveforecasts = 'APF' AND Cur_SalesForecast.EM_Ssmrp_Docstatus = 'DR') THEN
+		UPDATE mrp_salesforecast SET EM_Ssmrp_Approveforecasts = 'ARF', EM_Ssmrp_Docstatus = 'AP' WHERE mrp_salesforecast_ID = v_Record_ID;
+	END IF;
+
+
+	IF (Cur_SalesForecast.EM_Ssmrp_Approveforecasts = 'ARF' AND Cur_SalesForecast.EM_Ssmrp_Docstatus = 'AP') THEN
+		UPDATE mrp_salesforecast SET EM_Ssmrp_Approveforecasts = 'APF', EM_Ssmrp_Docstatus = 'DR' WHERE mrp_salesforecast_ID = v_Record_ID;
+	END IF;
+
+        --<<FINISH_PROCESS>>
+
+    --  Update AD_PInstance
+    v_Message := '@RowsUpdated@';
+    --RAISE NOTICE '%','Updating PInstance - Finished ' || v_Message ;
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, v_Message) ;
+    RETURN;
+  END; --BODY
+  
+EXCEPTION
+WHEN OTHERS THEN
+  v_ResultStr:= '@ERROR=' || SQLERRM;
+  --RAISE NOTICE '%',v_ResultStr ;
+  ROLLBACK;
+  AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+  RETURN;
+END SCMF_APPROVEFORECASTS
+]]></body>
+    </function>
+  </database>

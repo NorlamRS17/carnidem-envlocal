@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="3494CF29304F49DDA243210DA7982E61" trl="N">
+    <value column="Name" isTrl="N" original="Consolidación de Items Generada">Consolidación de Items Generada</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="44BCA72DB29F424F822A1648CB2240AD" trl="N">
+    <value column="Name" isTrl="N" original="Borrador">Borrador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="72CF040FFFAF4D93B4F3C9EDAA2CDCA1" trl="N">
+    <value column="Name" isTrl="N" original="Procesado">Procesado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

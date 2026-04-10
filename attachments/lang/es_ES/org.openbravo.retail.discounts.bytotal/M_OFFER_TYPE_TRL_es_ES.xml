@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="M_OFFER_TYPE" version="">
+  <row id="00535FB65D9941AE9575546FBAF11B95" trl="N">
+    <value column="Name" isTrl="N" original="Variable Discount per Total Amount">Variable Discount per Total Amount</value>
+    <value column="Description" isTrl="N" original="Manual Variable Discount based on the total amount of the receipt.">Manual Variable Discount based on the total amount of the receipt.</value>
+  </row>
+  <row id="096984DC2B944C85A9162C66C37EE7A3" trl="N">
+    <value column="Name" isTrl="N" original="Fixed Percentage per Total Amount">Fixed Percentage per Total Amount</value>
+    <value column="Description" isTrl="N" original="Manual Percentage Discount based on the total amount of the receipt.">Manual Percentage Discount based on the total amount of the receipt.</value>
+  </row>
+  <row id="4183C8EB7CDA472D9E64521DC2504B15" trl="N">
+    <value column="Name" isTrl="N" original="Discount per Total Amount">Discount per Total Amount</value>
+    <value column="Description" isTrl="N" original="Discount based on the total amount of the receipt.">Discount based on the total amount of the receipt.</value>
+  </row>
+  <row id="4755A35B4DA34F6CB08F15462BA123CF" trl="N">
+    <value column="Name" isTrl="N" original="Free Products per Total Amount">Free Products per Total Amount</value>
+    <value column="Description" isTrl="N" original="Free products gift based on the total amount of the receipt.">Free products gift based on the total amount of the receipt.</value>
+  </row>
+  <row id="9707DE71F91549DB80CCB2F094E951EA" trl="N">
+    <value column="Name" isTrl="N" original="Percentage Discount per Total Amount">Percentage Discount per Total Amount</value>
+    <value column="Description" isTrl="N" original="Percentage discount based on the total amount of the receipt.">Percentage discount based on the total amount of the receipt.</value>
+  </row>
+  <row id="971642418DD24DE5BD860D63EF57D5F6" trl="N">
+    <value column="Name" isTrl="N" original="Fixed Discount per Total Amount">Fixed Discount per Total Amount</value>
+    <value column="Description" isTrl="N" original="Manual Discount based on the total amount of the receipt.">Manual Discount based on the total amount of the receipt.</value>
+  </row>
+  <row id="ADF7E7F91B3A49869FB3F89B8C5A325E" trl="N">
+    <value column="Name" isTrl="N" original="Variable Percentage Discount per Total Amount">Variable Percentage Discount per Total Amount</value>
+    <value column="Description" isTrl="N" original="Manual Variable Percentage Discount based on the total amount of the receipt.">Manual Variable Percentage Discount based on the total amount of the receipt.</value>
+  </row>
+</compiereTrl>

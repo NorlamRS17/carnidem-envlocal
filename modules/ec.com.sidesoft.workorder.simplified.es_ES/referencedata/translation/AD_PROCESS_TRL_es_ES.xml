@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="1C1F5462B9434703824460896EB435AE" trl="N">
+    <value column="Name" isTrl="Y" original="Update prices Service orders">Actualizar precios Ordenes de servicios</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2424CF6568194D99937D42D4A22B2B73" trl="N">
+    <value column="Name" isTrl="Y" original="Sswos_CreateOrders">Crear Orden(es)</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3A1CA4458D1F4148BF48C2B0A151463C" trl="N">
+    <value column="Name" isTrl="Y" original="Transfer Parts Return">Devolución Parcial</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3B581E33CE334A9E9388817E625EF040" trl="N">
+    <value column="Name" isTrl="Y" original="Transfer Parts">Transferencia Repuestos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="983BA6DDDBE347F39F05EE77F512127F" trl="N">
+    <value column="Name" isTrl="Y" original="Create order">Crear Orden</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AB31FA3F594949C58D6363C230A6DBDB" trl="N">
+    <value column="Name" isTrl="Y" original="Process">Procesar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D78F7B34CE624A778B8B064F96115122" trl="N">
+    <value column="Name" isTrl="Y" original="Load">Cargar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E74903303FE742EA93A4FA456DB444EC" trl="N">
+    <value column="Name" isTrl="Y" original="Load">Cargar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F89256BCEF2544969FAAE31506003E93" trl="N">
+    <value column="Name" isTrl="Y" original="Transfer Parts All">Devolución Total</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

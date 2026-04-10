@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_FIELDGROUP" version="">
+  <row id="5A0ED2F3BA4A4F5381595749D548B15D" trl="N">
+    <value column="Name" isTrl="N" original="Patrimonio">Patrimonio</value>
+  </row>
+  <row id="62B55B5B7F984EDB87874E5A0F5D95AD" trl="N">
+    <value column="Name" isTrl="N" original="Vehículos">Vehículos</value>
+  </row>
+  <row id="8B051FCDEF02448B83A558D0A798FDAC" trl="N">
+    <value column="Name" isTrl="N" original="Datos Personales">Datos Personales</value>
+  </row>
+  <row id="9494E83EAABC4E9BAA219055F5A09E48" trl="N">
+    <value column="Name" isTrl="N" original="Información Aduana">Información Aduana</value>
+  </row>
+</compiereTrl>

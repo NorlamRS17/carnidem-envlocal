@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="28AD5B2D6CC944B8A7300978CB2F916B" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Location">Coordenadas</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="99D8C62675A24B0CAD647BE65CDDD71D" trl="N">
+    <value column="MsgText" isTrl="N" original="Longitude">Longitude</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="A62D9E26B30849CFA0EAC56319243258" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Location on the map">Ubicación en el mapa</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="A95E2CDF86754CFBA6BB0C358A56F350" trl="N">
+    <value column="MsgText" isTrl="N" original="Latitude">Latitude</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

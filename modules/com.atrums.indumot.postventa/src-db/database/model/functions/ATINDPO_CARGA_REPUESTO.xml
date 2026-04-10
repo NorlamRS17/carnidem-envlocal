@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION ATINDPO_CARGA_REPUESTO">
+    <function name="ATINDPO_CARGA_REPUESTO" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_atindpo_reg_reemp_id varchar(32);
+v_descripcionpieza character varying(255);
+v_marca character varying(60);
+v_aplicacion character varying(60);
+v_noparte character varying(40);
+v_nopartereemplazo character varying(40);
+v_preciofob NUMBER(10,2);
+v_precioecuador NUMBER(10,2);
+v_paisorigen character varying(60);
+v_tiporepuesto character varying(60);
+v_ad_client_id varchar(32);
+v_ad_org_id varchar(32);
+v_createdby varchar(32);
+v_updatedby varchar(32);
+v_contador NUMBER;
+Cur_Parameter RECORD;
+repuestos RECORD;
+v_mensaje NUMBER;
+v_ResultStr character varying(200);
+
+BEGIN AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+	if exists (select * from i_rrepuestos)then
+       		
+delete from atindpo_registro_reemplazo;
+FOR Cur_Parameter IN
+      (SELECT i.Record_ID,
+        i.AD_User_ID,
+        i.AD_Client_ID,
+      i.ad_org_id
+      FROM AD_PInstance i
+      WHERE i.AD_PInstance_ID=p_PInstance_ID
+    
+      )
+    LOOP
+   
+      v_createdby:=Cur_Parameter.AD_User_ID;
+  v_updatedby:=Cur_Parameter.AD_User_ID;
+      v_ad_client_id:=Cur_Parameter.AD_Client_ID;
+    v_ad_org_id:=Cur_Parameter.ad_org_id;
+
+    END LOOP;
+FOR repuestos IN
+      (SELECT descripcionpieza, marca, aplicacion, noparte, 
+		 nopartereemplazo, preciofob, precioecuador, paisorigen, tiporepuesto FROM i_rrepuestos
+    
+      )
+    LOOP
+       v_atindpo_reg_reemp_id:=get_uuid();
+      v_descripcionpieza:=repuestos.descripcionpieza;
+  v_marca:=repuestos.marca;
+      v_aplicacion:=repuestos.aplicacion;
+    v_noparte:=repuestos.noparte;
+v_nopartereemplazo:=repuestos.nopartereemplazo;
+v_preciofob:=repuestos.preciofob;
+v_precioecuador:=repuestos.precioecuador;
+v_paisorigen:=repuestos.paisorigen;
+v_tiporepuesto:=repuestos.tiporepuesto;
+		
+			INSERT INTO atindpo_registro_reemplazo (atindpo_registro_reemplazo_id, ad_client_id, ad_org_id, createdby, updatedby, descripcionpieza,
+			marca, aplicacion, noparte,  nopartereemplazo, preciofob, precioecuador, paisorigen, tiporepuesto)
+			VALUES (v_atindpo_reg_reemp_id, v_ad_client_id, v_ad_org_id, v_createdby, v_updatedby, v_descripcionpieza,
+			v_marca, v_aplicacion, v_noparte,  v_nopartereemplazo, v_preciofob, v_precioecuador, v_paisorigen, v_tiporepuesto);
+
+    END LOOP;
+select count(atindpo_registro_reemplazo_id) into v_mensaje from atindpo_registro_reemplazo;
+
+v_ResultStr:='Proceso satisfactorio: se ha insertado ' || v_mensaje || ' registros';
+  
+delete from i_rrepuestos;
+ AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, v_ResultStr);
+else 
+v_ResultStr:='No se ha subido un archivo master file '; AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr);
+	end if;
+END ATINDPO_CARGA_REPUESTO
+]]></body>
+    </function>
+  </database>

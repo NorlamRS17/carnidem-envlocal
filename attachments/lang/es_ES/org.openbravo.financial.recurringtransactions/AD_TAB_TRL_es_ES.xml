@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="5669456891724CD8B0BF7EE8E85BB667" trl="N">
+    <value column="Name" isTrl="N" original="G/L Journal Header">G/L Journal Header</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original="Journal header template">Journal header template</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="View the journal headers associated to this recurring rule as a template for recurring transactions.">View the journal headers associated to this recurring rule as a template for recurring transactions.</value>
+  </row>
+  <row id="6633AB972FF84B269444AF474CD60DD8" trl="N">
+    <value column="Name" isTrl="N" original="Recurring Rule">Recurring Rule</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original="Recurring rule">Recurring rule</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="Recurring rule">Recurring rule</value>
+  </row>
+  <row id="90A1D64228454FB0AA8499C56FFFC58E" trl="N">
+    <value column="Name" isTrl="N" original="G/L Journal Cloned Instaces">G/L Journal Cloned Instaces</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original="Cloned instances for G/L Journals">Cloned instances for G/L Journals</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="Cloned instances for G/L Journals">Cloned instances for G/L Journals</value>
+  </row>
+  <row id="E6EE2DBE0D9F476D904443DB3C87862A" trl="N">
+    <value column="Name" isTrl="N" original="Recurring Template Type">Recurring Template Type</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original="Define and maintain template types for recurring transactions.">Define and maintain template types for recurring transactions.</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="Define and maintain template types for recurring transactions.">Define and maintain template types for recurring transactions.</value>
+  </row>
+</compiereTrl>

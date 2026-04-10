@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="09929A800ADB4B91B66913E2261913B4" trl="N">
+    <value column="Name" isTrl="N" original="Vehicles">Vehicles</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="0EEFBA8981F6417E9696B79886AF68F0" trl="N">
+    <value column="Name" isTrl="Y" original="Transfers">Transferencias</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="1EF3149A94C6467BB14BF9596245D460" trl="N">
+    <value column="Name" isTrl="Y" original="Binnacle">Bitácora</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4D10F89AC6EF461DBD5C62696DBB59B9" trl="N">
+    <value column="Name" isTrl="Y" original="Transfers">Transferencias</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="585AF6BC9A3D450F92E30336CC58C61D" trl="N">
+    <value column="Name" isTrl="Y" original="Header">Cabiar estado de Facturada a Entregada</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5AF8BD5B8B9A4C54B0513D427FCB14EC" trl="N">
+    <value column="Name" isTrl="Y" original="Service order transfer">Transferencia orden de servicio</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7986CFE0E1CF46478B71B73F57CA2621" trl="N">
+    <value column="Name" isTrl="N" original="Class">Class</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7F11734D86A4445F81ED0709EB27309F" trl="Y">
+    <value column="Name" isTrl="Y" original="Vehicle Recall">Vehículos Recall</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="84143B16D35F40FABF854347ED39AA18" trl="N">
+    <value column="Name" isTrl="Y" original="Origin">Origen</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="87DAD7DEDD4843D49581FD57B880A6C7" trl="N">
+    <value column="Name" isTrl="N" original="Subclass">Subclass</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8CDEF770FBAD48818658BE27C43C066D" trl="N">
+    <value column="Name" isTrl="N" original="Color">Color</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="908313B7C14546BDAC512D5A13B344A5" trl="N">
+    <value column="Name" isTrl="N" original="Year">Year</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A57D0429ACAA407291E8D421CE899874" trl="N">
+    <value column="Name" isTrl="Y" original="Line">Línea</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BD801E6DBC51499F9BB49E5222438FDE" trl="Y">
+    <value column="Name" isTrl="Y" original="Setting Reports">Impresión Documentos O. Servicio</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F1586E06566B4E1D953547F51A4C1390" trl="N">
+    <value column="Name" isTrl="Y" original="Binnacle">Bitácora</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

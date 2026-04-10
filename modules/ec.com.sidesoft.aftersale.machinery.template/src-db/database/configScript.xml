@@ -1,0 +1,257 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <removeTriggerChange triggerName="SSWOS_VEHICLE_TRG"/>
+    <columnDataChange tablename="AD_PROCESS" columnname="PROCEDURENAME" pkRow="983BA6DDDBE347F39F05EE77F512127F">
+      <oldValue><![CDATA[sswos_createorder]]></oldValue>
+      <newValue><![CDATA[satmac_createorder]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="ISACTIVE" pkRow="3830D1D6E7C24B2987532DC795994BD5">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="ISACTIVE" pkRow="7DDD9DE6126D4BBA91ED1ED2DA8C90AE">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_LIST" columnname="ISACTIVE" pkRow="F94A7D5CB2C04DB992E0F0C5BF45254C">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MODEL_OBJECT" columnname="CLASSNAME" pkRow="C8F435F167FA4CC58E93729912B994E3">
+      <oldValue><![CDATA[ec.com.sidesoft.workorder.simplified.ad_callouts.SSWOS_Vehicles]]></oldValue>
+      <newValue><![CDATA[ec.com.sidesoft.aftersale.machinery.ad_callouts.PostVentaMachine]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MODEL_OBJECT_MAPPING" columnname="MAPPINGNAME" pkRow="B24A8A6F883E4942B24659D59DDCA7FC">
+      <oldValue><![CDATA[/ec.com.sidesoft.workorder.simplified.ad_callouts/SSWOS_Vehicles]]></oldValue>
+      <newValue><![CDATA[/ec.com.sidesoft.aftersale.machinery.ad_callouts/GetMachineData]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="8887">
+      <oldValue/>
+      <newValue><![CDATA[EA0250366D334E1CAEBFE951971BFA46]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="07C58CA8166941278C2617AC483361FC">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="0CC25082CC1D48E1A9DA785BFC865B6E">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="0CC25082CC1D48E1A9DA785BFC865B6E">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Satmac_Origin@='I']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="0CC25082CC1D48E1A9DA785BFC865B6E">
+      <oldValue/>
+      <newValue><![CDATA[6FF938303C974CD2AB5B4121D510A624]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="17AA489B64B04B60AC558FCDF6D7FE73">
+      <oldValue><![CDATA[30]]></oldValue>
+      <newValue><![CDATA[18]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="17AA489B64B04B60AC558FCDF6D7FE73">
+      <oldValue><![CDATA[800057]]></oldValue>
+      <newValue><![CDATA[192]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="1865A01E214345398BE0F61E3BD2760A">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Satmac_Origin@='P' | @EM_Satmac_Origin@='I']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_ELEMENT_ID" pkRow="2AC450090CD94C9DB8228D9E815B4A79">
+      <oldValue><![CDATA[FB6DEFD52F1E4869BCD7122D38DC5396]]></oldValue>
+      <newValue><![CDATA[348]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISSESSIONATTR" pkRow="34F9795CD9D543BF9E7273DF08B8AB67">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="400CDE925E494A82A8DD3C2EC38E6E55">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="54B7A573C06342FC8E87651FF95071A8">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="64536F2480AA44769BC2550714DCDC50">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="64536F2480AA44769BC2550714DCDC50">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Satmac_Origin@='P']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="865180F765C34E95AB5CF1CBDDB1B8B6">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="86A7B774D6884A33B2C5B6361B5A14A0">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="86A7B774D6884A33B2C5B6361B5A14A0">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Satmac_Origin@='P' | @EM_Satmac_Origin@='I']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="898F6854AA2C48CCA0CD156D062C29AD">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="BAFEBDA6E51B40F0B5C532052C07A6FE">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="CC51741370A145A887FFABBEF831D26C">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="CC51741370A145A887FFABBEF831D26C">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Satmac_Origin@='P' | @EM_Satmac_Origin@='I']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="EE848B46B5384E04955B3867A6D81D2F">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Satmac_Origin@='P']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="FB4E4817DBDB4618B1A64D45A3E03270">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="081651E844A04C9EACC4A88A64DDAC09">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="1285EC76570A4D7DA79BD098D2009D94">
+      <oldValue/>
+      <newValue><![CDATA[5]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SHOWINRELATION" pkRow="1285EC76570A4D7DA79BD098D2009D94">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="GRID_SEQNO" pkRow="1285EC76570A4D7DA79BD098D2009D94">
+      <oldValue/>
+      <newValue><![CDATA[5]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="2133E27DA76A4A6D9A47A67CB39DF7FB">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="22985AB98C5F4CE0AD792BD83187B959">
+      <oldValue><![CDATA[260]]></oldValue>
+      <newValue><![CDATA[212]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="23B2C643D7004F319055ECF44360FBB8">
+      <oldValue/>
+      <newValue><![CDATA[@Lstiposervicio@='SATMAC_CMD' | @Lstiposervicio@='SATMAC_CM']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="246017E68EB94C3A9B2F93EFC851CF72">
+      <oldValue><![CDATA[260]]></oldValue>
+      <newValue><![CDATA[212]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="26BF77865A9943E1AC62F663E3CD34BD">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="2D1D1A88B19046249A78D06D4DB91FB5">
+      <oldValue><![CDATA[60]]></oldValue>
+      <newValue><![CDATA[17]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="GRID_SEQNO" pkRow="2D1D1A88B19046249A78D06D4DB91FB5">
+      <oldValue><![CDATA[60]]></oldValue>
+      <newValue><![CDATA[17]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="3854B82FC9E9428FBC80B450EB0C434F">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="50C1B34C802D4206B5F0699EB8A4AC20">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="552333FE9FA34280805BEDBCC15FD4B1">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="5A86364F09E7428891D8E1869558495F">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="6DB7A33ED94B42C186CA25F7C5E48E34">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="7179F3F2AB214B678A63DD405CF82157">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="732B186599394F10BA7DACD5BEA0003A">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="7CDEA591D9BE4A1B87E03CBACD8C7423">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="90A0D67CE69F4793B988BCFEFF41D476">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="965DB31034574ABCBA0C934CB0EC8206">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="AC8DC3C70F6C448BB6FE6C8E74B2E8F1">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="B021A93BE3184628935D94CD37D7DD9E">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="BBF4AB6E054C4FB388E1B6727FAEF177">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="BFB4EA03DF5A4E3189E6139572F7DE8B">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="C04D5070D1CC4E408C519ACED89EB12A">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="C04D5070D1CC4E408C519ACED89EB12A">
+      <oldValue/>
+      <newValue><![CDATA[0]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SHOWINRELATION" pkRow="C04D5070D1CC4E408C519ACED89EB12A">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="GRID_SEQNO" pkRow="C04D5070D1CC4E408C519ACED89EB12A">
+      <oldValue/>
+      <newValue><![CDATA[0]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="CF1A399256FA4BDFBD6EB982D8924A78">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="D350CAF341CE4182AD59755D26E0EAA4">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="DE5E827672D64C1884D2BD79864C8409">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="F58660D3E47040D4BED2A381B4971AB5">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="F94B9553E201438BBA9DE75E1094C5B6">
+      <oldValue/>
+      <newValue><![CDATA[@Lstiposervicio@='SATMAC_CMD' | @Lstiposervicio@='SATMAC_CM']]></newValue>
+    </columnDataChange>
+  </vector>

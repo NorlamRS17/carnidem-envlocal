@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ATINDPO_ACT_EMAIL_TRG">
+    <trigger name="ATINDPO_ACT_EMAIL_TRG" table="ATINDPO_POSTVENTA" fires="before" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[
+v_correo varchar(90);  
+
+
+BEGIN
+
+
+	IF (INSERTING) THEN
+
+
+
+        IF :new.ad_client_id='1F7598333F69476DB30ABDFB61892E41' then
+
+
+            select em_atimdm_email
+            into v_correo 
+            from c_bpartner 
+            where c_bpartner_id=:new.c_bpartner_id;
+
+            :new.email:=v_correo;   
+
+        end if;
+
+        RETURN NEW;
+
+	end if;
+    
+
+	END ATINDPO_ACT_EMAIL_TRG
+]]></body>
+    </trigger>
+  </database>

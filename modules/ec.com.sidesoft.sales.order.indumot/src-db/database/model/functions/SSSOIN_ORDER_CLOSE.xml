@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSSOIN_ORDER_CLOSE">
+    <function name="SSSOIN_ORDER_CLOSE" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[BEGIN
+ SSSOIN_ORDER_CLOSE0($1, NULL);
+END SSSOIN_ORDER_CLOSE
+]]></body>
+    </function>
+  </database>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<provider>
+  <bean>
+    <name>ManufacturingPart</name>
+    <class>ec.com.sidesoft.app.production.quality.webservices.Ssapq_ManufacturingPart</class>
+    <singleton>true</singleton>
+  </bean>
+  <bean>
+    <name>RawMaterial</name>
+    <class>ec.com.sidesoft.app.production.quality.webservices.Ssapq_DataCollection</class>
+    <singleton>true</singleton>
+  </bean>
+  <bean>
+    <name>FinishingProduct</name>
+    <class>ec.com.sidesoft.app.production.quality.webservices.Ssapq_DataCollectionProduct</class>
+    <singleton>true</singleton>
+  </bean>
+<!-- Inicio de Servicios Añadidos el 25 de septiembre del 2024-->
+  <bean>
+    <name>TakeTurns</name>
+    <class>ec.com.sidesoft.app.production.quality.webservices.Ssapq_TakeTurns</class>
+    <singleton>true</singleton>
+  </bean>
+<!-- Fin de Servicios Añadidos el 25 de septiembre del 2024-->
+<!-- Inicio de Servicios Añadidos el 09 de enero del 2025-->
+  <bean>
+    <name>MovWarehouses</name>
+    <class>ec.com.sidesoft.app.production.quality.webservices.Ssapq_MovWarehouses</class>
+    <singleton>true</singleton>
+  </bean>
+<!-- Fin de Servicios Añadidos el 09 de enero del 2025-->
+  <bean>
+    <name>ValidateStock</name>
+    <class>ec.com.sidesoft.app.production.quality.webservices.Ssapq_ValidateStock</class>
+    <singleton>true</singleton>
+  </bean>
+  <bean>
+    <name>AlterUnitProduct</name>
+    <class>ec.com.sidesoft.app.production.quality.webservices.Ssapg_AlterUnitProduct</class>
+    <singleton>true</singleton>
+  </bean>
+  <bean>
+    <name>ValidateStockProLine</name>
+    <class>ec.com.sidesoft.app.production.quality.webservices.Ssapq_ValidateStockProLine</class>
+    <singleton>true</singleton>
+  </bean>
+</provider>

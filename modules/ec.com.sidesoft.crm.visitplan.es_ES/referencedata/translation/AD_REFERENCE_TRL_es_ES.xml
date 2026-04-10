@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="3D5A8DE9F79340B0AB07DEF41ACF76CF" trl="N">
+    <value column="Name" isTrl="N" original="Visiting status">Visiting status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AA1D730B51114AB99D8F3D9AC04ADB4C" trl="Y">
+    <value column="Name" isTrl="Y" original="Type Route">Tipo de ruta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F7AFA390A5374B82AF101D67147EE270" trl="N">
+    <value column="Name" isTrl="N" original="Route states">Route states</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

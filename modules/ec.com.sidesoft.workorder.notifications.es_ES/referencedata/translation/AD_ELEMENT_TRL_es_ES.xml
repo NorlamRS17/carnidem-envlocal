@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="09A36D2A430D4EBE93DA84B8D68B67FF" trl="N">
+    <value column="Name" isTrl="N" original="Sswon_Config_ID">Sswon_Config_ID</value>
+    <value column="PrintName" isTrl="N" original="Sswon_Config_ID">Sswon_Config_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="12505F06318145A4B269C24C84DBEA82" trl="Y">
+    <value column="Name" isTrl="Y" original="Date_From">Enviar desde la Fecha</value>
+    <value column="PrintName" isTrl="Y" original="Date_From">Enviar desde la Fecha</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1EC76DB330E041BF876B7962827D636B" trl="Y">
+    <value column="Name" isTrl="Y" original="Invoice - Mail Footer">Factura - Pie del Correo</value>
+    <value column="PrintName" isTrl="Y" original="Invoice - Mail Footer">Factura - Pie del Correo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2D6B21ECB3534623A4982B3F65C285C6" trl="Y">
+    <value column="Name" isTrl="Y" original="Document Status">Estado del Documento</value>
+    <value column="PrintName" isTrl="Y" original="Document Status">Estado del Documento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="320F817A57D1406697100AFFA10FC734" trl="Y">
+    <value column="Name" isTrl="Y" original="Email Sent">Correo Enviado</value>
+    <value column="PrintName" isTrl="Y" original="Email Sent">Correo Enviado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3F6EC142790C46DD94B844CB6C8F1CED" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Format">Formato del Reporte</value>
+    <value column="PrintName" isTrl="Y" original="Report Format">Formato del Reporte</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="45825693896042BC8C6C21D3DFDA3F79" trl="Y">
+    <value column="Name" isTrl="Y" original="Mail Subject">Asunto del Correo</value>
+    <value column="PrintName" isTrl="Y" original="Mail Subject">Asunto del Correo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="683EF6F088B54D118AA899A84889A997" trl="Y">
+    <value column="Name" isTrl="Y" original="Mail Body">Cuerpo del Correo</value>
+    <value column="PrintName" isTrl="Y" original="Mail Body">Cuerpo del Correo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6B07FE254C9545909211F7E9568A838F" trl="Y">
+    <value column="Name" isTrl="Y" original="Invoice - Mail Body">Factura - Cuerpo de Correo</value>
+    <value column="PrintName" isTrl="Y" original="Invoice - Mail Body">Factura - Cuerpo de Correo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="73B3A5FE316D4C9AA5DA367F28C76C54" trl="N">
+    <value column="Name" isTrl="N" original="EM_Sswon_Sent_Email">EM_Sswon_Sent_Email</value>
+    <value column="PrintName" isTrl="N" original="EM_Sswon_Sent_Email">EM_Sswon_Sent_Email</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="745DCB54F5914C47B09B0F8D3C66A1C0" trl="Y">
+    <value column="Name" isTrl="Y" original="Module Name">Nombre del Modulo</value>
+    <value column="PrintName" isTrl="Y" original="Module Name">Nombre del Modulo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7CD134E0F5444D5BAD57ACAD2314FD21" trl="Y">
+    <value column="Name" isTrl="Y" original="Template Name">Nombre del Fichero de la Plantilla</value>
+    <value column="PrintName" isTrl="Y" original="Template Name">Nombre del Fichero de la Plantilla</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7FADE7921BF240988ECAD80DEC391666" trl="N">
+    <value column="Name" isTrl="N" original="Sswon_Status_Report_ID">Sswon_Status_Report_ID</value>
+    <value column="PrintName" isTrl="N" original="Sswon_Status_Report_ID">Sswon_Status_Report_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8CCBE31C53C546D89919E8FD19F49AF8" trl="Y">
+    <value column="Name" isTrl="Y" original="Template Path">Ubicación de la Plantilla</value>
+    <value column="PrintName" isTrl="Y" original="Template Path">Ubicación de la Plantilla</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A9173E36BA87425792EBCA29D8C203D0" trl="Y">
+    <value column="Name" isTrl="Y" original="Send Prefecture">Enviar Pre-Factura</value>
+    <value column="PrintName" isTrl="Y" original="Send Prefecture">Enviar Pre-Factura</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D27A637D378942BA894DADB5C222E636" trl="Y">
+    <value column="Name" isTrl="Y" original="Mail Footer">Pie del Correo</value>
+    <value column="PrintName" isTrl="Y" original="Mail Footer">Pie del Correo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E72C7556CA734E9CB401094A2BD09913" trl="Y">
+    <value column="Name" isTrl="Y" original="Send">Enviar</value>
+    <value column="PrintName" isTrl="Y" original="Send">Enviar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F55F6885605248999C3FF9755FD063E3" trl="Y">
+    <value column="Name" isTrl="Y" original="Document Name">Nombre del Documento</value>
+    <value column="PrintName" isTrl="Y" original="Document Name">Nombre del Documento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F7EC4DB100374A1BA9D1134CC2E289D0" trl="Y">
+    <value column="Name" isTrl="Y" original="Invoice - Mail Subject ">Factura - Asunto del Correo</value>
+    <value column="PrintName" isTrl="Y" original="Subject Mail Invoice">Factura - Asunto del Correo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -60,6 +60,12 @@ public class Header extends HttpSecureAppServlet {
         SessionInfo.setModuleId("8204FEBE1A0B4C36B45C4F662A44CB1B");
       }
      
+      if (command.contains("B0DCB2771D744EAA8F75B2B6530CABF8")) {
+        SessionInfo.setProcessType("P");
+        SessionInfo.setProcessId("B0DCB2771D744EAA8F75B2B6530CABF8");
+        SessionInfo.setModuleId("BEE9E7698A8E4D3DB991392F9FF2D62E");
+      }
+     
       try {
         securedProcess = "Y".equals(org.openbravo.erpCommon.businessUtility.Preferences
             .getPreferenceValue("SecuredProcess", true, vars.getClient(), vars.getOrg(), vars
@@ -77,6 +83,16 @@ public class Header extends HttpSecureAppServlet {
         }
       }
      
+      if (command.contains("D3ED058DE3444DAFB49DB442919A980B")) {
+        SessionInfo.setProcessType("P");
+        SessionInfo.setProcessId("D3ED058DE3444DAFB49DB442919A980B");
+        SessionInfo.setModuleId("BEE9E7698A8E4D3DB991392F9FF2D62E");
+        if (securedProcess || explicitAccess.contains("D3ED058DE3444DAFB49DB442919A980B")) {
+          classInfo.type = "P";
+          classInfo.id = "D3ED058DE3444DAFB49DB442919A980B";
+        }
+      }
+     
       if (command.contains("122")) {
         SessionInfo.setProcessType("P");
         SessionInfo.setProcessId("122");
@@ -84,6 +100,16 @@ public class Header extends HttpSecureAppServlet {
         if (securedProcess || explicitAccess.contains("122")) {
           classInfo.type = "P";
           classInfo.id = "122";
+        }
+      }
+     
+      if (command.contains("DB2C50639DA742E6890ED59EFC808554")) {
+        SessionInfo.setProcessType("P");
+        SessionInfo.setProcessId("DB2C50639DA742E6890ED59EFC808554");
+        SessionInfo.setModuleId("DFE0DD3106FF487FA3BAA680D68B317E");
+        if (securedProcess || explicitAccess.contains("DB2C50639DA742E6890ED59EFC808554")) {
+          classInfo.type = "P";
+          classInfo.id = "DB2C50639DA742E6890ED59EFC808554";
         }
       }
      
@@ -97,11 +123,26 @@ public class Header extends HttpSecureAppServlet {
         }
       }
      
+      if (command.contains("D3BA849A76B44C739D4503A1238C6645")) {
+        SessionInfo.setProcessType("P");
+        SessionInfo.setProcessId("D3BA849A76B44C739D4503A1238C6645");
+        SessionInfo.setModuleId("80196198DD274FA0AB51AD7CDD1F2893");
+        if (securedProcess || explicitAccess.contains("D3BA849A76B44C739D4503A1238C6645")) {
+          classInfo.type = "P";
+          classInfo.id = "D3BA849A76B44C739D4503A1238C6645";
+        }
+      }
+     
 
      
       if (explicitAccess.contains("7CC8083871A2456BAC7B948F3510BC3C") || (securedProcess && command.contains("7CC8083871A2456BAC7B948F3510BC3C"))) {
         classInfo.type = "P";
         classInfo.id = "7CC8083871A2456BAC7B948F3510BC3C";
+      }
+     
+      if (explicitAccess.contains("B0DCB2771D744EAA8F75B2B6530CABF8") || (securedProcess && command.contains("B0DCB2771D744EAA8F75B2B6530CABF8"))) {
+        classInfo.type = "P";
+        classInfo.id = "B0DCB2771D744EAA8F75B2B6530CABF8";
       }
      
     }
@@ -155,8 +196,37 @@ public class Header extends HttpSecureAppServlet {
           printPageButtonMove_FromTo_Locator800048(response, vars, strM_Movement_ID, strmoveFromtoLocator, strProcessing);
         }
 
-     } else if (vars.commandIn("BUTTONProcessing122")) {
-        vars.setSessionValue("button122.strprocessing", vars.getStringParameter("inpprocessing"));
+     } else if (vars.commandIn("BUTTONProcessingD3ED058DE3444DAFB49DB442919A980B")) {
+        vars.setSessionValue("buttonD3ED058DE3444DAFB49DB442919A980B.strprocessing", vars.getStringParameter("inpprocessing"));
+        vars.setSessionValue("buttonD3ED058DE3444DAFB49DB442919A980B.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
+        vars.setSessionValue("buttonD3ED058DE3444DAFB49DB442919A980B.strOrg", vars.getStringParameter("inpadOrgId"));
+        vars.setSessionValue("buttonD3ED058DE3444DAFB49DB442919A980B.strClient", vars.getStringParameter("inpadClientId"));
+        
+        
+        HashMap<String, String> p = new HashMap<String, String>();
+        
+        
+        //Save in session needed params for combos if needed
+        vars.setSessionObject("buttonD3ED058DE3444DAFB49DB442919A980B.originalParams", FieldProviderFactory.getFieldProvider(p));
+        printPageButtonFS(response, vars, "D3ED058DE3444DAFB49DB442919A980B", request.getServletPath());    
+     } else if (vars.commandIn("BUTTOND3ED058DE3444DAFB49DB442919A980B")) {
+        String strM_Movement_ID = vars.getGlobalVariable("inpmMovementId", windowId + "|M_Movement_ID", "");
+        String strprocessing = vars.getSessionValue("buttonD3ED058DE3444DAFB49DB442919A980B.strprocessing");
+        String strProcessing = vars.getSessionValue("buttonD3ED058DE3444DAFB49DB442919A980B.strProcessing");
+        String strOrg = vars.getSessionValue("buttonD3ED058DE3444DAFB49DB442919A980B.strOrg");
+        String strClient = vars.getSessionValue("buttonD3ED058DE3444DAFB49DB442919A980B.strClient");
+        
+        
+        if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
+          OBError myError = Utility.translateError(this, vars, vars.getLanguage(), Utility.messageBD(this, "NoWriteAccess", vars.getLanguage()));
+          vars.setMessage(tabId, myError);
+          printPageClosePopUp(response, vars);
+        }else{       
+          printPageButtonProcessingD3ED058DE3444DAFB49DB442919A980B(response, vars, strM_Movement_ID, strprocessing, strProcessing);
+        }
+
+     } else if (vars.commandIn("BUTTONEM_Stat_Processing122")) {
+        vars.setSessionValue("button122.stremStatProcessing", vars.getStringParameter("inpemStatProcessing"));
         vars.setSessionValue("button122.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
         vars.setSessionValue("button122.strOrg", vars.getStringParameter("inpadOrgId"));
         vars.setSessionValue("button122.strClient", vars.getStringParameter("inpadClientId"));
@@ -170,7 +240,7 @@ public class Header extends HttpSecureAppServlet {
         printPageButtonFS(response, vars, "122", request.getServletPath());    
      } else if (vars.commandIn("BUTTON122")) {
         String strM_Movement_ID = vars.getGlobalVariable("inpmMovementId", windowId + "|M_Movement_ID", "");
-        String strprocessing = vars.getSessionValue("button122.strprocessing");
+        String stremStatProcessing = vars.getSessionValue("button122.stremStatProcessing");
         String strProcessing = vars.getSessionValue("button122.strProcessing");
         String strOrg = vars.getSessionValue("button122.strOrg");
         String strClient = vars.getSessionValue("button122.strClient");
@@ -181,7 +251,36 @@ public class Header extends HttpSecureAppServlet {
           vars.setMessage(tabId, myError);
           printPageClosePopUp(response, vars);
         }else{       
-          printPageButtonProcessing122(response, vars, strM_Movement_ID, strprocessing, strProcessing);
+          printPageButtonEM_Stat_Processing122(response, vars, strM_Movement_ID, stremStatProcessing, strProcessing);
+        }
+
+     } else if (vars.commandIn("BUTTONEM_Smvwh_CreatelinesDB2C50639DA742E6890ED59EFC808554")) {
+        vars.setSessionValue("buttonDB2C50639DA742E6890ED59EFC808554.stremSmvwhCreatelines", vars.getStringParameter("inpemSmvwhCreatelines"));
+        vars.setSessionValue("buttonDB2C50639DA742E6890ED59EFC808554.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
+        vars.setSessionValue("buttonDB2C50639DA742E6890ED59EFC808554.strOrg", vars.getStringParameter("inpadOrgId"));
+        vars.setSessionValue("buttonDB2C50639DA742E6890ED59EFC808554.strClient", vars.getStringParameter("inpadClientId"));
+        
+        
+        HashMap<String, String> p = new HashMap<String, String>();
+        
+        
+        //Save in session needed params for combos if needed
+        vars.setSessionObject("buttonDB2C50639DA742E6890ED59EFC808554.originalParams", FieldProviderFactory.getFieldProvider(p));
+        printPageButtonFS(response, vars, "DB2C50639DA742E6890ED59EFC808554", request.getServletPath());    
+     } else if (vars.commandIn("BUTTONDB2C50639DA742E6890ED59EFC808554")) {
+        String strM_Movement_ID = vars.getGlobalVariable("inpmMovementId", windowId + "|M_Movement_ID", "");
+        String stremSmvwhCreatelines = vars.getSessionValue("buttonDB2C50639DA742E6890ED59EFC808554.stremSmvwhCreatelines");
+        String strProcessing = vars.getSessionValue("buttonDB2C50639DA742E6890ED59EFC808554.strProcessing");
+        String strOrg = vars.getSessionValue("buttonDB2C50639DA742E6890ED59EFC808554.strOrg");
+        String strClient = vars.getSessionValue("buttonDB2C50639DA742E6890ED59EFC808554.strClient");
+        
+        
+        if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
+          OBError myError = Utility.translateError(this, vars, vars.getLanguage(), Utility.messageBD(this, "NoWriteAccess", vars.getLanguage()));
+          vars.setMessage(tabId, myError);
+          printPageClosePopUp(response, vars);
+        }else{       
+          printPageButtonEM_Smvwh_CreatelinesDB2C50639DA742E6890ED59EFC808554(response, vars, strM_Movement_ID, stremSmvwhCreatelines, strProcessing);
         }
 
      } else if (vars.commandIn("BUTTONEM_Swhp_UbicaciongeneralF608BCACA3EE4649A448F3D8075A6978")) {
@@ -213,6 +312,35 @@ public class Header extends HttpSecureAppServlet {
           printPageButtonEM_Swhp_UbicaciongeneralF608BCACA3EE4649A448F3D8075A6978(response, vars, strM_Movement_ID, stremSwhpUbicaciongeneral, strProcessing);
         }
 
+     } else if (vars.commandIn("BUTTONEM_Ssvs_BprepositionD3BA849A76B44C739D4503A1238C6645")) {
+        vars.setSessionValue("buttonD3BA849A76B44C739D4503A1238C6645.stremSsvsBpreposition", vars.getStringParameter("inpemSsvsBpreposition"));
+        vars.setSessionValue("buttonD3BA849A76B44C739D4503A1238C6645.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
+        vars.setSessionValue("buttonD3BA849A76B44C739D4503A1238C6645.strOrg", vars.getStringParameter("inpadOrgId"));
+        vars.setSessionValue("buttonD3BA849A76B44C739D4503A1238C6645.strClient", vars.getStringParameter("inpadClientId"));
+        
+        
+        HashMap<String, String> p = new HashMap<String, String>();
+        
+        
+        //Save in session needed params for combos if needed
+        vars.setSessionObject("buttonD3BA849A76B44C739D4503A1238C6645.originalParams", FieldProviderFactory.getFieldProvider(p));
+        printPageButtonFS(response, vars, "D3BA849A76B44C739D4503A1238C6645", request.getServletPath());    
+     } else if (vars.commandIn("BUTTOND3BA849A76B44C739D4503A1238C6645")) {
+        String strM_Movement_ID = vars.getGlobalVariable("inpmMovementId", windowId + "|M_Movement_ID", "");
+        String stremSsvsBpreposition = vars.getSessionValue("buttonD3BA849A76B44C739D4503A1238C6645.stremSsvsBpreposition");
+        String strProcessing = vars.getSessionValue("buttonD3BA849A76B44C739D4503A1238C6645.strProcessing");
+        String strOrg = vars.getSessionValue("buttonD3BA849A76B44C739D4503A1238C6645.strOrg");
+        String strClient = vars.getSessionValue("buttonD3BA849A76B44C739D4503A1238C6645.strClient");
+        
+        
+        if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
+          OBError myError = Utility.translateError(this, vars, vars.getLanguage(), Utility.messageBD(this, "NoWriteAccess", vars.getLanguage()));
+          vars.setMessage(tabId, myError);
+          printPageClosePopUp(response, vars);
+        }else{       
+          printPageButtonEM_Ssvs_BprepositionD3BA849A76B44C739D4503A1238C6645(response, vars, strM_Movement_ID, stremSsvsBpreposition, strProcessing);
+        }
+
     } else if (vars.commandIn("BUTTONEM_Eei_Send_To_Sri7CC8083871A2456BAC7B948F3510BC3C")) {
         vars.setSessionValue("button7CC8083871A2456BAC7B948F3510BC3C.stremEeiSendToSri", vars.getStringParameter("inpemEeiSendToSri"));
         vars.setSessionValue("button7CC8083871A2456BAC7B948F3510BC3C.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
@@ -240,6 +368,34 @@ public class Header extends HttpSecureAppServlet {
           printPageClosePopUp(response, vars);
         }else{       
           printPageButtonEM_Eei_Send_To_Sri7CC8083871A2456BAC7B948F3510BC3C(response, vars, strM_Movement_ID, stremEeiSendToSri, strProcessing);
+        }
+    } else if (vars.commandIn("BUTTONEM_Stat_Generate_CodeB0DCB2771D744EAA8F75B2B6530CABF8")) {
+        vars.setSessionValue("buttonB0DCB2771D744EAA8F75B2B6530CABF8.stremStatGenerateCode", vars.getStringParameter("inpemStatGenerateCode"));
+        vars.setSessionValue("buttonB0DCB2771D744EAA8F75B2B6530CABF8.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
+        vars.setSessionValue("buttonB0DCB2771D744EAA8F75B2B6530CABF8.strOrg", vars.getStringParameter("inpadOrgId"));
+        vars.setSessionValue("buttonB0DCB2771D744EAA8F75B2B6530CABF8.strClient", vars.getStringParameter("inpadClientId"));
+        
+        
+        HashMap<String, String> p = new HashMap<String, String>();
+        
+        
+        //Save in session needed params for combos if needed
+        vars.setSessionObject("buttonB0DCB2771D744EAA8F75B2B6530CABF8.originalParams", FieldProviderFactory.getFieldProvider(p));
+        printPageButtonFS(response, vars, "B0DCB2771D744EAA8F75B2B6530CABF8", request.getServletPath());
+      } else if (vars.commandIn("BUTTONB0DCB2771D744EAA8F75B2B6530CABF8")) {
+        String strM_Movement_ID = vars.getGlobalVariable("inpmMovementId", windowId + "|M_Movement_ID", "");
+        String stremStatGenerateCode = vars.getSessionValue("buttonB0DCB2771D744EAA8F75B2B6530CABF8.stremStatGenerateCode");
+        String strProcessing = vars.getSessionValue("buttonB0DCB2771D744EAA8F75B2B6530CABF8.strProcessing");
+        String strOrg = vars.getSessionValue("buttonB0DCB2771D744EAA8F75B2B6530CABF8.strOrg");
+        String strClient = vars.getSessionValue("buttonB0DCB2771D744EAA8F75B2B6530CABF8.strClient");
+
+        
+        if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
+          OBError myError = Utility.translateError(this, vars, vars.getLanguage(), Utility.messageBD(this, "NoWriteAccess", vars.getLanguage()));
+          vars.setMessage(tabId, myError);
+          printPageClosePopUp(response, vars);
+        }else{       
+          printPageButtonEM_Stat_Generate_CodeB0DCB2771D744EAA8F75B2B6530CABF8(response, vars, strM_Movement_ID, stremStatGenerateCode, strProcessing);
         }
 
     } else if (vars.commandIn("SAVE_BUTTONMove_FromTo_Locator800048")) {
@@ -274,14 +430,72 @@ PInstanceProcessData.insertPInstanceParam(this, pinstance, "20", "M_LocatorTo", 
           vars.setMessage(tabId, myMessage);
         }
         printPageClosePopUp(response, vars);
-    } else if (vars.commandIn("SAVE_BUTTONProcessing122")) {
+    } else if (vars.commandIn("SAVE_BUTTONProcessingD3ED058DE3444DAFB49DB442919A980B")) {
         String strM_Movement_ID = vars.getGlobalVariable("inpKey", windowId + "|M_Movement_ID", "");
         String strprocessing = vars.getStringParameter("inpprocessing");
         String strProcessing = vars.getStringParameter("inpprocessing");
         OBError myMessage = null;
         try {
           String pinstance = SequenceIdData.getUUID();
+          PInstanceProcessData.insertPInstance(this, pinstance, "D3ED058DE3444DAFB49DB442919A980B", (("M_Movement_ID".equalsIgnoreCase("AD_Language"))?"0":strM_Movement_ID), strProcessing, vars.getUser(), vars.getClient(), vars.getOrg());
+          String strstatCode = vars.getStringParameter("inpstatCode");
+PInstanceProcessData.insertPInstanceParam(this, pinstance, "10", "Stat_Code", strstatCode, vars.getClient(), vars.getOrg(), vars.getUser());
+
+          
+          ProcessBundle bundle = ProcessBundle.pinstance(pinstance, vars, this);
+          new ProcessRunner(bundle).execute(this);
+          
+          PInstanceProcessData[] pinstanceData = PInstanceProcessData.select(this, pinstance);
+          myMessage = Utility.getProcessInstanceMessage(this, vars, pinstanceData);
+        } catch (ServletException ex) {
+          myMessage = Utility.translateError(this, vars, vars.getLanguage(), ex.getMessage());
+          if (!myMessage.isConnectionAvailable()) {
+            bdErrorConnection(response);
+            return;
+          } else vars.setMessage(tabId, myMessage);
+        }
+        //close popup
+        if (myMessage!=null) {
+          if (log4j.isDebugEnabled()) log4j.debug(myMessage.getMessage());
+          vars.setMessage(tabId, myMessage);
+        }
+        printPageClosePopUp(response, vars);
+    } else if (vars.commandIn("SAVE_BUTTONEM_Stat_Processing122")) {
+        String strM_Movement_ID = vars.getGlobalVariable("inpKey", windowId + "|M_Movement_ID", "");
+        String stremStatProcessing = vars.getStringParameter("inpemStatProcessing");
+        String strProcessing = vars.getStringParameter("inpprocessing");
+        OBError myMessage = null;
+        try {
+          String pinstance = SequenceIdData.getUUID();
           PInstanceProcessData.insertPInstance(this, pinstance, "122", (("M_Movement_ID".equalsIgnoreCase("AD_Language"))?"0":strM_Movement_ID), strProcessing, vars.getUser(), vars.getClient(), vars.getOrg());
+          
+          
+          ProcessBundle bundle = ProcessBundle.pinstance(pinstance, vars, this);
+          new ProcessRunner(bundle).execute(this);
+          
+          PInstanceProcessData[] pinstanceData = PInstanceProcessData.select(this, pinstance);
+          myMessage = Utility.getProcessInstanceMessage(this, vars, pinstanceData);
+        } catch (ServletException ex) {
+          myMessage = Utility.translateError(this, vars, vars.getLanguage(), ex.getMessage());
+          if (!myMessage.isConnectionAvailable()) {
+            bdErrorConnection(response);
+            return;
+          } else vars.setMessage(tabId, myMessage);
+        }
+        //close popup
+        if (myMessage!=null) {
+          if (log4j.isDebugEnabled()) log4j.debug(myMessage.getMessage());
+          vars.setMessage(tabId, myMessage);
+        }
+        printPageClosePopUp(response, vars);
+    } else if (vars.commandIn("SAVE_BUTTONEM_Smvwh_CreatelinesDB2C50639DA742E6890ED59EFC808554")) {
+        String strM_Movement_ID = vars.getGlobalVariable("inpKey", windowId + "|M_Movement_ID", "");
+        String stremSmvwhCreatelines = vars.getStringParameter("inpemSmvwhCreatelines");
+        String strProcessing = vars.getStringParameter("inpprocessing");
+        OBError myMessage = null;
+        try {
+          String pinstance = SequenceIdData.getUUID();
+          PInstanceProcessData.insertPInstance(this, pinstance, "DB2C50639DA742E6890ED59EFC808554", (("M_Movement_ID".equalsIgnoreCase("AD_Language"))?"0":strM_Movement_ID), strProcessing, vars.getUser(), vars.getClient(), vars.getOrg());
           
           
           ProcessBundle bundle = ProcessBundle.pinstance(pinstance, vars, this);
@@ -330,11 +544,77 @@ PInstanceProcessData.insertPInstanceParam(this, pinstance, "20", "M_LocatorTo", 
           vars.setMessage(tabId, myMessage);
         }
         printPageClosePopUp(response, vars);
+    } else if (vars.commandIn("SAVE_BUTTONEM_Ssvs_BprepositionD3BA849A76B44C739D4503A1238C6645")) {
+        String strM_Movement_ID = vars.getGlobalVariable("inpKey", windowId + "|M_Movement_ID", "");
+        String stremSsvsBpreposition = vars.getStringParameter("inpemSsvsBpreposition");
+        String strProcessing = vars.getStringParameter("inpprocessing");
+        OBError myMessage = null;
+        try {
+          String pinstance = SequenceIdData.getUUID();
+          PInstanceProcessData.insertPInstance(this, pinstance, "D3BA849A76B44C739D4503A1238C6645", (("M_Movement_ID".equalsIgnoreCase("AD_Language"))?"0":strM_Movement_ID), strProcessing, vars.getUser(), vars.getClient(), vars.getOrg());
+          String strmProductCategoryId = vars.getStringParameter("inpmProductCategoryId");
+PInstanceProcessData.insertPInstanceParam(this, pinstance, "10", "M_Product_Category_ID", strmProductCategoryId, vars.getClient(), vars.getOrg(), vars.getUser());
+String strssvsReposition = vars.getNumericParameter("inpssvsReposition");
+PInstanceProcessData.insertPInstanceParamNumber(this, pinstance, "20", "ssvs_reposition", strssvsReposition, vars.getClient(), vars.getOrg(), vars.getUser());
+
+          
+          ProcessBundle bundle = ProcessBundle.pinstance(pinstance, vars, this);
+          new ProcessRunner(bundle).execute(this);
+          
+          PInstanceProcessData[] pinstanceData = PInstanceProcessData.select(this, pinstance);
+          myMessage = Utility.getProcessInstanceMessage(this, vars, pinstanceData);
+        } catch (ServletException ex) {
+          myMessage = Utility.translateError(this, vars, vars.getLanguage(), ex.getMessage());
+          if (!myMessage.isConnectionAvailable()) {
+            bdErrorConnection(response);
+            return;
+          } else vars.setMessage(tabId, myMessage);
+        }
+        //close popup
+        if (myMessage!=null) {
+          if (log4j.isDebugEnabled()) log4j.debug(myMessage.getMessage());
+          vars.setMessage(tabId, myMessage);
+        }
+        printPageClosePopUp(response, vars);
 
     } else if (vars.commandIn("SAVE_BUTTONEM_Eei_Send_To_Sri7CC8083871A2456BAC7B948F3510BC3C")) {
         String strM_Movement_ID = vars.getGlobalVariable("inpKey", windowId + "|M_Movement_ID", "");
         
         ProcessBundle pb = new ProcessBundle("7CC8083871A2456BAC7B948F3510BC3C", vars).init(this);
+        HashMap<String, Object> params= new HashMap<String, Object>();
+       
+        params.put("M_Movement_ID", strM_Movement_ID);
+        params.put("adOrgId", vars.getStringParameter("inpadOrgId"));
+        params.put("adClientId", vars.getStringParameter("inpadClientId"));
+        params.put("tabId", tabId);
+        
+        
+        
+        pb.setParams(params);
+        OBError myMessage = null;
+        try {
+          new ProcessRunner(pb).execute(this);
+          myMessage = (OBError) pb.getResult();
+          myMessage.setMessage(Utility.parseTranslation(this, vars, vars.getLanguage(), myMessage.getMessage()));
+          myMessage.setTitle(Utility.parseTranslation(this, vars, vars.getLanguage(), myMessage.getTitle()));
+        } catch (Exception ex) {
+          myMessage = Utility.translateError(this, vars, vars.getLanguage(), ex.getMessage());
+          log4j.error(ex);
+          if (!myMessage.isConnectionAvailable()) {
+            bdErrorConnection(response);
+            return;
+          } else vars.setMessage(tabId, myMessage);
+        }
+        //close popup
+        if (myMessage!=null) {
+          if (log4j.isDebugEnabled()) log4j.debug(myMessage.getMessage());
+          vars.setMessage(tabId, myMessage);
+        }
+        printPageClosePopUp(response, vars);
+    } else if (vars.commandIn("SAVE_BUTTONEM_Stat_Generate_CodeB0DCB2771D744EAA8F75B2B6530CABF8")) {
+        String strM_Movement_ID = vars.getGlobalVariable("inpKey", windowId + "|M_Movement_ID", "");
+        
+        ProcessBundle pb = new ProcessBundle("B0DCB2771D744EAA8F75B2B6530CABF8", vars).init(this);
         HashMap<String, Object> params= new HashMap<String, Object>();
        
         params.put("M_Movement_ID", strM_Movement_ID);
@@ -452,13 +732,51 @@ PInstanceProcessData.insertPInstanceParam(this, pinstance, "20", "M_LocatorTo", 
       out.println(xmlDocument.print());
       out.close();
     }
-    private void printPageButtonProcessing122(HttpServletResponse response, VariablesSecureApp vars, String strM_Movement_ID, String strprocessing, String strProcessing)
+    private void printPageButtonProcessingD3ED058DE3444DAFB49DB442919A980B(HttpServletResponse response, VariablesSecureApp vars, String strM_Movement_ID, String strprocessing, String strProcessing)
+    throws IOException, ServletException {
+      log4j.debug("Output: Button process D3ED058DE3444DAFB49DB442919A980B");
+      String[] discard = {"newDiscard"};
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/ProcessingD3ED058DE3444DAFB49DB442919A980B", discard).createXmlDocument();
+      xmlDocument.setParameter("key", strM_Movement_ID);
+      xmlDocument.setParameter("processing", strProcessing);
+      xmlDocument.setParameter("form", "Header_Edition.html");
+      xmlDocument.setParameter("window", windowId);
+      xmlDocument.setParameter("css", vars.getTheme());
+      xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
+      xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
+      xmlDocument.setParameter("processId", "D3ED058DE3444DAFB49DB442919A980B");
+      xmlDocument.setParameter("cancel", Utility.messageBD(this, "Cancel", vars.getLanguage()));
+      xmlDocument.setParameter("ok", Utility.messageBD(this, "OK", vars.getLanguage()));
+      
+      {
+        OBError myMessage = vars.getMessage("D3ED058DE3444DAFB49DB442919A980B");
+        vars.removeMessage("D3ED058DE3444DAFB49DB442919A980B");
+        if (myMessage!=null) {
+          xmlDocument.setParameter("messageType", myMessage.getType());
+          xmlDocument.setParameter("messageTitle", myMessage.getTitle());
+          xmlDocument.setParameter("messageMessage", myMessage.getMessage());
+        }
+      }
+
+          try {
+    xmlDocument.setParameter("Stat_Code", "");
+    } catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+
+      
+      out.println(xmlDocument.print());
+      out.close();
+    }
+    private void printPageButtonEM_Stat_Processing122(HttpServletResponse response, VariablesSecureApp vars, String strM_Movement_ID, String stremStatProcessing, String strProcessing)
     throws IOException, ServletException {
       log4j.debug("Output: Button process 122");
       String[] discard = {"newDiscard"};
       response.setContentType("text/html; charset=UTF-8");
       PrintWriter out = response.getWriter();
-      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/Processing122", discard).createXmlDocument();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/EM_Stat_Processing122", discard).createXmlDocument();
       xmlDocument.setParameter("key", strM_Movement_ID);
       xmlDocument.setParameter("processing", strProcessing);
       xmlDocument.setParameter("form", "Header_Edition.html");
@@ -473,6 +791,43 @@ PInstanceProcessData.insertPInstanceParam(this, pinstance, "20", "M_LocatorTo", 
       {
         OBError myMessage = vars.getMessage("122");
         vars.removeMessage("122");
+        if (myMessage!=null) {
+          xmlDocument.setParameter("messageType", myMessage.getType());
+          xmlDocument.setParameter("messageTitle", myMessage.getTitle());
+          xmlDocument.setParameter("messageMessage", myMessage.getMessage());
+        }
+      }
+
+          try {
+    } catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+
+      
+      out.println(xmlDocument.print());
+      out.close();
+    }
+    private void printPageButtonEM_Smvwh_CreatelinesDB2C50639DA742E6890ED59EFC808554(HttpServletResponse response, VariablesSecureApp vars, String strM_Movement_ID, String stremSmvwhCreatelines, String strProcessing)
+    throws IOException, ServletException {
+      log4j.debug("Output: Button process DB2C50639DA742E6890ED59EFC808554");
+      String[] discard = {"newDiscard"};
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/EM_Smvwh_CreatelinesDB2C50639DA742E6890ED59EFC808554", discard).createXmlDocument();
+      xmlDocument.setParameter("key", strM_Movement_ID);
+      xmlDocument.setParameter("processing", strProcessing);
+      xmlDocument.setParameter("form", "Header_Edition.html");
+      xmlDocument.setParameter("window", windowId);
+      xmlDocument.setParameter("css", vars.getTheme());
+      xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
+      xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
+      xmlDocument.setParameter("processId", "DB2C50639DA742E6890ED59EFC808554");
+      xmlDocument.setParameter("cancel", Utility.messageBD(this, "Cancel", vars.getLanguage()));
+      xmlDocument.setParameter("ok", Utility.messageBD(this, "OK", vars.getLanguage()));
+      
+      {
+        OBError myMessage = vars.getMessage("DB2C50639DA742E6890ED59EFC808554");
+        vars.removeMessage("DB2C50639DA742E6890ED59EFC808554");
         if (myMessage!=null) {
           xmlDocument.setParameter("messageType", myMessage.getType());
           xmlDocument.setParameter("messageTitle", myMessage.getTitle());
@@ -526,6 +881,50 @@ PInstanceProcessData.insertPInstanceParam(this, pinstance, "20", "M_LocatorTo", 
       out.println(xmlDocument.print());
       out.close();
     }
+    private void printPageButtonEM_Ssvs_BprepositionD3BA849A76B44C739D4503A1238C6645(HttpServletResponse response, VariablesSecureApp vars, String strM_Movement_ID, String stremSsvsBpreposition, String strProcessing)
+    throws IOException, ServletException {
+      log4j.debug("Output: Button process D3BA849A76B44C739D4503A1238C6645");
+      String[] discard = {"newDiscard"};
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/EM_Ssvs_BprepositionD3BA849A76B44C739D4503A1238C6645", discard).createXmlDocument();
+      xmlDocument.setParameter("key", strM_Movement_ID);
+      xmlDocument.setParameter("processing", strProcessing);
+      xmlDocument.setParameter("form", "Header_Edition.html");
+      xmlDocument.setParameter("window", windowId);
+      xmlDocument.setParameter("css", vars.getTheme());
+      xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
+      xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
+      xmlDocument.setParameter("processId", "D3BA849A76B44C739D4503A1238C6645");
+      xmlDocument.setParameter("cancel", Utility.messageBD(this, "Cancel", vars.getLanguage()));
+      xmlDocument.setParameter("ok", Utility.messageBD(this, "OK", vars.getLanguage()));
+      
+      {
+        OBError myMessage = vars.getMessage("D3BA849A76B44C739D4503A1238C6645");
+        vars.removeMessage("D3BA849A76B44C739D4503A1238C6645");
+        if (myMessage!=null) {
+          xmlDocument.setParameter("messageType", myMessage.getType());
+          xmlDocument.setParameter("messageTitle", myMessage.getTitle());
+          xmlDocument.setParameter("messageMessage", myMessage.getMessage());
+        }
+      }
+
+          try {
+    ComboTableData comboTableData = null;
+    xmlDocument.setParameter("M_Product_Category_ID", "");
+    comboTableData = new ComboTableData(vars, this, "18", "M_Product_Category_ID", "163", "", Utility.getContext(this, vars, "#AccessibleOrgTree", ""), Utility.getContext(this, vars, "#User_Client", ""), 0);
+    Utility.fillSQLParameters(this, vars, (FieldProvider) vars.getSessionObject("buttonD3BA849A76B44C739D4503A1238C6645.originalParams"), comboTableData, windowId, "");
+    xmlDocument.setData("reportM_Product_Category_ID", "liststructure", comboTableData.select(false));
+comboTableData = null;
+    xmlDocument.setParameter("ssvs_reposition", "");
+    } catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+
+      
+      out.println(xmlDocument.print());
+      out.close();
+    }
 
 
     void printPageButtonEM_Eei_Send_To_Sri7CC8083871A2456BAC7B948F3510BC3C(HttpServletResponse response, VariablesSecureApp vars, String strM_Movement_ID, String stremEeiSendToSri, String strProcessing)
@@ -549,6 +948,43 @@ PInstanceProcessData.insertPInstanceParam(this, pinstance, "20", "M_LocatorTo", 
       {
         OBError myMessage = vars.getMessage("7CC8083871A2456BAC7B948F3510BC3C");
         vars.removeMessage("7CC8083871A2456BAC7B948F3510BC3C");
+        if (myMessage!=null) {
+          xmlDocument.setParameter("messageType", myMessage.getType());
+          xmlDocument.setParameter("messageTitle", myMessage.getTitle());
+          xmlDocument.setParameter("messageMessage", myMessage.getMessage());
+        }
+      }
+
+          try {
+    } catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+
+      
+      out.println(xmlDocument.print());
+      out.close();
+    }
+    void printPageButtonEM_Stat_Generate_CodeB0DCB2771D744EAA8F75B2B6530CABF8(HttpServletResponse response, VariablesSecureApp vars, String strM_Movement_ID, String stremStatGenerateCode, String strProcessing)
+    throws IOException, ServletException {
+      log4j.debug("Output: Button process B0DCB2771D744EAA8F75B2B6530CABF8");
+      String[] discard = {"newDiscard"};
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/EM_Stat_Generate_CodeB0DCB2771D744EAA8F75B2B6530CABF8", discard).createXmlDocument();
+      xmlDocument.setParameter("key", strM_Movement_ID);
+      xmlDocument.setParameter("processing", strProcessing);
+      xmlDocument.setParameter("form", "Header_Edition.html");
+      xmlDocument.setParameter("window", windowId);
+      xmlDocument.setParameter("css", vars.getTheme());
+      xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
+      xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
+      xmlDocument.setParameter("processId", "B0DCB2771D744EAA8F75B2B6530CABF8");
+      xmlDocument.setParameter("cancel", Utility.messageBD(this, "Cancel", vars.getLanguage()));
+      xmlDocument.setParameter("ok", Utility.messageBD(this, "OK", vars.getLanguage()));
+      
+      {
+        OBError myMessage = vars.getMessage("B0DCB2771D744EAA8F75B2B6530CABF8");
+        vars.removeMessage("B0DCB2771D744EAA8F75B2B6530CABF8");
         if (myMessage!=null) {
           xmlDocument.setParameter("messageType", myMessage.getType());
           xmlDocument.setParameter("messageTitle", myMessage.getTitle());

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="16B6DAD2C1A0458DB825ABA5E22E866B" trl="N">
+    <value column="Name" isTrl="Y" original="Dispatcher and Prepared User">Preparador y Despachador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="301D1E326CCA4A8593FF84439FA45C15" trl="N">
+    <value column="Name" isTrl="Y" original="Prepared User">Preparador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="683D7B5261424C2ABB7842EC5A12F0BE" trl="N">
+    <value column="Name" isTrl="N" original="Dispatch">Dispatch</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="8D02B63A2A34434E86C73CDC4112A1FE" trl="N">
+    <value column="Name" isTrl="Y" original="Dispatcher user">Despachador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="924249BB12DB4B46A8A1880A2A7A9680" trl="N">
+    <value column="Name" isTrl="N" original="Preparer">Preparer</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

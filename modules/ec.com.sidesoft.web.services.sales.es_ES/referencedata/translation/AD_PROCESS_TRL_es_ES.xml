@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="B47083C490FE44D688E1AAF2E7A9B0C1" trl="Y">
+    <value column="Name" isTrl="Y" original="Invoice Refinanciament Process">Proceso de refinanciamiento en facturas</value>
+    <value column="Description" isTrl="N" original="">Proceso de refinanciamiento en facturas</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C30120C20D2A4639B4226AA8A2B28984" trl="Y">
+    <value column="Name" isTrl="Y" original="swssl_update_partner">Actualizacion de Datos de Credito de Terceros</value>
+    <value column="Description" isTrl="N" original="">Actualizacion de Datos de Credito de Terceros</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
-  <row id="17402A1656FF4FF1A50CA4C2B4A2AA95" trl="Y">
-    <value column="Name" isTrl="Y" original="Summary Accounts Receivable">Estado CxC - Detallado</value>
+  <row id="8AB3A1057CBF4C8C8C279A4B0C3ACD61" trl="Y">
+    <value column="Name" isTrl="Y" original="Safety and quality monitoring label nomenclature">Nomenclatura de etiqueta monitoreo seguridad y calidad</value>
     <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F7CD28B6D47C4966AE00EFDBADAD16CB" trl="Y">
+    <value column="Name" isTrl="Y" original="supplier delivery note label">Nomenclatura de etiqueta albarán proveedor</value>
+    <value column="Description" isTrl="N" original="">Nomenclatura de etiqueta albarán proveedor</value>
   </row>
   <row id="FC8DE0A95D834F318A2FC6CCA4AB6121" trl="Y">
     <value column="Name" isTrl="Y" original="MP Inventories">Reporte existencias de materias primas por código de compra</value>

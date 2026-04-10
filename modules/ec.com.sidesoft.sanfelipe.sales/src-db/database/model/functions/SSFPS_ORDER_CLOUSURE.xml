@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSFPS_ORDER_CLOUSURE">
+    <function name="SSFPS_ORDER_CLOUSURE" type="VARCHAR">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+	v_ResultStr		VARCHAR2(2000) := '';
+	v_Message		TEXT := ''; --OBTG:VARCHAR2--
+	-- Variables
+	vOrderID		VARCHAR2(32);
+	vOrder			RECORD;
+	vDocAction		VARCHAR2(60);
+
+    Cur_OrderLines RECORD;
+    Cur RECORD;
+
+BEGIN
+	-- Begin Get Parameters
+	FOR Cur IN (
+		SELECT *
+		FROM ad_ep_instance_para
+		WHERE ad_ep_instance_id = PInstance_ID
+	) LOOP
+		IF Cur.ParameterName = 'Record_ID' THEN
+			vOrderID := Cur.P_String;
+		ELSEIF Cur.ParameterName = 'DocAction' THEN
+			vDocAction := Cur.P_String;
+		END IF;	
+	END LOOP;
+	-- Finish Get Parameter
+	
+	--<<BEGIN_PROCESS>>
+	SELECT o.c_order_id, o.issotrx, o.c_bpartner_id, o.grandtotal
+    INTO vOrder
+    FROM c_order o
+    WHERE o.c_order_id =vOrderID;
+
+	IF vOrder.isSoTrx = 'Y' THEN
+		IF vDocAction = 'CL' THEN
+		
+		FOR Cur_OrderLines IN (
+            SELECT 
+            C_OrderLine_ID , QtyOrdered , QtyDelivered, QtyInvoiced 
+            FROM C_OrderLine
+            WHERE C_Order_ID = vOrderID
+        )
+        LOOP
+
+          
+          UPDATE C_OrderLine
+          SET em_ssfps_QtyOrdered = Cur_OrderLines.QtyOrdered,
+          em_ssfps_QtyDelivered = Cur_OrderLines.QtyDelivered, 
+          em_ssfps_QtyInvoiced = Cur_OrderLines.QtyInvoiced 
+          WHERE C_OrderLine_ID = Cur_OrderLines.C_OrderLine_ID;
+        END LOOP;
+			
+		END IF;
+		
+	END IF; 
+
+	--<<FINISH_PROCESS>>
+		
+	RETURN 'OK';
+END SSFPS_ORDER_CLOUSURE
+]]></body>
+    </function>
+  </database>

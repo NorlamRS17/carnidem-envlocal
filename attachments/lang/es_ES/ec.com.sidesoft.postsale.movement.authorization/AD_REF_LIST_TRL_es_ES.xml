@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="46D8A979B69149C7B6263EDCC7063287" trl="Y">
+    <value column="Name" isTrl="Y" original="Transfer Pending Approval">Transferencia Pendiente de Aprobación</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7B635939C28F43D2ACE83FEF75B78141" trl="Y">
+    <value column="Name" isTrl="Y" original="Return Pending Approval">Devolución Pendiente de Aprobación</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C5709774F5164D98ACAADB60D1209706" trl="Y">
+    <value column="Name" isTrl="Y" original="Approved">Aprobado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

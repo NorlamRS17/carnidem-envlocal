@@ -1,0 +1,743 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSMRPS_CREATE_SIMULATION">
+    <function name="SSMRPS_CREATE_SIMULATION" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[/*************************************************************************
+* The contents of this file are subject to the Openbravo  Public  License
+* Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+* Version 1.1  with a permitted attribution clause; you may not  use this
+* file except in compliance with the License. You  may  obtain  a copy of
+* the License at http://www.openbravo.com/legal/license.html
+* Software distributed under the License  is  distributed  on  an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+* License for the specific  language  governing  rights  and  limitations
+* under the License.
+* The Original Code is Openbravo ERP.
+* The Initial Developer of the Original Code is Openbravo SLU
+* All portions are Copyright (C) 2001-2006 Openbravo SLU
+* All Rights Reserved.
+* Contributor(s):  __Carlos Chiza____________________________________.
+************************************************************************/
+  -- Logistice
+  v_ResultStr VARCHAR2(2000):='';
+  v_Message VARCHAR2(2000):='';
+  v_Result NUMBER:=1; -- 0=failure
+  v_Record_ID VARCHAR2(32);
+  v_User_ID VARCHAR2(32):='0';
+  v_Org_ID VARCHAR2(32);
+  v_Client_ID VARCHAR2(32);
+  v_Planner_ID VARCHAR2(32);
+  v_Product_ID VARCHAR2(32);
+  v_Product_Category_ID VARCHAR2(32);
+  v_BPartner_ID VARCHAR2(32);
+  v_BP_Group_ID VARCHAR2(32);
+  v_Vendor_ID   varchar2(32);
+  v_TimeHorizon NUMBER;
+  v_PlanningDate DATE;
+  v_SecurityMargin NUMBER;
+
+  v_StockSecurity  NUMBER;
+  v_month_avg80 NUMBER;
+  v_month_avg20 NUMBER;
+  v_MonthProjection NUMBER;
+  v_Status varchar2(60);
+  v_monthnotcons varchar2(1);
+  V_countLines  NUMBER;
+  v_Acum  NUMBER;
+  v_CountLinesAux  NUMBER;
+  V_TotalAvgSales  NUMBER;
+  v_Procentage20 NUMBER;
+  v_TotalMonth  NUMBER;
+
+  v_ProcessID  varchar2(32);
+  v_PeriodFrom  varchar2(32);
+  v_PeriodTo  varchar2(32);
+  v_periodProjection varchar2(32);
+  v_ProductCategory  varchar2(32);
+
+  v_DateFrom DATE;
+  v_DateTo DATE;
+  v_DateProjection DATE;
+
+  FINISH_PROCESS BOOLEAN DEFAULT FALSE;
+  --  Parameter
+  TYPE RECORD IS REF CURSOR;
+    Cur_Parameter RECORD;
+    Cur_Pareto RECORD;
+    
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_PInstance_ID) ;
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+  BEGIN --BODY
+    -- Get Parameters
+    v_ResultStr:='ReadingParameters';
+    FOR Cur_Parameter IN
+      (SELECT i.Record_ID, i.AD_User_ID, p.ParameterName, p.P_String, p.P_Number, p.P_Date
+      FROM AD_PInstance i
+      LEFT JOIN AD_PInstance_Para p
+        ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=p_PInstance_ID
+      ORDER BY p.SeqNo
+      )
+    LOOP
+      v_Record_ID:=Cur_Parameter.Record_ID;
+      v_User_ID:=Cur_Parameter.AD_User_ID;
+    END LOOP; -- Get Parameter
+
+	
+	select  
+	number_months, x_months_v, y_months_v 
+	INTO v_StockSecurity, v_month_avg80, v_month_avg20  
+	from ssmrps_stock_security where isactive='Y';
+
+	select ssmrps_asimulation_prod_id, 	c_periodfrom_id, 	c_periodto_id, 	c_periodprojection_id, 	m_product_category_id, 	monthnotcons,docstatus, ad_org_id, ad_client_id
+	INTO   v_ProcessID, 			v_PeriodFrom, 		v_PeriodTo,	v_periodProjection, 	v_ProductCategory, v_monthnotcons	,v_Status, v_Org_ID , v_Client_ID 
+	from ssmrps_asimulation_prod
+	where ssmrps_asimulation_prod_id = v_Record_ID;
+
+	--v_Status:='CS';
+
+	--raise exception '%', v_Status;
+	
+	IF (v_Status='CS') THEN
+
+		DELETE FROM ssmrps_lines_tmp; --WHERE ssmrps_asimulation_prod_id = v_Record_ID;
+		DELETE FROM ssmrps_orderbyperiod;-- WHERE processid = v_Record_ID;
+		DELETE FROM ssmrps_asim_lines WHERE ssmrps_asimulation_prod_id = v_Record_ID;
+		--	raise exception '%', v_MonthProjection;
+
+		-- Get Date From
+		select coalesce((select TO_DATE(startdate) from c_period where c_period_id = v_PeriodFrom),null)
+		into v_DateFrom
+		from dual;
+
+		-- Get Date to
+		select coalesce((select TO_DATE(enddate) from c_period where c_period_id = v_PeriodTo),null)
+		into v_DateTo
+		from dual;
+
+		-- Get Date From
+		select coalesce((select TO_DATE(enddate) from c_period where c_period_id = v_PeriodProjection),null)
+		into v_DateProjection
+		from dual;		
+
+		--raise exception '%', v_DateFrom || '  ' ||  v_DateTo || '  ' || v_DateProjection;
+
+		-- Meses de proyección
+
+		
+		select count(*)
+		Into v_MonthProjection
+		from c_period
+		where startdate > v_DateTo and startdate <=v_DateProjection;
+
+		-- Insertar periodos a calcular 
+		INSERT INTO ssmrps_orderbyperiod(
+		  ssmrps_orderbyperiod_id,
+		  ad_client_id,
+		  ad_org_id,
+		  isactive,
+		  created,
+		  createdby,
+		  updated,
+		  updatedby,
+		  line,
+		  yearpurchase,
+		  monthpurchase,
+		  c_period_id,
+		  iscludedmonth,
+		  processid
+		)
+		select
+		 get_uuid() as ssmrps_orderbyperiod_id ,
+		  '0' as ad_client_id ,
+		  '0' as ad_org_id ,
+		  'Y' as isactive ,
+		  now() as created ,
+		  '100' as createdby,
+		  now() as updated ,
+		  '100' updatedby ,
+		row_number() OVER ( ORDER BY STARTDATE) AS numerar
+		, yearpurchase
+		, monthpurchase
+		, c_period_id
+		, 'Y' as iscludedmonth
+		, v_ProcessID as processid
+		from	(
+			select distinct
+			 to_number(to_char(co.dateordered,'mm')) as monthpurchase
+			, to_number(to_char(co.dateordered,'yyyy')) as yearpurchase
+			, cp.c_period_id 
+			, STARTDATE
+			from c_order  co
+			join c_period cp on TO_DATE(co.dateordered) between startdate and enddate
+			where 
+			co.issotrx='Y'
+			and co.docstatus ='CO'
+			and TO_DATE(co.dateordered) between v_DateFrom and v_DateTo
+			--and co.em_ssmrps_order_transit = 'Y' --- TRANSITO
+			--and co.isactive ='Y' -- condición transito temporal
+			AND CP.C_PERIOD_ID NOT IN  ( SELECT C_PERIOD_ID FROM ssmrps_monthsnotcons 
+			where ssmrps_asimulation_prod_id = v_Record_ID)
+		) rep
+		order by STARTDATE ;
+
+		select coalesce((select count(*) 
+		from ssmrps_orderbyperiod
+		where processid= v_Record_ID) ,0)
+		INTO v_TotalMonth
+		from dual;
+
+		-- raise exception '%', v_MonthProjection;
+
+		--- Calculos 
+
+		IF v_MonthProjection>0 THEN 
+			
+
+		-- v_User_ID ,   v_Org_ID , v_Client_ID 
+			--ssmrps_asim_lines
+
+					
+			INSERT INTO ssmrps_lines_tmp(
+				    ssmrps_lines_tmp_id, ad_client_id, ad_org_id, isactive, created, 
+				    createdby, updated, updatedby, ssmrps_asimulation_prod_id, stock_min, 
+				    stock_total, avg_sales, 
+				    orderpurchase1, orderpurchase2, orderpurchase3, 
+				    orderpurchase4, orderpurchase5, orderpurchase6, orderpurchase7, 
+				    orderpurchase8, orderpurchase9, orderpurchase10, orderpurchase11, 
+				    orderpurchase12, 
+				    stock_total2,duration,necessary_qty,
+				    stock_security, qtyordered, qtyordered_round, 
+				    finalorder
+				    ,yearsales   -- FALTA CAMPO AÑO
+			,monthsales  -- FALTA CAMPO MES
+			,productid   -- FALTA CAMPO PRODUCTO
+			,partial_ordered
+			,qtyorderedpurchase
+			,qtyorderedsales
+			)
+			select
+			get_uuid() as id_, v_Client_ID as ad_client_id,v_Org_ID as  ad_org_id, 'Y' as isactive, now() as created
+			, v_User_ID as createdby, now() as updated, v_User_ID as updatedby,
+			v_Record_ID as ssmrps_asimulation_prod_id, mpo.order_min as qty_min
+			, coalesce(STOCK,0) as stock_total_anterior
+			, (case when rep1.qtyorderedsales> 0 then rep1.qtyorderedsales/ v_TotalMonth else 0 end) as avg_ordersales
+			,CASE WHEN rep1.col1 < 0 THEN  0 ELSE  rep1.col1 END AS col1
+			,CASE WHEN rep1.col2 < 0 THEN  0 ELSE  rep1.col2 END AS col2
+			,CASE WHEN rep1.col3 < 0 THEN  0 ELSE  rep1.col3 END AS col3
+			,CASE WHEN rep1.col4 < 0 THEN  0 ELSE  rep1.col4 END AS col4
+			,CASE WHEN rep1.col5 < 0 THEN  0 ELSE  rep1.col5 END AS col5
+			,CASE WHEN rep1.col6 < 0 THEN  0 ELSE  rep1.col6 END AS col6
+			,CASE WHEN rep1.col7 < 0 THEN  0 ELSE  rep1.col7 END AS col7
+			,CASE WHEN rep1.col8 < 0 THEN  0 ELSE  rep1.col8 END AS col8
+			,CASE WHEN rep1.col9 < 0 THEN  0 ELSE  rep1.col9 END AS col9
+			,CASE WHEN rep1.col10 < 0 THEN  0 ELSE  rep1.col10 END AS col10
+			,CASE WHEN rep1.col11 < 0 THEN  0 ELSE  rep1.col11 END AS col11
+			,CASE WHEN rep1.col12 < 0 THEN  0 ELSE  rep1.col12 END AS col12
+			, (coalesce(qtyorderedpurchase,0) +  coalesce(STOCK,0)) as stock_total_actual  
+
+			, (case when (coalesce(qtyorderedpurchase,0) +  coalesce(STOCK,0))>0 AND  qtyordered > 0 then 	
+				(coalesce(qtyorderedpurchase,0) +  coalesce(STOCK,0))/ qtyordered 
+			  else 0
+			  end) as duracion
+			, (qtyordered *  v_MonthProjection) as  necessary_qty
+			, v_StockSecurity * (qtyordered) as stock_security -- falta multiplicar la variable del stock
+			, (case when (coalesce((qtyordered *  v_MonthProjection),0) -  coalesce(coalesce(qtyorderedpurchase,0) +  coalesce(STOCK,0),0)) >0 then 
+				  (coalesce((qtyordered *  v_MonthProjection),0) -  coalesce(coalesce(qtyorderedpurchase,0) +  coalesce(STOCK,0),0)) --/  mpo.order_min 
+				else 0
+				end)   as qtyordered -- falta restar la variable del stock --  CANTIDAD PEDIDA
+			
+			, ((case when (v_StockSecurity * (qtyordered)) + (coalesce((qtyordered *  v_MonthProjection),0) -  coalesce(coalesce(qtyorderedpurchase,0) +  coalesce(STOCK,0),0)) >0 then 
+				((v_StockSecurity * (qtyordered)) + (coalesce((qtyordered *  v_MonthProjection),0) -  coalesce(coalesce(qtyorderedpurchase,0) +  coalesce(STOCK,0),0))) /  mpo.order_min 
+				else 0
+				end))   *  mpo.order_min  
+				AS qtyordered_round 
+			, ssmrps_get_qty2((case when (v_StockSecurity * (qtyordered)) + (coalesce((qtyordered *  v_MonthProjection),0) -  coalesce(coalesce(qtyorderedpurchase,0) +  coalesce(STOCK,0),0)) >0 then 
+				((v_StockSecurity * (qtyordered)) + (coalesce((qtyordered *  v_MonthProjection),0) -  coalesce(coalesce(qtyorderedpurchase,0) +  coalesce(STOCK,0),0))) /  mpo.order_min 
+				else 0
+				end))   *  mpo.order_min  AS finalorder
+			,0 yearsales   -- FALTA CAMPO AÑO
+			,0 monthsales  -- FALTA CAMPO MES
+			,productid   -- FALTA CAMPO PRODUCTO
+			,(coalesce((qtyordered *  v_MonthProjection),0) -  coalesce(coalesce(qtyorderedpurchase,0) +  coalesce(STOCK,0),0)) as partial_ordered
+			,coalesce(rep2.qtyorderedpurchase,0) as qtyorderedpurchase
+			, rep1.qtyorderedsales
+			from (
+
+				select 
+				prodstock.m_product_id as productid 
+				,coalesce(col1,0) as col1
+				,coalesce(col2,0) as col2
+				,coalesce(col3,0) as col3
+				,coalesce(col4,0) as col4
+				,coalesce(col5,0) as col5
+				,coalesce(col6,0) as col6
+				,coalesce(col7,0) as col7
+				,coalesce(col8,0) as col8
+				,coalesce(col9,0) as col9
+				,coalesce(col10,0) as col10
+				,coalesce(col11,0) as col11
+				,coalesce(col12,0) as col12
+				,coalesce(
+					(CASE WHEN col1 < 0 THEN  0 ELSE col1 END)  +
+					(CASE WHEN col2 < 0 THEN  0 ELSE col2 END)  +
+					(CASE WHEN col3 < 0 THEN  0 ELSE col3 END)  +
+					(CASE WHEN col4 < 0 THEN  0 ELSE col4 END)  +
+					(CASE WHEN col5 < 0 THEN  0 ELSE col5 END)  +
+					(CASE WHEN col6 < 0 THEN  0 ELSE col6 END)  +
+					(CASE WHEN col7 < 0 THEN  0 ELSE col7 END)  +
+					(CASE WHEN col8 < 0 THEN  0 ELSE col8 END)  +
+					(CASE WHEN col9 < 0 THEN  0 ELSE col9 END)  +
+					(CASE WHEN col10 < 0 THEN  0 ELSE col10 END)  +
+					(CASE WHEN col11 < 0 THEN  0 ELSE col11 END)  +
+					(CASE WHEN col12 < 0 THEN  0 ELSE col12 END)  
+				,0) as qtyorderedsales
+				,coalesce(
+					case when 
+						coalesce(
+							(CASE WHEN col1 < 0 THEN  0 ELSE col1 END)  +
+							(CASE WHEN col2 < 0 THEN  0 ELSE col2 END)  +
+							(CASE WHEN col3 < 0 THEN  0 ELSE col3 END)  +
+							(CASE WHEN col4 < 0 THEN  0 ELSE col4 END)  +
+							(CASE WHEN col5 < 0 THEN  0 ELSE col5 END)  +
+							(CASE WHEN col6 < 0 THEN  0 ELSE col6 END)  +
+							(CASE WHEN col7 < 0 THEN  0 ELSE col7 END)  +
+							(CASE WHEN col8 < 0 THEN  0 ELSE col8 END)  +
+							(CASE WHEN col9 < 0 THEN  0 ELSE col9 END)  +
+							(CASE WHEN col10 < 0 THEN  0 ELSE col10 END)  +
+							(CASE WHEN col11 < 0 THEN  0 ELSE col11 END)  +
+							(CASE WHEN col12 < 0 THEN  0 ELSE col12 END)  
+						,0)>0 then coalesce(
+							(CASE WHEN col1 < 0 THEN  0 ELSE col1 END)  +
+							(CASE WHEN col2 < 0 THEN  0 ELSE col2 END)  +
+							(CASE WHEN col3 < 0 THEN  0 ELSE col3 END)  +
+							(CASE WHEN col4 < 0 THEN  0 ELSE col4 END)  +
+							(CASE WHEN col5 < 0 THEN  0 ELSE col5 END)  +
+							(CASE WHEN col6 < 0 THEN  0 ELSE col6 END)  +
+							(CASE WHEN col7 < 0 THEN  0 ELSE col7 END)  +
+							(CASE WHEN col8 < 0 THEN  0 ELSE col8 END)  +
+							(CASE WHEN col9 < 0 THEN  0 ELSE col9 END)  +
+							(CASE WHEN col10 < 0 THEN  0 ELSE col10 END)  +
+							(CASE WHEN col11 < 0 THEN  0 ELSE col11 END)  +
+							(CASE WHEN col12 < 0 THEN  0 ELSE col12 END)  
+						,0) /v_TotalMonth else 0 END 
+
+				,0) qtyordered
+				from (
+						select distinct mpsdt.m_product_id
+						from m_storage_detail mpsdt
+						join m_product mp on mp.m_product_id = mpsdt.m_product_id
+						where mp.isactive='Y'
+						and mpsdt.m_locator_id in (
+							
+							select
+							m_locator_id
+							from m_warehouse mw 
+							join m_locator mloc on mloc.m_warehouse_id = mw.m_warehouse_id
+							where em_ssvs_virtualstorage='N'
+						)
+						and (mp.m_product_category_id = v_ProductCategory OR v_ProductCategory is null)
+				) prodstock
+				left join (
+					select
+					productid
+					--, (case when qtyordered>0 then qtyordered/v_TotalMonth else 0 end) as qtyordered
+					, coalesce(sum(col1),0) as col1
+					, coalesce(sum(col2),0) as col2
+					, coalesce(sum(col3),0) as col3
+					, coalesce(sum(col4),0) as col4
+					, coalesce(sum(col5),0) as col5
+					, coalesce(sum(col6),0) as col6
+					, coalesce(sum(col7),0) as col7
+					, coalesce(sum(col8),0) as col8
+					, coalesce(sum(col9),0) as col9
+					, coalesce(sum(col10),0) as col10
+					, coalesce(sum(col11),0) as col11
+					, coalesce(sum(col12),0) as col12
+					, sum(qtyordered) as qtyorderedsales
+					from (
+
+						select 
+						yearsales
+						,monthsales
+						,productid
+						,sum(qtyordered) as qtyordered
+						, coalesce(sum(col1),0) as col1
+						, coalesce(sum(col2),0) as col2
+						, coalesce(sum(col3),0) as col3
+						, coalesce(sum(col4),0) as col4
+						, coalesce(sum(col5),0) as col5
+						, coalesce(sum(col6),0) as col6
+						, coalesce(sum(col7),0) as col7
+						, coalesce(sum(col8),0) as col8
+						, coalesce(sum(col9),0) as col9
+						, coalesce(sum(col10),0) as col10
+						, coalesce(sum(col11),0) as col11
+						, coalesce(sum(col12),0) as col12
+						from (
+							select 
+							cil.qtyinvoiced as qtyordered
+							,mp.m_product_id as productid
+							, to_number(to_char(ci.dateinvoiced,'mm')) as monthsales
+							, to_number(to_char(ci.dateinvoiced,'yyyy')) as yearsales
+							, ci.documentno
+							, case when (sobp.line=1 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col1
+							, case when (sobp.line=2 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col2
+							, case when (sobp.line=3 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col3
+							, case when (sobp.line=4 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col4
+							, case when (sobp.line=5 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col5
+							, case when (sobp.line=6 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col6
+							, case when (sobp.line=7 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col7
+							, case when (sobp.line=8 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col8
+							, case when (sobp.line=9 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col9
+							, case when (sobp.line=10 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col10
+							, case when (sobp.line=11 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col11
+							, case when (sobp.line=12 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col12
+							from c_order  co
+							join c_orderline col on co.c_order_id = col.c_order_id
+							join c_invoiceline cil on cil.c_orderline_id = col.c_orderline_id
+							join c_invoice ci on ci.c_invoice_id = cil.c_invoice_id
+							join c_doctype cd on cd.c_doctype_id = ci.c_doctype_id
+							join m_product mp on mp.m_product_id = col.m_product_id
+							left join c_period cp on TO_DATE(ci.dateinvoiced) between startdate and enddate
+							join ssmrps_orderbyperiod sobp on (sobp.c_period_id = cp.c_period_id
+							AND sobp.processid= v_ProcessID
+							)
+							where 
+							co.issotrx='Y'
+							and co.docstatus in ('CO','CL')
+							and ci.docstatus ='CO'
+							and TO_DATE(ci.dateinvoiced) between v_DateFrom and v_DateTo
+							and mp.isactive='Y'
+							and (mp.m_product_category_id = v_ProductCategory OR v_ProductCategory is null)
+							and cd.isreversal='N' and cd.isreturn ='N'
+							and cd.docbasetype not in ('ARC','ARI_RM')
+							--and mp.m_product_id = 'B93A8025125C41C888209C831DC5CC24'
+							union all
+
+							
+							select 
+							(abs(cil.qtyinvoiced)
+							 * ( case when (cd.isreversal='Y' OR cd.isreturn ='Y')  then -1
+							else 1 end )) as qtyordered
+							,mp.m_product_id as productid
+							, to_number(to_char(ci.dateinvoiced,'mm')) as monthsales
+							, to_number(to_char(ci.dateinvoiced,'yyyy')) as yearsales
+							, ci.documentno
+							, case when (sobp.line=1 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col1
+							, case when (sobp.line=2 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col2
+							, case when (sobp.line=3 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col3
+							, case when (sobp.line=4 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col4
+							, case when (sobp.line=5 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col5
+							, case when (sobp.line=6 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col6
+							, case when (sobp.line=7 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col7
+							, case when (sobp.line=8 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col8
+							, case when (sobp.line=9 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col9
+							, case when (sobp.line=10 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col10
+							, case when (sobp.line=11 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col11
+							, case when (sobp.line=12 and sobp.c_period_id = cp.c_period_id ) then  cil.qtyinvoiced  else 0 end col12
+							from c_order  co
+							join c_orderline col on co.c_order_id = col.c_order_id
+							join c_invoiceline cil on cil.c_orderline_id = col.c_orderline_id
+							join c_invoice ci on ci.c_invoice_id = cil.c_invoice_id
+							join c_doctype cd on cd.c_doctype_id = ci.c_doctype_id
+							join m_product mp on mp.m_product_id = col.m_product_id
+							join c_period cp on TO_DATE(ci.dateinvoiced) between startdate and enddate
+							left join ssmrps_orderbyperiod sobp on (sobp.c_period_id = cp.c_period_id
+							AND sobp.processid= v_ProcessID
+							)
+							where 
+							co.issotrx='Y'
+							and co.docstatus in ('CO','CL')
+							and ci.docstatus ='CO'
+							and TO_DATE(ci.dateinvoiced) between v_DateFrom and v_DateTo
+							and mp.isactive='Y'
+							and (mp.m_product_category_id = v_ProductCategory OR v_ProductCategory is null)
+							and (cd.docbasetype = 'ARC' OR cd.docbasetype = 'ARI_RM' )
+							--and mp.m_product_id = 'B93A8025125C41C888209C831DC5CC24'
+							order by 4,3
+						) rep
+						group by 
+						yearsales
+						,monthsales
+						,productid
+
+					)rep2
+					group by  
+					productid
+
+					) salesp  on prodstock.m_product_id =  salesp.productid			
+					
+			) rep1
+			left join (
+			--- crear 10 columnas de compras para
+			-- almacenar la información por columnas
+
+					select 
+
+					--yearpurchase 
+					--,monthpurchase 
+					productid as productpurchaseid
+					,sum(qtyorderedpurchase) as qtyorderedpurchase
+					from (
+
+						select 
+						col.qtyordered as qtyorderedpurchase
+						,mp.m_product_id as productid
+						, to_number(to_char(co.dateordered,'mm')) as monthpurchase
+						, to_number(to_char(co.dateordered,'yyyy')) as yearpurchase
+						, cp.c_period_id 
+						from c_order  co
+						join c_orderline col on co.c_order_id = col.c_order_id
+						join m_product mp on mp.m_product_id = col.m_product_id
+						join c_period cp on TO_DATE(co.dateordered) between startdate and enddate
+						join ssmrps_orderbyperiod sobp on (sobp.c_period_id = cp.c_period_id
+						AND sobp.processid= v_ProcessID)
+						where 
+						co.issotrx='N'
+						and co.docstatus ='DR'
+						--and to_date(co.dateordered) between '2020-10-01' and '2021-01-31'
+						--and co.docstatus = 'CO'
+						and co.em_ssmrps_order_transit = 'Y' --- TRANSITO
+						--and co.isactive ='Y' -- condición transito temporal
+						and mp.isactive ='Y' -- condición transito temporal
+						and (mp.m_product_category_id = v_ProductCategory OR v_ProductCategory is null)
+						order by 4,3
+
+					) rep
+					group by productid
+			) rep2 on (rep1.productid = rep2.productpurchaseid )
+
+			left join (
+
+			SELECT 
+			mp.M_PRODUCT_ID as productstockid,
+			SUM(MOVEMENTQTY) AS STOCK
+			FROM M_TRANSACTION mt
+			join m_product mp on mp.m_product_id = mt.m_product_id 
+			WHERE TO_DATE(MOVEMENTDATE)<=
+			(SELECT ENDDATE 
+			FROM C_PERIOD 
+			--WHERE TO_CHAR(ENDDATE,'MM') = TO_CHAR((add_months(TO_DATE('01/01/2021'), -1)), 'MM') 
+			--AND TO_CHAR(ENDDATE,'YYYY') = TO_CHAR((add_months(TO_DATE('01/01/2021'), -1)), 'YYYY') 
+			WHERE TO_CHAR(ENDDATE,'MM') = TO_CHAR(v_DateTo, 'MM') 
+			AND TO_CHAR(ENDDATE,'YYYY') = TO_CHAR(v_DateTo, 'YYYY') 
+			)
+			and mp.isactive='Y'
+			and mt.m_locator_id in (
+					select
+					m_locator_id
+					from m_warehouse mw 
+					join m_locator mloc on mloc.m_warehouse_id = mw.m_warehouse_id
+					where em_ssvs_virtualstorage='N'
+			)
+			GROUP BY mp.M_PRODUCT_ID
+			HAVING SUM(MOVEMENTQTY)>0
+
+			) stock on stock.productstockid = rep1.productid   
+			join m_product_po mpo on mpo.m_product_id = rep1.productid   ;
+
+			INSERT INTO ssmrps_asim_lines(
+				    ssmrps_asim_lines_id, ad_client_id, ad_org_id, isactive, created, 
+				    createdby, updated, updatedby, ssmrps_asimulation_prod_id, stock_min, 
+				    stock_total, avg_sales, orderpurchase1, orderpurchase2, orderpurchase3, 
+				    orderpurchase4, orderpurchase5, orderpurchase6, orderpurchase7, 
+				    orderpurchase8, orderpurchase9, orderpurchase10, orderpurchase11, 
+				    orderpurchase12, stock_security, qtyordered, qtyordered_round, 
+				    finalorder, yearsales, monthsales, productid, duration, stock_total2, 
+				    necessary_qty, partial_ordered
+					,qtyorderedpurchase
+					,qtyorderedsales)
+			SELECT distinct
+			ssmrps_lines_tmp_id, ad_client_id, ad_org_id, isactive, created, 
+				    createdby, updated, updatedby, ssmrps_asimulation_prod_id, stock_min, 
+				    round(stock_total,2) as stock_total, round(avg_sales,2) as avg_sales, round(orderpurchase1,2) as orderpurchase1, round(orderpurchase2,2) as orderpurchase2, round(orderpurchase3,2) as orderpurchase3, 
+				    round(orderpurchase4,2) as orderpurchase4, round(orderpurchase5,2) as orderpurchase5, round(orderpurchase6,2) as  orderpurchase6, round(orderpurchase7,2) as orderpurchase7, 
+				    round(orderpurchase8,2) as orderpurchase8, round(orderpurchase9,2) as orderpurchase9, round(orderpurchase10,2) as orderpurchase10, round(orderpurchase11,2) as orderpurchase11, 
+				    round(orderpurchase12,2) as orderpurchase12, round(stock_security,2) as  stock_security, qtyordered, round(qtyordered_round,2) as  qtyordered_round, 
+				    round(finalorder,2) as finalorder, yearsales, monthsales, productid, round(duration,2) as duration, round(stock_total2,2) as  stock_total2, 
+				    necessary_qty, partial_ordered
+			,qtyorderedpurchase
+			,qtyorderedsales
+			FROM ssmrps_lines_tmp
+			where 
+			--coalesce(avg_sales,0)>0
+			--and coalesce(stock_min,0)>0
+			--AND 
+			ssmrps_asimulation_prod_id = v_Record_ID
+			order by avg_sales desc;  
+
+			select count(*) 
+			into V_countLines
+			from ssmrps_asim_lines 
+			where ssmrps_asimulation_prod_id = v_Record_ID ; 
+
+			v_Acum:=0;
+			v_CountLinesAux:=0;
+			FOR Cur_Pareto IN (
+				SELECT
+				ssmrps_lines_tmp_id
+				,qtyorderedsales
+				FROM ssmrps_lines_tmp
+				where avg_sales>0 
+				AND ssmrps_asimulation_prod_id = v_Record_ID
+				ORDER BY qtyorderedsales DESC
+			)  LOOP
+				v_CountLinesAux:=v_CountLinesAux+1;
+
+					IF (v_Acum=0) THEN
+						v_Acum:=Cur_Pareto.qtyorderedsales;
+					ELSE
+						v_Acum:=v_Acum+Cur_Pareto.qtyorderedsales;
+					END IF;
+
+					IF (v_CountLinesAux<V_countLines) THEN
+						UPDATE ssmrps_asim_lines SET pareto_total=v_Acum  WHERE ssmrps_asim_lines_ID = Cur_Pareto.ssmrps_lines_tmp_id;
+					END IF;
+					
+			
+			END LOOP;
+
+			select SUM(qtyorderedsales) 
+			into V_TotalAvgSales
+			from ssmrps_asim_lines 
+			where ssmrps_asimulation_prod_id = v_Record_ID ; 
+
+			v_Procentage20:= V_TotalAvgSales * 0.8;
+
+			-- Separar el pareto 20 y 80
+
+			update ssmrps_asim_lines set type_pareto = '80' where pareto_total<=v_Procentage20 AND pareto_total >0 AND ssmrps_asimulation_prod_id = v_Record_ID ;
+			update ssmrps_asim_lines set type_pareto = '20' where pareto_total>v_Procentage20 AND pareto_total >0 AND ssmrps_asimulation_prod_id = v_Record_ID ;	
+
+			-- Calcular pareto 20 y 80
+			
+			update ssmrps_asim_lines set pareto = round((pareto_total *v_month_avg20),2) where type_pareto = '80' AND ssmrps_asimulation_prod_id = v_Record_ID ;
+			update ssmrps_asim_lines set pareto = round((pareto_total *v_month_avg80),2) where type_pareto = '20' AND ssmrps_asimulation_prod_id = v_Record_ID ;	
+
+			update ssmrps_asim_lines 
+			set necessary_qty= round(necessary_qty,2),
+			qtyordered= round(qtyordered,2)--,
+			--qtyordered_round= qtyordered
+			--,finalorder  = (ssmrps_get_qty2(round(qtyordered/stock_min,2)))*stock_min
+			where type_pareto = '80' and qtyordered>0 AND ssmrps_asimulation_prod_id = v_Record_ID ;
+
+			update ssmrps_asim_lines 
+			set qtyordered = ((necessary_qty-stock_total2) +  stock_security)
+			,qtyordered_round= ((necessary_qty-stock_total2) +  stock_security)
+			,finalorder  = ((ssmrps_get_qty2( round((((necessary_qty-stock_total2) +  stock_security)),2) ) )/stock_min)*stock_min
+			where type_pareto = '80'
+			and qtyordered=0
+			AND ssmrps_asimulation_prod_id = v_Record_ID ;
+
+			update ssmrps_asim_lines 
+			set necessary_qty= round(necessary_qty,2),
+			qtyordered= round(qtyordered,2)--,
+			--qtyordered_round= qtyordered
+			--,finalorder  = (ssmrps_get_qty2(round(qtyordered/stock_min,2)))*stock_min
+			where type_pareto = '20' and qtyordered>0 AND ssmrps_asimulation_prod_id = v_Record_ID ;
+
+			update ssmrps_asim_lines 
+			set qtyordered = ((necessary_qty-stock_total2) +  stock_security)
+			,qtyordered_round= ((necessary_qty-stock_total2) +  stock_security)
+			,finalorder  = ((ssmrps_get_qty2( round((((necessary_qty-stock_total2) +  stock_security)  ),2) ) )/stock_min) * stock_min
+			where type_pareto = '20'
+			and qtyordered>0
+			AND ssmrps_asimulation_prod_id = v_Record_ID ;
+			
+
+			update ssmrps_asim_lines set qtyordered_round= 0
+			,finalorder  = 0
+			where type_pareto = '20' and qtyordered=0 AND ssmrps_asimulation_prod_id = v_Record_ID ;
+
+			update ssmrps_asim_lines 
+			set qtyordered =0
+			,qtyordered_round= 0
+			,finalorder  = 0
+			where type_pareto = '80'
+			and qtyordered<0
+			AND ssmrps_asimulation_prod_id = v_Record_ID ;
+
+			update ssmrps_asim_lines 
+			set qtyordered =0
+			,qtyordered_round= 0
+			,finalorder  = 0
+			where type_pareto = '20'
+			and qtyordered<0
+			AND ssmrps_asimulation_prod_id = v_Record_ID ;
+			
+
+			update ssmrps_asim_lines 
+			set 
+			qtyordered =1
+			,qtyordered_round= 1
+			,finalorder  = stock_min
+			where type_pareto = '80'
+			and qtyordered>=0.5 AND qtyordered<1
+			AND ssmrps_asimulation_prod_id = v_Record_ID ;
+
+			update ssmrps_asim_lines 
+			set type_pareto='20'
+			where type_pareto is null
+			AND ssmrps_asimulation_prod_id = v_Record_ID ;
+
+			update ssmrps_asim_lines 
+			set finalorder  =   round(qtyordered,2) /stock_min 
+			where type_pareto='20' 
+			and qtyordered>1
+			and qtyordered=qtyordered_round
+			AND ssmrps_asimulation_prod_id = v_Record_ID ;
+
+			update ssmrps_asim_lines 
+			set finalorder  = ((ssmrps_get_qty2( round(finalorder,2) ) )) * stock_min
+			where type_pareto='20' 
+			and qtyordered>1
+			and qtyordered=qtyordered_round
+			AND ssmrps_asimulation_prod_id = v_Record_ID ;
+			
+			IF (V_countLines>0) THEN
+				-- ACTUALIZAR ESTADO PARA CREAR ORDENES
+				UPDATE ssmrps_asimulation_prod 
+				SET DOCSTATUS = 'PP', Generate_Sim ='RE' 
+				,Generate_Orders='PP'
+				where ssmrps_asimulation_prod_id = v_Record_ID;
+
+							
+			END IF;
+			
+		
+
+		END IF;	
+	ELSE
+
+		--raise exception '%', v_Status;
+		
+		IF (v_Status='PP') THEN
+			UPDATE ssmrps_asimulation_prod 
+			SET DOCSTATUS = 'CS', Generate_Sim ='CS' 
+			where ssmrps_asimulation_prod_id = v_Record_ID;
+		 END IF;
+
+	END IF;
+
+   -- PERFORM MRP_PURCHASEPLAN(v_User_ID, v_Org_ID, v_Client_ID, v_Record_ID, v_Planner_ID, v_Vendor_ID, v_TimeHorizon,
+       ---             v_PlanningDate, v_SecurityMargin);
+
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', v_Result, v_Message) ;
+  END; --BODY
+EXCEPTION
+WHEN OTHERS THEN
+  DBMS_OUTPUT.PUT_LINE('MRP_PURCHASE_RUN exception: ' || v_ResultStr) ;
+  v_ResultStr:= '@ERROR=' || SQLERRM;
+  DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+  ROLLBACK;
+  AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+--  RETURN;
+END SSMRPS_CREATE_SIMULATION
+]]></body>
+    </function>
+  </database>

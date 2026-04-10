@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ATINDPO_PLINEVALID_TRG">
+    <trigger name="ATINDPO_PLINEVALID_TRG" table="ATINDPO_POSTVENTALINEA" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[
+  v_application_number      NUMBER;
+  v_order_id                VARCHAR2(32);      
+  v_orderline_id            VARCHAR2(32);      
+  v_slab_cie_id             VARCHAR2(32);      
+  v_bpartner_id             VARCHAR2(32);      
+  v_qtytransferNeW			 NUMBER;
+  v_qtytransferOLD			 NUMBER;
+  v_NameProductNew	text;
+  v_NameProductOLD	text;
+  v_message text;
+  v_prodold_id                VARCHAR2(32);      
+  v_prodnew_id            VARCHAR2(32);      
+  
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+	
+	IF ( TG_OP <> 'INSERT') THEN
+		v_qtytransferOLD:=:old.em_sswos_transfer;
+		select (value || ' - ' || name) as prod
+			into v_NameProductOLD
+			from m_product 
+			where m_product_id= :old.m_product_id;
+		v_prodold_id:= :old.m_product_id;
+	END IF;
+
+    IF (UPDATING) THEN
+	  v_prodnew_id:= :new.m_product_id;
+	  v_qtytransferNeW:= :new.em_sswos_transfer;
+
+      IF (v_qtytransferNeW>0 AND v_qtytransferOLD>0
+		 AND v_prodnew_id<>v_prodold_id) THEN
+	  		
+			select (value || ' - ' || name) as prod
+			into v_NameProductNew
+			from m_product 
+			where m_product_id= :new.m_product_id;
+			v_message:= 'El producto ' || v_NameProductOLD || ' no puede ser reemplazado porque tiene movimientos relacionados';
+			RAISE_APPLICATION_ERROR(-20000, v_message) ;
+        
+      END IF;
+
+    END IF;
+
+END ATINDPO_PLINEVALID_TRG
+]]></body>
+    </trigger>
+  </database>

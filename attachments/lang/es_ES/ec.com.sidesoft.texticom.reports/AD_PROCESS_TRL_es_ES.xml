@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="116A80D8CD78489CA34FFE871060B055" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Efficiency by standard time">Reporte Eficiencia por tiempo estándar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="18C109FC24D843FFABEB7F88F41B9A5B" trl="Y">
+    <value column="Name" isTrl="Y" original="PRINT GENERIC - Work Requirement">PRINT - Orden de Fabricacion</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="34E6831E158F477DA924F2EBBC69CE4D" trl="Y">
+    <value column="Name" isTrl="Y" original="GENERIC - PRINT GOODS MOVEMENTS LINES">Reporte Mov.entre almacenes lineas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4C08A1CCCC564563B58198DBAC83F036" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Production Incident">Reporte de Incidencias de Producción</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4FDA922B5FF9478BA75CF181F4AF8411" trl="Y">
+    <value column="Name" isTrl="Y" original="Compliance with the Production Projection">Cumplimiento de la Proyección de Producción</value>
+    <value column="Description" isTrl="N" original="">Cumplimiento de la Proyección de Producción</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="597A9C4EA0B84B6687719063250BA1B6" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Productive process losses">Reporte Mermas de procesos productivos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6C19490EC5094F149B3339A453FB2E7C" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Cost Production">Reporte de Costos de producción</value>
+    <value column="Description" isTrl="Y" original="Report Cost Production">Reporte de Costos de producción</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B7FCBB7DD7E24F7F81BA0B28E7A66E65" trl="Y">
+    <value column="Name" isTrl="Y" original="Suppliers Analysis Report"> Reporte Análisis Proveedores</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B82D96348108455BB41088F95CC93457" trl="N">
+    <value column="Name" isTrl="N" original="PRINT INOUT">PRINT INOUT</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DE9DDA4F16CF4BF1AA6373C4F2592AA8" trl="N">
+    <value column="Name" isTrl="Y" original="Report of Rejected -  Productive process losse">Mermas de procesos productivos en MP y PP</value>
+    <value column="Description" isTrl="Y" original="Report of Rejected -  Productive process losse">Mermas de procesos productivos en MP y PP</value>
+    <value column="Help" isTrl="Y" original="Report of Rejected -  Productive process losse">Mermas de procesos productivos en MP y PP</value>
+  </row>
+  <row id="F93F57254EAA49F38A87268BBDCC4885" trl="Y">
+    <value column="Name" isTrl="Y" original="PRINT GENERIC - Work Effort">PRINT - Parte de Trabajo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FB1DD2D9BDEC44E4906B1322614B748A" trl="Y">
+    <value column="Name" isTrl="Y" original="GENERIC - PRINT GOODS MOVEMENTS">Reporte Mov.entre almacenes</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

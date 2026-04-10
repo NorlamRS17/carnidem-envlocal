@@ -69,7 +69,7 @@ WHERE c_doctype_id = v_DocType_ID
   AND docnosequence_id IS NOT NULL;
 
 IF NOT FOUND THEN
-	RAISE_APPLICATION_ERROR(-20000, '@SSPROD_NoSequenceFound@'); 
+RAISE_APPLICATION_ERROR(-20000,' El tipo de documento no tiene una secuencia asignada. Configure una secuencia en el tipo de documento seleccionado. ') ; 
 END IF;
 
     FOR Cur_workproposal IN (

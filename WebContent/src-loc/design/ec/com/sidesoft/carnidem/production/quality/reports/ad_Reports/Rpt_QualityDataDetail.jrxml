@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="columns" pageWidth="544" pageHeight="842" columnWidth="544" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" uuid="adca597a-f8d3-4f9f-ae19-21b3272acdb9">
+	<property name="ireport.zoom" value="1.6528925619834753"/>
+	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.wrap.text" value="true"/>
+	<parameter name="DATEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERDECIMAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_WEB" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SOURCE_PATH" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ma_ccp_id" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  MAX(CASE WHEN rn = 1 THEN no_toma END) AS toma1_header,
+  MAX(CASE WHEN rn = 1 THEN valuetype END) AS toma1_type,
+  MAX(CASE WHEN rn = 1 THEN v_string END) AS toma1_string,
+  MAX(CASE WHEN rn = 1 THEN v_number END) AS toma1_number,
+  MAX(CASE WHEN rn = 2 THEN no_toma END) AS toma2_header,
+  MAX(CASE WHEN rn = 2 THEN valuetype END) AS toma2_type,
+  MAX(CASE WHEN rn = 2 THEN v_string END) AS toma2_string,
+  MAX(CASE WHEN rn = 2 THEN v_number END) AS toma2_number,
+  MAX(CASE WHEN rn = 3 THEN no_toma END) AS toma3_header,
+  MAX(CASE WHEN rn = 3 THEN valuetype END) AS toma3_type,
+  MAX(CASE WHEN rn = 3 THEN v_string END) AS toma3_string,
+  MAX(CASE WHEN rn = 3 THEN v_number END) AS toma3_number,
+  MAX(CASE WHEN rn = 4 THEN no_toma END) AS toma4_header,
+  MAX(CASE WHEN rn = 4 THEN valuetype END) AS toma4_type,
+  MAX(CASE WHEN rn = 4 THEN v_string END) AS toma4_string,
+  MAX(CASE WHEN rn = 4 THEN v_number END) AS toma4_number,
+  COALESCE(SUM(v_number), 0) AS sum_values
+FROM (
+  SELECT
+    v.valuetype,
+    COALESCE(v_string, CASE WHEN v_char='N' THEN 'NO' ELSE 'SI' END) AS v_string,
+    COALESCE(v_number, 0) AS v_number,
+    COALESCE(cd.description, to_char(t.em_spquly_takenumber)) AS no_toma,
+    ROW_NUMBER() OVER (ORDER BY v.seqno) AS rn
+  FROM ma_measure_shift s
+  JOIN ma_measure_group g
+    ON g.ma_measure_shift_id = s.ma_measure_shift_id
+  JOIN ma_measure_time t
+    ON t.ma_measure_group_id = g.ma_measure_group_id
+  JOIN ma_measure_values v
+    ON v.ma_measure_time_id = t.ma_measure_time_id
+  JOIN MA_CCP_Group msg
+    ON msg.MA_CCP_Group_id = s.em_spquly_ccp_id
+  LEFT JOIN crprod_dimension cd
+    ON cd.MA_CCP_Group_id = msg.MA_CCP_Group_id
+   AND cd.name = to_char(t.em_spquly_takenumber)
+  LEFT JOIN ma_ccp mc
+    ON mc.ma_ccp_id = v.ma_ccp_id
+  WHERE s.ma_measure_shift_id = $P{DOCUMENT_ID}
+  AND mc.ma_ccp_id = $P{ma_ccp_id}
+) base]]>
+	</queryString>
+	<field name="toma1_header" class="java.lang.String"/>
+	<field name="toma1_type" class="java.lang.String"/>
+	<field name="toma1_string" class="java.lang.String"/>
+	<field name="toma1_number" class="java.math.BigDecimal"/>
+	<field name="toma2_header" class="java.lang.String"/>
+	<field name="toma2_type" class="java.lang.String"/>
+	<field name="toma2_string" class="java.lang.String"/>
+	<field name="toma2_number" class="java.math.BigDecimal"/>
+	<field name="toma3_header" class="java.lang.String"/>
+	<field name="toma3_type" class="java.lang.String"/>
+	<field name="toma3_string" class="java.lang.String"/>
+	<field name="toma3_number" class="java.math.BigDecimal"/>
+	<field name="toma4_header" class="java.lang.String"/>
+	<field name="toma4_type" class="java.lang.String"/>
+	<field name="toma4_string" class="java.lang.String"/>
+	<field name="toma4_number" class="java.math.BigDecimal"/>
+	<field name="sum_values" class="java.math.BigDecimal"/>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{toma1_header} != null]]></printWhenExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="136" height="32" stretchType="RelativeToTallestObject" uuid="160c2caa-87e8-4757-8b6d-7ff9daad46e8"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{toma1_header}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="136" y="0" width="136" height="32" stretchType="RelativeToTallestObject" uuid="c1d2e3f4-1111-2222-3333-444455556666"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{toma2_header}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="272" y="0" width="136" height="32" stretchType="RelativeToTallestObject" uuid="c1d2e3f4-5555-6666-7777-888899990000"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{toma3_header}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="408" y="0" width="136" height="32" stretchType="RelativeToTallestObject" uuid="c1d2e3f4-aaaa-bbbb-cccc-ddddeeeeffff"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{toma4_header}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="40" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{toma1_header} != null]]></printWhenExpression>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="136" height="40" stretchType="RelativeToTallestObject" positionType="Float" isPrintWhenDetailOverflows="true" uuid="88554a27-5750-4663-8c3e-93ce5b1775bb">
+					<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{toma1_type} == null ? "" : ($F{toma1_type}.equals("N") ? ($F{toma1_number} != null ? $P{NUMBERFORMAT}.format($F{toma1_number}) : "0.00") : ($F{toma1_string} != null ? $F{toma1_string} : ""))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="136" y="0" width="136" height="40" stretchType="RelativeToTallestObject" positionType="Float" isPrintWhenDetailOverflows="true" uuid="d2e3f4a5-1111-2222-3333-444455556677">
+					<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{toma2_type} == null ? "" : ($F{toma2_type}.equals("N") ? ($F{toma2_number} != null ? $P{NUMBERFORMAT}.format($F{toma2_number}) : "0.00") : ($F{toma2_string} != null ? $F{toma2_string} : ""))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="272" y="0" width="136" height="40" stretchType="RelativeToTallestObject" positionType="Float" isPrintWhenDetailOverflows="true" uuid="d2e3f4a5-5555-6666-7777-888899990011">
+					<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{toma3_type} == null ? "" : ($F{toma3_type}.equals("N") ? ($F{toma3_number} != null ? $P{NUMBERFORMAT}.format($F{toma3_number}) : "0.00") : ($F{toma3_string} != null ? $F{toma3_string} : ""))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="408" y="0" width="136" height="40" stretchType="RelativeToTallestObject" positionType="Float" isPrintWhenDetailOverflows="true" uuid="d2e3f4a5-aaaa-bbbb-cccc-ddddeeeeff22">
+					<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{toma4_type} == null ? "" : ($F{toma4_type}.equals("N") ? ($F{toma4_number} != null ? $P{NUMBERFORMAT}.format($F{toma4_number}) : "0.00") : ($F{toma4_string} != null ? $F{toma4_string} : ""))]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="17">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="544" height="15" uuid="7d28fe67-7082-41c7-b6c3-c2ca1bdbe911"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>CALIFICACION TOTAL:</b> "+$F{sum_values}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

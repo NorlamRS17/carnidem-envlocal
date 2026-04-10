@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="014CB74E60814A40B3FD8AB6D992CC7C" trl="N">
+    <value column="Name" isTrl="N" original="Work Requirement Selector">Work Requirement Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="199AE237EEBB4E9CAB8F9D4477903E26" trl="N">
+    <value column="Name" isTrl="N" original="Supplier Selector">Supplier Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="209EBF768B314A8D86D78725A82D7F46" trl="N">
+    <value column="Name" isTrl="N" original="Quality Control Type">Quality Control Type</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3C98AF6E91534D73B5F7CAC18A2F84E0" trl="N">
+    <value column="Name" isTrl="N" original="Selector Finished Product">Selector Finished Product</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="419A3A67026944348EEE630DC9397E3C" trl="N">
+    <value column="Name" isTrl="N" original="Criticla Control Points Selector">Criticla Control Points Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="492C870234B74E9397D413C4AAA89869" trl="N">
+    <value column="Name" isTrl="N" original="Employee Selector">Employee Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="64E8AE04B6264829903D32444DDD6227" trl="N">
+    <value column="Name" isTrl="N" original="Work Part">Work Part</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="792D70EAEBC8400085EF0A074B38A2FC" trl="N">
+    <value column="Name" isTrl="Y" original="Goods Receipt Line Product Selector">Goods Receipt Product Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="853E0AD3E34D43689647286A247B022A" trl="N">
+    <value column="Name" isTrl="N" original="Finished Product Selector">Finished Product Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="93A6C97086E343BE907FABD807F6EA97" trl="N">
+    <value column="Name" isTrl="N" original="Supplier Delivery Notes">Supplier Delivery Notes</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A7570E87A0974596977B947155627339" trl="N">
+    <value column="Name" isTrl="N" original="Work Effort Selector">Work Effort Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C63559E2BE1F4853A5F2A878175C58C0" trl="N">
+    <value column="Name" isTrl="N" original="Finished Product">Finished Product</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D81CC34B2D4E457AA1842D03E0D4B6BB" trl="N">
+    <value column="Name" isTrl="N" original="Critical Control Point">Critical Control Point</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DE5CDC5D3265477AAECB1A73220331FD" trl="N">
+    <value column="Name" isTrl="N" original="Cleanliness Type">Cleanliness Type</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F6AAD5CC8BB84E66AE7CC661D4198F24" trl="N">
+    <value column="Name" isTrl="N" original="States">States</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

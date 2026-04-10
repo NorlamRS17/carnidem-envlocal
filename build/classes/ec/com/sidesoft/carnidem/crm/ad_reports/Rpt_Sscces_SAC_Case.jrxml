@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_Sscces_SAC_Case" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2315861c-815e-40b6-855a-f0c96c31f872">
+	<property name="ireport.zoom" value="1.6105100000000039"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="480"/>
+	<parameter name="CASES_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+  oc.em_sscces_documentno AS sac_numero,
+  oc.created::date AS fecha_solicitud,
+  bp.name AS cliente,
+  au_auditado.name AS auditado,
+  au_auditor.name AS auditor,
+  oc.ad_org_id as org_id,
+  oc.em_sscces_nonconformity_closed,
+  oc.em_sscces_deviation_pcc,
+  oc.em_sscces_deviation_prpo,
+  oc.em_sscces_deviation_indicators,
+  oc.em_sscces_nonconforming,
+  oc.em_sscces_external_audit,
+  oc.em_sscces_internal_audit,
+  oc.em_sscces_customer_complaint,
+  oc.em_sscces_other,
+  oc.em_sscces_audit_nc_type,
+  oc.em_sscces_standardclause,
+  oc.case_description,
+  oc.case_resolution,
+  oc.em_sscces_rootcauseanalysis,
+  oc.em_sscces_proposedcorrection,
+  oc.em_sscces_due_date,
+  oc.em_sscces_correctionverific
+FROM opcrm_cases oc
+LEFT JOIN c_bpartner bp ON bp.c_bpartner_id = oc.c_bpartner_id
+LEFT JOIN ad_user au_auditado ON au_auditado.ad_user_id = oc.assigned_to
+LEFT JOIN ad_user au_auditor ON au_auditor.ad_user_id = oc.createdby
+WHERE oc.opcrm_cases_id = $P{CASES_ID}]]>
+	</queryString>
+	<field name="sac_numero" class="java.lang.String"/>
+	<field name="fecha_solicitud" class="java.sql.Date"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="auditado" class="java.lang.String"/>
+	<field name="auditor" class="java.lang.String"/>
+	<field name="org_id" class="java.lang.String"/>
+	<field name="em_sscces_nonconformity_closed" class="java.lang.String"/>
+	<field name="em_sscces_deviation_pcc" class="java.lang.String"/>
+	<field name="em_sscces_deviation_prpo" class="java.lang.String"/>
+	<field name="em_sscces_deviation_indicators" class="java.lang.String"/>
+	<field name="em_sscces_nonconforming" class="java.lang.String"/>
+	<field name="em_sscces_external_audit" class="java.lang.String"/>
+	<field name="em_sscces_internal_audit" class="java.lang.String"/>
+	<field name="em_sscces_customer_complaint" class="java.lang.String"/>
+	<field name="em_sscces_other" class="java.lang.String"/>
+	<field name="em_sscces_audit_nc_type" class="java.lang.String"/>
+	<field name="em_sscces_standardclause" class="java.lang.String"/>
+	<field name="case_description" class="java.lang.String"/>
+	<field name="case_resolution" class="java.lang.String"/>
+	<field name="em_sscces_rootcauseanalysis" class="java.lang.String"/>
+	<field name="em_sscces_proposedcorrection" class="java.lang.String"/>
+	<field name="em_sscces_due_date" class="java.sql.Timestamp"/>
+	<field name="em_sscces_correctionverific" class="java.lang.String"/>
+	<variable name="REPORT_PAGE" class="java.lang.Integer" resetType="None" incrementType="Page">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="27" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="75" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="165" height="74" uuid="2a8a9f91-9836-42ae-b3df-13168277f901"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="0" width="140" height="24" uuid="4e358ea5-9cf8-4637-aa1a-0730b4538f91"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CÓDIGO: PSGI.02R01]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="0" width="136" height="24" uuid="34718660-b116-4409-9bc0-306c85939c19"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[VERSIÓN: 01]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="24" width="390" height="24" uuid="7206fdb1-0fa5-45cb-98f1-24f3571eed1e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROCESO: GESTIÓN DE SISTEMAS INTEGRADOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="165" y="48" width="390" height="26" uuid="6b61e27e-0a19-4525-b95b-bc0cb912deb8"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD DE ACCIÓN CORRECTIVA - SAC]]></text>
+			</staticText>
+			<image hAlign="Left" vAlign="Top">
+				<reportElement x="24" y="7" width="138" height="62" uuid="4e66de58-c100-4785-a54e-3be0414eace7"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal",$F{org_id})]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="441" y="0" width="88" height="24" uuid="78b28644-f367-4284-a9f1-4f527f415cc9"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PÁGINA "+$V{PAGE_NUMBER}+" DE"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="529" y="0" width="26" height="24" uuid="6e3918fa-aa5a-4875-84a1-5ab8e7d4d902"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="228" splitType="Prevent">
+			<rectangle>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="7" width="555" height="221" uuid="2c02048c-b394-499c-ac4c-bb8ae614065f"/>
+			</rectangle>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="379" y="136" width="44" height="18" backcolor="#FFEF00" uuid="cbdebd5b-0932-4fe6-b717-131949a96331">
+					<printWhenExpression><![CDATA[$F{em_sscces_audit_nc_type}.equals("C")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="379" y="154" width="44" height="18" backcolor="#FFEF00" uuid="42681991-1ff7-48bf-b3c7-dd89a74194a9">
+					<printWhenExpression><![CDATA[$F{em_sscces_audit_nc_type}.equals("M")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="423" y="136" width="58" height="18" uuid="1c954284-298a-46b3-a72b-2c0bcaee3536"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Crítica]]></text>
+			</staticText>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="379" y="172" width="44" height="18" backcolor="#FFEF00" uuid="e8cafba1-02bf-44b5-b17a-42a4471c9280">
+					<printWhenExpression><![CDATA[$F{em_sscces_audit_nc_type}.equals("N")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="423" y="154" width="58" height="18" uuid="3a806d03-2b91-4d04-b8f0-e2b22db8ae07"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Mayor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="423" y="172" width="58" height="18" uuid="0d5adefc-c281-474c-8e5f-4f830ffc669e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Menor]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Transparent" x="290" y="200" width="191" height="18" uuid="e545c8fe-8909-4d74-98a9-7e6fc396eecf"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_standardclause} == null ? "" : $F{em_sscces_standardclause}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="290" y="38" width="133" height="18" uuid="8bf400f1-2ecb-4bf2-8ee0-611953c9ab5e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Auditoría Externa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="289" y="56" width="134" height="18" uuid="6a6bc16c-89b1-497c-bf16-77eed5173f34"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Auditoría Interna]]></text>
+			</staticText>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="186" y="110" width="44" height="18" backcolor="#FFEF00" uuid="5709591c-00df-4f60-bd44-b1ec106684a7">
+					<printWhenExpression><![CDATA[$F{em_sscces_nonconforming}.equals("Y")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="186" y="56" width="44" height="18" backcolor="#FFEF00" uuid="537667f6-9fc3-4ae3-97dc-ef83ef37adcf">
+					<printWhenExpression><![CDATA[$F{em_sscces_deviation_prpo}.equals("Y")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="437" y="56" width="44" height="18" backcolor="#FFEF00" uuid="a421a490-5c71-4f6b-bd28-5c9c457cf5f9">
+					<printWhenExpression><![CDATA[$F{em_sscces_internal_audit}.equals("Y")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="36" y="38" width="140" height="18" uuid="d893c25c-9cc9-4d06-a567-6e0dc8b8e618"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Desviación de PCC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="244" y="92" width="43" height="18" uuid="5c5805df-8e3b-4f70-9fce-0356a093d354"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Otro]]></text>
+			</staticText>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="186" y="38" width="44" height="18" backcolor="#FFEF00" uuid="084e3e53-df08-4986-acec-d132c83bc5b0">
+					<printWhenExpression><![CDATA[$F{em_sscces_deviation_pcc}.equals("Y")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="186" y="74" width="44" height="36" backcolor="#FFEF00" uuid="a39b2ac3-df27-4f06-b726-428c95752cd7">
+					<printWhenExpression><![CDATA[$F{em_sscces_deviation_indicators}.equals("Y")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="37" y="74" width="139" height="36" uuid="ccd8da20-d0c2-4a02-b68c-a965eaa8e136"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Desviación de indicadores de proceso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="36" y="14" width="45" height="18" uuid="ec7e906a-a299-4e65-b179-a08f2f7518a9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[SAC N.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="289" y="95" width="192" height="36" isPrintWhenDetailOverflows="true" uuid="e06ecbb9-62e4-432f-b22b-db0edd26130a"/>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="8" isBold="false" isUnderline="true"/>
+					<paragraph spacingBefore="2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_other}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="437" y="74" width="44" height="18" backcolor="#FFEF00" uuid="fddcaa7e-8ed6-4169-b038-44ea7047b6f8">
+					<printWhenExpression><![CDATA[$F{em_sscces_customer_complaint}.equals("Y")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="37" y="110" width="139" height="18" uuid="62bf6024-b7bf-455e-80b9-ee9c6eddac2f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Producto no conforme]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="289" y="74" width="134" height="18" uuid="c7781be1-39bf-4919-8d15-9cfdd273598f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Queja de Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="56" width="149" height="18" uuid="c1c38fe4-521d-4c42-84a5-925bbcfa7508"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Desviación de PRPO]]></text>
+			</staticText>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="437" y="38" width="44" height="18" backcolor="#FFEF00" uuid="6c2d044f-ccfa-43ef-b720-e8f35cb6a6a2">
+					<printWhenExpression><![CDATA[$F{em_sscces_external_audit}.equals("Y")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement mode="Opaque" x="81" y="14" width="149" height="18" backcolor="#FFEF00" uuid="f77eed92-de16-43b3-a84c-2c35c38ae943"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sac_numero}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="287" y="14" width="45" height="18" uuid="ea177843-f680-4e50-9c7c-cc81d7f5a26b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="332" y="14" width="149" height="18" backcolor="#FFEF00" uuid="4ac67124-9ae3-4071-aabc-94c57d55176b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new java.util.Locale("es", "ES")).format($F{fecha_solicitud})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="156" y="200" width="133" height="18" uuid="b2268191-3746-485a-a7e6-bf09db08bb35"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Cláusula de la norma:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="154" width="342" height="18" uuid="f54f8d87-d1fa-42a5-91e6-b91a0dfe887c"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[En caso de auditoria interna o externa: No Conformidad]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Transparent" x="379" y="136" width="44" height="18" uuid="87593ecf-d30e-4499-a05b-e8cea8fcc667"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_audit_nc_type} != null && $F{em_sscces_audit_nc_type}.equals("C") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="379" y="154" width="44" height="18" uuid="fef7a2f3-1956-4da0-8067-86b527a75df5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_audit_nc_type} != null && $F{em_sscces_audit_nc_type}.equals("M") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="379" y="172" width="44" height="18" uuid="46802cda-fd0c-4702-9be3-55f699700308"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_audit_nc_type} != null && $F{em_sscces_audit_nc_type}.equals("N") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="186" y="38" width="44" height="18" uuid="04201156-488d-49ea-ab9c-e79a872c20bd"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_deviation_pcc}.equals("Y") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="186" y="56" width="44" height="18" uuid="92392254-11b8-44ac-a5a5-04cfb3162ec7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_deviation_prpo}.equals("Y") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="186" y="74" width="44" height="36" uuid="7e1d08f7-4b56-4890-8c9d-aa34fd2788f7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_deviation_indicators}.equals("Y") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="186" y="110" width="44" height="18" uuid="e1d0cbeb-8554-4251-aaff-539cdc295521"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_nonconforming}.equals("Y") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="437" y="38" width="44" height="18" uuid="38c33412-03f1-462b-addc-39d5f1fa36e2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_external_audit}.equals("Y") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="437" y="56" width="44" height="18" uuid="aa23a7ff-8c58-4586-bf51-5ba3dca74ed0"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_internal_audit}.equals("Y") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="437" y="74" width="44" height="18" uuid="5ac1732c-9853-4da8-9855-a8b413fc010f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_customer_complaint}.equals("Y") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="55" splitType="Prevent">
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="555" height="55" uuid="5a05529e-a42f-415f-9ae3-16d4adb704f0"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="18" backcolor="#FFEF00" uuid="f239d364-76bd-4bff-ba72-b6e54c982c31"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[ Descripción del Problema o No conformidad:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Transparent" x="6" y="23" width="540" height="23" uuid="12c15639-19f4-441e-97c3-a2dd3dc87dfe"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{case_description} == null ? "" : $F{case_description}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="87" splitType="Prevent">
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="555" height="87" uuid="6909a2d2-17fb-4c55-b783-34d2023f3d8e"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="81" height="18" backcolor="#FFEF00" uuid="f2aa74d5-4799-450b-b5fa-f5455b3f045b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[ Auditado:]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="81" y="0" width="191" height="18" backcolor="#FFEF00" uuid="72409cde-467f-472a-9f92-b8e38330fb8e"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{auditado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="272" y="0" width="81" height="18" uuid="868797e3-188b-4e19-afa9-83531539a7fd"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[ Auditor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="18" width="555" height="18" backcolor="#FFEF00" uuid="41273443-2aef-47fb-a176-5ac15a85ef23"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[ Correción Tomada:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Transparent" x="6" y="41" width="540" height="37" uuid="32cecd8a-5fcf-4a04-9682-f0036d7825ac"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{case_resolution} == null ? "" : $F{case_resolution}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="74" splitType="Prevent">
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="555" height="74" uuid="6a3a06dd-ecc1-4a3f-9cef-9b60e21a650b"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="18" backcolor="#FFBB00" uuid="2c64779c-2479-49c5-8a9e-7bd6f97fe14a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[ Análisis de Causa Raíz:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Transparent" x="6" y="24" width="540" height="37" uuid="4a4cbfde-d887-4ab3-8fb4-c01a22a66ab1"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_rootcauseanalysis} == null ? "" : $F{em_sscces_rootcauseanalysis}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="77" splitType="Prevent">
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="555" height="77" uuid="37c25427-6d94-4635-bd1f-a69bc6f14bf4"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="365" y="0" width="190" height="18" backcolor="#FFBB00" uuid="6853255c-ccc6-4722-8dd3-25610e08602a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[ Fecha cumplimiento:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Transparent" x="365" y="18" width="190" height="59" uuid="6ff81be2-5fad-4d9e-a321-cd66b3d91cd6"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_due_date} != null
+  ? new java.text.SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new java.util.Locale("es", "ES")).format($F{em_sscces_due_date})
+  : ""]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="365" height="77" uuid="2f7ebd56-9115-4fb5-b59f-5b870a89c911"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Transparent" x="6" y="24" width="347" height="37" uuid="4d74f5ff-db7d-4ff5-9a95-f8c06ce7bcac"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_proposedcorrection} == null ? "" : $F{em_sscces_proposedcorrection}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="365" height="18" backcolor="#FFBB00" uuid="5880aca2-2f1d-47fc-9202-afa99f201802"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[ Acción Correctiva Propuesta:]]></text>
+			</staticText>
+		</band>
+		<band height="77" splitType="Prevent">
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="555" height="77" uuid="90f8f7fd-01f3-4d74-b2a3-789055e31243"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="271" height="18" uuid="48959e66-df74-4706-9490-81b4f984c563"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[ Firma:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="271" y="0" width="284" height="18" uuid="a4c7837d-05ad-4ed2-96f8-bf8582a405a5"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[ Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="18" width="555" height="18" backcolor="#FFBB00" uuid="dcc948d9-ed5e-4b02-8373-d9f20e4d44dc"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[Verificación de la Acción Correctiva
+]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Transparent" x="6" y="41" width="540" height="21" uuid="a6939746-e123-4c97-980a-f74896ba7046"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_correctionverific} == null ? "" : $F{em_sscces_correctionverific}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="63" splitType="Prevent">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="271" height="18" uuid="336b2daf-b398-4ac6-aba0-1024edef262f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[ Firma:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="271" y="0" width="284" height="18" uuid="98252399-e31d-47b3-b764-b0e8769ea823"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+					<paragraph leftIndent="7"/>
+				</textElement>
+				<text><![CDATA[ Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="191" y="23" width="159" height="18" uuid="305c5727-2365-4d69-9b7a-eef4aa8d6a98"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[No conformidad Cerrada:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="191" y="41" width="43" height="18" uuid="467d4f1d-36e3-4c1e-b3d8-a343559af626"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Si]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="41" width="43" height="18" uuid="d29a2cf9-9850-4fbd-a038-3ef01b454229"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="234" y="41" width="36" height="18" backcolor="#FFEF00" uuid="808571b3-c3ac-4f0a-92d4-4867b8f2d925">
+					<printWhenExpression><![CDATA[$F{em_sscces_nonconformity_closed}.equals("Y")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<rectangle radius="1">
+				<reportElement mode="Opaque" x="314" y="41" width="36" height="18" backcolor="#FFEF00" uuid="8f070bdb-ff10-4709-8ec3-abce657b7530">
+					<printWhenExpression><![CDATA[$F{em_sscces_nonconformity_closed}.equals("N")]]></printWhenExpression>
+				</reportElement>
+			</rectangle>
+			<textField>
+				<reportElement mode="Transparent" x="314" y="41" width="36" height="18" uuid="6929f84c-1527-4601-97f9-7851e3e81b89"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_nonconformity_closed} != null && $F{em_sscces_nonconformity_closed}.equals("N") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="235" y="41" width="36" height="18" uuid="25ec93cd-5c3e-4e30-b468-ebba1260c9fa"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sscces_nonconformity_closed} != null && $F{em_sscces_nonconformity_closed}.equals("Y") ? "✔" : ""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

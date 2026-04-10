@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="2456CD12B92A4283AC5C79303F1A0EC4" trl="N">
+    <value column="Name" isTrl="N" original="Tariff Items">Tariff Items</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2DDC2E62F752432AA02DDC8E47DB6A7C" trl="N">
+    <value column="Name" isTrl="N" original="Port Type">Port Type</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2E4DB8ED7EDA4DA88F6096B1D0AB7D35" trl="N">
+    <value column="Name" isTrl="N" original="Imports">Imports</value>
+    <value column="Description" isTrl="N" original="Imports Maintenance">Imports Maintenance</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7EC1E289C5904443A5430A2D87488737" trl="N">
+    <value column="Name" isTrl="N" original="Additional Costs">Additional Costs</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BE5D7527BD6D4A539DC528538B56AEBE" trl="N">
+    <value column="Name" isTrl="N" original="Product Tariffs">Product Tariffs</value>
+    <value column="Description" isTrl="N" original="Product Tariffs">Product Tariffs</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CCFAB7AA53CC4606B19234E8BBB68C61" trl="N">
+    <value column="Name" isTrl="N" original="Means Transport">Means Transport</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

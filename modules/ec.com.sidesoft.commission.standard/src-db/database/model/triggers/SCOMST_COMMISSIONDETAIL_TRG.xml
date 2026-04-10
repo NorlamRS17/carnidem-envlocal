@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCOMST_COMMISSIONDETAIL_TRG">
+    <trigger name="SCOMST_COMMISSIONDETAIL_TRG" table="C_COMMISSIONDETAIL" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[
+    /*************************************************************************
+    * The contents of this file are subject to the Compiere Public
+    * License 1.1 ("License"); You may not use this file except in
+    * compliance with the License. You may obtain a copy of the License in
+    * the legal folder of your Openbravo installation.
+    * Software distributed under the License is distributed on an
+    * "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    * implied. See the License for the specific language governing rights
+    * and limitations under the License.
+    * The Original Code is  Compiere  ERP &  Business Solution
+    * The Initial Developer of the Original Code is Jorg Janke and ComPiere, Inc.
+    * Portions created by Jorg Janke are Copyright (C) 1999-2001 Jorg Janke,
+    * parts created by ComPiere are Copyright (C) ComPiere, Inc.;
+    * All Rights Reserved.
+    * Contributor(s): Openbravo SLU
+    * Contributions are Copyright (C) 2001-2008 Openbravo, S.L.U.
+    *
+    * Specifically, this derivative work is based upon the following Compiere
+    * file and version.
+    *************************************************************************
+    * Update Commission Amount Line
+    * Convert Amount to Commission Currrency
+    */
+	v_C_Currency_ID		VARCHAR2(32);
+	v_ConvDate		 DATE;
+
+	v_AmtSubtract	 NUMBER;
+	v_AmtMultiplier	 NUMBER;
+	v_QtySubtract	 NUMBER;
+	v_QtyMultiplier	 NUMBER;
+	v_IsPositiveOnly	CHAR(1);
+	v_Result		 NUMBER;
+	vCommissionID	 VARCHAR2(32);
+    vBasisStatus	 VARCHAR2(60);
+	vPercentage		 NUMBER:= 0;
+BEGIN
+    
+	IF AD_isTriggerEnabled()='N' THEN RETURN;
+	END IF;
+
+	IF(UPDATING OR DELETING) THEN
+		-- DBMS_OUTPUT.PUT_LINE('C_CommissionDetail_Trg - Subtract');
+		-- Subtract old Amount/Qty from Amount
+		UPDATE C_CommissionAmt SET ConvertedAmt = ConvertedAmt - :OLD.ConvertedAmt, ActualQty = ActualQty - :OLD.ActualQty
+		WHERE C_CommissionAmt_ID = :OLD.C_CommissionAmt_ID;
+	END IF;
+	
+	IF INSERTING OR UPDATING THEN
+		-- DBMS_OUTPUT.PUT_LINE('C_CommissionDetail_Trg - Get Info');
+		-- Get Info From CommissionRun
+		SELECT cr.StartDate,
+			c.C_Currency_ID,
+			c.C_Commission_ID,
+			cr.EM_SCOMST_BasisStatus
+			INTO
+			v_ConvDate,
+			v_C_Currency_ID,
+			vCommissionID,
+			vBasisStatus
+		FROM C_CommissionAmt ca
+			JOIN C_CommissionRun cr ON cr.C_CommissionRun_ID = ca.C_CommissionRun_ID
+			JOIN C_Commission c ON c.C_Commission_ID = cr.C_Commission_ID
+		WHERE ca.C_CommissionAmt_ID = :NEW.C_CommissionAmt_ID;
+
+		-- Convert
+		:NEW.ConvertedAmt := C_Currency_Convert(:NEW.ActualAmt, :NEW.C_Currency_ID, v_C_Currency_ID, v_ConvDate, 'S', :NEW.AD_Client_ID, :NEW.AD_Org_ID);
+
+		-- Get Info From CommissionLine
+		SELECT cl.AmtSubtract,
+			cl.AmtMultiplier,
+			cl.QtySubtract,
+			cl.QtyMultiplier,
+			cl.IsPositiveOnly
+			INTO v_AmtSubtract,
+			v_AmtMultiplier,
+			v_QtySubtract,
+			v_QtyMultiplier,
+			v_IsPositiveOnly
+		FROM C_CommissionLine cl
+			JOIN C_CommissionAmt ca ON ca.C_CommissionLine_ID = cl.C_CommissionLine_ID
+		WHERE ca.C_CommissionAmt_ID = :NEW.C_CommissionAmt_ID;
+		/*
+		-- Quantities
+		v_Result := (:new.ActualQty - v_QtySubtract) * v_QtyMultiplier;
+		IF(v_IsPositiveOnly = 'Y' AND v_Result < 0) THEN
+		v_Result := 0;
+		END IF;
+		-- Amount
+		:new.em_scomst_commission_amount := v_Result;
+		v_Result := (:new.ConvertedAmt - v_AmtSubtract) * v_AmtMultiplier;
+		IF(v_IsPositiveOnly = 'Y' AND v_Result < 0) THEN
+		v_Result := 0;
+		END IF;
+		:new.em_scomst_commission_amount := :new.em_scomst_commission_amount + v_Result;
+		*/
+		IF vBasisStatus = 'SCOMST_CBCSMP' THEN
+			SELECT COALESCE(sale_percentage_paid,0)/100 INTO vPercentage
+			FROM scomst_sales_budget sb
+				JOIN C_CommissionRun cr ON cr.C_CommissionRun_ID = sb.C_CommissionRun_ID AND cr.C_Commission_ID = vCommissionID
+			WHERE CASE
+				WHEN (TO_CHAR(:NEW.EM_Scomst_DateInvoiced,'YYYY-MM')||'-01')::DATE <= (TO_CHAR(v_ConvDate,'YYYY-MM')||'-01')::DATE
+					THEN TO_CHAR(cr.StartDate,'YYYY-MM') = TO_CHAR(:NEW.EM_Scomst_DateInvoiced,'YYYY-MM')
+				ELSE TO_CHAR(cr.StartDate,'YYYY-MM') = TO_CHAR(v_ConvDate,'YYYY-MM')
+			END;
+			:NEW.em_scomst_commission_amount := :NEW.ConvertedAmt * vPercentage;
+		ELSE
+			:NEW.em_scomst_commission_amount := :NEW.ConvertedAmt * v_AmtMultiplier;
+		END IF;
+
+		-- Add new Amount/Qty to Amount
+		-- DBMS_OUTPUT.PUT_LINE('C_CommissionDetail_Trg - Add');
+		UPDATE C_CommissionAmt SET ConvertedAmt = ConvertedAmt + :NEW.ConvertedAmt, ActualQty = ActualQty + :NEW.ActualQty
+            , CommissionAmt = CASE WHEN vBasisStatus = 'SCOMST_CBCSMP' THEN CommissionAmt + :NEW.em_scomst_commission_amount ELSE CommissionAmt END
+		WHERE C_CommissionAmt_ID = :NEW.C_CommissionAmt_ID;
+	END IF;
+	END SCOMST_COMMISSIONDETAIL_TRG
+]]></body>
+    </trigger>
+  </database>

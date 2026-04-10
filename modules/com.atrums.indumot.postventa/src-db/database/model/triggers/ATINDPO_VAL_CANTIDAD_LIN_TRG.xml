@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ATINDPO_VAL_CANTIDAD_LIN_TRG">
+    <trigger name="ATINDPO_VAL_CANTIDAD_LIN_TRG" table="ATINDPO_POSTVENTALINEA" fires="before" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[ 
+v_message varchar(255);
+ 
+BEGIN
+
+
+IF (UPDATING) THEN
+        if :old.entregado='Y' and :old.cantidad<>:new.cantidad then 
+ 
+                v_message:='No se puede editar la línea - Producto Despachado - Crear una nueva línea y despachar';
+                RAISE v_message;
+ 
+        else 
+ 
+               return new;
+ 
+        end if;
+end if;
+ 
+END ATINDPO_VAL_CANTIDAD_LIN_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SPROCTM_LIQUIDATE_PROJ_SETT">
+    <function name="SPROCTM_LIQUIDATE_PROJ_SETT" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_Record_ID VARCHAR2(32);
+v_AD_User_ID VARCHAR2(32);
+v_AD_Client_ID VARCHAR2(32);
+v_AD_Org_ID VARCHAR2(32);
+v_ResultStr VARCHAR2(2000):='';
+v_Result NUMBER:=1; -- 0=failure
+v_status VARCHAR2(2):='';
+
+TYPE RECORD IS REF CURSOR;
+Cur_Params RECORD;
+
+BEGIN
+
+  FOR Cur_Params IN (
+    SELECT i.Record_ID, i.AD_User_ID, i.AD_Client_ID, i.AD_Org_ID, p.ParameterName,
+        p.P_String, p.P_Number, p.P_Date, p.P_Date_To
+      FROM AD_PINSTANCE i
+      LEFT JOIN AD_PINSTANCE_PARA p ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=  p_ep_instance
+      ORDER BY p.SeqNo
+    ) LOOP
+
+    v_Record_ID := Cur_Params.Record_ID;
+    v_AD_User_ID := Cur_Params.AD_User_ID;
+    v_AD_Client_ID := Cur_Params.AD_Client_ID;
+    v_AD_Org_ID := Cur_Params.AD_Org_ID;
+  END LOOP;
+  v_ResultStr := 'Inicio del proceso';
+    SELECT  status  INTO v_status
+	  from sproctm_settlement_cost where  sproctm_settlement_cost_id = v_Record_ID;
+
+    IF(v_status = 'DR') THEN
+      UPDATE sproctm_settlement_cost set status = 'CO' , Liquidate = 'Y'  where  sproctm_settlement_cost_id = v_Record_ID;
+      
+      update  sproctm_detail_cost
+      set settlement='Y'
+      where sproctm_detail_cost_id in 
+      (select sproctm_detail_cost_id
+      from sproctm_settl_cost_ln
+      where sproctm_settlement_cost_id = v_Record_ID);
+      
+      ELSE
+      UPDATE sproctm_settlement_cost set status = 'DR' , Liquidate = 'N' where  sproctm_settlement_cost_id = v_Record_ID;
+      
+      update  sproctm_detail_cost
+      set settlement='N'
+      where sproctm_detail_cost_id in 
+      (select sproctm_detail_cost_id
+      from sproctm_settl_cost_ln
+      where sproctm_settlement_cost_id = v_Record_ID);
+      
+    END IF;
+
+ 
+  v_ResultStr := 'Completado exitosamente';
+    --<<FINISH_PROCESS>>
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_ResultStr) ; --OBTG:-20000--
+    AD_UPDATE_PINSTANCE(p_ep_instance, NULL, 'N', v_Result, v_ResultStr) ;
+    RETURN;
+
+EXCEPTION
+WHEN OTHERS THEN
+  DBMS_OUTPUT.PUT_LINE('sproctm_liquidate_proj_sett exception: '|| v_ResultStr);
+  RAISE;
+END SPROCTM_LIQUIDATE_PROJ_SETT
+]]></body>
+    </function>
+  </database>

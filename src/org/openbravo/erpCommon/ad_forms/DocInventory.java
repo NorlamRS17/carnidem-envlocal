@@ -46,7 +46,7 @@ public class DocInventory extends AcctServer {
 
   /**
    * Constructor
-   * 
+   *
    * @param AD_Client_ID
    *          client
    */
@@ -61,7 +61,7 @@ public class DocInventory extends AcctServer {
 
   /**
    * Load Document Details
-   * 
+   *
    * @return true if loadDocumentType was set
    */
   public boolean loadDocumentDetails(FieldProvider[] data, ConnectionProvider conn) {
@@ -77,7 +77,7 @@ public class DocInventory extends AcctServer {
 
   /**
    * Load Invoice Line
-   * 
+   *
    * @return DocLine Array
    */
   public DocLine[] loadLines(ConnectionProvider conn) {
@@ -128,7 +128,7 @@ public class DocInventory extends AcctServer {
 
   /**
    * Get Balance
-   * 
+   *
    * @return Zero (always balanced)
    */
   public BigDecimal getBalance() {
@@ -138,13 +138,13 @@ public class DocInventory extends AcctServer {
 
   /**
    * Create Facts (the accounting logic) for MMI.
-   * 
+   *
    * <pre>
    *  Inventory
    *      Inventory       DR      CR
    *      InventoryDiff   DR      CR   (or Charge)
    * </pre>
-   * 
+   *
    * @param as
    *          account schema
    * @return Fact
@@ -309,7 +309,7 @@ public class DocInventory extends AcctServer {
 
   /**
    * Get Document Confirmation
-   * 
+   *
    * not used
    */
   public boolean getDocumentConfirmation(ConnectionProvider conn, String strRecordId) {

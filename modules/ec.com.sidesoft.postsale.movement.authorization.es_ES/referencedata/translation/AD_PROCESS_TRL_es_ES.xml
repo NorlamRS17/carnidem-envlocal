@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="0483599196D442B0B7C4032DF3CD1496" trl="Y">
+    <value column="Name" isTrl="Y" original="Total Return">Devolución Total</value>
+    <value column="Description" isTrl="Y" original="Total Return">Devolución Total</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A37402A9673B4048A245E413D60263B9" trl="Y">
+    <value column="Name" isTrl="Y" original="Spare Transfer">Transferencia de Repuesto</value>
+    <value column="Description" isTrl="Y" original="Spare Transfer">Transferencia de Repuesto</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D76FECE66C5748B1A30275734FFAFD5B" trl="Y">
+    <value column="Name" isTrl="Y" original="Partial Return">Devolución Parcial</value>
+    <value column="Description" isTrl="Y" original="Partial Return">Devolución Parcial</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

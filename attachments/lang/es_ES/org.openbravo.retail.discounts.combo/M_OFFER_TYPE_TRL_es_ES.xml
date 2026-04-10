@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="M_OFFER_TYPE" version="">
+  <row id="71895FA82C9645949CB752564FB1389D" trl="N">
+    <value column="Name" isTrl="N" original="Combo Fixed Price">Combo Fixed Price</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7899A7A4204749AD92881133C4EE7A57" trl="N">
+    <value column="Name" isTrl="N" original="Combo">Combo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

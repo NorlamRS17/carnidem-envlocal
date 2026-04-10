@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnRequiredChange tableName="SSTPC_LIQUIDATION_PROJECTS" columnName="C_COSTCENTER_ID">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="PROCEDURENAME" pkRow="800002">
+      <oldValue><![CDATA[C_ChangeProjectStatus]]></oldValue>
+      <newValue><![CDATA[sproctm_changeprojectstatus]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="PROCEDURENAME" pkRow="8D9C5703D2BE46A6BF86660EF72CC09F">
+      <oldValue><![CDATA[sstpc_preliquidation]]></oldValue>
+      <newValue><![CDATA[sproctm_preliq_project]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="1350">
+      <oldValue><![CDATA[06C51928923E4B7EB2F3B406EA9A0FE9]]></oldValue>
+      <newValue><![CDATA[FB176F3C885741B18B5E2F7B0F78D19D]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8712">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8713">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8716">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8717">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8722">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8723">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8724">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8726">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8887">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8890">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8892">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8894">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8897">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8899">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8901">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8902">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8968">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8969">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8970">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8971">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8974">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISSESSIONATTR" pkRow="801200">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISSESSIONATTR" pkRow="803142">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISSESSIONATTR" pkRow="803176">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="1005900000">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="1005900001">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="1005900002">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="1005900003">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="1005900004">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="1005900005">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="1005900009">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="1005900010">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_Prhasetype@='C' & @EM_Sproctm_Generated_Exec@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="0D812D0BF8034784AC59360826BBE3C6">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="58D1EDAE8D4A474CB948947BC3FF7390">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="85D5A4873D5F45F4BD4D313DD45BF449">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="95C82131579B4CC593F6BEAD7F68CFBD">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="A6021CF9A78E4F439D3191E9A683820B">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="BA4C9C265D05470697B31AD36D097E44">
+      <oldValue/>
+      <newValue><![CDATA[@sproctm_taskCotizationExecuted@ = 'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="F12044E4570546E18AF6834B00961F8E">
+      <oldValue><![CDATA[30]]></oldValue>
+      <newValue><![CDATA[18]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="F12044E4570546E18AF6834B00961F8E">
+      <oldValue><![CDATA[800061]]></oldValue>
+      <newValue><![CDATA[82FAC100B5494226B7E27313993A1F63]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="AD_PROCESS_ID" pkRow="2C12FD453EC146298EA933C9EC223868">
+      <oldValue/>
+      <newValue><![CDATA[1BB774A7EFF34CF6BF4F088C35AC5567]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="SHOWPARENTBUTTONS" pkRow="FED99CC30AE948BDB6B16F17BAC60672">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="9C52D22A20CC4742AF44EE1821054FD6">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Sproctm_C_Project_ID@='']]></newValue>
+    </columnDataChange>
+  </vector>

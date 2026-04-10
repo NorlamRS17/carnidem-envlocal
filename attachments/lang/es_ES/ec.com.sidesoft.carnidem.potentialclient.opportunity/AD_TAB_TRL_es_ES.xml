@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="00DEBD97D4BC4BD79D20146449B20EE4" trl="Y">
+    <value column="Name" isTrl="Y" original="CrpcoBusinessLine">Línea de Negocio</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="098341E301984275952C56F640A9EDD4" trl="N">
+    <value column="Name" isTrl="N" original="CrpcoBusinesActivityTime">CrpcoBusinesActivityTime</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="514537004A6848F1B5E604BF7BC8817A" trl="Y">
+    <value column="Name" isTrl="Y" original="CrpcoLocationStatus">Estado del local</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

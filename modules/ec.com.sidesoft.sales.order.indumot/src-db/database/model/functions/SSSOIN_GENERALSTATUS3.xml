@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSSOIN_GENERALSTATUS3">
+    <function name="SSSOIN_GENERALSTATUS3" type="NULL">
+      <parameter name="pinstance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[pRecordID VARCHAR2(32);
+	pMessage VARCHAR2(2000);
+	pDocAction VARCHAR2(60);
+	pUserID VARCHAR2(32);
+	pResult NUMBER;
+	vParams RECORD;
+	vOrder RECORD;
+	vInOut RECORD;
+	vInOutLines RECORD;
+	vOrderLines RECORD;
+
+BEGIN
+	
+	FOR vParams IN (
+		SELECT *
+		FROM ad_ep_instance_para
+		WHERE ad_ep_instance_id = pInstance
+	) LOOP
+		IF (vParams.parametername LIKE 'DocAction') THEN
+			pDocAction := vParams.p_string;
+		ELSIF (vParams.parametername LIKE 'Record_ID') THEN
+			pRecordID := vParams.p_string;
+		ELSIF (vParams.parametername LIKE 'User') THEN
+			pUserID := vParams.p_string;
+		ELSIF (vParams.parametername LIKE 'Message') THEN
+			pMessage := vParams.p_text;
+		ELSIF (vParams.parametername LIKE 'Result') THEN
+			pResult := vParams.p_number;
+		END IF;
+	END LOOP;
+	
+	--Repuramos el albaran
+ 	SELECT * INTO vInOut FROM m_inout WHERE m_inout_id=pRecordID;
+	IF vInOut.m_inout_id IS NULL THEN
+		RETURN;
+	END IF;
+	
+	--Repuramos el pedido de venta
+ 	SELECT * INTO vOrder FROM c_order WHERE c_order_id=vInOut.c_order_id;
+	IF vOrder.c_order_id IS NULL THEN
+		RETURN;
+	END IF;
+    --Obtenemos las lineas del albaran
+    FOR vInOutLines IN (
+        SELECT 
+        round(ml.movementqty) as cantidad,
+        ml.m_attributesetinstance_id as atributo,
+        ml.m_inoutline_id
+        FROM c_order o
+        inner join m_inout m on m.c_order_id=o.c_order_id
+        inner join m_inoutline ml on ml.m_inout_id=m.m_inout_id
+        WHERE m.m_inout_id=vInOut.m_inout_id
+    ) LOOP
+        --Actualizamos el atributo en la linea de la factura
+        UPDATE c_invoiceline 
+        SET m_attributesetinstance_id=vInOutLines.atributo
+        WHERE m_inoutline_id=vInOutLines.m_inoutline_id;
+    END LOOP;
+	
+    IF vOrder.InvoiceRule <> 'D' THEN
+    	UPDATE c_order SET em_sssoin_generalstatus='D' WHERE c_order_id=vOrder.c_order_id;
+    END IF;
+
+    UPDATE m_inout set EM_Sssoin_Completed = now(), EM_Sssoin_Completedby = pUserID 
+    where m_inout_id = pRecordID;
+
+    IF vOrder.InvoiceRule = 'D' THEN
+		--Obtenemos las cantidades de las lineas del pedido
+		FOR vOrderLines IN (
+			SELECT 
+			sum(qtyordered) as c_orden,
+			sum(qtydelivered) as c_albaran
+			FROM c_orderline 
+			WHERE c_order_id=vOrder.c_order_id
+		) LOOP
+			--Validamos la cantidad del pedido con la cantidad despachada
+			IF vOrderLines.c_orden = vOrderLines.c_albaran THEN
+				--Actualizamos el estado general en el pedido
+            	UPDATE c_order SET em_sssoin_generalstatus='D' WHERE c_order_id=vOrder.c_order_id;
+			END IF;
+		END LOOP;
+    END IF;
+END SSSOIN_GENERALSTATUS3
+]]></body>
+    </function>
+  </database>

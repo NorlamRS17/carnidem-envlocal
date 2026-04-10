@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0A70F11FC48F4F3FA19A2144F4FA8452" trl="Y">
+    <value column="Name" isTrl="Y" original="sscgr_partnersc_id">Tercero</value>
+    <value column="PrintName" isTrl="Y" original="sscgr_partnersc_id">Tercero</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
   <row id="18C9E9BFF9364A5ABA0106DAC4F2A10E" trl="Y">
     <value column="Name" isTrl="Y" original="OutPutType">Formato de Salida</value>
     <value column="PrintName" isTrl="Y" original="OutPutType">Formato de Salida</value>
@@ -10,10 +20,60 @@
     <value column="PO_Name" isTrl="N" original="OutPutType">OutPutType</value>
     <value column="PO_PrintName" isTrl="N" original=""/>
   </row>
+  <row id="1DCAEFCE017B42F3A246A92ABFBEE96C" trl="Y">
+    <value column="Name" isTrl="Y" original="sscgr_inoutsc_id">Albarán proveedor</value>
+    <value column="PrintName" isTrl="Y" original="sscgr_inoutsc_id">Albarán proveedor</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3F2B2B95020441A4A50D636E760098BF" trl="Y">
+    <value column="Name" isTrl="Y" original="sscgr_productsc_id">Producto</value>
+    <value column="PrintName" isTrl="Y" original="sscgr_productsc_id">Producto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
   <row id="48579A2F8FAD475D992A36B8020870F8" trl="Y">
     <value column="Name" isTrl="Y" original="Product">Producto</value>
     <value column="PrintName" isTrl="Y" original="Product">Producto</value>
     <value column="Description" isTrl="Y" original="Product">Producto</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5ED24AD25EDE432FBC092A3F3BD20448" trl="Y">
+    <value column="Name" isTrl="Y" original="sscgr_ticketsc">Número etiqueta</value>
+    <value column="PrintName" isTrl="Y" original="sscgr_ticketsc">Número etiqueta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7DD0AAC5EB12400F93E3097D3B3DF0BA" trl="Y">
+    <value column="Name" isTrl="Y" original="sscgr_partner_id">Tercero</value>
+    <value column="PrintName" isTrl="Y" original="sscgr_partner_id">Tercero</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9778317344634F168659A108BDA98589" trl="Y">
+    <value column="Name" isTrl="Y" original="sscgr_inout_id">Albarán Proveedor</value>
+    <value column="PrintName" isTrl="Y" original="sscgr_inout_id">Albarán Proveedor</value>
+    <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
     <value column="PO_Description" isTrl="N" original=""/>
     <value column="PO_Help" isTrl="N" original=""/>
@@ -30,10 +90,40 @@
     <value column="PO_Name" isTrl="N" original=""/>
     <value column="PO_PrintName" isTrl="N" original=""/>
   </row>
+  <row id="C549CB146B9A4D8AA45087C0790466D5" trl="Y">
+    <value column="Name" isTrl="Y" original="sscgr_product_id">Producto</value>
+    <value column="PrintName" isTrl="Y" original="sscgr_product_id">Producto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
   <row id="D53ED0E33CD84CC29900DC4879F82BB7" trl="Y">
     <value column="Name" isTrl="Y" original="Date From">Fecha desde</value>
     <value column="PrintName" isTrl="Y" original="SscgrDateFrom">Fecha desde</value>
     <value column="Description" isTrl="N" original="">Fecha desde</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DA19CED1A0EA420D9A57E3752CAA8EAE" trl="Y">
+    <value column="Name" isTrl="Y" original="sscgr_qualitycontroltype">Tipo monitoreo de seg. y calidad</value>
+    <value column="PrintName" isTrl="Y" original="sscgr_qualitycontroltype">Tipo monitoreo de seg. y calidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E68570B461B24B7591F02B3735033C12" trl="Y">
+    <value column="Name" isTrl="Y" original="sscgr_group_id">Tipo monitoreo</value>
+    <value column="PrintName" isTrl="Y" original="sscgr_group_id">Tipo monitoreo</value>
+    <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
     <value column="PO_Description" isTrl="N" original=""/>
     <value column="PO_Help" isTrl="N" original=""/>
@@ -54,6 +144,16 @@
     <value column="Name" isTrl="Y" original="Product Category">Categoría de producto</value>
     <value column="PrintName" isTrl="Y" original="Product Category">Categoría de producto</value>
     <value column="Description" isTrl="Y" original="Product Category">Categoría de producto</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F5E729AD5CB144DAA42F0E26BE3DFFD9" trl="Y">
+    <value column="Name" isTrl="Y" original="sscgr_ticket">Número etiqueta</value>
+    <value column="PrintName" isTrl="Y" original="sscgr_ticket">Número etiqueta</value>
+    <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
     <value column="PO_Description" isTrl="N" original=""/>
     <value column="PO_Help" isTrl="N" original=""/>

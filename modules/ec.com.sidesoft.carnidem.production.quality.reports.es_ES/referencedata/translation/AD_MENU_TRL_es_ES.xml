@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="0403741F9D2441CC92D28A63EED2A05E" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Cost Production">Reporte de Costos de producción</value>
+    <value column="Description" isTrl="Y" original="Report Cost Production">Reporte de Costos de producción</value>
+  </row>
   <row id="0EB5FBB903B84EF28B1BFA9E992DB464" trl="Y">
     <value column="Name" isTrl="Y" original="Security Assessment Report">Reporte de evaluación de seguridad y calidad</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C499C2FCCB2546B68FE100C6E3D66FD1" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Efficiency by standard time">Reporte Eficiencia por tiempo estándar</value>
     <value column="Description" isTrl="N" original=""/>
   </row>
 </compiereTrl>

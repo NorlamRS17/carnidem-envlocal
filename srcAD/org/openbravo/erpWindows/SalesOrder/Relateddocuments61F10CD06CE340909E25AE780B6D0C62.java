@@ -30,7 +30,7 @@ public class Relateddocuments61F10CD06CE340909E25AE780B6D0C62 extends HttpSecure
   
   private static final String windowId = "143";
   private static final String tabId = "61F10CD06CE340909E25AE780B6D0C62";
-  private static final int accesslevel = 7;
+  private static final int accesslevel = 3;
   private static final String moduleId = "88B817706EA84A139B5B3B09BE2AFCD7";
   
   @Override

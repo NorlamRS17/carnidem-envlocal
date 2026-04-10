@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCRVRO_ROUTE_PERIOD_2_TRG">
+    <trigger name="SCRVRO_ROUTE_PERIOD_2_TRG" table="SCRVRO_ROUTE_PERIOD" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	vR1 Record;
+	vR2 Record;
+	vR3 Record;
+	vI NUMBER;
+	vW NUMBER;
+	vStartDate DATE;
+	vDateFrom DATE;
+	vDateTo DATE;
+	vDayFrom NUMBER;
+	vDayTo NUMBER;
+	vMonthFrom VARCHAR2(60);
+	vMonthTo VARCHAR2(60);
+	vDayWeek NUMBER;
+	vRouteWeekId VARCHAR2(32);
+	vDay DATE;
+BEGIN
+
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+	
+	IF INSERTING THEN
+		FOR vR1 IN (
+			SELECT vr.*
+			FROM scrvro_vendor_route AS vr
+				JOIN c_bpartner AS bp ON bp.c_bpartner_id=vr.c_bpartner_id
+			WHERE vr.isactive='Y'
+			ORDER BY bp.name
+		) LOOP
+		
+
+			SELECT date(startdate), date(enddate)
+			INTO vDateFrom, vDateTo FROM c_period WHERE c_period_id=:NEW.c_period_id;
+ 
+		 				--	raise exception '%' ,'FF';
+
+			vW := 1;
+			FOR vR2 IN (
+				SELECT *
+				FROM scrvro_vendor_route_line
+				WHERE scrvro_vendor_route_id=vR1.scrvro_vendor_route_id
+				ORDER BY type_route DESC
+ 
+			) LOOP
+			 
+
+					SELECT TO_CHAR(vDateFrom, 'DD') INTO vDayFrom;
+					
+					SELECT mt.name INTO vMonthFrom
+					FROM ad_month AS m
+						JOIN ad_month_trl AS mt ON mt.ad_month_id=m.ad_month_id
+					WHERE m.value::NUMERIC=TO_CHAR(vDateFrom,'MM')::NUMERIC;
+					
+					SELECT TO_CHAR(vDateTo, 'DD') INTO vDayTo;
+					SELECT mt.name INTO vMonthTo
+					FROM ad_month AS m
+						JOIN ad_month_trl AS mt ON mt.ad_month_id=m.ad_month_id
+					WHERE m.value::NUMERIC=TO_CHAR(vDateTo,'MM')::NUMERIC;
+					INSERT INTO scrvro_route_week (
+						scrvro_route_week_id,
+						ad_client_id,
+						ad_org_id,
+						createdby,
+						updatedby,
+						scrvro_route_period_id,
+						week,
+						week_detail,
+						date_from,
+						date_to,
+						c_bpartner_id,
+						type_route,
+						status
+					) VALUES (
+						get_uuid(),
+						:NEW.ad_client_id,
+						:NEW.ad_org_id,
+						:NEW.createdby,
+						:NEW.updatedby,
+						:NEW.scrvro_route_period_id,
+						vW,
+						'Del '||vDayFrom||' de '||vMonthFrom||' al '||vDayTo||' de '||vMonthTo,
+						vDateFrom,
+						vDateTo,
+						vR1.c_bpartner_id,
+						vR2.type_route,
+						'P'
+					) RETURNING scrvro_route_week_id INTO vRouteWeekId;
+					
+					vDay := vDateFrom;
+					while vDay<= vDateTo LOOP
+						INSERT INTO scrvro_route_day (
+							scrvro_route_day_id,
+							ad_client_id,
+							ad_org_id,
+							createdby,
+							updatedby,
+							scrvro_route_week_id,
+							"day",
+							"date",
+							route_time,
+							status
+						) VALUES (
+							get_uuid(),
+							:NEW.ad_client_id,
+							:NEW.ad_org_id,
+							:NEW.createdby,
+							:NEW.updatedby,
+							vRouteWeekId,
+							(case when extract(dow from vDay)=0 then 7 else  extract(dow from vDay) end),
+							vDay,
+							0,
+							'P'
+						);
+						SELECT (vDay + '1 days'::INTERVAL)::DATE INTO vDay;
+					END LOOP;
+			
+			END LOOP;
+		END LOOP;
+	END IF;
+	
+	END SCRVRO_ROUTE_PERIOD_2_TRG
+]]></body>
+    </trigger>
+  </database>

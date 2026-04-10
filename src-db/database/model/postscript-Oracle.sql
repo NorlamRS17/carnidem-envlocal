@@ -58,14 +58,14 @@ AS
  Cur_Script RECORD;
 BEGIN
     v_Message := param_Message;
-    FOR Cur_Script IN 
+    FOR Cur_Script IN
       (SELECT STRSQL, SEQNO FROM AD_SCRIPT_SQL ORDER BY SEQNO)
-    LOOP 
-    BEGIN 
-      EXECUTE IMMEDIATE(Cur_Script.STRSQL) ; 
-    EXCEPTION 
-    WHEN OTHERS THEN 
-      
+    LOOP
+    BEGIN
+      EXECUTE IMMEDIATE(Cur_Script.STRSQL) ;
+    EXCEPTION
+    WHEN OTHERS THEN
+
       if (coalesce(length(v_Message),0)!=0) then
         v_Message:=substr(v_Message||'<br><br>',1,2000);
       end if;
@@ -99,7 +99,7 @@ AS
 * All Rights Reserved.
 * Contributor(s):  ______________________________________.
 ************************************************************************/
- v_seqNo         NUMBER; 
+ v_seqNo         NUMBER;
  v_strSql        VARCHAR2(4000) := '';
  v_strTemp       VARCHAR2(4000) := '';
  v_Message       VARCHAR2(4000) := '';
@@ -139,7 +139,7 @@ BEGIN
 END ad_script_drop_recreate_index;
 /-- END
 
-CREATE OR REPLACE PROCEDURE DBA_RECOMPILE(p_PInstance_ID IN VARCHAR2) 
+CREATE OR REPLACE PROCEDURE DBA_RECOMPILE(p_PInstance_ID IN VARCHAR2)
 AS
 /*************************************************************************
   * The contents of this file are subject to the Compiere Public
@@ -348,7 +348,7 @@ AS
 END DBA_AfterImport;
 /-- END
 
-CREATE OR REPLACE FUNCTION AD_ORG_CHK_DOCUMENTS(p_header_table IN VARCHAR2, p_lines_table IN VARCHAR2, p_document_id IN VARCHAR2, p_header_column_id IN VARCHAR2, p_lines_column_id IN VARCHAR2) 
+CREATE OR REPLACE FUNCTION AD_ORG_CHK_DOCUMENTS(p_header_table IN VARCHAR2, p_lines_table IN VARCHAR2, p_document_id IN VARCHAR2, p_header_column_id IN VARCHAR2, p_lines_column_id IN VARCHAR2)
  RETURN NUMBER
  AS
 /*************************************************************************
@@ -371,36 +371,36 @@ CREATE OR REPLACE FUNCTION AD_ORG_CHK_DOCUMENTS(p_header_table IN VARCHAR2, p_li
    v_isbusinessunit ad_orgtype.isbusinessunit%TYPE;
    v_islegalentity ad_orgtype.islegalentity%TYPE;
    v_is_included NUMBER:=0;
-  
+
    TYPE RECORD IS REF CURSOR;
    cur_doc_lines RECORD;
- 
+
    v_line_org VARCHAR2(32);
    v_org_line_id VARCHAR2(32);
- BEGIN  
-	 
+ BEGIN
+
    -- Gets the Business Unit or Legal Entity of the document
    SELECT AD_GET_DOC_LE_BU(p_header_table, p_document_id, p_header_column_id, NULL)
    INTO v_org_header_id
    FROM DUAL;
- 
+
    -- Check the lines belong to the same BU or LE as the header
    OPEN cur_doc_lines FOR
    'SELECT DISTINCT('||p_lines_table||'.ad_org_id) AS v_line_org
     FROM '||p_header_table||', '||p_lines_table||'
     WHERE '||p_header_table||'.'||p_header_column_id||' = '||p_lines_table||'.'||p_lines_column_id||'
     AND '||p_lines_table||'.ad_org_id<>'||''''||v_org_header_id||'''
-    AND '||p_lines_table||'.'||p_lines_column_id||'='''||p_document_id||'''';    
+    AND '||p_lines_table||'.'||p_lines_column_id||'='''||p_document_id||'''';
     LOOP
       FETCH cur_doc_lines INTO v_line_org;
       EXIT WHEN cur_doc_lines%NOTFOUND;
- 
+
       SELECT ad_orgtype.isbusinessunit, ad_orgtype.islegalentity
       INTO v_isbusinessunit, v_islegalentity
       FROM AD_Org, AD_OrgType
       WHERE AD_Org.AD_OrgType_ID=AD_OrgType.AD_OrgType_ID
       AND AD_Org.AD_Org_ID=v_line_org;
-      
+
       v_org_line_id:=v_line_org;
       -- Gets recursively the organization parent until finding a Business Unit or a Legal Entity
       WHILE (v_isbusinessunit='N' AND v_islegalentity='N') LOOP
@@ -413,23 +413,23 @@ CREATE OR REPLACE FUNCTION AD_ORG_CHK_DOCUMENTS(p_header_table IN VARCHAR2, p_li
         AND hh.node_id=v_org_line_id
         AND ad_org.ad_orgtype_id=ad_orgtype.ad_orgtype_id
         AND ad_org.isready='Y'
-        AND  EXISTS (SELECT 1 FROM ad_tree WHERE ad_tree.treetype='OO' AND hh.ad_tree_id=ad_tree.ad_tree_id AND hh.ad_client_id=ad_tree.ad_client_id);     
+        AND  EXISTS (SELECT 1 FROM ad_tree WHERE ad_tree.treetype='OO' AND hh.ad_tree_id=ad_tree.ad_tree_id AND hh.ad_client_id=ad_tree.ad_client_id);
       END LOOP;
-      
+
      IF (v_org_line_id<>v_org_header_id) THEN
        v_is_included:=-1;
      END IF;
      EXIT WHEN v_is_included=-1;
- 
-    END LOOP; 
+
+    END LOOP;
    CLOSE cur_doc_lines;
- 
+
   RETURN v_is_included;
- 
+
 END AD_ORG_CHK_DOCUMENTS;
 /-- END
 
-CREATE OR REPLACE FUNCTION AD_ORG_CHK_DOC_PAYMENTS(p_header_table IN VARCHAR2, p_lines_table IN VARCHAR2, p_document_id IN VARCHAR2, p_header_column_id IN VARCHAR2, p_lines_column_id IN VARCHAR2, p_lines_column_payment_id IN VARCHAR2) 
+CREATE OR REPLACE FUNCTION AD_ORG_CHK_DOC_PAYMENTS(p_header_table IN VARCHAR2, p_lines_table IN VARCHAR2, p_document_id IN VARCHAR2, p_header_column_id IN VARCHAR2, p_lines_column_id IN VARCHAR2, p_lines_column_payment_id IN VARCHAR2)
  RETURN NUMBER
  AS
 /*************************************************************************
@@ -452,20 +452,20 @@ CREATE OR REPLACE FUNCTION AD_ORG_CHK_DOC_PAYMENTS(p_header_table IN VARCHAR2, p
    v_isbusinessunit ad_orgtype.isbusinessunit%TYPE;
    v_islegalentity ad_orgtype.islegalentity%TYPE;
    v_is_included NUMBER:=0;
- 
- 
+
+
    TYPE RECORD IS REF CURSOR;
    cur_doc_lines_payment RECORD;
- 
+
    v_line_org_payment VARCHAR2(32);
    v_org_payment_line_id VARCHAR2(32);
  BEGIN
- 
+
    -- Gets the Business Unit or Legal Entity of the document
    SELECT AD_GET_DOC_LE_BU(p_header_table, p_document_id, p_header_column_id, NULL)
    INTO v_org_header_id
    FROM DUAL;
- 
+
    -- Check the payments of the lines belong to the same BU or LE as the document header
    OPEN cur_doc_lines_payment FOR
    'SELECT DISTINCT(C_DEBT_PAYMENT.ad_org_id) AS v_line_org_payment
@@ -474,12 +474,12 @@ CREATE OR REPLACE FUNCTION AD_ORG_CHK_DOC_PAYMENTS(p_header_table IN VARCHAR2, p
     AND C_DEBT_PAYMENT.C_DEBT_PAYMENT_ID='||p_lines_table||'.'||p_lines_column_payment_id||'
     AND '||p_lines_table||'.ad_org_id<>'||''''||v_org_header_id||'''
     AND '||p_lines_table||'.'||p_lines_column_id||'='''||p_document_id||'''';
- 
- 
+
+
    LOOP
     FETCH cur_doc_lines_payment INTO v_line_org_payment;
     EXIT WHEN cur_doc_lines_payment%NOTFOUND;
- 
+
 
     SELECT ad_orgtype.isbusinessunit, ad_orgtype.islegalentity
     INTO v_isbusinessunit, v_islegalentity
@@ -499,7 +499,7 @@ CREATE OR REPLACE FUNCTION AD_ORG_CHK_DOC_PAYMENTS(p_header_table IN VARCHAR2, p
       AND hh.node_id=v_org_payment_line_id
       AND ad_org.ad_orgtype_id=ad_orgtype.ad_orgtype_id
       AND ad_org.isready='Y'
-      AND  EXISTS (SELECT 1 FROM ad_tree WHERE ad_tree.treetype='OO' AND hh.ad_tree_id=ad_tree.ad_tree_id AND hh.ad_client_id=ad_tree.ad_client_id);     
+      AND  EXISTS (SELECT 1 FROM ad_tree WHERE ad_tree.treetype='OO' AND hh.ad_tree_id=ad_tree.ad_tree_id AND hh.ad_client_id=ad_tree.ad_client_id);
     END LOOP;
 
     IF (v_org_payment_line_id<>v_org_header_id) THEN
@@ -507,15 +507,15 @@ CREATE OR REPLACE FUNCTION AD_ORG_CHK_DOC_PAYMENTS(p_header_table IN VARCHAR2, p
     END IF;
     EXIT WHEN v_is_included=-1;
 
-   END LOOP; 
+   END LOOP;
    CLOSE cur_doc_lines_payment;
- 
+
    RETURN v_is_included;
- 
+
 END AD_ORG_CHK_DOC_PAYMENTS;
 /-- END
 
-CREATE OR REPLACE VIEW AD_INTEGER AS 
+CREATE OR REPLACE VIEW AD_INTEGER AS
 SELECT to_number(a.value) AS value
    FROM ( SELECT ( SELECT count(*) AS count
                    FROM ad_element
@@ -562,7 +562,7 @@ BEGIN
    EXECUTE IMMEDIATE 'alter trigger ad_reference_mod_trg enable';
 END;
 /-- END
- 
+
 
 create or replace
 PROCEDURE AD_CREATE_AUDIT_TRIGGERS(p_pinstance_id IN VARCHAR2)
@@ -585,12 +585,12 @@ AS
 * Contributor(s):  ______________________________________.
 ************************************************************************/
   code CLOB;
-  
+
   cursor_id integer;
   number_of_chunks integer;
   codeSplit dbms_sql.varchar2s;
   ret_val integer;
-  
+
   TYPE RECORD IS REF CURSOR;
   cur_triggers RECORD;
   cur_tables RECORD;
@@ -606,9 +606,9 @@ AS
   isavailablename number :=0;
   suffixNumber number :=0;
   numberCharsToRemove number;
-  
-  
-  FUNCTION splitClob(code clob, splitcode out dbms_sql.varchar2s ) RETURN number AS 
+
+
+  FUNCTION splitClob(code clob, splitcode out dbms_sql.varchar2s ) RETURN number AS
   v_chunks number :=0;
   cnt number;
   v_chunk_size number := 250;
@@ -621,17 +621,17 @@ AS
       END LOOP;
       return v_chunks;
   END;
-  
-BEGIN 
-  select count(*) 
+
+BEGIN
+  select count(*)
     into v_isObps
     from ad_system
    where Instance_key is not null
      and activation_key is not null;
      
-  if v_isObps = 0 then
+  /*if v_isObps = 0 then
     RAISE_APPLICATION_ERROR(-20000, '@OBPSNeededForAudit@') ;
-  end if;  
+  end if;*/
 
   for cur_triggers in (select trigger_name
                          from user_triggers
@@ -660,7 +660,7 @@ BEGIN
         numberCharsToRemove :=LENGTH(suffixNumber);
         targetTriggerName := 'AU_'||SUBSTR(cur_tables.tablename,1,23-numberCharsToRemove)||''||suffixNumber||'_TRG';
     END LOOP;
-    
+
     select count(*) into clientinfo
       from dual
      where exists (select 1 from ad_column
@@ -668,16 +668,16 @@ BEGIN
                      and lower(columnname)='ad_client_id')
        and exists (select 1 from ad_column
                     where ad_table_id = cur_tables.ad_table_id
-                     and lower(columnname)='ad_org_id');                     
-                     
-    
+                     and lower(columnname)='ad_org_id');
+
+
     select columnname
       into recordIdName
       from ad_column
      where ad_table_id = cur_tables.ad_table_id
        and iskey='Y';
-    
-      code := 'create or replace TRIGGER '||targetTriggerName||' 
+
+      code := 'create or replace TRIGGER '||targetTriggerName||'
 AFTER INSERT OR UPDATE OR DELETE
 ON '|| cur_tables.tablename||' FOR EACH ROW
 DECLARE
@@ -701,7 +701,7 @@ DECLARE
   V_ORG VARCHAR2(32);
   V_CLIENT VARCHAR2(32);
   V_ISAUDITED CHAR(1);
-BEGIN 
+BEGIN
 ';
 
 if (cur_tables.ad_table_id != '100') then
@@ -711,7 +711,7 @@ code := code ||
     INTO V_ISAUDITED
     FROM AD_TABLE
    WHERE AD_TABLE_ID = '''||cur_tables.ad_table_id||''';
-  IF V_ISAUDITED = ''N'' THEN 
+  IF V_ISAUDITED = ''N'' THEN
     RETURN;
   END IF;
 ';
@@ -725,10 +725,10 @@ code := code ||
       FROM AD_CONTEXT_INFO;
   EXCEPTION WHEN OTHERS THEN NULL;
   END;
-  
+
   V_TIME := NOW();
- 
-  IF UPDATING THEN 
+
+  IF UPDATING THEN
     V_RECORD_ID := :NEW.'||recordIdName||';
     V_ACTION := ''U'';';
 if (clientinfo!=0) then
@@ -763,7 +763,7 @@ SELECT COALESCE(MAX(RECORD_REVISION),0)+1
      WHERE AD_TABLE_ID='''|| cur_tables.ad_table_id||'''
        AND RECORD_ID=V_RECORD_ID;
 ';
-       
+
     for cur_cols in (select *
                        from user_tab_columns u, aD_column c
                       where table_name = upper(cur_tables.tablename)
@@ -796,8 +796,8 @@ SELECT COALESCE(MAX(RECORD_REVISION),0)+1
         datatype := 'NUMBER';
         code := code || 'IF (UPDATING AND COALESCE(:NEW.'||cur_cols.COLUMN_NAME||', -1) != COALESCE(:OLD.'||cur_cols.COLUMN_NAME||', -1))';
       end if;
-      
-      
+
+
       code := code ||
 '
 OR DELETING OR INSERTING THEN
@@ -807,15 +807,15 @@ OR DELETING OR INSERTING THEN
     IF (UPDATING OR DELETING) THEN
       V_OLD_'||datatype||' := :OLD.'||cur_cols.COLUMN_NAME||';
     END IF;
-    
-    INSERT INTO AD_AUDIT_TRAIL 
-           (AD_AUDIT_TRAIL_ID, AD_USER_ID, AD_TABLE_ID, AD_COLUMN_ID, 
-           PROCESSTYPE, PROCESS_ID, RECORD_ID, RECORD_REVISION, ACTION, 
+
+    INSERT INTO AD_AUDIT_TRAIL
+           (AD_AUDIT_TRAIL_ID, AD_USER_ID, AD_TABLE_ID, AD_COLUMN_ID,
+           PROCESSTYPE, PROCESS_ID, RECORD_ID, RECORD_REVISION, ACTION,
            EVENT_TIME, OLD_'||datatype||', NEW_'||datatype||',
            AD_CLIENT_ID, AD_ORG_ID)
           VALUES
-           (GET_UUID, V_USER_ID, '''|| cur_tables.ad_table_id||''', '''||cur_cols.ad_column_id||''', 
-           v_process_type, v_process_id, v_record_id, v_record_rev, v_action, 
+           (GET_UUID, V_USER_ID, '''|| cur_tables.ad_table_id||''', '''||cur_cols.ad_column_id||''',
+           v_process_type, v_process_id, v_record_id, v_record_rev, v_action,
            v_time, v_old_'||datatype||', v_new_'||datatype||',
            V_CLIENT, V_ORG);
   END IF;
@@ -828,20 +828,20 @@ OR DELETING OR INSERTING THEN
       end if;
 
     end loop;
- 
+
 code := code ||
 'END
 ;';
 cursor_id :=dbms_sql.open_cursor;
 number_of_chunks := splitClob(code, codeSplit);
-dbms_sql.parse(cursor_id, codeSplit, 0, number_of_chunks, NULL , dbms_sql.native); 
+dbms_sql.parse(cursor_id, codeSplit, 0, number_of_chunks, NULL , dbms_sql.native);
 ret_val := dbms_sql.execute(cursor_id);
 DBMS_SQL.close_cursor(cursor_id);
 
     created := created + 1;
     suffixNumber :=0;
   end loop;
-  
+
   v_Message := '@Deleted@: '||deleted||' @Created@: '||created;
   AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, v_Message) ;
   EXCEPTION

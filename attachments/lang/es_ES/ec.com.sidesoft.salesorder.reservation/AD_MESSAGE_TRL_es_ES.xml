@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="61D53A1E83354A00BF0CC94A492B8E3B" trl="Y">
+    <value column="MsgText" isTrl="Y" original="The quantity reserved must be equal to the quantity ordered">La cantidad reservada debe ser igual a la pedida</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

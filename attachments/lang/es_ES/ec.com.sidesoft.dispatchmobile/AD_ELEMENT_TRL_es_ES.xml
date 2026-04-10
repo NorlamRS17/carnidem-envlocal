@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="026CDD5532184E1FB2A1B33B40504AF9" trl="Y">
+    <value column="Name" isTrl="Y" original="Route">Ruta</value>
+    <value column="PrintName" isTrl="Y" original="Route">Ruta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="49C6C572BDDF46CCBE1314B49248565D" trl="N">
+    <value column="Name" isTrl="Y" original="User Type APP">Tipo de usuario APP</value>
+    <value column="PrintName" isTrl="Y" original="User Type APP">Tipo de usuario APP</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="61408C211C2A440FB92A54A979D07797" trl="Y">
+    <value column="Name" isTrl="Y" original="Dispatcher_Route">Ruta</value>
+    <value column="PrintName" isTrl="Y" original="Dispatcher_Route">Ruta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="AADDEDDCA28E45D8B294794AAF3F3028" trl="N">
+    <value column="Name" isTrl="Y" original="Dispatcher status">Estado de despacho</value>
+    <value column="PrintName" isTrl="Y" original="Dispatcher status">Estado de despacho</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CB708E23407542F1A540A3325E74FDC0" trl="Y">
+    <value column="Name" isTrl="Y" original="date_trx">Fecha</value>
+    <value column="PrintName" isTrl="Y" original="date_trx">Fecha</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DB627F35265548DC9FC5F2FD6551E92D" trl="N">
+    <value column="Name" isTrl="Y" original="Prepared">Preparador</value>
+    <value column="PrintName" isTrl="Y" original="Prepared">Preparador</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F0ADB4A9C6EF45D4AD878984930F6FCC" trl="N">
+    <value column="Name" isTrl="Y" original="Dispatcher">Despachador</value>
+    <value column="PrintName" isTrl="Y" original="Dispatcher">Despachador</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

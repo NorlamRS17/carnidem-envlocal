@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<provider>
+  <bean>
+    <name>SnmaApiWS</name>
+    <class>ec.com.sidesoft.notifications.mobileandroid.webservices.SnmaApiWS</class>
+    <singleton>true</singleton>
+  </bean>
+</provider>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPITRA_COLLECTIONTRANSIT_TRG">
+    <trigger name="SSPITRA_COLLECTIONTRANSIT_TRG" table="SSPITRA_COLLECTIONTRANSIT" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[BEGIN
+	IF DELETING THEN
+        IF :OLD.status = 'P' THEN
+	    	RAISE_APPLICATION_ERROR(-20000, '@SSPITRA_ActionNotAllowed@');
+	    END IF;
+    END IF;
+
+END SSPITRA_COLLECTIONTRANSIT_TRG
+]]></body>
+    </trigger>
+  </database>

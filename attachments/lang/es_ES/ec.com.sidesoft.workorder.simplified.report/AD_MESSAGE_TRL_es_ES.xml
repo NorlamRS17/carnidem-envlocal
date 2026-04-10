@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="013CA0F3D76546DD851A6F00EE06B82F" trl="N">
+    <value column="MsgText" isTrl="Y" original="Start Date">Fecha Desde</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="539ACBEB1FB143538B68DD1ADADFBBCD" trl="N">
+    <value column="MsgText" isTrl="N" original="Total">Total</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="53B1F7A690254A37953EDA402934D44D" trl="N">
+    <value column="MsgText" isTrl="Y" original="Demand for spare parts by organization and period">Demanda de repuestos por organización y periodo</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="A7AE37AC0263424184D1920B22BC1937" trl="N">
+    <value column="MsgText" isTrl="N" original="Item">Item</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="A97326E33DE6477EA825AC7156AD1BAD" trl="N">
+    <value column="MsgText" isTrl="Y" original="End Date">Fecha Hasta</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="BF9F50F8E8DE43F0B3374950A218BFF8" trl="N">
+    <value column="MsgText" isTrl="Y" original="Sub Category">Sub. Categoría</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="D861C73929D24B06B7563A8B777C089C" trl="N">
+    <value column="MsgText" isTrl="Y" original="Name">Nombre</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="E205372E4B8243C5A9A17AA85B759331" trl="N">
+    <value column="MsgText" isTrl="Y" original="Quantity">Cantidad</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

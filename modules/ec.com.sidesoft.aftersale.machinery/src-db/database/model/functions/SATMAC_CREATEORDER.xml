@@ -1,0 +1,385 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SATMAC_CREATEORDER">
+    <function name="SATMAC_CREATEORDER" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_ResultStr                 VARCHAR2(2000) := '';
+    v_Message                   VARCHAR2(2000) := '';
+    v_Result NUMBER:= 1;
+    v_result_new NUMBER:= 1;
+    v_Message_Error             VARCHAR2(2000) := '';
+    v_errormsg                  VARCHAR2(2000) := '';
+    
+    Cur_Parameter               RECORD;
+    Cur_POLineas                RECORD;
+    
+    v_Client_ID                 VARCHAR2(32);
+    v_Org_ID                    VARCHAR2(32);
+    v_C_OrderLine_id            VARCHAR2(32);
+    v_User_ID                   VARCHAR2(32);
+    v_process_id                VARCHAR2(32);
+    v_priorityrule              VARCHAR2(60);
+    v_warehouse_id              VARCHAR2(32);
+    v_salesrep_id               VARCHAR2(32);
+    v_Process                   VARCHAR2(32);
+    v_seq_no NUMBER:=10; 
+    v_c_order_id                VARCHAR2(32);
+    v_paymentrulepo             VARCHAR2(30);
+    v_paymentmethod_id          VARCHAR2(32);
+    v_paymenttype               VARCHAR2(60);
+    v_generalstatus             VARCHAR2(60);
+    v_atindpo_posventa_id       VARCHAR2(32);
+    v_documenttype              VARCHAR2(32);
+    v_document_no_seq           VARCHAR2(200);
+    v_docstatus                 VARCHAR2(60);
+    v_NOW                       DATE;
+    v_docaction                 VARCHAR2(60);
+    v_BP_Currency_ID            VARCHAR2(32);
+    v_invoice_id                VARCHAR2(32);
+    v_cbpartner_id              VARCHAR2(32);
+    v_cbpartner_location_id     VARCHAR2(32);
+    v_issotrx                   CHAR(1);
+    v_document_no               VARCHAR2(30);
+    v_cdoctype_id               VARCHAR2(32);
+    v_invoicerule               VARCHAR2(60);
+    v_deliveryrule              VARCHAR2(60);
+    v_freightcostrule           VARCHAR2(60);
+    v_deliveryviarule           VARCHAR2(60);
+    v_poreference               VARCHAR2(20);
+    v_currency_id               VARCHAR2(32);
+    v_paymentrule               VARCHAR2(60);
+    v_paymentterm_id            VARCHAR2(32);
+    v_pricelist_id              VARCHAR2(32);
+    v_fin_paymentmethod_id      VARCHAR2(32);
+    v_invoiceline_id            VARCHAR2(32);
+    v_line                      NUMBER(10,0);
+    v_grandtotal                NUMBER(10,2);
+    v_product_id                VARCHAR2(32);
+    v_qtyinvoiced               NUMBER(10,0);
+    v_price                     NUMBER(10,2);
+    v_linenetamt                NUMBER(10,2);
+    v_uom_id                    VARCHAR2(32);
+    v_tax_id                    VARCHAR2(32);
+    v_rate                      NUMBER(10,0);
+    v_taxamt                    NUMBER(10,2);
+    v_taxbaseamt                NUMBER(10,2); 
+    v_routing_order_id          VARCHAR2(32);
+    v_crearfactura              CHAR(1);
+    --v_itemsdes                NUMERIC;
+    v_mecanico                  VARCHAR2(32);
+    v_netdays                   NUMBER;
+    v_count                     NUMBER;
+    v_email                     ArrayName;
+    v_isConsol                  VARCHAR2(32);
+    vServiceType                VARCHAR2(60);
+	vInventoryDocTypeID         VARCHAR2(32);
+    vInventoryID                VARCHAR2(32);
+    vInventoryDocumentNo        VARCHAR2(30);
+    vInventoryName              VARCHAR2(60);
+    vLocatorID                  VARCHAR2(32);
+    vPVDocumentNo               VARCHAR2(30);
+    vQty                        NUMBER;
+    vCost                       NUMBER;
+    vPInstanceID                VARCHAR2(32);
+    
+BEGIN
+   
+    DBMS_OUTPUT.PUT_LINE( 'Updating PInstance - Processing ' || p_PInstance_ID);
+    v_ResultStr := 'PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL);
+
+    BEGIN 
+
+        FOR Cur_Parameter IN (
+            SELECT i.Record_ID,
+                i.AD_User_ID,
+                p.ParameterName,
+                p.P_String,
+                p.P_Number,
+                p.P_Date,
+                i.AD_Org_ID,
+                i.AD_Client_ID,
+                i.ad_process_id
+            FROM AD_PInstance i
+                LEFT JOIN AD_PInstance_Para p ON i.AD_PInstance_ID=p.AD_PInstance_ID
+            WHERE i.AD_PInstance_ID=p_PInstance_ID
+            ORDER BY p.SeqNo
+        ) LOOP
+            v_atindpo_posventa_id := Cur_Parameter.Record_ID;
+            v_User_ID := Cur_Parameter.AD_User_ID;
+            v_Org_ID := Cur_Parameter.AD_Org_ID;
+            v_Client_ID := Cur_Parameter.AD_Client_ID;
+            v_process_id := Cur_Parameter.ad_process_id;
+        END LOOP;
+        DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_PInstance_ID);
+
+        SELECT apv.c_bpartner_id, apv.ad_org_id, apv.docstatus, apv.crearfactura, apv.c_bpartner_emp_id,
+            apv.c_bpartner_location_id, apv.m_pricelist_id, bps.salesrep_id, o.c_currency_id, apv.docstatus,
+            COALESCE(bps.paymentrulepo,'P'), apv.c_paymentterm_id, COALESCE(bps.invoicerule,'D'), COALESCE(bp.deliveryrule, 'A'), COALESCE(bp.deliveryviarule,'P'),
+            apv.fin_paymentmethod_id, pt.em_sssovl_paymenttype, COALESCE(apv.em_indsup_is_consol,'N'), pt.netdays, apv.email,
+            CASE
+                WHEN pt.em_sssovl_paymenttype <> 'CRED' AND COALESCE(fixmonthoffset,0) = 0 AND COALESCE(netdays,0) <= 1 THEN 'Y' 
+                ELSE 'N' 
+            END "Process", apv.lstiposervicio, apv.documentno
+        INTO v_cbpartner_id, v_Org_ID, v_docstatus, v_crearfactura, v_mecanico,
+            v_cbpartner_location_id, v_pricelist_id, v_salesrep_id, v_currency_id, v_docstatus,
+            v_paymentrulepo, v_paymentterm_id, v_invoicerule, v_deliveryrule,v_deliveryviarule,
+            v_paymentmethod_id, v_paymenttype, v_isConsol, v_netdays, v_email,
+            v_Process, vServiceType, vPVDocumentNo
+        FROM atindpo_postventa apv
+            JOIN ad_org o ON o.ad_org_id = apv.ad_org_id
+            JOIN c_bpartner bp ON bp.c_bpartner_id = apv.c_bpartner_id
+            JOIN c_bpartner bps ON bps.c_bpartner_id = apv.c_bpartner_emp_id
+            JOIN c_paymentterm pt ON pt.c_paymentterm_id = apv.c_paymentterm_id
+        WHERE atindpo_postventa_id = v_atindpo_posventa_id;
+
+        IF v_email IS NULL THEN
+            v_Message := 'El campo email no puede estar vacío';
+            RAISE v_message;
+        END IF;
+        
+        IF v_docstatus <> 'ET' AND v_isConsol = 'N' THEN
+            v_Message := 'La orden de Servicio no está cerrada';
+            RAISE v_Message;
+        END IF;
+
+        IF v_crearfactura = 'Y' THEN
+            v_Message:='La orden de Servicio ya se encuentra facturada';
+            RAISE v_Message;
+        END IF;
+
+        IF v_pricelist_id IS NULL THEN
+            v_Message := 'El cliente no tiene configurada una lista de precios';
+            RAISE v_Message;
+        END IF;
+        /*
+        SELECT COUNT(*) INTO v_itemsdes 
+        FROM atindpo_postventalinea
+        WHERE m_product_id NOT IN (SELECT m_product_id FROM m_product WHERE producttype = 'S') 
+            AND entregado = 'N'
+            AND atindpo_postventa_id = v_atindpo_posventa_id;
+        */
+        SELECT sot.c_doctype_id_order, l.m_warehouse_id, l.m_locator_id INTO v_documenttype, v_warehouse_id, vLocatorID
+        FROM sswos_so_transfer sot   
+            JOIN  m_locator l ON l.m_locator_id = sot.m_locator_id
+        WHERE sot.ad_org_id = v_Org_ID;
+
+        IF v_documenttype IS NULL OR v_warehouse_id IS NULL THEN
+            v_Message := 'No se encontró configuración para ordenes de servicio con esta organización';
+            RAISE v_Message;
+        END IF;
+        
+        SELECT COUNT(*) INTO v_count 
+        FROM atindpo_postventalinea pvl
+            JOIN m_product pr ON pr.m_product_id = pvl.m_product_id AND pr.producttype = 'I'
+        WHERE atindpo_postventa_id = v_atindpo_posventa_id AND pvl.em_satmac_invoice = 'N';
+        
+        IF v_count > 0 THEN
+            SELECT tl.c_doctype_id INTO vInventoryDocTypeID
+            FROM satmac_so_transfer_line tl
+                JOIN sswos_so_transfer tr ON tr.sswos_so_transfer_id = tl.sswos_so_transfer_id
+                    AND tr.isactive = 'Y'
+                    AND tr.ad_org_id = v_Org_ID
+            WHERE tl.type_service = vServiceType;
+            
+            IF vInventoryDocTypeID IS NULL THEN
+                v_Message := 'No se encontró configuración para ajuste de inventario con esta organización y tipo de servicio';
+                RAISE v_Message;
+            END IF;
+        END IF;
+	
+        v_c_order_id        := get_uuid() ;
+        v_issotrx           := 'Y' ;
+        v_NOW               := now();
+        v_docstatus         := 'DR';
+        v_docaction         := 'CO';
+        v_priorityrule      := '5';	
+        v_freightcostrule   := 'I';
+	
+        SELECT ad_sequence_doctype(v_documenttype, NULL, 'Y') INTO v_document_no_seq FROM dual;
+        IF v_document_no_seq IS NULL THEN
+            v_Message := 'El tipo de documento configurado para pedido no tiene configurada una secuencia';
+            RAISE v_Message;
+        END IF;
+    
+        IF v_Process <> 'Y' THEN --Credito
+            v_generalstatus := 'CA'; -- Análisis de Crédito (Manual)
+        ELSE
+            v_generalstatus := 'C';	-- Cerrado (FC)
+        END IF;
+
+        INSERT INTO c_order (
+            c_order_id, ad_client_id, ad_org_id, createdby, updatedby,
+            issotrx, documentno, c_doctype_id, c_doctypetarget_id, dateordered,
+            datepromised, dateacct, c_bpartner_id, c_bpartner_location_id, docstatus,
+            docaction, c_currency_id, priorityrule, paymentrule, c_paymentterm_id,
+            invoicerule, deliveryrule, freightcostrule, deliveryviarule, m_warehouse_id,
+            m_pricelist_id, SalesRep_ID, fin_paymentmethod_id, billto_id, em_sssoin_generalstatus,
+            EM_Sssovl_Paymenttype
+        ) VALUES (
+            v_c_order_id, v_Client_ID, v_Org_ID, v_User_ID , v_User_ID,
+            v_issotrx, v_document_no_seq, v_documenttype, v_documenttype, v_NOW,
+            v_NOW, v_NOW, v_cbpartner_id, v_cbpartner_location_id, v_docstatus,
+            v_docaction, v_currency_id, v_priorityrule, v_paymentrulepo, v_paymentterm_id,
+            v_invoicerule, v_deliveryrule, v_freightcostrule, v_deliveryviarule, v_warehouse_id,
+            v_pricelist_id, v_salesrep_id, v_paymentmethod_id ,v_cbpartner_location_id, v_generalstatus,
+            v_paymenttype
+        );
+
+        FOR  Cur_POLineas in (
+            SELECT apvl.m_product_id,
+                SUM(CASE WHEN p.producttype = 'I' THEN COALESCE(apvl.em_sswos_transfer,0) ELSE COALESCE(apvl.cantidad,0) END) cantidad,
+                apvl.atindpo_pricelist,
+                apvl.atindpo_unitprice,
+                p.c_uom_id,
+                p.c_taxcategory_id,
+                apvl.atindpo_discount descuento
+            FROM atindpo_postventalinea apvl
+                JOIN m_product p ON p.m_product_id = apvl.m_product_id
+            WHERE atindpo_postventa_id = v_atindpo_posventa_id AND apvl.em_satmac_invoice = 'Y'
+            GROUP BY apvl.m_product_id, apvl.atindpo_pricelist, apvl.atindpo_unitprice, p.c_uom_id, p.c_taxcategory_id, apvl.atindpo_discount
+            HAVING SUM(CASE WHEN p.producttype = 'I' THEN COALESCE(apvl.em_sswos_transfer,0) ELSE COALESCE(apvl.cantidad,0) END) > 0
+        ) LOOP
+        
+            SELECT t.c_tax_id INTO v_tax_id 
+            FROM c_tax t 
+            WHERE isactive = 'Y' AND t.c_taxcategory_id = Cur_POLineas.c_taxcategory_id;
+            
+            v_linenetamt := Cur_POLineas.cantidad * Cur_POLineas.atindpo_pricelist;
+            v_C_OrderLine_id := get_uuid();
+            INSERT INTO c_orderline (
+                C_OrderLine_id, ad_client_id, ad_org_id, createdby, updatedby,
+                c_order_id, m_product_id, QtyOrdered, c_uom_id, line,
+                dateordered, m_warehouse_id, c_currency_id, c_tax_id, PriceList,
+                PriceActual, LineNetAmt, Discount, em_atvef_entrada, c_bpartner_id,
+                c_bpartner_location_id, pricestd
+            ) VALUES (
+                v_C_OrderLine_id, v_Client_ID, v_Org_ID, v_User_ID, v_User_ID,
+                v_c_order_id, Cur_POLineas.m_product_id, Cur_POLineas.cantidad, Cur_POLineas.c_uom_id, v_seq_no,
+                v_NOW, v_warehouse_id, v_currency_id, v_tax_id, Cur_POLineas.atindpo_pricelist,
+                Cur_POLineas.atindpo_unitprice, v_linenetamt, Cur_POLineas.descuento, 0, v_cbpartner_id,
+                v_cbpartner_location_id, Cur_POLineas.atindpo_unitprice
+            );
+
+            UPDATE c_orderline SET pricelist = Cur_POLineas.atindpo_pricelist, priceactual = Cur_POLineas.atindpo_unitprice,
+                linenetamt = v_linenetamt, discount = Cur_POLineas.descuento
+            Where c_orderline_id = v_C_OrderLine_id;
+            
+            v_seq_no := v_seq_no + 10;
+
+        END LOOP;
+        
+        -- Inventario fisico
+        IF v_count > 0 THEN
+            SELECT ad_sequence_doctype(vInventoryDocTypeID, NULL, 'Y') INTO vInventoryDocumentNo FROM dual;
+            IF vInventoryDocumentNo IS NULL THEN
+                v_Message := 'El tipo de documento configurado para ajuste de inventario no tiene configurada una secuencia';
+                RAISE v_Message;
+            END IF;
+        
+            vInventoryID := get_uuid();
+            vInventoryName := 'Orden se servicio No. '||vPVDocumentNo;
+            INSERT INTO m_inventory (
+                m_inventory_id, ad_client_id, ad_org_id, createdby, updatedby,
+                name, description, m_warehouse_id, movementdate, inventory_type,
+                documentno, processing, em_ssin_doctype_id, em_ssin_documentno
+            ) VALUES (
+                vInventoryID, v_Client_ID, v_Org_ID, v_User_ID, v_User_ID,
+                vInventoryName, vInventoryName, v_warehouse_id, v_Now, 'N',
+                vInventoryDocumentNo, 'N', vInventoryDocTypeID, vInventoryDocumentNo
+            );
+
+            v_seq_no := 0;
+            FOR Cur_POLineas IN (
+                SELECT pvl.m_product_id, pvl.m_attributesetinstance_id, pr.c_uom_id, pvl.em_sswos_transfer
+                FROM atindpo_postventalinea pvl
+                    JOIN m_product pr ON pr.m_product_id = pvl.m_product_id AND pr.producttype = 'I'
+                WHERE atindpo_postventa_id = v_atindpo_posventa_id AND pvl.em_satmac_invoice = 'N'
+            ) LOOP
+
+                SELECT COALESCE(qtyonhand,0) INTO vQty
+                FROM (
+                    SELECT ROW_NUMBER() OVER (ORDER BY qtyonhand DESC) rowNo, qtyonhand
+                    FROM M_storage_detail
+                    WHERE m_product_id = Cur_POLineas.m_product_id
+                        AND m_locator_id = vLocatorID
+                        AND c_uom_id = Cur_POLineas.c_uom_id
+                        --AND m_product_uom_id = NULL
+                        AND (m_attributesetinstance_id = Cur_POLineas.m_attributesetinstance_id OR m_attributesetinstance_id = '0')
+                    ORDER BY qtyonhand DESC
+                ) tmp
+                WHERE rowNo = 1;
+
+                SELECT COALESCE(cost,0) INTO vCost
+                FROM (
+                    SELECT ROW_NUMBER() OVER (ORDER BY dateto DESC) rowNo, cost
+                    FROM m_costing
+                    WHERE m_product_id = '17B6613673924F79B73B80A248234F0C'
+                    ORDER BY dateto DESC
+                ) tmp
+                WHERE rowNo = 1;
+
+                v_seq_no := v_seq_no + 10;
+                INSERT INTO m_inventoryline (
+                    m_inventoryline_id, ad_client_id, ad_org_id, createdby, updatedby,
+                    m_inventory_id, m_locator_id, m_product_id, line, qtybook,
+                    qtycount, m_attributesetinstance_id, c_uom_id, cost
+                ) VALUES (
+                    get_uuid(), v_Client_ID, v_Org_ID, v_User_ID, v_User_ID,
+                    vInventoryID, vLocatorID, Cur_POLineas.m_product_id, v_seq_no, vQty, 
+                    vQty - Cur_POLineas.em_sswos_transfer, Cur_POLineas.m_attributesetinstance_id, Cur_POLineas.c_uom_id, vCost
+                );
+
+            END LOOP;
+
+            vPInstanceID = get_uuid();
+            INSERT INTO AD_PInstance (
+                ad_pinstance_id, ad_client_id, ad_org_id, createdby, updatedby,
+                ad_process_id, record_id, isprocessing, ad_user_id
+            ) VALUES (
+                vPInstanceID, v_Client_ID, v_Org_ID, v_User_ID, v_User_ID,
+                v_process_id, vInventoryID, 'N', v_User_ID
+            );
+            M_INVENTORY_POST(vPInstanceID);
+        END IF;
+	
+        --Procesar Pedido de venta
+        IF v_Process = 'Y' THEN
+            -- PERFORM C_ORDER_POST1(NULL,v_c_order_id);
+        END IF;
+
+        IF v_isConsol = 'Y' THEN
+            UPDATE atindpo_postventa SET crearfactura = 'Y', docstatus = 'SSWOS_F', em_sswos_c_order_id = v_c_order_id 
+            WHERE atindpo_postventa_id IN (
+                SELECT apv.atindpo_postventa_id  
+                FROM indsup_consol ic
+                    JOIN atindpo_postventa apv on apv.documentno = ic.orden
+                        AND apv.em_indsup_is_consol <>'Y' 
+                        AND apv.docstatus = 'ET'
+                        AND apv.crearfactura = 'N'
+                WHERE ic.atindpo_postventa_id = v_atindpo_posventa_id
+            );
+        END IF;
+	
+        UPDATE atindpo_postventa SET crearfactura = 'Y', docstatus = 'SSWOS_F', em_sswos_c_order_id = v_c_order_id,
+            em_satmac_inventory_id = vInventoryID
+        WHERE atindpo_postventa_id = v_atindpo_posventa_id;
+        v_Message := 'Ejecucion Correcta - Pedido de venta generado No. ' || v_document_no_seq;
+	
+        DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished - ' || v_Message) ;
+        AD_UPDATE_PINSTANCE(p_PInstance_ID, v_User_ID, 'Y', v_Result, v_Message);
+        RETURN;
+      
+    END;
+    EXCEPTION
+    WHEN OTHERS THEN
+        v_ResultStr:= '@ERROR=' || SQLERRM;
+        DBMS_OUTPUT.PUT_LINE( v_ResultStr);
+        
+        AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr);
+        RETURN;
+END SATMAC_CREATEORDER
+]]></body>
+    </function>
+  </database>

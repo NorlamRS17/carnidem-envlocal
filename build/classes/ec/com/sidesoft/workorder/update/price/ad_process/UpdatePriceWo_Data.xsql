@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License.
+ * The Original Code is Openbravo ERP.
+ * The Initial Developer of the Original Code is Openbravo SLU
+ * All portions are Copyright (C) 2001-2006 Openbravo SLU
+ * All Rights Reserved.
+ * Contributor(s):  Cheli Pineda Ferrer <cheli@aradaen.com> (Oracle fixes)
+ ************************************************************************
+-->
+
+<SqlClass name="UpdatePriceWoData" package="ec.com.sidesoft.workorder.update.price.ad_process" accessModifier="public">
+   <SqlClassComment></SqlClassComment>
+
+  <SqlMethod name="linesWorkOrder" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        SELECT pvl.atindpo_postventalinea_id as linea
+          , coalesce(pp.pricelist,0) as preciotarifa
+          , coalesce(round(pp.pricelist - (pp.pricelist * coalesce(atindpo_discount,0)/100),4),0) as preciounitario
+          FROM atindpo_postventa pv
+          Join c_bpartner bp on bp.c_bpartner_id = pv.c_bpartner_id
+          Join atindpo_postventalinea pvl on pvl.atindpo_postventa_id = pv.atindpo_postventa_id
+          Join m_product p on p.m_product_id = pvl.m_product_id
+          left Join  m_pricelist_version plv on 
+           plv.m_pricelist_id = bp.m_pricelist_id
+          left Join m_productprice pp on pp.m_product_id = p.m_product_id 
+          AND pp.m_pricelist_version_id=plv.m_pricelist_version_id
+          WHERE pv.c_bpartner_id = ? AND pv.documentno =?
+          AND plv.m_pricelist_version_id =  m_get_pricelist_version(bp.m_pricelist_id,now()::date) 
+      ]]>
+    </Sql>
+    <Parameter name="bpartner"/>
+    <Parameter name="documentno"/>
+  </SqlMethod>
+
+  <SqlMethod name="updateLinesWorkOrder" type="preparedStatement" return="rowCount">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+          UPDATE atindpo_postventalinea set 
+            atindpo_unitprice = ? ::numeric
+            ,Atindpo_Pricelist = ? ::numeric
+            ,atindpo_linenetamt = cantidad * ? ::numeric
+            ,updated=TO_DATE(NOW())
+          WHERE atindpo_postventalinea_id = ?;
+      ]]>
+    </Sql>
+    <Parameter name="preciounitario"/>
+    <Parameter name="preciotarifa"/>
+    <Parameter name="punitario"/>
+    <Parameter name="linea"/>
+  </SqlMethod>
+
+</SqlClass>

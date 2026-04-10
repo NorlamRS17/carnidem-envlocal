@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="05B678CE08C04BE4AB4B0192FC617960" trl="N">
+    <value column="MsgText" isTrl="N" original="The cost center distribution for Business Partner must sum 100 percent.">El porcentaje de las distribuciones por centro de costos debe sumar 100.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="46AC7162003B47F095B15B7732D37F13" trl="N">
+    <value column="MsgText" isTrl="N" original="Set up a cost center distribution for Business Partner to continue.">Configure una distribución de centro de costos para el Tercero.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="BD5B88AE60004C23AE753D54C2256E1F" trl="N">
+    <value column="MsgText" isTrl="Y" original="The percentage must not sum more than 100.">El porcentaje no debe sumar más de 100.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="50D8C39FE253490E80AD0A472F28007A" trl="N">
+    <value column="Name" isTrl="Y" original="Stock Security">Stock de Seguridad</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C1F406D4B25644359EB749B47BDBC4FC" trl="N">
+    <value column="Name" isTrl="N" original="Analysis">Analysis</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F489C9AAFAF14EC4BEF8F22ECC751F3B" trl="N">
+    <value column="Name" isTrl="Y" original="Analysis Simulation MRP">Análisis de simulación MRP</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

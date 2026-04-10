@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_FIELDGROUP" version="">
+  <row id="8373550DFC8C41129EC07585A70726D4" trl="Y">
+    <value column="Name" isTrl="Y" original="Mail Invoice">Correo para Facturas de Ordenes de Servicio</value>
+  </row>
+  <row id="E1676E1E240343D5975EDD432A204CA2" trl="Y">
+    <value column="Name" isTrl="Y" original="Mail Service Order">Correo para Ordenes de Servicio</value>
+  </row>
+</compiereTrl>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="223E7FAC741242E8B03F17A2BF66B7EF" trl="N">
+    <value column="Name" isTrl="N" original="PRINT GENERIC - CASH CLOSE LINE NORM">PRINT GENERIC - CASH CLOSE LINE NORM</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3CD599821E7C4883AAC8534835720A96" trl="N">
+    <value column="Name" isTrl="N" original="PRINT GENERIC - CASH CLOSE NORM">PRINT GENERIC - CASH CLOSE NORM</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="443C457166B44993ADC9AFB22FEB38DF" trl="N">
+    <value column="Name" isTrl="N" original="PRINT GENERIC - CASH CLOSE ">PRINT GENERIC - CASH CLOSE </value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="56CE5196C6CC48C59458809BA7C9A010" trl="Y">
+    <value column="Name" isTrl="Y" original="Cards Settlement Report">Reporte liquidación de tarjetas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="71FAC6D22B5C4019AEC672462946F02B" trl="N">
+    <value column="Name" isTrl="N" original="PRINT GENERIC - CASH CLOSE LINE">PRINT GENERIC - CASH CLOSE LINE</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8A696257BFD14401BC24EF0F04DAB72A" trl="Y">
+    <value column="Name" isTrl="Y" original="Cash Clousure Report">Reporte cierre de caja</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

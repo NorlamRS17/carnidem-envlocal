@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="02C7F4172AEE4B45AA234D4E1C4B9A2A" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad devuelta">Cantidad devuelta</value>
+  </row>
+  <row id="22C744B38465496EA06853C129F9B2BA" trl="N">
+    <value column="Text" isTrl="N" original="Consumo real">Consumo real</value>
+  </row>
+  <row id="23E6FE8AED864924943A553FCFC089D1" trl="N">
+    <value column="Text" isTrl="N" original="Producto terminado:">Producto terminado:</value>
+  </row>
+  <row id="283508341FAA4D9D9905AC07749C623B" trl="N">
+    <value column="Text" isTrl="N" original="&lt;b&gt;Fecha de impresion: &lt;/b&gt;">&lt;b&gt;Fecha de impresion: &lt;/b&gt;</value>
+  </row>
+  <row id="33DD96C10581488EB17210C1C6C55A3B" trl="N">
+    <value column="Text" isTrl="N" original="Rendimiento">Rendimiento</value>
+  </row>
+  <row id="35A91F2D0EA945F1A09530C3CBECF1B3" trl="N">
+    <value column="Text" isTrl="N" original="Measure date">Measure date</value>
+  </row>
+  <row id="4F4D36E9922A413EA1173FD5D66A03A0" trl="N">
+    <value column="Text" isTrl="N" original="Nombre material">Nombre material</value>
+  </row>
+  <row id="5016D3C673AD4FA98EA02509D9527E30" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de devolución">Fecha de devolución</value>
+  </row>
+  <row id="52872B62CCC74E9B9E9D4398E7819217" trl="N">
+    <value column="Text" isTrl="N" original="REPORTE DE CUADRE DE MATERIA PRIMA11">REPORTE DE CUADRE DE MATERIA PRIMA11</value>
+  </row>
+  <row id="667714D416D2419CAFEE788B05878626" trl="N">
+    <value column="Text" isTrl="N" original="Unidad">Unidad</value>
+  </row>
+  <row id="68B05BE5296F4D7AB99AA8AF06C4CE25" trl="N">
+    <value column="Text" isTrl="N" original="Edit PCC Values">Edit PCC Values</value>
+  </row>
+  <row id="6FA8DDDCE2EA406AA6C80495E25D3D83" trl="N">
+    <value column="Text" isTrl="N" original="Edit Control Point Measures">Edit Control Point Measures</value>
+  </row>
+  <row id="70CF631C9BD64C0197056A482F432B51" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de recepcion en linea">Fecha de recepcion en linea</value>
+  </row>
+  <row id="74E61B78388147DE8A380CCA322BDD75" trl="N">
+    <value column="Text" isTrl="N" original="RESPONSABLE PRODUCCIÓN">RESPONSABLE PRODUCCIÓN</value>
+  </row>
+  <row id="7BD66185EB65419B8493388733FC22C5" trl="N">
+    <value column="Text" isTrl="N" original="&lt;b&gt;Usuario: &lt;/b&gt;">&lt;b&gt;Usuario: &lt;/b&gt;</value>
+  </row>
+  <row id="8B8E0E63D6C1495EA102DA79C1327BDA" trl="N">
+    <value column="Text" isTrl="N" original="Lote de material">Lote de material</value>
+  </row>
+  <row id="95985958AD68466496336C501967608F" trl="N">
+    <value column="Text" isTrl="N" original="Estado orden:">Estado orden:</value>
+  </row>
+  <row id="AEC9E4196ED042068504E686BE289A73" trl="N">
+    <value column="Text" isTrl="N" original="JEFE DE PRODUCCIÓN">JEFE DE PRODUCCIÓN</value>
+  </row>
+  <row id="B9CDF58E7BAF428199FA15F8CE6E1962" trl="N">
+    <value column="Text" isTrl="N" original="Codigo de material">Codigo de material</value>
+  </row>
+  <row id="BE3A37E2C65243898950F41027AAF0FB" trl="N">
+    <value column="Text" isTrl="N" original="Shift">Shift</value>
+  </row>
+  <row id="C9157E286AE94416872CE43778CF8339" trl="N">
+    <value column="Text" isTrl="N" original="SUPERVISOR LOGISTICA">SUPERVISOR LOGISTICA</value>
+  </row>
+  <row id="D68FDCA7F6004CCD896E2905CA6827B5" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad Recibida">Cantidad Recibida</value>
+  </row>
+  <row id="DDC8B594555C4065ABBC887673E80462" trl="N">
+    <value column="Text" isTrl="N" original="Unidades elaboradas:">Unidades elaboradas:</value>
+  </row>
+  <row id="E939FB1FCF8049CA88DDB25DCE1DDE91" trl="N">
+    <value column="Text" isTrl="N" original="PAG.">PAG.</value>
+  </row>
+  <row id="EB82541282A04644B81C2720943F2AA2" trl="N">
+    <value column="Text" isTrl="N" original="Número de orden fabricación:">Número de orden fabricación:</value>
+  </row>
+  <row id="F304CC37DAC549529257F2F4DABE7067" trl="N">
+    <value column="Text" isTrl="N" original="Consumo teorico">Consumo teorico</value>
+  </row>
+</compiereTrl>

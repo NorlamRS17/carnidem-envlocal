@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="7D2FBFD7C5744908BA37E47E402953D0" trl="Y">
+    <value column="MsgText" isTrl="Y" original="You must complete all goods shippemnt before complete invoice">No se puede completar una factura si existe un albarán en borrador relacionado al pedido</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

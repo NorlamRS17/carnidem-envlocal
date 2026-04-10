@@ -30,7 +30,7 @@ public class HeaderE8A4F14D7FD94D678CCE89B1A1C52F09 extends HttpSecureAppServlet
   
   private static final String windowId = "67C3F5060FE3451681828B742B3715A2";
   private static final String tabId = "E8A4F14D7FD94D678CCE89B1A1C52F09";
-  private static final int accesslevel = 7;
+  private static final int accesslevel = 3;
   private static final String moduleId = "33CB6D19B98240F287A577849270CF71";
   
   @Override

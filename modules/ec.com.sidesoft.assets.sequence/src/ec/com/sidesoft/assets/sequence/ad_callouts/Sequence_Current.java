@@ -41,7 +41,7 @@ public class Sequence_Current extends SimpleCallout {
         old_Value = String.format("%05d",subCategory.getSsaseqCurrentValuePe()- 1);
         }
       else {
-        subCategory.setSsaseqCurrentValuePe(Long.valueOf("0"));
+        subCategory.setSsaseqCurrentValuePe(new Long("0"));
         OBDal.getInstance().save(subCategory);
         OBDal.getInstance().flush();
         current_Value = String.format("%05d",subCategory.getSsaseqCurrentValuePe());
@@ -55,7 +55,7 @@ public class Sequence_Current extends SimpleCallout {
         old_Value = String.format("%05d",subCategory.getSsaseqCurrentValue()- 1);
         }
       else {
-        subCategory.setSsaseqCurrentValue(Long.valueOf("0"));
+        subCategory.setSsaseqCurrentValue(new Long("0"));
         OBDal.getInstance().save(subCategory);
         OBDal.getInstance().flush();
         current_Value = String.format("%05d",subCategory.getSsaseqCurrentValue());

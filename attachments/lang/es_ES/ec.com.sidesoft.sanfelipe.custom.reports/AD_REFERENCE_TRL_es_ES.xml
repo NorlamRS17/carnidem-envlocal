@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="57B3EF3E668F4E759E6E3CC7FEA2D5F0" trl="N">
+    <value column="Name" isTrl="N" original="MA_WorkRequirement_Param">MA_WorkRequirement_Param</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="94FAA2F82AD64E2DA746E1D10F59C53B" trl="N">
+    <value column="Name" isTrl="N" original="ProductionNomenclature">ProductionNomenclature</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FEF157FE83464C16BDE75AF6D4E0BDD6" trl="N">
+    <value column="Name" isTrl="N" original="WorkRequirementNomenclature">WorkRequirementNomenclature</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

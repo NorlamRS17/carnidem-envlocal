@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="0F174689FE7A441E8284143A59024A62" trl="N">
+    <value column="Name" isTrl="N" original="Employees">Employees</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="1EF070BD1D7F415FB02218510CB37DAC" trl="N">
+    <value column="Name" isTrl="N" original="Ssfi_Model_Prod_ID">Ssfi_Model_Prod_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="55AD47E7CE02494D8460F29CDCB99CF4" trl="N">
+    <value column="Name" isTrl="N" original="Sswos_Color_ID">Sswos_Color_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5ECD02C28A4B40B783919724F2B1F23D" trl="N">
+    <value column="Name" isTrl="N" original="SSWOS_Postventa">SSWOS_Postventa</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="656F96CD812A4FB48C62975CE2AA26BE" trl="N">
+    <value column="Name" isTrl="N" original="Documents">Documents</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="67B99537C7F1449DB9841F207D3C5AB9" trl="N">
+    <value column="Name" isTrl="N" original="Sswos_Year_ID">Sswos_Year_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9D6002F5D55A4AB2BFF9B336473260F2" trl="N">
+    <value column="Name" isTrl="N" original="Sswos Atindpo Postventa">Sswos Atindpo Postventa</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9D6FAEAB432840D586E83A0FD93B8E1D" trl="N">
+    <value column="Name" isTrl="N" original="M_Brand">M_Brand</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9EF40A337EF34DE69A7B5497E6088553" trl="N">
+    <value column="Name" isTrl="N" original="Warehouse Organization">Warehouse Organization</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AE66BF9DD12445F49C8E78CF5081B5B4" trl="N">
+    <value column="Name" isTrl="N" original="sswos_atindpo_postventa - Documentno">sswos_atindpo_postventa - Documentno</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E60CAA051CEC40BDBFCC540935849983" trl="N">
+    <value column="Name" isTrl="N" original="Sswos_ServiceOrder-Windows">Sswos_ServiceOrder-Windows</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

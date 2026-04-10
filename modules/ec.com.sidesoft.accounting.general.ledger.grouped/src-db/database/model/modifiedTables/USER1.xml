@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-  <database name="MODIFIED TABLE USER1">
-    <table name="USER1" primaryKey="USER1_KEY">
-      <index name="EM_SACGLD_USER1" unique="false">
-        <index-column name="USER1_ID"/>
-      </index>
-    </table>
-  </database>

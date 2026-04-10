@@ -195,7 +195,7 @@ BEGIN
 					from (
 					select name, c_bpartner_id, c_year_id, workeddays, workingdays
 					from 
-					(select bp.name, bp.c_bpartner_id, pr.c_year_id, round(sum(coalesce(round(pt.worked_days_benefits), pt.workeddays))) as workeddays, sum(pt.workingdays) as workingdays
+					(select bp.name, bp.c_bpartner_id, pr.c_year_id, sum(pt.workeddays) as workeddays, sum(pt.workingdays) as workingdays
 					from sspr_payroll_ticket pt
 					left join sspr_payroll p on p.sspr_payroll_id = pt.sspr_payroll_id
 					left join c_bpartner bp on bp.c_bpartner_id = pt.c_bpartner_id
@@ -399,7 +399,7 @@ BEGIN
 				     when v_numberchargestotal <= 0 Then coalesce(((v_perc_utility_loads * a.workeddays)/v_workeddaystotal),0) 
 				     end as values_fivepcttotal,
 				--TOTAL 10% + 5%
-				coalesce(((v_perc_earnings_employee * a.workeddays)/v_workeddaystotal),2) +
+				coalesce(trunc(((v_perc_earnings_employee * a.workeddays)/v_workeddaystotal),2),0) +
 				case when v_numberchargestotal > 0 Then coalesce((((v_perc_utility_loads * a.workeddays) * a.numbercharges)/ (v_chargesworkedtotal)),0)
 				     when v_numberchargestotal <= 0 Then coalesce(((v_perc_utility_loads * a.workeddays)/v_workeddaystotal),0) 
 				     end as totalprofits,

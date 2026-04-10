@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="171D70711E984CB8B4ED15693CF12E0A" trl="Y">
+    <value column="Name" isTrl="Y" original="outputType ICE">Formato de salida</value>
+    <value column="PrintName" isTrl="Y" original="outputType">Formato de salida</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3598574413C245C98EFE4B453CC8FE4A" trl="Y">
+    <value column="Name" isTrl="Y" original="DateTo ICE">Fecha hasta</value>
+    <value column="PrintName" isTrl="Y" original="DateTo">Fecha hasta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EAD0DC63A6614A569305C7B95FC66FB5" trl="Y">
+    <value column="Name" isTrl="Y" original="AD_User_ID ICE">Usuario/Contacto</value>
+    <value column="PrintName" isTrl="Y" original="AD_User_ID">Usuario/Contacto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F8AB68F7C7B145539F490AF5498DBC67" trl="Y">
+    <value column="Name" isTrl="Y" original="DateFrom ICE">Fecha desde</value>
+    <value column="PrintName" isTrl="Y" original="DateFrom">Fecha desde</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

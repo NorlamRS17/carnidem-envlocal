@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="0418A9F2ABB24218AE906B2BEA7DA4B5" trl="N">
+    <value column="Text" isTrl="N" original="Send">Send</value>
+  </row>
+  <row id="09D405B30FCC4D6C80AAF314E654D1A1" trl="N">
+    <value column="Text" isTrl="N" original="Add Attachment">Add Attachment</value>
+  </row>
+  <row id="0A65CFEFDD0A42C191960BEC05C2E1D4" trl="N">
+    <value column="Text" isTrl="N" original="by">by</value>
+  </row>
+  <row id="0AFE3528FC674D37BBE7752F5F893977" trl="N">
+    <value column="Text" isTrl="N" original="Email(s) sent successfully">Email(s) sent successfully</value>
+  </row>
+  <row id="1B956FEB2656443B9A2663F429284750" trl="N">
+    <value column="Text" isTrl="N" original="References will be replaced by values:">References will be replaced by values:</value>
+  </row>
+  <row id="1EB1AB68335749149261C8A965965E7A" trl="N">
+    <value column="Text" isTrl="N" original="Email options">Email options</value>
+  </row>
+  <row id="39EF00B688F946648B55E07EB193B176" trl="N">
+    <value column="Text" isTrl="N" original="Close">Close</value>
+  </row>
+  <row id="3DB67CF6EC4D43EAA52FA6DBD908010C" trl="N">
+    <value column="Text" isTrl="N" original="@cus_nam@: The name of the customer">@cus_nam@: The name of the customer</value>
+  </row>
+  <row id="3F6F103A65104AEA91C40155B4DD6B15" trl="N">
+    <value column="Text" isTrl="N" original="This email will be sent to">This email will be sent to</value>
+  </row>
+  <row id="411D529F240F46BDA6942A62194128D1" trl="N">
+    <value column="Text" isTrl="N" original="Print">Print</value>
+  </row>
+  <row id="4964EE3111704EF0AD88656CE17D50D5" trl="N">
+    <value column="Text" isTrl="N" original="Do you want to archive this document after printing?">Do you want to archive this document after printing?</value>
+  </row>
+  <row id="4E24F63E91E646E8803ED3949A4E9933" trl="N">
+    <value column="Text" isTrl="N" original="Reply-to">Reply-to</value>
+  </row>
+  <row id="520BA8442BBA4C2B8403B659B8932685" trl="N">
+    <value column="Text" isTrl="N" original="@our_ref@: The reference of the document">@our_ref@: The reference of the document</value>
+  </row>
+  <row id="61632D58B55F4C8B9D0407257EFE769A" trl="N">
+    <value column="Text" isTrl="N" original="Message Body">Message Body</value>
+  </row>
+  <row id="79FEF3EFBA3D4DC5A847E6C97B0DABD1" trl="N">
+    <value column="Text" isTrl="N" original="customers">customers</value>
+  </row>
+  <row id="7A3C792DD2D943F3AA439A4ACFF64810" trl="N">
+    <value column="Text" isTrl="N" original="Attached Documents">Attached Documents</value>
+  </row>
+  <row id="869E473D8ECC4CEA9EB0250F99DB2887" trl="N">
+    <value column="Text" isTrl="N" original="File name">File name</value>
+  </row>
+  <row id="88499E8A27E04B23BACE07A4F6C02305" trl="N">
+    <value column="Text" isTrl="N" original="This will attach the document to the record.">This will attach the document to the record.</value>
+  </row>
+  <row id="8FB7B6F5E7684D5A8A92618CDB77CEE2" trl="N">
+    <value column="Text" isTrl="N" original="@sal_nam@: The name of the sales rep.">@sal_nam@: The name of the sales rep.</value>
+  </row>
+  <row id="909EE14B9E45468981B3464CCD6E997D" trl="N">
+    <value column="Text" isTrl="N" original="@cus_ref@: The document reference of the customer">@cus_ref@: The document reference of the customer</value>
+  </row>
+  <row id="986F8832927D4F6F8267FC1671AED533" trl="N">
+    <value column="Text" isTrl="N" original="Email Document">Email Document</value>
+  </row>
+  <row id="A4406D4C57E64EBF950630FC643E9531" trl="N">
+    <value column="Text" isTrl="N" original="Yes">Yes</value>
+  </row>
+  <row id="A86DD1F4861944DBABC2FD6213375D4B" trl="N">
+    <value column="Text" isTrl="N" original="[ Remove ]">[ Remove ]</value>
+  </row>
+  <row id="ADFA200ECD18400F9F3FD58208232BD6" trl="N">
+    <value column="Text" isTrl="N" original="Template to use">Template to use</value>
+  </row>
+  <row id="B876962FA68341FC9B90FB84569F73EA" trl="N">
+    <value column="Text" isTrl="N" original="Print and Archive">Print and Archive</value>
+  </row>
+  <row id="C011868C864B452EA73533BF638C0C90" trl="N">
+    <value column="Text" isTrl="N" original="Process completed successfully">Process completed successfully</value>
+  </row>
+  <row id="C3D555CF4CF64820A77CF7458D8A64E9" trl="N">
+    <value column="Text" isTrl="N" original="No, just print it">No, just print it</value>
+  </row>
+  <row id="DDBEFAC399C24D86B12D936F2D3364F1" trl="N">
+    <value column="Text" isTrl="N" original="sales reps">sales reps</value>
+  </row>
+  <row id="E8B40FB14C4E491BA0BACA3F800DECB8" trl="N">
+    <value column="Text" isTrl="N" original="Print Document">Print Document</value>
+  </row>
+  <row id="FCE1735FB1C54237A5F097B6AE9642CA" trl="N">
+    <value column="Text" isTrl="N" original="Archive">Archive</value>
+  </row>
+</compiereTrl>

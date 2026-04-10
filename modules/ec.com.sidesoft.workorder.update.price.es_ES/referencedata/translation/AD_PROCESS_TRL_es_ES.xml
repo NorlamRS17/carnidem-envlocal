@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="5DBC17C8408D4F878C4BD37962A7F9F8" trl="Y">
+    <value column="Name" isTrl="Y" original="uploadcsv">Cargar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="87FCB47E59564ED8AB7B2F927205A912" trl="Y">
+    <value column="Name" isTrl="Y" original="processLine">Procesar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B3F74B7914AA4A49A409B0266C3EE8D4" trl="Y">
+    <value column="Name" isTrl="Y" original="update prices">Actualizar Precios en ordenes de Servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E0B23E3E8CEB4CD19E5EBC059E59ECBA" trl="Y">
+    <value column="Name" isTrl="Y" original="validatecsv">Validar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

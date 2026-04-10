@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_comprobante_compra" pageWidth="595" pageHeight="600" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="37"/>
+	<property name="ireport.y" value="164"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/DesarrolloLuis/OpenbravoERPNuevo/modules/com.atrums.indumot.formatoimpresion/src"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select a.documentno, a.dateinvoiced, a.dateacct, a.name, a.name2, a.codigo, a.descripcion, sum(a.debe) as debe, sum(a.haber) as haber, a.retencion, a.importacion, a.creado
+from (
+select  i.em_co_nro_estab || '-' || i.em_co_punto_emision || '-' || i.documentno as documentno,
+        i.dateinvoiced,
+        i.dateacct,
+        bp.name,
+        bp.name2,
+        coalesce(f.acctvalue,'-') as codigo, coalesce(f.acctdescription,'-') as descripcion, case when f.acctvalue = '2010301001' then 0 else coalesce(f.amtsourcedr, 0 ) end as debe,
+
+        case when f.acctvalue = '2010301001' then coalesce(f.amtsourcecr-f.amtsourcedr, 0) else coalesce(f.amtsourcecr, 0) end as haber,
+
+        coalesce(rc.documentno,'-') as retencion,
+        coalesce((select documentno from atimi_importacion where atimi_importacion_id = i.em_atimi_importacion_id),'-') as importacion,
+(select username from ad_user where ad_user_id = i.createdby) as creado
+from c_invoice i
+    left join co_retencion_compra rc on i.c_invoice_id = rc.c_invoice_id,
+    c_bpartner bp, fact_acct f
+where i.c_bpartner_id = bp.c_bpartner_id
+and f.fact_acct_group_id IN (select fact_acct_group_id from fact_acct where record_id = $P{DOCUMENT_ID})
+and i.c_invoice_id = $P{DOCUMENT_ID}
+order by 8 desc  ) a
+group by 1,2,3,4,5,6,7,10,11,12
+order by 8 desc]]>
+	</queryString>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="dateinvoiced" class="java.sql.Timestamp"/>
+	<field name="dateacct" class="java.sql.Timestamp"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="name2" class="java.lang.String"/>
+	<field name="retencion" class="java.lang.String"/>
+	<field name="importacion" class="java.lang.String"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="debe" class="java.math.BigDecimal"/>
+	<field name="haber" class="java.math.BigDecimal"/>
+	<field name="creado" class="java.lang.String"/>
+	<variable name="total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{haber}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="165" splitType="Stretch">
+			<textField>
+				<reportElement x="149" y="43" width="114" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="63" width="114" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{dateinvoiced}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="83" width="114" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{dateacct}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="103" width="294" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="7" y="43" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Factura:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="63" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Factura:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="83" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Contable:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="103" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="141" width="113" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Débito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="429" y="141" width="112" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Crédito]]></text>
+			</staticText>
+			<line>
+				<reportElement x="428" y="141" width="1" height="23"/>
+			</line>
+			<line>
+				<reportElement x="315" y="164" width="238" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="88" y="0" width="283" height="29"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INDUMOT S.A. - RUC: 0990304211001]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="429" y="43" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{retencion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="329" y="43" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Retención:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="329" y="63" width="100" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="429" y="63" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{importacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<line>
+				<reportElement x="428" y="0" width="1" height="20"/>
+			</line>
+			<textField>
+				<reportElement x="7" y="0" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="0" width="208" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="315" y="0" width="86" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{debe}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="429" y="0" width="77" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{haber}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="90">
+			<line>
+				<reportElement x="314" y="1" width="238" height="1"/>
+			</line>
+			<textField pattern="###0.00">
+				<reportElement x="314" y="2" width="86" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="428" y="2" width="77" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="58" y="74" width="189" height="1"/>
+			</line>
+			<line>
+				<reportElement x="294" y="73" width="170" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="66" y="75" width="79" height="15"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Elaborado por:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="315" y="74" width="135" height="16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Revisado por:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="145" y="75" width="102" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{creado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

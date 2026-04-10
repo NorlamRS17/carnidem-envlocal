@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="C2D50861B8F2420EAD60AA354DA41B15" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssucp_Allow_Price_Changes">Permitir modificar precios</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssucp_Allow_Price_Changes">Permitir modificar precios</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

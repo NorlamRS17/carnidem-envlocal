@@ -156,6 +156,29 @@ public class WithholdingsCard26723DEBE7BA4570ADF0AE5C2D3846DC extends HttpSecure
 
 
 
+    } else if (vars.commandIn("BUTTONPosted")) {
+        String strSswh_Withh_Card_Credit_ID = vars.getGlobalVariable("inpsswhWithhCardCreditId", windowId + "|Sswh_Withh_Card_Credit_ID", "");
+        String strTableId = "610D781C7DE142108BDBBBF84107C394";
+        String strPosted = vars.getStringParameter("inpposted");
+        String strProcessId = "";
+        log4j.debug("Loading Posted button in table: " + strTableId);
+        String strOrg = vars.getStringParameter("inpadOrgId");
+        String strClient = vars.getStringParameter("inpadClientId");
+        if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
+          OBError myError = Utility.translateError(this, vars, vars.getLanguage(), Utility.messageBD(this, "NoWriteAccess", vars.getLanguage()));
+          vars.setMessage(tabId, myError);
+          printPageClosePopUp(response, vars);
+        }else{
+          vars.setSessionValue("Posted|key", strSswh_Withh_Card_Credit_ID);
+          vars.setSessionValue("Posted|tableId", strTableId);
+          vars.setSessionValue("Posted|tabId", tabId);
+          vars.setSessionValue("Posted|posted", strPosted);
+          vars.setSessionValue("Posted|processId", strProcessId);
+          vars.setSessionValue("Posted|path", strDireccion + request.getServletPath());
+          vars.setSessionValue("Posted|windowId", windowId);
+          vars.setSessionValue("Posted|tabName", "WithholdingsCard26723DEBE7BA4570ADF0AE5C2D3846DC");
+          response.sendRedirect(strDireccion + "/ad_actionButton/Posted.html");
+        }
 
     } else if (vars.getCommand().toUpperCase().startsWith("BUTTON") || vars.getCommand().toUpperCase().startsWith("SAVE_BUTTON")) {
       pageErrorPopUp(response);

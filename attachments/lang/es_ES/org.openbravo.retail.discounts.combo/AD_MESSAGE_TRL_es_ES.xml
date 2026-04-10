@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="3EA8B2D1159E43F7BC5FCF8673D0212B" trl="N">
+    <value column="MsgText" isTrl="Y" original="Percentage field is mandatory if Discount Type is Percentage">El campo Porcentaje es obligatorio cuando el Tipo de Descuento es Porcentaje</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="417E59F970474E35A0260171945B804C" trl="N">
+    <value column="MsgText" isTrl="N" original="Combo Family Product is not associated in Assortment">Combo Family Product is not associated in Assortment</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="4CEDB0E6DB4B4CD8AF4A8E6EB9B7320B" trl="N">
+    <value column="MsgText" isTrl="N" original="It is not possible to add a product more than once in any of the families that belong to the combo.">It is not possible to add a product more than once in any of the families that belong to the combo.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="83ED72D3C520400B8116E6DBC0650216" trl="N">
+    <value column="MsgText" isTrl="N" original="Discount for the type Combo is not associated with family">Discount for the type Combo is not associated with family</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="C1644BBD7EEC482D873084A05CF95FEC" trl="N">
+    <value column="MsgText" isTrl="Y" original="Fixed Price field is mandatory if Discount Type is Fixed Price">El campo Precio Fijo es obligatorio cuando el Tipo de Descuento es Precio Fijo</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="C8C9AD17D430451BACE222001CA8B41F" trl="N">
+    <value column="MsgText" isTrl="Y" original="Fixed Discount field is mandatory if Discount Type is Fixed Discount">El campo Descuento Fijo es obligatorio cuando el Tipo de Descuento es Descuento Fijo</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="CFCA9A400C3B4678802847724F2816D9" trl="N">
+    <value column="MsgText" isTrl="N" original="It is not possible to delete product if it is present in any of the Discount Combo family">It is not possible to delete product if it is present in any of the Discount Combo family</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

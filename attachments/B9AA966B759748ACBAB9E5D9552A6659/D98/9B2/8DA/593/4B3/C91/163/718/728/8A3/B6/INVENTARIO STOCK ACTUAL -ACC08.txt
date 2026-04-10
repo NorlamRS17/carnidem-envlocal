@@ -1,0 +1,74 @@
+select  *
+from    (select  to_char(now(), 'dd/MM/yyyy HH24:MI:SS') AS fecha_actual
+					,o.name AS organizacion					
+					,w.name AS bodega
+					,pc.name AS categoria
+					,public.atimv_categoria_raiz(pc.m_product_category_id) as categoria_padre
+					,p.value AS codigo
+					,p.name AS descripcion
+					,u.name AS unidad
+					,SUM(t.qtyonhand) AS cantidad
+					,att.description as atributos
+					,SPLIT_PART(att.description,'_',1) as att1
+					,SPLIT_PART(att.description,'_',2) as att2
+					,SPLIT_PART(att.description,'_',3) as att3
+					,SPLIT_PART(att.description,'_',4) as att4
+					,SPLIT_PART(att.description,'_',5) as att5
+					,l.value as ubicacion
+					,em_sssifld_oem_code as c_oem
+					,COALESCE(ilt.name, olt.name) as tercero
+					,olt.dateordered
+					,COALESCE(olt.priceactual, c.cost) as priceactual
+					,ct.cost_actual preciofactura
+					,ilt.documentno as factura
+			FROM 	m_storage_detail AS t
+					LEFT JOIN m_locator l ON l.m_locator_id=t.m_locator_id
+					LEFT JOIN m_warehouse w ON w.m_warehouse_id=l.m_warehouse_id
+					LEFT JOIN m_product p ON p.m_product_id=t.m_product_id
+					LEFT JOIN m_product_category pc ON pc.m_product_category_id=p.m_product_category_id
+					LEFT JOIN c_uom u ON u.c_uom_id=p.c_uom_id
+					LEFT JOIN ad_org o ON o.ad_org_id=w.ad_org_id
+					LEFT JOIN m_attributesetinstance att ON att.m_attributesetinstance_id=t.m_attributesetinstance_id
+					LEFT JOIN (SELECT   TRUNC(o.dateordered) as dateordered,bp.name,ol.priceactual,
+							            CASE 
+								            WHEN  LENGTH(COALESCE(mil.m_attributesetinstance_id,'')) > 0
+													AND COALESCE(mil.m_attributesetinstance_id,'') <> COALESCE(ol.m_attributesetinstance_id,'')
+											THEN  COALESCE(mil.m_attributesetinstance_id,'') 
+											ELSE  COALESCE(ol.m_attributesetinstance_id,'') 
+											END m_attributesetinstance_id
+											,ol.c_orderline_id,ol.m_product_id,mil.m_inoutline_id
+								FROM 	c_order o
+								JOIN 	c_doctype dc ON dc.c_doctype_id=o.c_doctype_id AND isreturn='N'
+								JOIN 	c_orderline ol ON ol.c_order_id = o.c_order_id
+								LEFT JOIN m_inoutline mil ON mil.c_orderline_id = ol.c_orderline_id
+								LEFT JOIN m_inout mi ON mi.m_inout_id = mil.m_inout_id
+								JOIN 	c_bpartner bp ON bp.c_bpartner_id = o.c_bpartner_id
+								WHERE 	o.docstatus IN ('CO','IP') AND o.issotrx='N'
+								AND     CASE 
+									         WHEN mi.m_inout_id IS NOT NULL THEN 
+								             mi.docstatus IN ('CO') ELSE TRUE END ) olt ON olt.m_attributesetinstance_id = att.m_attributesetinstance_id 
+								             and olt.m_product_id=p.m_product_id
+					LEFT JOIN (select   TRUNC(i.dateinvoiced) as dateinvoiced,bp.name,il.priceactual
+									    ,m_attributesetinstance_id,documentno,il.c_invoiceline_id,il.m_product_id
+								FROM 	c_invoice i
+								JOIN 	c_doctype dc ON dc.c_doctype_id=i.c_doctype_id AND isreturn='N'
+								JOIN 	c_invoiceline il ON il.c_invoice_id = i.c_invoice_id
+								JOIN 	c_bpartner bp ON bp.c_bpartner_id = i.c_bpartner_id
+								WHERE 	docstatus = 'CO' AND i.issotrx='N' ) ilt ON ilt.m_attributesetinstance_id = olt.m_attributesetinstance_id AND
+										ilt.m_product_id=p.m_product_id
+					LEFT JOIN (SELECT  SUM(tc.cost) as cost_actual, t.m_transaction_id, transactioncost as cost_trx,
+									   m_inoutline_id , m_product_id
+								FROM   m_transaction  t
+								LEFT JOIN  m_transaction_cost tc ON tc.m_transaction_id = t.m_transaction_id
+								WHERE  m_inoutline_id IS NOT NULL
+								GROUP  BY t.m_transaction_id) ct ON ct.m_inoutline_id = olt.m_inoutline_id
+					LEFT JOIN  (SELECT MAX(cost) as cost ,m_product_id
+								FROM   m_costing
+								WHERE  TRUNC(dateto) > TRUNC(NOW())
+								GROUP BY m_product_id) c ON c.m_product_id = p.m_product_id
+			WHERE   producttype='I' AND isstocked='Y' AND t.qtyonhand>0			
+			  GROUP BY  organizacion, bodega, categoria, codigo, descripcion,
+			  			t.ad_client_id, unidad, atributos, ubicacion, c_oem, COALESCE(ilt.name, olt.name), olt.dateordered, 
+			            olt.priceactual, cost_actual, factura,c.cost, categoria_padre
+			  ORDER BY categoria ASC,codigo ASC,bodega ASC, descripcion asc) x
+where  categoria_padre = 'MOTOS'

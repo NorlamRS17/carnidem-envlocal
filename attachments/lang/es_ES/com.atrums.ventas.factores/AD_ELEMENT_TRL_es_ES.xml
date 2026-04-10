@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="2E66F8BAEF8C4DE38A49BE2346AEA573" trl="N">
+    <value column="Name" isTrl="N" original="% Entrada">% Entrada</value>
+    <value column="PrintName" isTrl="N" original="% Entrada">% Entrada</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="741DA49BF6CA4AB09B24A6ED2AA0681A" trl="N">
+    <value column="Name" isTrl="N" original="% Recargo">% Recargo</value>
+    <value column="PrintName" isTrl="N" original="% Recargo">% Recargo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A75B58AF1959424091B45B951CAC51E5" trl="N">
+    <value column="Name" isTrl="N" original="% Financiamiento">% Financiamiento</value>
+    <value column="PrintName" isTrl="N" original="% Financiamiento">% Financiamiento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CF46759112D246E6BDC9B6E291739894" trl="N">
+    <value column="Name" isTrl="N" original="Atvef_Factor_ID">Atvef_Factor_ID</value>
+    <value column="PrintName" isTrl="N" original="Atvef_Factor_ID">Atvef_Factor_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

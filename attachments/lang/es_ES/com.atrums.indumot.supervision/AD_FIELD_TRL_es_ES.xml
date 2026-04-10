@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_FIELD" version="">
+  <row id="13865AFEAC2341E4B325B1A3CB5C6B07" trl="N">
+    <value column="Name" isTrl="N" original="Tipo Producto">Tipo Producto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="154304F222E342A483DB28E3F87291A5" trl="N">
+    <value column="Name" isTrl="N" original="Consolidar">Consolidar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2ABC59572EC1433EB9A58B20FD7A2ABE" trl="N">
+    <value column="Name" isTrl="N" original="Estado doc.">Estado doc.</value>
+    <value column="Description" isTrl="N" original="El estado de socumento indica el estado de un documento en este momento.">El estado de socumento indica el estado de un documento en este momento.</value>
+    <value column="Help" isTrl="N" original="Indica el estado del documento en este momento. Para cambiar el estado, utilizar el campo Objetivo del Documento.">Indica el estado del documento en este momento. Para cambiar el estado, utilizar el campo Objetivo del Documento.</value>
+  </row>
+  <row id="58D7613AF95642178135A6E91F4329D1" trl="N">
+    <value column="Name" isTrl="N" original="Email">Email</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="835A03AF474D4533874DE157D89E58AE" trl="N">
+    <value column="Name" isTrl="N" original="Cliente">Cliente</value>
+    <value column="Description" isTrl="N" original="Persona que participa en operaciones diarias de negocios, como cliente, empleado, etc.">Persona que participa en operaciones diarias de negocios, como cliente, empleado, etc.</value>
+    <value column="Help" isTrl="N" original="Un tercero es cualquier entidad, organización o particular con quien se realizan operaciones y transacciones. Esto incluye proveedores, clientes y empleados.">Un tercero es cualquier entidad, organización o particular con quien se realizan operaciones y transacciones. Esto incluye proveedores, clientes y empleados.</value>
+  </row>
+  <row id="8B60669A03D241F2BECC92D28DBDD9A5" trl="N">
+    <value column="Name" isTrl="N" original="Crear Factura(s)">Crear Factura(s)</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="ADE125EE9F924244BC7CF32D164C50DF" trl="N">
+    <value column="Name" isTrl="N" original="Tipo de Consolidado">Tipo de Consolidado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B9620E3BEE2E4FEA8AD9C8EE6C479D8E" trl="N">
+    <value column="Name" isTrl="N" original="Cliente">Cliente</value>
+    <value column="Description" isTrl="N" original="Persona que participa en operaciones diarias de negocios, como cliente, empleado, etc.">Persona que participa en operaciones diarias de negocios, como cliente, empleado, etc.</value>
+    <value column="Help" isTrl="N" original="Un tercero es cualquier entidad, organización o particular con quien se realizan operaciones y transacciones. Esto incluye proveedores, clientes y empleados.">Un tercero es cualquier entidad, organización o particular con quien se realizan operaciones y transacciones. Esto incluye proveedores, clientes y empleados.</value>
+  </row>
+  <row id="BD09581C93A944B984471D0BDB1D3DDD" trl="N">
+    <value column="Name" isTrl="N" original="Validación">Validación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D268C310373848158858264A6E6717F1" trl="N">
+    <value column="Name" isTrl="N" original="Consolidado">Consolidado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DDAB9976F4CD42A4B7D07B267E727CED" trl="N">
+    <value column="Name" isTrl="N" original="Categoría">Categoría</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

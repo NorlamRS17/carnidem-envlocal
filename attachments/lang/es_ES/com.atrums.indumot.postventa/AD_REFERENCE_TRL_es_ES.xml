@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="142598C341F742BC9D911EBCEFEE7E71" trl="N">
+    <value column="Name" isTrl="N" original="Producto Reemplazo">Producto Reemplazo</value>
+    <value column="Description" isTrl="N" original="Producto Reemplazo">Producto Reemplazo</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2E17E7C118B84C5981ECCC10777EA979" trl="N">
+    <value column="Name" isTrl="N" original="Line orden servicio">Line orden servicio</value>
+    <value column="Description" isTrl="N" original="Line orden servicio">Line orden servicio</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6EC57311364E42828907A2629157DA5E" trl="N">
+    <value column="Name" isTrl="N" original="atindpo_postventa">atindpo_postventa</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A59EA6E20C0D4F92BB96158C78BFA6FF" trl="N">
+    <value column="Name" isTrl="N" original="Estado Documento">Estado Documento</value>
+    <value column="Description" isTrl="N" original="Estado Documento Post-Venta">Estado Documento Post-Venta</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B7D5195562CB492B86E6BB4DFEBD377E" trl="N">
+    <value column="Name" isTrl="N" original="Tipo Vehículo">Tipo Vehículo</value>
+    <value column="Description" isTrl="N" original="Tipo Vehículo Post-Venta">Tipo Vehículo Post-Venta</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D5832907ED434110B13A2BE4ED3C6A8E" trl="N">
+    <value column="Name" isTrl="N" original="Tipo Repuesto">Tipo Repuesto</value>
+    <value column="Description" isTrl="N" original="Tipo Repuesto">Tipo Repuesto</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F868C14EA808482EA2F2148FDFC2B3A3" trl="N">
+    <value column="Name" isTrl="N" original="Tipo Servicio Post-Venta">Tipo Servicio Post-Venta</value>
+    <value column="Description" isTrl="N" original="Tipo Servicio Post-Venta">Tipo Servicio Post-Venta</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

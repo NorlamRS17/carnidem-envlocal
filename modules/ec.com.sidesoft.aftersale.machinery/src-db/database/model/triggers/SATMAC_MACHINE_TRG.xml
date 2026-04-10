@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SATMAC_MACHINE_TRG">
+    <trigger name="SATMAC_MACHINE_TRG" table="ATINDPO_POSTVENTA" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+    v_IsNew         varchar(90):='Y';  
+    Cur_Vehicle     RECORD;
+    v_count         NUMBER;
+
+BEGIN
+
+    IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+    IF INSERTING OR UPDATING THEN
+        IF :NEW.em_sswos_new = 'Y' THEN
+            SELECT COUNT(sswos_vehicle_id) INTO v_count
+            FROM sswos_vehicle  
+            WHERE chassis_number = :NEW.numerochasis;
+
+            IF COALESCE(v_count,0) > 0 THEN
+                UPDATE sswos_vehicle SET 
+                    vehicle_type = :NEW.lstipovehiculo, 
+                    m_brand_id = :NEW.em_sswos_m_brand_id,
+                    ssfi_model_prod_id = :NEW.em_sswos_ssfi_model_prod_id,
+                    sswos_year_id = :NEW.em_sswos_year_id,
+                    chassis_number = :NEW.numerochasis,
+                    c_bpartner_id = :NEW.c_bpartner_id,
+                    em_satmac_machine_type_id = :NEW.em_satmac_machine_type_id,
+                    em_satmac_salesrep_id = :NEW.em_satmac_salesrep_id,
+                    em_satmac_invoiceno = :NEW.em_satmac_invoiceno,
+                    em_satmac_project_id = :NEW.em_satmac_project_id,
+                    em_satmac_name = :NEW.em_satmac_name
+                WHERE chassis_number = :NEW.numerochasis;
+            ELSE
+                INSERT INTO public.sswos_vehicle(
+                    sswos_vehicle_id, ad_client_id, ad_org_id, createdby, updatedby,
+                    vehicle_type, m_brand_id, ssfi_model_prod_id, sswos_year_id, chassis_number,
+                    c_bpartner_id, em_satmac_machine_type_id, em_satmac_salesrep_id, em_satmac_invoiceno, em_satmac_project_id,
+                    em_satmac_name, em_satmac_origin
+                ) VALUES (
+                    get_uuid(), :NEW.ad_client_id, :NEW.ad_org_id, :NEW.createdby, :NEW.updatedby,
+                    :NEW.lstipovehiculo, :NEW.em_sswos_m_brand_id, :NEW.em_sswos_ssfi_model_prod_id, :NEW.em_sswos_year_id, :NEW.numerochasis,
+                    :NEW.c_bpartner_id, :NEW.em_satmac_machine_type_id, :NEW.em_satmac_salesrep_id, :NEW.em_satmac_invoiceno, :NEW.em_satmac_project_id,
+                    :NEW.em_satmac_name, 'O'
+                );
+            END IF;
+        END IF;
+    END IF;
+    
+    END SATMAC_MACHINE_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -66,6 +66,12 @@ public class Header extends HttpSecureAppServlet {
         SessionInfo.setModuleId("0");
       }
      
+      if (command.contains("DFC1286B6CF8466F9E57A349A6BD6CA7")) {
+        SessionInfo.setProcessType("P");
+        SessionInfo.setProcessId("DFC1286B6CF8466F9E57A349A6BD6CA7");
+        SessionInfo.setModuleId("8DC035EA01B243768A2A5C467862586A");
+      }
+     
       try {
         securedProcess = "Y".equals(org.openbravo.erpCommon.businessUtility.Preferences
             .getPreferenceValue("SecuredProcess", true, vars.getClient(), vars.getOrg(), vars
@@ -93,6 +99,11 @@ public class Header extends HttpSecureAppServlet {
       if (explicitAccess.contains("FF80808133362F6A013336781FCE0066") || (securedProcess && command.contains("FF80808133362F6A013336781FCE0066"))) {
         classInfo.type = "P";
         classInfo.id = "FF80808133362F6A013336781FCE0066";
+      }
+     
+      if (explicitAccess.contains("DFC1286B6CF8466F9E57A349A6BD6CA7") || (securedProcess && command.contains("DFC1286B6CF8466F9E57A349A6BD6CA7"))) {
+        classInfo.type = "P";
+        classInfo.id = "DFC1286B6CF8466F9E57A349A6BD6CA7";
       }
      
     }
@@ -206,6 +217,34 @@ String stradTableId = "259";
         }else{       
           printPageButtonRM_CreateInvoiceFF80808133362F6A013336781FCE0066(response, vars, strC_Order_ID, strrmCreateinvoice, strProcessing);
         }
+    } else if (vars.commandIn("BUTTONEM_Sathnc_Btn_GenCodeDFC1286B6CF8466F9E57A349A6BD6CA7")) {
+        vars.setSessionValue("buttonDFC1286B6CF8466F9E57A349A6BD6CA7.stremSathncBtnGencode", vars.getStringParameter("inpemSathncBtnGencode"));
+        vars.setSessionValue("buttonDFC1286B6CF8466F9E57A349A6BD6CA7.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
+        vars.setSessionValue("buttonDFC1286B6CF8466F9E57A349A6BD6CA7.strOrg", vars.getStringParameter("inpadOrgId"));
+        vars.setSessionValue("buttonDFC1286B6CF8466F9E57A349A6BD6CA7.strClient", vars.getStringParameter("inpadClientId"));
+        
+        
+        HashMap<String, String> p = new HashMap<String, String>();
+        
+        
+        //Save in session needed params for combos if needed
+        vars.setSessionObject("buttonDFC1286B6CF8466F9E57A349A6BD6CA7.originalParams", FieldProviderFactory.getFieldProvider(p));
+        printPageButtonFS(response, vars, "DFC1286B6CF8466F9E57A349A6BD6CA7", request.getServletPath());
+      } else if (vars.commandIn("BUTTONDFC1286B6CF8466F9E57A349A6BD6CA7")) {
+        String strC_Order_ID = vars.getGlobalVariable("inpcOrderId", windowId + "|C_Order_ID", "");
+        String stremSathncBtnGencode = vars.getSessionValue("buttonDFC1286B6CF8466F9E57A349A6BD6CA7.stremSathncBtnGencode");
+        String strProcessing = vars.getSessionValue("buttonDFC1286B6CF8466F9E57A349A6BD6CA7.strProcessing");
+        String strOrg = vars.getSessionValue("buttonDFC1286B6CF8466F9E57A349A6BD6CA7.strOrg");
+        String strClient = vars.getSessionValue("buttonDFC1286B6CF8466F9E57A349A6BD6CA7.strClient");
+
+        
+        if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
+          OBError myError = Utility.translateError(this, vars, vars.getLanguage(), Utility.messageBD(this, "NoWriteAccess", vars.getLanguage()));
+          vars.setMessage(tabId, myError);
+          printPageClosePopUp(response, vars);
+        }else{       
+          printPageButtonEM_Sathnc_Btn_GenCodeDFC1286B6CF8466F9E57A349A6BD6CA7(response, vars, strC_Order_ID, stremSathncBtnGencode, strProcessing);
+        }
 
     } else if (vars.commandIn("SAVE_BUTTONDocAction104")) {
         String strC_Order_ID = vars.getGlobalVariable("inpKey", windowId + "|C_Order_ID", "");
@@ -287,6 +326,40 @@ params.put("cReturnReasonId", strcReturnReasonId);
         String strC_Order_ID = vars.getGlobalVariable("inpKey", windowId + "|C_Order_ID", "");
         
         ProcessBundle pb = new ProcessBundle("FF80808133362F6A013336781FCE0066", vars).init(this);
+        HashMap<String, Object> params= new HashMap<String, Object>();
+       
+        params.put("C_Order_ID", strC_Order_ID);
+        params.put("adOrgId", vars.getStringParameter("inpadOrgId"));
+        params.put("adClientId", vars.getStringParameter("inpadClientId"));
+        params.put("tabId", tabId);
+        
+        
+        
+        pb.setParams(params);
+        OBError myMessage = null;
+        try {
+          new ProcessRunner(pb).execute(this);
+          myMessage = (OBError) pb.getResult();
+          myMessage.setMessage(Utility.parseTranslation(this, vars, vars.getLanguage(), myMessage.getMessage()));
+          myMessage.setTitle(Utility.parseTranslation(this, vars, vars.getLanguage(), myMessage.getTitle()));
+        } catch (Exception ex) {
+          myMessage = Utility.translateError(this, vars, vars.getLanguage(), ex.getMessage());
+          log4j.error(ex);
+          if (!myMessage.isConnectionAvailable()) {
+            bdErrorConnection(response);
+            return;
+          } else vars.setMessage(tabId, myMessage);
+        }
+        //close popup
+        if (myMessage!=null) {
+          if (log4j.isDebugEnabled()) log4j.debug(myMessage.getMessage());
+          vars.setMessage(tabId, myMessage);
+        }
+        printPageClosePopUp(response, vars);
+    } else if (vars.commandIn("SAVE_BUTTONEM_Sathnc_Btn_GenCodeDFC1286B6CF8466F9E57A349A6BD6CA7")) {
+        String strC_Order_ID = vars.getGlobalVariable("inpKey", windowId + "|C_Order_ID", "");
+        
+        ProcessBundle pb = new ProcessBundle("DFC1286B6CF8466F9E57A349A6BD6CA7", vars).init(this);
         HashMap<String, Object> params= new HashMap<String, Object>();
        
         params.put("C_Order_ID", strC_Order_ID);
@@ -470,6 +543,43 @@ comboTableData = null;
       {
         OBError myMessage = vars.getMessage("FF80808133362F6A013336781FCE0066");
         vars.removeMessage("FF80808133362F6A013336781FCE0066");
+        if (myMessage!=null) {
+          xmlDocument.setParameter("messageType", myMessage.getType());
+          xmlDocument.setParameter("messageTitle", myMessage.getTitle());
+          xmlDocument.setParameter("messageMessage", myMessage.getMessage());
+        }
+      }
+
+          try {
+    } catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+
+      
+      out.println(xmlDocument.print());
+      out.close();
+    }
+    void printPageButtonEM_Sathnc_Btn_GenCodeDFC1286B6CF8466F9E57A349A6BD6CA7(HttpServletResponse response, VariablesSecureApp vars, String strC_Order_ID, String stremSathncBtnGencode, String strProcessing)
+    throws IOException, ServletException {
+      log4j.debug("Output: Button process DFC1286B6CF8466F9E57A349A6BD6CA7");
+      String[] discard = {"newDiscard"};
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/EM_Sathnc_Btn_GenCodeDFC1286B6CF8466F9E57A349A6BD6CA7", discard).createXmlDocument();
+      xmlDocument.setParameter("key", strC_Order_ID);
+      xmlDocument.setParameter("processing", strProcessing);
+      xmlDocument.setParameter("form", "Header_Edition.html");
+      xmlDocument.setParameter("window", windowId);
+      xmlDocument.setParameter("css", vars.getTheme());
+      xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
+      xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
+      xmlDocument.setParameter("processId", "DFC1286B6CF8466F9E57A349A6BD6CA7");
+      xmlDocument.setParameter("cancel", Utility.messageBD(this, "Cancel", vars.getLanguage()));
+      xmlDocument.setParameter("ok", Utility.messageBD(this, "OK", vars.getLanguage()));
+      
+      {
+        OBError myMessage = vars.getMessage("DFC1286B6CF8466F9E57A349A6BD6CA7");
+        vars.removeMessage("DFC1286B6CF8466F9E57A349A6BD6CA7");
         if (myMessage!=null) {
           xmlDocument.setParameter("messageType", myMessage.getType());
           xmlDocument.setParameter("messageTitle", myMessage.getTitle());

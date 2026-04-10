@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="05E9C72CACC6435590E5502181BA2C8D" trl="Y">
+    <value column="Name" isTrl="Y" original="Cancelled">Cancelado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="0A36053E9CBD46DABDB89CD012A679BF" trl="Y">
+    <value column="Name" isTrl="Y" original="Closed">Cerrado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="0F0B2CE8A412437CB61F0C7A783874CA" trl="Y">
+    <value column="Name" isTrl="Y" original="Invoiced">Facturado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="102BBD587B154164BCDAA40AAC76A47A" trl="Y">
+    <value column="Name" isTrl="Y" original="Credit Analysis (Manual)">Análisis de Crédito (Manual)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="12D55D3FF2624E37A0CD3574A5869C83" trl="Y">
+    <value column="Name" isTrl="Y" original="Credit (Manual) Approved">Crédito (Manual) Aprobado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="25468735ED744DB5800C3DEFC6790028" trl="Y">
+    <value column="Name" isTrl="Y" original="Dispatched">Despachado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3E151532BDDB4E36A3A94D65AAC6254B" trl="Y">
+    <value column="Name" isTrl="Y" original="Draft">Borrador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="4B65DB3376D24049855861A483E265B2" trl="Y">
+    <value column="Name" isTrl="Y" original="Quoted">Proformado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="5995C37C44214E9991EFBE06868379C6" trl="Y">
+    <value column="Name" isTrl="Y" original="In Progress">En Progreso</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="6164C930BF6343648159B8B84B140BF3" trl="Y">
+    <value column="Name" isTrl="Y" original="Unsatisfied Demand">Demanda Insatisfecha</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="630A6AD5313C4CD382D95FF2471D582E" trl="Y">
+    <value column="Name" isTrl="Y" original="Approve">Aprobar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="8A655E8AB8E44A2984D3E40B586C2A6E" trl="Y">
+    <value column="Name" isTrl="Y" original="Approve">Aprobado (FC)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A4DA9906B3BB4D61893F16769C263969" trl="Y">
+    <value column="Name" isTrl="Y" original="Discount Approve ">Descuento Aprobado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A6F847FE1CF242DBAF0E233079512DC2" trl="Y">
+    <value column="Name" isTrl="Y" original="Reject">Rechazado (FC)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="AF6221B34DEC49A5B41512B2B6A2E83C" trl="Y">
+    <value column="Name" isTrl="Y" original="Closed">Cerrado (FC)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C2EB6867AF8F45B8BDF9F875BDD6E4F9" trl="Y">
+    <value column="Name" isTrl="Y" original="Discount Analyse">Analisis Descuento</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F5A67551ED6040AEB1E9BC4A5556190C" trl="Y">
+    <value column="Name" isTrl="Y" original="Reject">Rechazar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F803E90B33A9423B93F21BCBBEB648E3" trl="Y">
+    <value column="Name" isTrl="Y" original="Credit (Manual) Denied">Crédito (Manual) Rechazado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_ATIMV_FacturaM_detatributos" pageWidth="681" pageHeight="180" orientation="Landscape" columnWidth="681" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.8150000000000013"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/Desarrollo/OpenbravoERPIndumoto/modules/com.atrums.indumot.formatoimpresion/src"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select p.name as producto,
+        p.m_product_id,
+        p.value as codigo,
+        coalesce(p.em_atimv_anio,'') as anio,
+        coalesce(p.em_atimv_color,'') as color,
+        coalesce(p.em_atimv_modelo,'') as modelo,
+        coalesce(p.em_atimv_subclase,'') as subclase,
+        coalesce(p.em_atimv_cilindraje,'') as cilindraje,
+        coalesce(p.em_atimv_origen,'') as paisorigen,
+        coalesce(p.em_atimdm_capacidad,0) as capacidad,
+        coalesce(p.em_atimv_clase,'') as clase,
+        coalesce(p.weight,0) as tonelaje,
+        'GASOLINA' as combustible,
+        p.em_atimdm_isatrib as atributo,
+        cl.qtyinvoiced as cantidad,
+        cl.pricelist   as precio_poe,
+        cl.priceactual - (select coalesce(em_atvef_financiamiento,0) from c_orderline where c_order_id =
+                         (select c_order_id from c_invoice where c_invoice_id = cl.c_invoice_id))
+                       + (select case when discount > 0 then round(pricelist*(coalesce(discount,0)/100),2) else 0 end from c_orderline where c_order_id =
+                         (select c_order_id from c_invoice where c_invoice_id = cl.c_invoice_id)) as precio_financiado,
+        cl.priceactual - (select coalesce(em_atvef_financiamiento,0) from c_orderline where c_order_id =
+                         (select c_order_id from c_invoice where c_invoice_id = cl.c_invoice_id))
+                       + (select case when discount > 0 then round(pricelist*(coalesce(discount,0)/100),2) else 0 end from c_orderline where c_order_id =
+                         (select c_order_id from c_invoice where c_invoice_id = cl.c_invoice_id)) as base,
+        ilt.taxamt as impuesto,
+        t.rate as tipo_impuesto,
+        (select mai.value as valoratt
+            from m_attributesetinstance ai
+            left join m_attributeset ms on(ms.m_attributeset_id=ai.m_attributeset_id)
+            left join m_attributeinstance mai on(mai.m_attributesetinstance_id=ai.m_attributesetinstance_id)
+            left join m_attribute ma on(ma.m_attribute_id=mai.m_attribute_id)
+          where ai.m_attributesetinstance_id=cl.m_attributesetinstance_id
+          and ma.name='RAMV') as ramv,
+        (select mai.value as valoratt
+            from m_attributesetinstance ai
+            left join m_attributeset ms on(ms.m_attributeset_id=ai.m_attributeset_id)
+            left join m_attributeinstance mai on(mai.m_attributesetinstance_id=ai.m_attributesetinstance_id)
+            left join m_attribute ma on(ma.m_attribute_id=mai.m_attribute_id)
+          where ai.m_attributesetinstance_id=cl.m_attributesetinstance_id
+          and ma.name='NUMERO DE MOTOR') as motor,
+        (select mai.value as valoratt
+            from m_attributesetinstance ai
+            left join m_attributeset ms on(ms.m_attributeset_id=ai.m_attributeset_id)
+            left join m_attributeinstance mai on(mai.m_attributesetinstance_id=ai.m_attributesetinstance_id)
+            left join m_attribute ma on(ma.m_attribute_id=mai.m_attribute_id)
+          where ai.m_attributesetinstance_id=cl.m_attributesetinstance_id
+          and ma.name='NÚMERO DE CHASIS') as chasis
+  from c_invoiceline cl left join m_product p on (cl.m_product_id = p.m_product_id)
+  left join m_inoutline mi on (mi.m_inoutline_id=cl.m_inoutline_id)
+  left join c_orderline col on (col.m_inoutline_id=mi.m_inoutline_id)
+  left join c_invoicelinetax ilt on (cl.c_invoiceline_id=ilt.c_invoiceline_id)
+  left join c_tax t on (ilt.c_tax_id=t.c_tax_id)
+  where cl.c_invoice_id=$P{DOCUMENT_ID}]]>
+	</queryString>
+	<field name="producto" class="java.lang.String"/>
+	<field name="m_product_id" class="java.lang.String"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="anio" class="java.lang.String"/>
+	<field name="color" class="java.lang.String"/>
+	<field name="modelo" class="java.lang.String"/>
+	<field name="subclase" class="java.lang.String"/>
+	<field name="cilindraje" class="java.lang.String"/>
+	<field name="paisorigen" class="java.lang.String"/>
+	<field name="capacidad" class="java.math.BigDecimal"/>
+	<field name="clase" class="java.lang.String"/>
+	<field name="tonelaje" class="java.math.BigDecimal"/>
+	<field name="combustible" class="java.lang.String"/>
+	<field name="atributo" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="precio_poe" class="java.math.BigDecimal"/>
+	<field name="precio_financiado" class="java.math.BigDecimal"/>
+	<field name="base" class="java.math.BigDecimal"/>
+	<field name="impuesto" class="java.math.BigDecimal"/>
+	<field name="tipo_impuesto" class="java.math.BigDecimal"/>
+	<field name="ramv" class="java.lang.String"/>
+	<field name="motor" class="java.lang.String"/>
+	<field name="chasis" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="180">
+			<textField>
+				<reportElement x="101" y="5" width="303" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="404" y="5" width="64" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="101" y="21" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Color]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="34" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Año]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="5" width="90" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="468" y="5" width="71" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{base}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="101" y="47" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Chasis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="60" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Motor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="73" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[RAMV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="164" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Capacidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="151" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Cilindraje]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="187" y="21" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{color}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="187" y="34" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{anio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="187" y="151" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cilindraje}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="187" y="164" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{capacidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="187" y="73" width="217" height="13"/>
+				<textElement>
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ramv}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="187" y="60" width="217" height="13"/>
+				<textElement>
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{motor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="187" y="47" width="217" height="13"/>
+				<textElement>
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{chasis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="539" y="5" width="72" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{precio_financiado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="101" y="86" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Clase]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="99" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Subclase]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="112" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Tonelaje]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="125" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Pais Origen]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="101" y="138" width="75" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<text><![CDATA[Combustible]]></text>
+			</staticText>
+			<textField pattern="">
+				<reportElement x="187" y="86" width="217" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{clase}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="187" y="99" width="217" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{subclase}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="187" y="112" width="100" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{tonelaje}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="187" y="125" width="217" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{paisorigen}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="187" y="138" width="217" height="13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{combustible}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+</jasperReport>

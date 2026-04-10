@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="3CD69780530D43869286AAB7DBBE7C6B" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Smvwh_Receipdate">Fecha Recepción</value>
+    <value column="PrintName" isTrl="Y" original="EM_Smvwh_Receipdate">Fecha Recepción</value>
+    <value column="Description" isTrl="N" original="">Fecha Recepción</value>
+    <value column="Help" isTrl="N" original="">Este es uno de los 3 campos que se utilizan para crear un movimiento de recepcion.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="412A5FBADBE24B6B8E109290FD77B6C1" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Smvwh_Location_To">Ubicación Origen</value>
+    <value column="PrintName" isTrl="Y" original="EM_Smvwh_Location_To">Ubicación Origen</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="">Este es uno de los 3 campos que se utilizan para crear un movimiento de recepcion.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="463567436B72498689355D963B62AA15" trl="Y">
+    <value column="Name" isTrl="Y" original="em_smvwh_location_transit">Ubicación transito</value>
+    <value column="PrintName" isTrl="Y" original="em_smvwh_location_transit">Ubicación transito</value>
+    <value column="Description" isTrl="N" original="">Ubicación transito</value>
+    <value column="Help" isTrl="N" original="">Este es uno de los 3 campos que se utilizan para crear un movimiento de recepcion.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5DA2CB1FB1F947ECAE5ECD6240371A22" trl="N">
+    <value column="Name" isTrl="N" original="Identifier">Identifier</value>
+    <value column="PrintName" isTrl="N" original="Identifier">Identifier</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="876294A482A34DFD960ED6C1D17A1AEF" trl="Y">
+    <value column="Name" isTrl="Y" original="em_smvwh_generatedrecep">Generar Recepción</value>
+    <value column="PrintName" isTrl="Y" original="em_smvwh_generatedrecep">Generar Recepción</value>
+    <value column="Description" isTrl="N" original="">Generar Recepción</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="87A2EFA3CBE148E3B728BC0E9BE70749" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Smvwh_Createlines">Crear Lineas</value>
+    <value column="PrintName" isTrl="Y" original="EM_Smvwh_Createlines">Crear Lineas</value>
+    <value column="Description" isTrl="N" original="">Crear Lineas</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CE85750D22294E18B0E1351E01FEAF32" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Smvwh_Location_From">Ubicación Destino</value>
+    <value column="PrintName" isTrl="Y" original="EM_Smvwh_Location_From">Ubicación Destino</value>
+    <value column="Description" isTrl="N" original="">Ubicación Destino</value>
+    <value column="Help" isTrl="N" original="">Este es uno de los 3 campos que se utilizan para crear un movimiento de recepcion.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

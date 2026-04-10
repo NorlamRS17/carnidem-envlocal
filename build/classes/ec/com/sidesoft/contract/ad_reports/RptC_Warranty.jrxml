@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RptC_Warranty" pageWidth="1323" pageHeight="972" orientation="Landscape" columnWidth="1283" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fc392d87-56be-42ec-8283-2b3a1073d061">
+	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.wrap.text" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<property name="ireport.zoom" value="0.6830134553650732"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Document_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Status" class="java.lang.String"/>
+	<parameter name="DOCTYPE" class="java.lang.String">
+		<defaultValueExpression><![CDATA["Reporte de Garantías"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="c_bpartner_id" class="java.lang.String"/>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select a.documentno, a.name, b.name as contratista, a.amount,c.name as plazo, d.name as administrador,
+f.name as formagarantia, g.name as tipogarantia, e.policy_start_date AS iniciopoliza, e.validity_date_policy AS finpoliza,
+e.amount_insured montoasegurado, ws.name AS estado
+
+, o.ad_org_id AS organizationid, o.name AS organization, TO_CHAR(NOW(), 'DD/MM/YYYY HH24:MI:SS') AS fecha_actual
+/* Inicio Firmas */
+, L10.label AS L10_etiqueta, L10.name AS L10_nombre, L10.position AS L10_cargo
+, L20.label AS L20_etiqueta, L20.name AS L20_nombre, L20.position AS L20_cargo
+, L30.label AS L30_etiqueta, L30.name AS L30_nombre, L30.position AS L30_cargo
+/* Fin Firmas */
+
+from ssct_contract a
+left join c_bpartner b on a.c_bpartner_id = b.c_bpartner_id
+left join ssct_contractterm c on a.ssct_contractterm_id = c.ssct_contractterm_id
+left join c_bpartner d on a.c_bpartner_administrator_id = d.c_bpartner_id
+left join ssct_warranty e on a.ssct_contract_id = e.ssct_contract_id
+left join ssct_warrantyform f on e.ssct_warrantyform_id = f.ssct_warrantyform_id
+left join ssct_warrantytypes g on e.ssct_warrantytypes_id = g.ssct_warrantytypes_id
+LEFT JOIN ssct_warrantystatus AS ws ON ws.ssct_warrantystatus_id=e.ssct_warrantystatus_id
+
+LEFT JOIN ad_org AS o ON o.ad_org_id=a.ad_org_id
+/* Inicio Firmas */
+LEFT JOIN (SELECT UPPER(spd.label) AS label, UPPER(spd.name) AS name, UPPER(spd.position) AS position FROM c_doctype AS dt LEFT JOIN scsdc_signaturesperdoc AS spd ON (dt.c_doctype_id=spd.c_doctype_id AND spd.line = 10) WHERE spd.isactive='Y' AND dt.name ILIKE $P{DOCTYPE}) AS L10 ON TRUE
+LEFT JOIN (SELECT UPPER(spd.label) AS label, UPPER(spd.name) AS name, UPPER(spd.position) AS position FROM c_doctype AS dt LEFT JOIN scsdc_signaturesperdoc AS spd ON (dt.c_doctype_id=spd.c_doctype_id AND spd.line = 20) WHERE spd.isactive='Y' AND dt.name ILIKE $P{DOCTYPE}) AS L20 ON TRUE
+LEFT JOIN (SELECT UPPER(spd.label) AS label, UPPER(spd.name) AS name, UPPER(spd.position) AS position FROM c_doctype AS dt LEFT JOIN scsdc_signaturesperdoc AS spd ON (dt.c_doctype_id=spd.c_doctype_id AND spd.line = 30) WHERE  spd.isactive='Y' AND dt.name ILIKE $P{DOCTYPE}) AS L30 ON TRUE
+/* Fin Firmas */
+
+where (a.documentno = $P{Document_ID} or $P{Document_ID} is null)
+AND (
+	(e.policy_start_date BETWEEN $P{DateFrom} AND $P{DateTo})
+	OR (e.validity_date_policy BETWEEN $P{DateFrom} AND $P{DateTo})
+	OR ($P{DateFrom} BETWEEN e.policy_start_date AND e.validity_date_policy)
+	OR ($P{DateTo} BETWEEN e.policy_start_date AND e.validity_date_policy)
+)
+and (e.ssct_warrantystatus_id = $P{Status} or $P{Status} is null)
+AND (a.c_bpartner_id = $P{c_bpartner_id} OR $P{c_bpartner_id} IS NULL)
+order by a.documentno]]>
+	</queryString>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="contratista" class="java.lang.String"/>
+	<field name="amount" class="java.math.BigDecimal"/>
+	<field name="plazo" class="java.lang.String"/>
+	<field name="administrador" class="java.lang.String"/>
+	<field name="formagarantia" class="java.lang.String"/>
+	<field name="tipogarantia" class="java.lang.String"/>
+	<field name="iniciopoliza" class="java.sql.Timestamp"/>
+	<field name="finpoliza" class="java.sql.Timestamp"/>
+	<field name="montoasegurado" class="java.math.BigDecimal"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="organizationid" class="java.lang.String"/>
+	<field name="organization" class="java.lang.String"/>
+	<field name="fecha_actual" class="java.lang.String"/>
+	<field name="l10_etiqueta" class="java.lang.String"/>
+	<field name="l10_nombre" class="java.lang.String"/>
+	<field name="l10_cargo" class="java.lang.String"/>
+	<field name="l20_etiqueta" class="java.lang.String"/>
+	<field name="l20_nombre" class="java.lang.String"/>
+	<field name="l20_cargo" class="java.lang.String"/>
+	<field name="l30_etiqueta" class="java.lang.String"/>
+	<field name="l30_nombre" class="java.lang.String"/>
+	<field name="l30_cargo" class="java.lang.String"/>
+	<group name="Document_G">
+		<groupExpression><![CDATA[$F{documentno}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="404" y="0" width="66" height="20" uuid="14190d6f-1b35-4d14-80e7-fd6e648a3b3d"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Monto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="470" y="0" width="79" height="20" uuid="4ad2b6de-daed-4004-8dbe-19876c5a3b27"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Plazo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="549" y="0" width="154" height="20" uuid="837a63ad-6ded-4701-b98b-5c8aee8e27e0"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Administrador del Contrato]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="232" y="0" width="172" height="20" uuid="4e30039a-cc56-4304-a13b-76b529b8acf0"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Contratista]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="100" y="0" width="132" height="20" uuid="ebd694a9-5834-4e37-88f4-a8310b2dd150"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nombre de Contrato]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="100" height="20" uuid="87ee8236-d92e-46d9-8456-b4f161e70550"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[No. Contrato]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="703" y="0" width="120" height="20" uuid="ba2523b8-7ab3-4042-a359-05cd7223f364"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Forma de Garantia]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="823" y="0" width="118" height="20" uuid="eb78ce98-dba2-4fe1-9bd1-c1ad174ec92a"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tipo de Garantia]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="1024" y="0" width="83" height="20" uuid="68febd0a-6636-4f21-bf9b-90a5a2a16d22"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[F. Fin Póliza]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="1107" y="0" width="88" height="20" uuid="0b3469ea-326a-4205-8dbf-7c64e638a731"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Monto Asegurado]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="941" y="0" width="83" height="20" uuid="51ad780c-b845-408b-85a1-220ce5bc7a7a"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[F. Inicio Póliza]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToBandHeight" x="1195" y="0" width="88" height="20" uuid="537fc41e-0f2f-4a79-afb3-cad7b45fa9e5"/>
+					<box>
+						<pen lineWidth="0.5"/>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Estado]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="110" splitType="Stretch">
+			<staticText>
+				<reportElement x="152" y="0" width="1131" height="50" uuid="78b08338-65e2-49b1-8f0f-fa2a9a23f38a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="90" width="1283" height="20" uuid="f139ee0d-accb-48b0-9c1b-e12626d532e2"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="70" width="1283" height="20" uuid="83cc2f3d-0d74-4a45-a740-5c721df1079c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Reporte de Garantías".toUpperCase()]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Middle" isUsingCache="true">
+				<reportElement key="image-1" x="1" y="0" width="150" height="50" uuid="37aee041-fc3c-4feb-b13a-5b038394f7c4"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{organizationid})]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="50" width="1283" height="20" uuid="bac66bbf-99dc-4d9c-a35c-c8472b808cbf"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{organization}.toUpperCase()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="14" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="100" height="14" uuid="c730120a-62dc-4c92-8044-b7e27fc590ef"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="100" y="0" width="132" height="14" uuid="b057dcaf-663a-4d4c-aba2-c2da13de6c4f"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="232" y="0" width="172" height="14" uuid="0a536792-822e-422a-9f90-327671cfd1ff"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{contratista}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="404" y="0" width="66" height="14" uuid="68103bc5-f7e0-411c-aece-812f925ad38f"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="470" y="0" width="79" height="14" uuid="04333475-229b-41fb-8e3c-88d3f4e8fdf5"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{plazo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="549" y="0" width="154" height="14" uuid="0ce370eb-04a1-45e3-a819-65bbe8c6881c"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{administrador}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="703" y="0" width="120" height="14" uuid="629c2f56-4125-41bd-9eb2-aa5e903d16ec"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{formagarantia}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="823" y="0" width="118" height="14" uuid="1d6a3f3e-c16c-43e4-a39b-330c116c4b88"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipogarantia}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1024" y="0" width="83" height="14" uuid="69eecafb-4f69-4ea5-afc2-6d64bb7b26a5"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{finpoliza}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1107" y="0" width="88" height="14" uuid="7165e378-eab6-48a7-86c5-8e353f47840f"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montoasegurado}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="941" y="0" width="83" height="14" uuid="f7e34435-6558-4bbc-9a3a-b7657ae0c247"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{iniciopoliza}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1195" y="0" width="88" height="14" uuid="deb93f51-9c46-4da9-86eb-51941af4e203"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="116" splitType="Stretch">
+			<textField>
+				<reportElement x="558" y="72" width="160" height="12" uuid="c779e331-5664-4fdb-86ea-955bfe605ac9">
+					<printWhenExpression><![CDATA[$F{l20_nombre}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{l20_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="911" y="84" width="160" height="12" uuid="f83129d4-163f-4ac6-858d-30de1512714e">
+					<printWhenExpression><![CDATA[$F{l30_cargo}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{l30_cargo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="84" width="160" height="12" uuid="4d3f4b3e-dd6d-488f-9dc8-76870d1ea707">
+					<printWhenExpression><![CDATA[$F{l10_cargo}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{l10_cargo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="911" y="60" width="160" height="12" uuid="f329cb72-8ef0-435e-bd4f-6049d5693f4c">
+					<printWhenExpression><![CDATA[$F{l30_etiqueta}!=null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{l30_etiqueta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="72" width="160" height="12" uuid="0ceb6db4-0b58-489f-937a-7ab1964b2e03">
+					<printWhenExpression><![CDATA[$F{l10_nombre}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{l10_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="911" y="72" width="160" height="12" uuid="5b4d2c73-0916-4b84-a1a3-0cd5352214dd">
+					<printWhenExpression><![CDATA[$F{l30_nombre}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{l30_nombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="1283" height="60" uuid="bf8ef617-b21d-417f-8ff2-888e58359929"/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="558" y="84" width="160" height="12" uuid="bc88374d-4abc-4b1e-9899-68189e98a0e3">
+					<printWhenExpression><![CDATA[$F{l20_cargo}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{l20_cargo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="177" y="60" width="160" height="12" uuid="1c8f344f-f180-49de-b2bd-901eee46677b">
+					<printWhenExpression><![CDATA[$F{l10_etiqueta}!=null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{l10_etiqueta}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="558" y="60" width="160" height="12" uuid="6675cb93-0662-43db-8e55-9482d0c980ee">
+					<printWhenExpression><![CDATA[$F{l20_etiqueta}!=null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{l20_etiqueta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="96" width="1282" height="20" uuid="08daa4e5-2e11-4e5b-b199-161eba4886a2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA: "+$F{fecha_actual}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

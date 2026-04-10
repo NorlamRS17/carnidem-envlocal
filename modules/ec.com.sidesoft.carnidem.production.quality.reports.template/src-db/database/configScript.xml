@@ -1,6 +1,14 @@
 <?xml version="1.0"?>
   <vector>
     <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_MENU" columnname="ISACTIVE" pkRow="3735374FABE24538B63DD5777D24FF18">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MENU" columnname="ISACTIVE" pkRow="D943177429734E318454AE4E743A4490">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
     <columnDataChange tablename="AD_COLUMN" columnname="AD_ELEMENT_ID" pkRow="2D6AFA8F7EF34C4198685BDE5E826B92">
       <oldValue><![CDATA[A2F9FE26BB43464FB188E27BD114F531]]></oldValue>
       <newValue><![CDATA[652B47AAED264B4F8B4949D90F6CD100]]></newValue>

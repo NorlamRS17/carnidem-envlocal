@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="590CFD7876A64EE3A5B02055D1265B98" trl="N">
+    <value column="Name" isTrl="N" original="Web Services Configuration">Web Services Configuration</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="85B6427C47764960A91E2C93AAB719FA" trl="N">
+    <value column="Name" isTrl="N" original="Web Services Log">Web Services Log</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

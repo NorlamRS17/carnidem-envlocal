@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_INOUT">
+    <table name="M_INOUT" primaryKey="M_INOUT_KEY">
+      <column name="EM_SSSOIN_COMPLETED" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSSOIN_COMPLETEDBY" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="AD_USER" name="EM_SSSOIN_ORDER_COMPBY">
+        <reference local="EM_SSSOIN_COMPLETEDBY" foreign="AD_USER_ID"/>
+      </foreign-key>
+    </table>
+  </database>

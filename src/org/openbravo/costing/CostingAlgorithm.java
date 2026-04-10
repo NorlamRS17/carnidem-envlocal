@@ -26,10 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.Restrictions;
 import org.openbravo.base.exception.OBException;
 import org.openbravo.base.structure.BaseOBObject;
 import org.openbravo.costing.CostingServer.TrxType;
 import org.openbravo.dal.core.OBContext;
+import org.openbravo.dal.service.OBCriteria;
 import org.openbravo.dal.service.OBDal;
 import org.openbravo.dal.service.OBQuery;
 import org.openbravo.erpCommon.utility.OBDateUtils;
@@ -38,6 +40,8 @@ import org.openbravo.model.common.businesspartner.BusinessPartner;
 import org.openbravo.model.common.currency.Currency;
 import org.openbravo.model.common.enterprise.Organization;
 import org.openbravo.model.common.order.OrderLine;
+import org.openbravo.model.common.plm.Product;
+import org.openbravo.model.common.plm.ProductBOM;
 import org.openbravo.model.materialmgmt.cost.Costing;
 import org.openbravo.model.materialmgmt.cost.CostingRule;
 import org.openbravo.model.materialmgmt.transaction.MaterialTransaction;
@@ -103,6 +107,16 @@ public abstract class CostingAlgorithm {
           && getZeroMovementQtyCost() != null) {
         return getZeroMovementQtyCost();
       }
+
+      /*NUEVO DESARROLLO*/
+      
+      boolean blProductControlAssets = transaction.getProduct().isScrtlaControlAssets();
+      if (blProductControlAssets) {
+    	  return getZeroMovementQtyCost();  
+      }
+      
+      /*FIN DESARROLLO*/
+      
       switch (trxType) {
       case Shipment:
         return getShipmentCost();
@@ -139,9 +153,38 @@ public abstract class CostingAlgorithm {
       case InternalConsVoid:
         return getInternalConsVoidCost();
       case BOMPart:
-        return getBOMPartCost();
+		return getBOMPartCost();
       case BOMProduct:
-        return getBOMProductCost();
+			/* RARC BEGIN Ticket 290 */
+			Product product = transaction.getProduct();
+			BigDecimal costServiceProducts = new BigDecimal(0);
+			if (product.isBillOfMaterials()) {
+				List<ProductBOM> parts = product.getProductBOMList();
+				if (parts.size() > 0) {
+					ProductionPlan productionPlan = transaction.getProductionLine().getProductionPlan();
+					for (ProductBOM part : parts) {
+						Product partProduct = part.getBOMProduct();
+						String productType = partProduct.getProductType();
+						BigDecimal partCost = part.getSecuacmCost();
+						if (productType.equals("S") && partCost != null) {
+							OBCriteria<ProductionLine> productionLineQuery = OBDal.getInstance()
+									.createCriteria(ProductionLine.class);
+							productionLineQuery
+									.add(Restrictions.eq(ProductionLine.PROPERTY_PRODUCTIONPLAN, productionPlan));
+							productionLineQuery.add(Restrictions.eq(ProductionLine.PROPERTY_PRODUCT, partProduct));
+							List<ProductionLine> productionLines = productionLineQuery.list();
+							if (productionLines.size() > 0) {
+								ProductionLine productionLine = productionLines.get(0);
+								BigDecimal movementQuantity = productionLine.getMovementQuantity().abs();
+								BigDecimal partTotalCost = partCost.multiply(movementQuantity);
+								costServiceProducts = costServiceProducts.add(partTotalCost);
+							}
+						}
+					}
+				}
+			}
+			/* RARC END Ticket 290 */
+			return getBOMProductCost().add(costServiceProducts);
       case ManufacturingConsumed:
         // Manufacturing transactions are not fully implemented.
         return getManufacturingConsumedCost();

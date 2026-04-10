@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ 
+<SqlClass name="ScmecuPendingEmailData" package="ec.com.sidesoft.customizations.ecuapack.ad_process">
+	<SqlMethod name="select" type="preparedStatement" return="multiple">
+		<Sql>
+			<![CDATA[
+				SELECT oel.scmecu_oppor_email_log_id id
+					, o.em_scmecu_documentno document_no
+					, o.opportunity_name
+					, rl.name sales_stage
+					, TRIM(COALESCE(u.email,'')) email
+				FROM scmecu_oppor_email_log oel
+				    JOIN opcrm_opportunities o ON o.opcrm_opportunities_id = oel.opcrm_opportunities_id
+				    JOIN scmecu_probability_stage ps ON ps.sales_stage = oel.current_sales_stage
+				    JOIN ad_user u ON u.ad_user_id = ps.ad_user_id
+				    JOIN ad_ref_list_v rl ON rl.ad_reference_id = '8AEE970AF96B4F35BB80D53205A3BBCF'
+				    	AND ad_language = 'es_ES'
+        				AND rl.value = oel.current_sales_stage
+				WHERE oel.is_email_sent = 'N'
+				ORDER BY oel.created
+			]]>
+		</Sql>
+	</SqlMethod>
+	
+	<SqlMethod name="update" type="preparedStatement" return="rowCount">
+		<Sql>
+			<![CDATA[
+				UPDATE scmecu_oppor_email_log SET is_email_sent = ?,
+					result = ?, updated = NOW()
+				WHERE scmecu_oppor_email_log_id = ?
+			]]>
+		</Sql>
+		<Parameter name="isEmailSent"/>
+		<Parameter name="result"/>
+		<Parameter name="id"/>
+	</SqlMethod>
+</SqlClass>

@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSIP_LOADCOSTS">
+    <function name="SSIP_LOADCOSTS" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- ING. HECTOR CURBELO BARRIOS pp
+
+ DECLARE
+
+TYPE RECORD IS REF CURSOR;
+
+  Cur_Parameter  RECORD;
+  Cur_Invoice RECORD;
+  Cur_Journal RECORD;
+  
+  v_Client_ID VARCHAR2(32);
+  v_Org_ID VARCHAR2(32);
+  v_User_ID VARCHAR2(32) ;
+  v_ResultStr VARCHAR2(2000) := '';  
+  v_Record_ID  VARCHAR2(32);
+  V_MESSAGE VARCHAR2(2000):='';
+  V_Processing Varchar2(60);
+  V_Campign_id Varchar2(32);
+  V_Doctype  VARCHAR(1);
+  
+  vRecord       RECORD;
+
+BEGIN
+
+  --  Update AD_PInstance
+  DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || PInstance_ID) ;
+  v_ResultStr := 'PInstanceNotFound';
+  AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+  BEGIN --BODY
+
+    -- Get Parameters
+    v_ResultStr := 'ReadingParameters';
+    FOR Cur_Parameter IN (
+      SELECT i.Record_ID,
+        i.AD_User_ID,
+        i.AD_Client_ID,
+        i.AD_Org_ID
+      FROM AD_PInstance i
+      WHERE i.AD_PInstance_ID = PInstance_ID
+	)
+    LOOP
+
+      v_Record_ID := Cur_Parameter.Record_ID;
+      v_Client_ID := Cur_Parameter.AD_Client_ID;
+      v_Org_ID := Cur_Parameter.AD_Org_ID;
+      v_User_ID := Cur_Parameter.AD_User_ID;
+
+  END LOOP; -- End Get Parameter
+
+        SELECT em_ssip_importstatus, processing INTO vRecord FROM c_order WHERE c_order_id = v_Record_ID;
+
+        IF vRecord.processing = 'Y' THEN
+            v_Message := '@Processing@';
+            AD_UPDATE_PINSTANCE(Pinstance_Id, Null, 'N', 0, v_Message);
+            RETURN;
+        END IF;
+
+        IF vRecord.em_ssip_importstatus = 'LL' THEN
+            v_Message := '@SSIP_SettledDocument@';
+            AD_UPDATE_PINSTANCE(Pinstance_Id, Null, 'N', 0, v_Message);
+            RETURN;
+        END IF;
+
+    -- Get c_campingn_id
+    select  co.c_campaign_id
+    into  V_Campign_id
+    from c_order co
+    where co.c_order_id = v_Record_ID;
+
+  --Get Documentype is Import
+  select cdt.em_ssip_isimports 
+  into V_Doctype
+  from c_doctype cdt
+  join c_order ord on ord.c_doctypetarget_id=cdt.c_doctype_id
+  where ord.c_order_id= V_Record_Id;
+
+  -- Set processing 'Y'
+  Update c_order c Set Processing = 'Y' Where c.c_order_id = V_Record_Id;
+  --RAISE V_Doctype || V_Record_Id;
+  
+  IF V_Doctype='Y' THEN 
+  
+    DELETE FROM ssip_costimport WHERE c_order_id = v_Record_ID;
+    
+    -- FOR GET INVOICELINE IMPORTS DATA
+    FOR Cur_Invoice IN (
+      SELECT inv.documentno || ' ' || cor.documentno as documentno, inv.dateacct as dateacct,inv.dateinvoiced as dateinvoiced,cdt.name as name,
+        CASE 
+          WHEN cdt.docbasetype = 'APC' THEN ((round(sum(inl.linenetamt) * (avg(cor.totallines) / (select sum(totallines) from c_order where issotrx='N' AND c_campaign_id = cor.c_campaign_id)), 2)) * -1)
+          ELSE round(sum(inl.linenetamt) * (avg(cor.totallines) / (select sum(totallines) from c_order where issotrx='N' AND c_campaign_id = cor.c_campaign_id)), 2)  
+        END priceactual,
+        inv.c_bpartner_id as businesspartner,
+        CASE
+          WHEN inv.poreference IS NULL THEN inv.documentno
+          ELSE inv.poreference  
+        END AS referenceprovider,
+        inv.description as description            
+      FROM c_invoice inv
+      join c_invoiceline inl on inl.c_invoice_id=inv.c_invoice_id
+      join c_doctype cdt on cdt.c_doctype_id=inv.c_doctypetarget_id
+      join c_order cor on inl.em_ssip_campaign_id=cor.c_campaign_id
+      where inl.em_ssip_campaign_id = V_Campign_id and 
+        inv.processed='Y'and inl.em_ssip_importtype='Y' and
+        cor.c_order_id = v_Record_ID
+      GROUP BY inv.documentno,inv.dateacct,inv.dateinvoiced,cdt.name,cor.documentno, cor.c_campaign_id,inv.c_bpartner_id,referenceprovider,inv.description,cdt.docbasetype
+    )
+    LOOP
+
+      INSERT INTO ssip_costimport (ssip_costimport_id,ad_client_id,ad_org_id,createdby,updatedby,transactiondate,accountingdate,documenttype,documentnumber,c_order_id,amountnet,c_bpartner_id,poreference,description)
+      VALUES (get_uuid(), v_Client_ID, v_Org_ID,v_User_ID,v_User_ID,Cur_Invoice.dateinvoiced,Cur_Invoice.dateacct,Cur_Invoice.name,Cur_Invoice.documentno,v_Record_ID,Cur_Invoice.priceactual,Cur_Invoice.businesspartner,Cur_Invoice.referenceprovider,Cur_Invoice.description);
+
+    END LOOP;
+    -- END FOR GET INVOICELINE IMPORTS DATA
+
+    -- FOR GET JOURNALLINE IMPORTS DATA
+    FOR Cur_Journal IN (
+        SELECT gll.c_campaign_id, ord.c_order_id, cmp.name as campaign, glb.documentno as documentno, ord.totallines,
+          glb.dateacct as dateacct,glb.datedoc as datedoc,cdt.name as name, 
+          CASE 
+            WHEN gll.em_ssip_importdebit = 'Y' THEN ((round(sum(amtsourcecr) * ord.totallines / (select sum(totallines) from c_order where issotrx='N' AND c_campaign_id = ord.c_campaign_id), 2)) * -1)
+            ELSE round(sum(amtsourcedr) * ord.totallines / (select sum(totallines) from c_order where issotrx='N' AND c_campaign_id = ord.c_campaign_id), 2)    
+          END amtsourcedr,
+          glb.description as description
+        FROM gl_journalbatch glb
+        join gl_journal gl on gl.gl_journalbatch_id=glb.gl_journalbatch_id
+        join gl_journalline gll on gll.gl_journal_id=gl.gl_journal_id
+        join c_doctype cdt on cdt.c_doctype_id=gl.c_doctype_id
+        join c_campaign cmp on gll.c_campaign_id = cmp.c_campaign_id
+        join c_order ord on cmp.c_campaign_id = ord.c_campaign_id
+        where gll.c_campaign_id = V_Campign_id and 
+          gl.processed='Y'and gll.em_ssip_importcosts='Y' and
+          ord.c_order_id = v_Record_ID
+        GROUP BY gll.c_campaign_id, ord.c_order_id, cmp.name, glb.documentno,glb.dateacct,glb.datedoc,cdt.name,glb.description,gll.em_ssip_importdebit
+    )
+    LOOP
+
+      INSERT INTO ssip_costimport (ssip_costimport_id,ad_client_id,ad_org_id,createdby,updatedby,transactiondate,accountingdate,documenttype,documentnumber,c_order_id,amountnet,description)
+	    VALUES (get_uuid(), v_Client_ID, v_Org_ID,v_User_ID,v_User_ID,Cur_Journal.datedoc,Cur_Journal.dateacct,Cur_Journal.name,Cur_Journal.documentno,v_Record_ID,Cur_Journal.amtsourcedr,Cur_Journal.description);
+
+    END LOOP;
+  	-- END FOR GET JOURNALLINE IMPORTS DATA
+
+  END IF;
+
+  -- Set processing 'N'
+  Update c_order c Set Processing = 'N' Where c.c_order_id = V_Record_Id;
+
+  DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message) ;
+  AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, v_Message) ;
+  RETURN;
+
+  END; --BODY
+  EXCEPTION
+  WHEN OTHERS THEN
+
+    ROLLBACK;
+
+    -- Set processing 'N'
+    Update c_order c Set Processing = 'N' Where c.c_order_id = V_Record_Id;
+    v_ResultStr:= '@ERROR=' || SQLERRM;
+    DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+
+    RETURN;
+END SSIP_LOADCOSTS
+]]></body>
+    </function>
+  </database>

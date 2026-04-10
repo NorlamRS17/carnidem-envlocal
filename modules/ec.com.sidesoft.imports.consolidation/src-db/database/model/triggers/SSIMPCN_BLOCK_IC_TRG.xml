@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSIMPCN_BLOCK_IC_TRG">
+    <trigger name="SSIMPCN_BLOCK_IC_TRG" table="SSIMPCN_IMP_CONSOLIDATION" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[
+	vCheck NUMBER;
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF DELETING THEN
+
+		IF :OLD.docstatus = 'CO' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@CannotDeleteTrx@');
+		END IF;
+
+	END IF;
+
+	END SSIMPCN_BLOCK_IC_TRG
+]]></body>
+    </trigger>
+  </database>

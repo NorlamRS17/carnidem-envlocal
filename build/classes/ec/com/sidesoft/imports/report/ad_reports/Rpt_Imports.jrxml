@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_Imports" pageWidth="802" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="dafba891-7695-403b-a776-ff0f26172d23">
+	<property name="ireport.zoom" value="1.210000000000002"/>
+	<property name="ireport.x" value="504"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DATE_TO" class="java.util.Date"/>
+	<parameter name="C_ORDER_ID" class="java.lang.String"/>
+	<parameter name="REPORT_TYPE" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="AD_USER_ID" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA["100"]]></parameterDescription>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+co.documentno as documento
+, to_char(co.dateordered,'dd/MM/yyyy') as fecha_orden
+, cbp.name as tercero
+,cc.value as importacion
+,coalesce(sum(col.Taxbaseamt),0) as costo_origen
+,coalesce((repp.linenetamt),0) as costo_importacion
+,coalesce(sum(col.EM_Ssipice_Value_Ice),0) as ice
+, coalesce(sum(col.Taxbaseamt),0) + coalesce((repp.linenetamt),0) + coalesce(sum(col.EM_Ssipice_Value_Ice),0) as importe_total
+from c_order co
+join c_orderline col on col.c_order_id = co.c_order_id
+join c_bpartner cbp on cbp.c_bpartner_id = co.c_bpartner_id
+LEFT join (
+select sum(amountnet) as amountnet,  c_order_id
+from SSIP_Costimport
+group by c_order_id
+) sci on sci.c_order_id = co.c_order_id
+join C_Campaign cc on cc.C_Campaign_ID = co.C_Campaign_ID
+left join (
+
+	select
+	value
+	,C_Campaign_id
+	,sum(linenetamt) as linenetamt
+	from
+	(
+		select
+		cc.value
+		,cc.C_Campaign_id
+		,sum(cil.linenetamt * ( case when cd.docbasetype = 'APC' and cd.isreversal = 'Y' then -1 else 1 end)) as linenetamt
+		from  C_Campaign cc
+		join c_invoiceline cil on cc.C_Campaign_id = cil.em_ssip_campaign_id
+		join c_invoice ci on ci.c_invoice_id = cil.c_invoice_id
+		join c_doctype cd on cd.c_doctype_id = ci.c_doctype_id
+		where cil.em_ssip_importtype ='Y'
+		group by cc.value
+		,cc.C_Campaign_id
+		union all
+		select
+		cc.value
+		,cc.C_Campaign_id
+		,gjl.AmtSourceDr as linenetamt
+		from C_Campaign cc
+		left join GL_JournalLine gjl on cc.C_Campaign_id = gjl.C_Campaign_id
+		where
+		gjl.EM_Ssip_Importcosts ='Y'
+	) compaing
+	group by value
+	,C_Campaign_id
+
+) repp on repp.C_Campaign_ID = co.C_Campaign_ID
+where EM_Ssip_Importstatus ='NL'
+
+and co.issotrx ='N'
+and cc.isactive='Y'
+AND (cc.C_Campaign_ID = $P{C_ORDER_ID} OR COALESCE(TO_CHAR($P{C_ORDER_ID}),'')='' )
+AND  (CO.DATEORDERED < $P{DATE_TO} or COALESCE(TO_CHAR($P{DATE_TO}),'')='' )
+group by co.documentno
+, to_char(co.dateordered,'dd/MM/yyyy')
+, cbp.name
+,cc.value
+,repp.linenetamt
+order by 1 asc]]>
+	</queryString>
+	<field name="documento" class="java.lang.String"/>
+	<field name="fecha_orden" class="java.lang.String"/>
+	<field name="tercero" class="java.lang.String"/>
+	<field name="importacion" class="java.lang.String"/>
+	<field name="costo_origen" class="java.math.BigDecimal"/>
+	<field name="costo_importacion" class="java.math.BigDecimal"/>
+	<field name="ice" class="java.math.BigDecimal"/>
+	<field name="importe_total" class="java.math.BigDecimal"/>
+	<variable name="v_CostoOrigen" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{costo_origen}]]></variableExpression>
+	</variable>
+	<variable name="v_CostoImportaciones" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{costo_importacion}]]></variableExpression>
+	</variable>
+	<variable name="v_ICE" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{ice}]]></variableExpression>
+	</variable>
+	<variable name="v_ImporteTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe_total}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="81" height="25" uuid="4db7a948-d433-4745-9351-a2fe03dfad08"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="445" y="0" width="76" height="25" uuid="8066bf85-55a7-4778-a645-b3fc75807d71"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="742" y="0" width="60" height="25" uuid="27fb21f7-e550-4dae-9234-bbdaac5b157e"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe
+Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="0" width="100" height="25" uuid="889ff863-f35e-43ca-8099-a41155387b3f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Pedido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="0" width="264" height="25" uuid="eae5bd2e-9cde-48c0-b5fa-dc93c2c4f706"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tercero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="521" y="0" width="73" height="25" uuid="8d421b29-2135-4f13-bb4c-e816a72bc5ac"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo Origen]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="594" y="0" width="98" height="25" uuid="e432f443-5b90-43e8-bc38-f46e57e40a99"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo Importaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="692" y="0" width="50" height="25" uuid="77a87628-3ac6-4c2e-a8c7-56e2b0f3d164"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ICE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="81" height="13" uuid="20231658-4266-4335-b6fe-8100b8d5698e"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documento}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="81" y="0" width="100" height="13" uuid="ba816609-d154-478d-aa0f-d712f2d22288"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_orden}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="181" y="0" width="264" height="13" uuid="55a6cdbb-9d4f-4200-8bbc-7b83fd77221b"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tercero}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="445" y="0" width="76" height="13" uuid="b96f6387-811c-4897-a910-408d179ffdcb"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importacion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="521" y="0" width="73" height="13" uuid="85100d09-aa84-42bd-a7a6-11cdbeef2dcd"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costo_origen}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="594" y="0" width="98" height="13" uuid="62fcfc48-95f1-4a7c-b2c1-41ae1adebf61"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costo_importacion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="692" y="0" width="50" height="13" uuid="d4d3bcbc-57d2-43c4-acca-59a586373243"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ice}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="742" y="0" width="60" height="13" uuid="58f2b46b-58fd-48a5-a932-94d5704c2593"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe_total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="1" splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="13" splitType="Stretch">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="742" y="0" width="60" height="13" uuid="4a33a7d9-09ed-43a2-a740-974bf257d0dc"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{v_ImporteTotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="692" y="0" width="50" height="13" uuid="041c9492-516b-4cf7-b9b9-03a38ddcdba1"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{v_ICE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="594" y="0" width="98" height="13" uuid="32caf7c0-507c-44e6-b2b2-a3b6bd013206"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{v_CostoImportaciones}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="521" y="0" width="73" height="13" uuid="71293da5-2285-435e-9da4-3c97ec5c9339"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{v_CostoOrigen}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="521" height="13" uuid="c93bf672-2deb-417b-bc71-c0bbabc27a1c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+	<noData>
+		<band/>
+	</noData>
+</jasperReport>

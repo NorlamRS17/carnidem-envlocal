@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="0CD9C996812A45019865F51DE9173C34" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Price">Precio</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="6CDCCB399756428296FF3A5A8AA49E10" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Double Unit">Doble Unidad</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="B1B096A4FCB9464D8B1CC4C3155A4305" trl="Y">
+    <value column="MsgText" isTrl="Y" original="The stock level for this product is %0. You cannot sell %1 unit(s) of this product because your system doesn't allow negative stocks.">El nivel de existencias de este producto es de %0 No se puede vender %1 unidad(s) de este producto debido a que su sistema no permite existencias negativas.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="C220C2ACDAD446FE9DEA7B485A0A1926" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Unit">Unidad</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="D5409AECC3A447759CBF2F9DB90B6B93" trl="N">
+    <value column="MsgText" isTrl="Y" original="Product Name">Producto</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="DCBC06DD9513406DB60966E922A5E937" trl="N">
+    <value column="MsgText" isTrl="Y" original="Operational Quantity">Cantidad Operacional</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

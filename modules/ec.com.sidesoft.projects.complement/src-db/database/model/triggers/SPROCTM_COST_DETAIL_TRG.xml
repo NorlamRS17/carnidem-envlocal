@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SPROCTM_COST_DETAIL_TRG">
+    <trigger name="SPROCTM_COST_DETAIL_TRG" table="SPROCTM_DETAIL_COST" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[ 
+   v_identifier VARCHAR(2000);
+   v_Cost_Unit_Standar NUMBER;
+   v_table_name  VARCHAR(2000);
+BEGIN
+ 
+   IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+
+    IF  (INSERTING OR UPDATING ) THEN
+        -- Tabla reutilizada por detalles en multifase : sproctm_detail_cost
+        -- record_id = Mano de obra - CIF = Maquinaria
+        select t.name INTO v_table_name
+        from ad_tab tb
+        inner join ad_table t on t.ad_table_id = tb.ad_table_id
+        where ad_tab_id = :NEW.ad_tab_id;
+
+        IF( v_table_name = 'sproctm_task_workforce' )THEN
+                SELECT Cost_Unit_Standar 
+                INTO v_Cost_Unit_Standar
+                FROM sproctm_task_workforce
+                WHERE sproctm_task_workforce_id = :NEW.record_id;
+
+                :NEW.cost = v_Cost_Unit_Standar ; 
+                :NEW.Total_Cost = v_Cost_Unit_Standar * :NEW.Hours ;
+        END IF;
+        
+        IF( v_table_name = 'sproctm_task_cif' )THEN
+                SELECT Cost_Unit_Standar 
+                INTO v_Cost_Unit_Standar
+                FROM sproctm_task_cif
+                WHERE sproctm_task_cif_id = :NEW.record_id;
+
+                :NEW.cost =v_Cost_Unit_Standar ; 
+                :NEW.Total_Cost = v_Cost_Unit_Standar * :NEW.Hours ;
+        END IF;
+        
+        IF( v_table_name = 'sproctm_task_machine' )THEN
+                SELECT unit_cost 
+                INTO v_Cost_Unit_Standar
+                FROM sproctm_task_machine
+                WHERE sproctm_task_machine_id = :NEW.record_id;
+
+                :NEW.cost =v_Cost_Unit_Standar ; --v_Cost_Unit_Standar;
+                :NEW.Total_Cost = v_Cost_Unit_Standar * :NEW.Hours ;
+        END IF;
+         
+    END IF;
+
+    END SPROCTM_COST_DETAIL_TRG
+]]></body>
+    </trigger>
+  </database>

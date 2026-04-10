@@ -1,0 +1,266 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SPSMVAT_GOODSMOVEMENT">
+    <function name="SPSMVAT_GOODSMOVEMENT" type="VARCHAR">
+      <parameter name="precordid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="puserid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="ptype" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="pqty" type="NUMERIC" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult         VARCHAR2(2000) := '';
+    vMessage        VARCHAR2(2000) := '';
+    TYPE RECORD IS REF CURSOR;
+    cPVL            RECORD;
+    cStock          RECORD;
+    --TYPE RECORD
+    rPV             RECORD;
+    rPVS            RECORD;
+    --VARIABLES
+    vRecordID       VARCHAR2(32) ;
+    vProcessID      VARCHAR2(32) ;
+    vCheck          NUMBER;
+    vDocumentNo     VARCHAR2(30) ;
+    vLine NUMBER:= 0;
+    vMovementID     VARCHAR2(32) ;
+    vQty            NUMBER;
+    vQtyTmp         NUMBER;
+    vLineBrake      TEXT := '
+';
+    vMovementType   VARCHAR2 := 'Devolución';
+
+BEGIN
+    BEGIN --BODY
+        vResult := 'pRecordId = '||COALESCE(pRecordId,'')||', pUserId = '||COALESCE(pUserId,'')
+            ||', pType = '||COALESCE(pType,'')||', pQty = '||COALESCE(pQty,0);
+        
+        IF pType = 'ST' THEN
+            vMovementType := 'Solicitud';
+        END IF;
+
+        IF pType IN ('ST','TR') THEN
+            SELECT atindpo_postventa_id, NULL atindpo_postventalinea_id, ad_org_id, ad_client_id,
+                ('Generado desde Orden de Servicio: '||documentno)::TEXT description INTO rPV
+            FROM atindpo_postventa  
+            WHERE atindpo_postventa_id = pRecordID;
+        ELSEIF pType IN ('PR') THEN
+            SELECT pv.atindpo_postventa_id, pvl.atindpo_postventalinea_id, pv.ad_org_id, pv.ad_client_id,
+                ('Generado desde Orden de Servicio: '||pv.documentno)::TEXT description INTO rPV
+            FROM atindpo_postventa pv
+                JOIN atindpo_postventalinea pvl ON pvl.atindpo_postventa_id = pv.atindpo_postventa_id
+            WHERE pvl.atindpo_postventalinea_id = pRecordID;
+        END IF;
+
+        SELECT c_doctype_id, m_locator_id INTO rPVS FROM sswos_so_transfer WHERE ad_org_id = rPV.ad_org_id;
+
+        SELECT COUNT(pvl.atindpo_postventalinea_id) INTO vCheck
+        FROM atindpo_postventalinea pvl
+            JOIN m_product pr ON pr.m_product_id = pvl.m_product_id
+        WHERE CASE
+                WHEN pType IN ('ST','TR') THEN pvl.atindpo_postventa_id = rPV.atindpo_postventa_id
+                WHEN pType IN ('PR') THEN pvl.atindpo_postventalinea_id = rPV.atindpo_postventalinea_id
+                ELSE FALSE
+            END
+            AND pr.producttype = 'I';
+
+        IF COALESCE(vCheck,0) = 0 THEN
+            RAISE_APPLICATION_ERROR(-20000, '@Sswos_itemstype@') ;
+        END IF;
+
+        SELECT ad_sequence_doctype(rPVS.c_doctype_id, '', 'N') INTO vDocumentNo;
+        IF vDocumentNo IS NULL THEN
+            RAISE_APPLICATION_ERROR(-20000, 'El tipo de documento para transferencia no tiene configurada una secuencia.');
+        END IF;
+
+        vMovementID	:= get_uuid();
+        INSERT INTO m_movement (
+            m_movement_id, ad_client_id, ad_org_id, createdby, updatedby,
+            name, description, movementdate, posted, processed,
+            processing, move_fromto_locator, documentno, em_ssin_documentno, em_ssrs_c_doctype_id,
+            EM_Eei_Description, EM_Smvai_EndDateOfTransport
+        ) VALUES (
+            vMovementID, rPV.ad_client_id, rPV.ad_org_id, pUserID, pUserID,
+            NOW()::DATE, rPV.description, NOW()::DATE, 'N', 'N',
+            'N', 'N', vDocumentNo, vDocumentNo, rPVS.c_doctype_id,
+            vMovementType, NOW()::DATE
+        );	
+
+        IF pType = 'ST' THEN
+            FOR cPVL IN (
+                SELECT pvl.cantidad - COALESCE(pvl.em_sswos_transfer,0) qty,
+                    pvl.m_product_id,
+                    pr.producttype,
+                    pr.c_uom_id,
+                    pvl.ad_client_id,
+                    pvl.atindpo_postventalinea_id,
+                    pvl.m_attributesetinstance_id,
+                    pr.name pr_name,
+                    pvl.line,
+                    pvl.em_sswos_transfer
+                FROM atindpo_postventalinea pvl
+                    JOIN m_product pr ON pr.m_product_id = pvl.m_product_id
+                WHERE pvl.atindpo_postventa_id = rPV.atindpo_postventa_id
+                    AND pvl.cantidad - COALESCE(pvl.em_sswos_transfer,0) > 0
+                    AND pr.producttype = 'I'
+                    AND COALESCE(pvl.em_spsmvat_transfer_status,'') NOT IN ('TPA','RPA')
+            ) LOOP
+
+                vQty := cPVL.Qty;
+
+                FOR cStock IN(
+                    SELECT ps.qtyonhand, ps.m_locator_id 
+                    FROM m_warehouse w 
+                        JOIN m_locator l ON l.m_warehouse_id = w.m_warehouse_id
+                        JOIN M_Product_Stock_V ps ON ps.m_locator_id = l.m_locator_id
+                    WHERE w.ad_org_id = rPV.ad_org_id
+                        AND ps.qtyonhand > 0 
+                        AND ps.m_product_id = cPVL.M_Product_ID
+                        AND ps.m_locator_id IS NOT NULL AND ps.m_locator_id <> rPVS.m_locator_id
+                ) LOOP
+
+                    IF vQty >= cStock.qtyonhand THEN
+                        vQtyTmp	:= cStock.qtyonhand;
+                        vQty := vQty - cStock.qtyonhand;
+                    ELSE
+                        vQtyTmp := vQty;
+                        vQty := 0;
+                    END IF;
+
+                    vLine := vLine + 10;
+                    INSERT INTO M_MovementLine (
+                        M_MovementLine_ID, ad_client_id, ad_org_id, createdby, updatedby,
+                        m_movement_id, m_locator_id, m_locatorto_id, m_product_id, line,
+                        movementqty, description, c_uom_id, m_attributesetinstance_id, em_spsmvat_pvl_id
+                    ) VALUES (
+                        get_uuid(), rPV.ad_client_id, rPV.ad_org_id, pUserID, pUserID,
+                        vMovementID, cStock.m_locator_id, rPVS.m_locator_id, cPVL.M_Product_ID, vLine,
+                        vQtyTmp, '', cPVL.c_uom_id, cPVL.m_attributesetinstance_id, cPVL.atindpo_postventalinea_id
+                    );
+
+                    EXIT WHEN vQty = 0;
+                END LOOP;
+
+                IF vQty > 0 THEN
+                    IF vMessage != '' THEN
+                        vMessage := vMessage||vLineBrake;
+                    END IF;
+
+                    IF cPVL.qty = vQty THEN
+                        vMessage := vMessage||'El producto '||cPVL.pr_name||' de la línea '||cPVL.line||' no tiene stock';
+                    ELSE
+                        vMessage := vMessage||'Solo se disponen de '||ROUND(cPVL.qty-vQty,2)||' unidades del producto '||cPVL.pr_name||' de la línea '||cPVL.line;
+                    END IF;
+                END IF;
+
+                IF cPVL.qty != vQty THEN
+                    UPDATE atindpo_postventalinea SET em_spsmvat_transfer_status = 'TPA'
+                    WHERE atindpo_postventalinea_id = cPVL.atindpo_postventalinea_id;
+                END IF;
+            END LOOP;
+        
+        ELSEIF pType IN ('PR','TR') THEN
+            
+            FOR cPVL IN (
+                SELECT COALESCE(pvl.em_sswos_transfer,0) qty,
+                    pvl.m_product_id,
+                    pr.producttype,
+                    pr.c_uom_id,
+                    pvl.ad_client_id,
+                    pvl.atindpo_postventalinea_id,
+                    pvl.m_attributesetinstance_id,
+                    pr.name pr_name,
+                    pvl.line,
+                    pvl.em_sswos_transfer
+                FROM atindpo_postventalinea pvl
+                    JOIN m_product pr ON pr.m_product_id = pvl.m_product_id
+                WHERE CASE
+                        WHEN pType = 'TR' THEN pvl.atindpo_postventa_id = rPV.atindpo_postventa_id
+                        WHEN pType = 'PR' THEN pvl.atindpo_postventalinea_id = rPV.atindpo_postventalinea_id
+                        ELSE FALSE
+                    END
+                    AND COALESCE(pvl.em_sswos_transfer,0) > 0
+                    AND pr.producttype = 'I'
+                    AND COALESCE(pvl.em_spsmvat_transfer_status,'') NOT IN ('TPA','RPA')
+            ) LOOP
+
+                IF pType = 'TR' THEN
+                    vQty := cPVL.Qty;
+                ELSEIF pType = 'PR' THEN
+                    IF vQty = 0 OR vQty > cPVL.em_sswos_transfer THEN
+                        RAISE_APPLICATION_ERROR(-20000, 'La cantidad a devolver debe ser mayor a 0 y menor o igual a la cantidad transferida ('||cPVL.em_sswos_transfer||')');
+                    END IF;
+                    vQty := pQty;
+                END IF;
+
+                FOR cStock IN(
+                    SELECT
+                        tr.m_movement_id,
+                        ml.m_movementline_id,
+                        tr.sswos_transfer_id,
+                        tr.atindpo_postventalinea_id,
+                        ml.m_locator_id,
+                        ml.m_locatorto_id,
+                        pvl.em_sswos_transfer,
+                        tr.quantity
+                    FROM sswos_transfer tr
+                        JOIN atindpo_postventalinea pvl ON pvl.atindpo_postventalinea_id = tr.atindpo_postventalinea_id
+                        JOIN m_movement mv ON mv.m_movement_id = tr.m_movement_id
+                        JOIN m_movementline ml ON ml.m_movement_id = mv.m_movement_id AND ml.em_spsmvat_pvl_id = pvl.atindpo_postventalinea_id
+                    WHERE pvl.atindpo_postventalinea_id = cPVL.atindpo_postventalinea_id
+                        AND tr.isactive = 'Y' AND quantity > 0
+                    ORDER BY tr.created DESC
+                ) LOOP
+
+                    IF vQty >= cStock.em_sswos_transfer THEN
+                        vQtyTmp	:= cStock.em_sswos_transfer;
+                        vQty := vQty - cStock.em_sswos_transfer;
+                    ELSE
+                        vQtyTmp := vQty;
+                        vQty := 0;
+                    END IF;
+
+                    vLine := vLine + 10;
+
+                    INSERT INTO M_MovementLine (
+                        M_MovementLine_ID, ad_client_id, ad_org_id, createdby, updatedby,
+                        m_movement_id, m_locator_id, m_locatorto_id, m_product_id, line,
+                        movementqty, description, c_uom_id, m_attributesetinstance_id, em_spsmvat_pvl_id
+                    ) VALUES (
+                        get_uuid(), rPV.ad_client_id, rPV.ad_org_id, pUserID, pUserID,
+                        vMovementID, cStock.m_locatorto_id, cStock.m_locator_id, cPVL.M_Product_ID, vLine,
+                        vQtyTmp, '', cPVL.c_uom_id, cPVL.m_attributesetinstance_id, cPVL.atindpo_postventalinea_id
+                    );
+
+                    EXIT WHEN vQty = 0;
+                END LOOP;
+
+                IF vQty = 0 THEN
+                    UPDATE atindpo_postventalinea SET em_spsmvat_transfer_status = 'RPA'
+                    WHERE atindpo_postventalinea_id = cPVL.atindpo_postventalinea_id;
+                END IF;
+            END LOOP;
+            
+        END IF;
+
+        IF vLine = 0 THEN
+            --DELETE FROM m_movement WHERE m_movement_id = vMovementID;
+            IF vMessage = '' THEN
+                vMessage := 'No se encontraron líneas que requieran transferencia de repuestos';
+            END IF;
+            RAISE_APPLICATION_ERROR(-20000, vMessage);
+        END IF;
+        
+        vResult := vLine||':'||vMovementID||':'||vMessage;
+        RETURN vResult;
+    END; --BODY
+    EXCEPTION WHEN OTHERS THEN
+        RETURN '0'||':'||'0'||':'||SQLERRM;
+END SPSMVAT_GOODSMOVEMENT
+]]></body>
+    </function>
+  </database>

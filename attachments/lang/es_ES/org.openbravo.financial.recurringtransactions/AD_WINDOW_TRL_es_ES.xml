@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="D56D692EB4324E66A854292AEDCC68D4" trl="N">
+    <value column="Name" isTrl="N" original="Recurring Template Type">Recurring Template Type</value>
+    <value column="Description" isTrl="N" original="Define and maintain template types for recurring transactions">Define and maintain template types for recurring transactions</value>
+    <value column="Help" isTrl="N" original="Define and maintain template types for recurring transactions">Define and maintain template types for recurring transactions</value>
+  </row>
+  <row id="EEBA61E1CB6A49509A6AA81C6882C761" trl="N">
+    <value column="Name" isTrl="N" original="Recurring Rule">Recurring Rule</value>
+    <value column="Description" isTrl="N" original="Maintain recurring rule">Maintain recurring rule</value>
+    <value column="Help" isTrl="N" original="Use this form to define and maintain rules to create recurring transactions">Use this form to define and maintain rules to create recurring transactions</value>
+  </row>
+</compiereTrl>

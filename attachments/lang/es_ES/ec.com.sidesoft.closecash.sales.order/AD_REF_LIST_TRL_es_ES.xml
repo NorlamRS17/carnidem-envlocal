@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="3BA724361A3A40B2AE00D1463F2A50A7" trl="N">
+    <value column="Name" isTrl="Y" original="Draft">Borrador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="929EB24E701948F9BC5DD1B07076FE0E" trl="N">
+    <value column="Name" isTrl="Y" original="Procesed">Procesado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D5F0412F555C4F89ABCFEDDB7FF5C969" trl="N">
+    <value column="Name" isTrl="N" original="Reactive">Reactive</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="EBDCD32D988946B59445D9FDB837DBF1" trl="N">
+    <value column="Name" isTrl="N" original="Process">Process</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

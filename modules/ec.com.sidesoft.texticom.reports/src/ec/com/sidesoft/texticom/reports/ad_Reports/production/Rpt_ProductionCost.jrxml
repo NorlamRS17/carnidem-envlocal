@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_ProductionCost" pageWidth="1587" pageHeight="842" columnWidth="1547" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6047e1bf-ba94-410d-af53-0170088b6001">
+	<property name="ireport.zoom" value="1.3310000000000057"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERDECIMAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="STARTDATE" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ENDDATE" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="M_PRODUCT_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="MA_WORKREQUIREMENT_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+producto
+,codigo
+,max(starttime) AS starttime
+,max(endtime) AS endtime
+,orden_fabricacion
+,(cantidad) AS cantidad
+,materia_prima
+,mano_obra
+,costo_directo
+,maquina
+,costo
+,fechaimpresion
+,max(fechacreacion) AS fechacreacion
+,ad_org_id
+,parte_produccion
+,totalorden
+,priceprod
+,( CASE WHEN costo>0 AND cantidad >0 THEN (costo/cantidad) ELSE 0 END) AS costunit
+FROM
+(
+  SELECT
+  mprod.name AS producto
+  , mprod.value AS codigo,
+  ( TO_CHAR(mpplan.starttime,'DD') || (
+  CASE
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '01' THEN '-Enero-'
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '02' THEN '-Febrero-'
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '03' THEN '-Marzo-'
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '04' THEN '-Abril-'
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '05' THEN '-Mayo-'
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '06' THEN '-Junio-'
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '07' THEN '-Julio-'
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '08' THEN '-Agosto-'
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '09' THEN '-Septiembre-'
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '10' THEN '-Octubre-'
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '11' THEN '-Noviembre-'
+  WHEN TO_CHAR(mpplan.starttime,'MM') = '12' THEN '-Diciembre-'
+        END) || TO_CHAR(mpplan.starttime,'YYYY')) AS starttime
+  , (TO_CHAR(mpplan.endtime,'DD') || (
+  CASE
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '01' THEN '-Enero-'
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '02' THEN '-Febrero-'
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '03' THEN '-Marzo-'
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '04' THEN '-Abril-'
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '05' THEN '-Mayo-'
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '06' THEN '-Junio-'
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '07' THEN '-Julio-'
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '08' THEN '-Agosto-'
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '09' THEN '-Septiembre-'
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '10' THEN '-Octubre-'
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '11' THEN '-Noviembre-'
+  WHEN TO_CHAR(mpplan.endtime,'MM') = '12' THEN '-Diciembre-'
+        END) ||
+  TO_CHAR(mpplan.endtime,'YYYY')) AS  endtime
+  , mwr.documentno AS orden_fabricacion
+  , mp.documentno AS parte_produccion
+  , (mpplan.ProductionQty) AS cantidad
+  , coalesce(mprim.materia_prima,0) AS materia_prima
+  , coalesce(mobra.mano_obra,0) AS mano_obra
+  , coalesce(cdirecto.costo_directo,0) AS costo_directo
+  , coalesce(maq.maquina,0) AS maquina
+  , (coalesce(round(mprim.materia_prima,2),0)+
+    coalesce(round(mobra.mano_obra,2),0) +
+    coalesce(round(cdirecto.costo_directo,2),0)+
+    coalesce(round(maq.maquina,2),0))   AS costo
+  , now() AS fechaimpresion
+  , mp.movementdate AS fechacreacion
+  , mp.ad_org_id
+  ,totalorden
+  ,priceprod
+  --,mpplan.M_ProductionPlan_id
+  FROM M_Production mp
+  JOIN M_ProductionPlan mpplan ON mp.M_Production_id = mpplan.M_Production_id
+  JOIN MA_WRPhase mwp ON mwp.MA_WRPhase_id = mpplan.MA_WRPhase_id
+  JOIN MA_WorkRequirement mwr ON mwr.MA_WorkRequirement_id =mwp.MA_WorkRequirement_id
+  LEFT JOIN (
+    SELECT * FROM M_ProductionLine WHERE  productiontype='+'
+
+  ) mpplineprod ON mpplineprod.M_ProductionPlan_id = mpplan.M_ProductionPlan_id
+
+  LEFT JOIN m_product mprod ON mprod.m_product_id = mpplineprod.m_product_id
+
+  LEFT JOIN (
+
+    SELECT mwp.MA_WorkRequirement_id,sum(trunc(materia_prima,2)) AS materia_prima
+      ,mpplan.m_production_id
+    FROM
+    (SELECT
+      sum(mtc.cost) AS materia_prima
+      ,mpl.M_ProductionPlan_id
+      FROM m_transaction mt
+        JOIN m_transaction_cost mtc ON mtc.m_transaction_id = mt.m_transaction_id
+        JOIN M_ProductionLine mpl ON mt.M_ProductionLine_ID = mpl.M_ProductionLine_ID
+      LEFT JOIN (
+        SELECT MAX(mtc.costdate) AS datec,mt.M_ProductionLine_ID
+        FROM m_transaction mt
+          JOIN m_transaction_cost mtc ON mtc.m_transaction_id = mt.m_transaction_id
+          JOIN M_ProductionLine mpl ON mt.M_ProductionLine_ID = mpl.M_ProductionLine_ID
+        WHERE (COSTDATE)::date BETWEEN $P{STARTDATE} AND  $P{ENDDATE}
+        GROUP BY mt.M_ProductionLine_ID
+      ) ccost ON ( ccost.M_ProductionLine_ID = mpl.M_ProductionLine_ID AND ccost.datec = mtc.costdate )
+      WHERE productiontype='-'
+      GROUP BY mpl.M_ProductionLine_ID
+    ) rep
+      JOIN M_ProductionPlan mpplan ON rep.M_ProductionPlan_id = mpplan.M_ProductionPlan_id
+      JOIN MA_WRPhase mwp ON mwp.MA_WRPhase_id = mpplan.MA_WRPhase_id
+      JOIN MA_WorkRequirement mwr ON mwr.MA_WorkRequirement_id =mwp.MA_WorkRequirement_id
+    WHERE (TRUNC(mpplan.endtime) BETWEEN $P{STARTDATE} AND $P{ENDDATE})
+      AND (TRUNC(mpplan.starttime) BETWEEN $P{STARTDATE} AND $P{ENDDATE})
+    GROUP BY mwp.MA_WorkRequirement_id,mpplan.m_production_id
+
+  ) mprim ON mprim.MA_WorkRequirement_id = mwp.MA_WorkRequirement_id AND mprim.m_production_id = mp.m_production_id
+
+  LEFT JOIN (
+    SELECT round(sum(mppline.calccost),2) AS mano_obra,mwr.MA_WorkRequirement_id
+      ,mpplan.m_production_id
+    FROM MA_PL_Employee mppline
+      JOIN M_ProductionPlan mpplan ON mpplan.M_ProductionPlan_id = mppline.M_ProductionPlan_id
+      JOIN MA_WRPhase mwp ON mwp.MA_WRPhase_id = mpplan.MA_WRPhase_id
+      JOIN MA_WorkRequirement mwr ON mwr.MA_WorkRequirement_id =mwp.MA_WorkRequirement_id
+    WHERE (TRUNC(mpplan.endtime) BETWEEN $P{STARTDATE} AND $P{ENDDATE})
+      AND (TRUNC(mpplan.starttime) BETWEEN $P{STARTDATE} AND $P{ENDDATE})
+    GROUP BY mwr.MA_WorkRequirement_id,mpplan.m_production_id
+  ) mobra ON mobra.MA_WorkRequirement_id = mwr.MA_WorkRequirement_id AND mobra.m_production_id = mp.m_production_id
+
+  LEFT JOIN (
+    SELECT round(sum(mppline.calccost),2) AS costo_directo,mwr.MA_WorkRequirement_id
+      ,mpplan.m_production_id
+    FROM MA_PL_IC mppline
+      JOIN M_ProductionPlan mpplan ON mpplan.M_ProductionPlan_id = mppline.M_ProductionPlan_id
+      JOIN MA_WRPhase mwp ON mwp.MA_WRPhase_id = mpplan.MA_WRPhase_id
+      JOIN MA_WorkRequirement mwr ON mwr.MA_WorkRequirement_id = mwp.MA_WorkRequirement_id
+    WHERE (TRUNC(mpplan.endtime) BETWEEN $P{STARTDATE} AND $P{ENDDATE})
+      AND (TRUNC(mpplan.starttime) BETWEEN $P{STARTDATE} AND $P{ENDDATE})
+    GROUP BY mwr.MA_WorkRequirement_id,mpplan.m_production_id
+  ) cdirecto ON cdirecto.MA_WorkRequirement_id = mwr.MA_WorkRequirement_id AND cdirecto.m_production_id = mp.m_production_id
+
+  LEFT JOIN (
+    SELECT round(sum(mppline.calccost),2) AS maquina, mwr.MA_WorkRequirement_id
+      ,mpplan.m_production_id
+    FROM MA_PL_Machine mppline
+      JOIN M_ProductionPlan mpplan ON mpplan.M_ProductionPlan_id = mppline.M_ProductionPlan_id
+      JOIN MA_WRPhase mwp ON mwp.MA_WRPhase_id = mpplan.MA_WRPhase_id
+      JOIN MA_WorkRequirement mwr ON mwr.MA_WorkRequirement_id =mwp.MA_WorkRequirement_id
+    WHERE (TRUNC(mpplan.endtime) BETWEEN $P{STARTDATE} AND $P{ENDDATE})
+      AND (TRUNC(mpplan.starttime) BETWEEN $P{STARTDATE} AND $P{ENDDATE})
+    GROUP BY mwr.MA_WorkRequirement_id,mpplan.m_production_id
+  ) maq ON maq.MA_WorkRequirement_id = mwr.MA_WorkRequirement_id AND maq.m_production_id = mp.m_production_id
+
+  LEFT JOIN (
+      SELECT
+      sum(cantidad) AS totalorden
+      ,MA_WorkRequirement_id
+      FROM
+      (SELECT DISTINCT
+        mwr.MA_WorkRequirement_id
+        , (mpplan.ProductionQty) AS cantidad
+        , mpplan.M_ProductionPlan_id
+        FROM M_Production mp
+          JOIN M_ProductionPlan mpplan ON mp.M_Production_id = mpplan.M_Production_id
+          JOIN MA_WRPhase mwp ON mwp.MA_WRPhase_id = mpplan.MA_WRPhase_id
+          JOIN MA_WorkRequirement mwr ON mwr.MA_WorkRequirement_id =mwp.MA_WorkRequirement_id
+        WHERE mpplan.processed='Y'
+        AND (TRUNC(mpplan.endtime) BETWEEN $P{STARTDATE} AND $P{ENDDATE})
+        AND (TRUNC(mpplan.starttime) BETWEEN  $P{STARTDATE} AND $P{ENDDATE})
+        ) repcant
+      GROUP BY MA_WorkRequirement_id
+  ) canttot ON canttot.MA_WorkRequirement_id = mwr.MA_WorkRequirement_id
+  LEFT JOIN (
+    SELECT * FROM (SELECT mpr.m_product_id,mpv.Validfrom,coalesce(pricestd,0) AS priceprod,mpv.name,p.name AS producto
+    ,ROW_NUMBER() OVER (PARTITION BY mpr.m_product_id ORDER BY mpr.m_product_id, Validfrom desc ) AS rn
+    FROM m_pricelist mp
+      JOIN m_pricelist_version mpv ON mpv.m_pricelist_id = mp.m_pricelist_id
+      JOIN m_productprice mpr ON mpr.m_pricelist_version_id = mpv.m_pricelist_version_id
+      JOIN m_product p ON mpr.m_product_id = p.m_product_id
+    WHERE mp.issopricelist = 'Y' AND mp.isactive = 'Y'
+      AND mpv.isactive='Y' AND mpr.isactive='Y' AND p.isactive='Y'
+      AND TRUNC(Validfrom) <= TRUNC(NOW())
+    ) AS ln WHERE ln.rn = 1
+  ) costprod ON costprod.m_product_id = mpplineprod.m_product_id
+  WHERE mpplan.processed='Y'
+    AND mpplineprod.productiontype = '+'
+    AND (TRUNC(mpplan.endtime) BETWEEN $P{STARTDATE} AND $P{ENDDATE})
+    AND (TRUNC(mpplan.starttime) BETWEEN $P{STARTDATE} AND $P{ENDDATE})
+    AND (mpplineprod.m_product_id =$P{M_PRODUCT_ID}  OR $P{M_PRODUCT_ID} IS NULL)
+    AND (mwr.MA_WorkRequirement_id=$P{MA_WORKREQUIREMENT_ID} OR $P{MA_WORKREQUIREMENT_ID} IS NULL)
+) rep
+GROUP BY 1,2,5,6,7,8,9,10,11,12,14,parte_produccion,totalorden,priceprod
+ORDER BY 5]]>
+	</queryString>
+	<field name="producto" class="java.lang.String"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="starttime" class="java.lang.String"/>
+	<field name="endtime" class="java.lang.String"/>
+	<field name="orden_fabricacion" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="materia_prima" class="java.math.BigDecimal"/>
+	<field name="mano_obra" class="java.math.BigDecimal"/>
+	<field name="costo_directo" class="java.math.BigDecimal"/>
+	<field name="maquina" class="java.math.BigDecimal"/>
+	<field name="costo" class="java.math.BigDecimal"/>
+	<field name="fechaimpresion" class="java.sql.Timestamp"/>
+	<field name="fechacreacion" class="java.sql.Timestamp"/>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="parte_produccion" class="java.lang.String"/>
+	<field name="totalorden" class="java.math.BigDecimal"/>
+	<field name="priceprod" class="java.math.BigDecimal"/>
+	<field name="costunit" class="java.math.BigDecimal"/>
+	<pageHeader>
+		<band height="80" splitType="Stretch">
+			<rectangle>
+				<reportElement x="1461" y="60" width="86" height="20" uuid="c461ba99-8c06-4403-a795-7b53975c29eb"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="1293" y="20" width="168" height="20" uuid="b942c9c1-38b0-4619-9fc9-8a72e1eda697"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha impresión:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="60" width="1080" height="20" uuid="5cb0e816-180f-4b07-a085-aa2c03d607f4"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Norma de referencia: ISO-9001]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="1461" y="0" width="86" height="20" uuid="46de7275-c142-4cf8-9e39-171d5c695849"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechacreacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1293" y="0" width="168" height="20" uuid="342946a4-d257-4a5f-955a-43f5427f7943"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de creación:]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="1504" y="60" width="43" height="20" uuid="5b95b9fb-482c-4639-a2d3-5374bfb75c60"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="1461" y="60" width="43" height="20" uuid="da43bb03-cc9c-4c8c-9395-301587f30ac3"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}.toString() + " / "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1293" y="60" width="168" height="20" uuid="c0b30217-7ee0-4e4b-a7ec-c3ee96510cb6"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pags.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1293" y="40" width="168" height="20" uuid="544fecf6-4ef2-4c81-a189-8b1dd64a5f39"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Versión:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="213" y="0" width="1080" height="20" uuid="ca3af890-2450-42f8-b1e8-e0c67149ec91"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REGISTRO"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="213" height="20" uuid="2ea40454-2caf-41fb-8606-8022cb3b9eb5"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F-EN-008]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1461" y="40" width="86" height="20" uuid="03c7d444-ce23-44f6-b846-a0d1fbaf4d8c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[0]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="1461" y="20" width="86" height="20" uuid="f2b7c73d-b046-4e1d-a7db-c67fd3f1008b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaimpresion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="213" y="20" width="1080" height="40" uuid="ecb953c8-13f5-4ca8-ab69-b152f47371f3"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Costos de Producción]]></text>
+			</staticText>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="213" height="60" uuid="268041a3-729c-4139-b3f5-f09c703b2fff"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{ad_org_id})]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="213" height="45" uuid="8e97ccef-1974-4472-8962-b2c585deaaad"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="0" width="107" height="45" uuid="2e3248a5-a703-4b0d-8203-05d19d11b34c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="105" height="45" uuid="755a8a9f-125c-4d19-b7b1-ae880e9778ac"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de inicio
+parte de fabricación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="0" width="100" height="45" uuid="594e95b0-f1dc-4165-b034-e3045867cd48"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Fin
+parte de fabricación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="957" y="0" width="84" height="45" uuid="d5577a1d-89ea-4236-9eeb-70ef428d54fb"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Materia prima]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1041" y="0" width="84" height="45" uuid="8f60f9d5-d9d8-4ce5-a3d6-838fdb44b257"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mano de obra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1125" y="0" width="84" height="45" uuid="7a305bb8-de29-4960-b618-c708f7738fff"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo directo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1209" y="0" width="84" height="45" uuid="2ca6072b-334b-45fb-a497-49c50a9a27f3"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Máquina]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1293" y="0" width="84" height="45" uuid="55060f94-f87d-47aa-9bf1-0498a0aca73c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="625" y="0" width="77" height="45" uuid="a0661289-6a6c-4356-a3d0-ef999d70057b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad Orden]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="525" y="0" width="100" height="45" uuid="19579dfe-9290-4216-8bcf-15589fc685ce"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Número de Orden]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="702" y="0" width="113" height="45" uuid="40c09c02-ca34-4e92-9c1d-5cdeee201094"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. Parte]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="815" y="0" width="142" height="45" uuid="38e93038-1775-43a5-a07b-7caa1fa82a45"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad Parte de Fabricación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1377" y="0" width="84" height="45" uuid="357be447-f52b-4b75-93a5-8f80b63bb999"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1461" y="0" width="86" height="45" uuid="fb659acd-b5e0-45e6-bdb9-782964d59ce9"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio de venta]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="213" height="15" uuid="620ba43e-fe55-487b-b5eb-ca33c96b7fe1"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="213" y="0" width="107" height="15" uuid="c17c8d7a-14e4-47a1-a0e4-019710986d2c"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="320" y="0" width="105" height="15" uuid="49de8a7f-3f98-4371-ba48-97db020e9408"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{starttime}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="425" y="0" width="100" height="15" uuid="40e618c7-3994-4642-b7b4-e9d5e11ea35a"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{endtime}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="525" y="0" width="100" height="15" uuid="f66cdf66-e32e-40de-9927-40f034a2779f"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{orden_fabricacion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="815" y="0" width="142" height="15" uuid="6df61338-6dcb-434a-93e5-6c093285a64e"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="957" y="0" width="84" height="15" uuid="f0335528-b545-480d-9032-97cf9aeca373"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{materia_prima}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1041" y="0" width="84" height="15" uuid="59645c87-aa57-4c10-8a5d-7d1015f24726"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{mano_obra}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1125" y="0" width="84" height="15" uuid="bf73db21-6ed9-4757-9ad3-fe77a676bcd6"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{costo_directo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1209" y="0" width="84" height="15" uuid="4d8c3ab0-380e-4765-b3e3-8631a314d4b8"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{maquina}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1293" y="0" width="84" height="15" uuid="d4d58288-3e2b-4a51-a0e5-a666f839625c"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="625" y="0" width="77" height="15" uuid="a03b3c19-0822-4a29-927e-f81d83c33ab1"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{totalorden}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="702" y="0" width="113" height="15" uuid="651e9f06-1780-4e65-9383-181b25a420be"/>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{parte_produccion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1461" y="0" width="86" height="15" uuid="880319f1-09ad-4d02-b907-dbd3e7be62f2"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{priceprod}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1377" y="0" width="84" height="15" uuid="8bde96dc-09fd-42cc-b92d-33a1766c655d"/>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{costunit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

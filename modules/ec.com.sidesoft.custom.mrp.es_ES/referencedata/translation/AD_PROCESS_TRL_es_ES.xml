@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="0C247FB01A1C4EE7931869ACB4127BCA" trl="Y">
+    <value column="Name" isTrl="Y" original="Delete Lines">Borrar Líneas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BD4DD303E4BA4FF789612D37876B479F" trl="N">
+    <value column="Name" isTrl="Y" original="Delete Sales Forecast Lines">Eliminar Lineas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

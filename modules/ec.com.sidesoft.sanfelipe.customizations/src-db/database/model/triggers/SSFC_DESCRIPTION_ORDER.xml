@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSFC_DESCRIPTION_ORDER">
+    <trigger name="SSFC_DESCRIPTION_ORDER" table="M_INOUTLINE" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	v_orderdesc character varying(255);
+	v_orderID character varying(32);
+	v_desc character varying(255);
+	v_docnum character varying(30);
+	v_Check NUMBER;
+	MENSAJE character varying(255);
+BEGIN
+	IF AD_isTriggerEnabled()='N' THEN IF DELETING THEN
+		RETURN OLD; ELSE RETURN NEW; END IF; 
+    END IF;
+	
+	IF INSERTING or UPDATING THEN
+		IF :NEW.c_orderline_id IS NULL THEN
+			RETURN NEW;
+		ELSE
+			--Obtener descripcion de la orden
+    		SELECT cl.description INTO v_orderdesc
+			FROM c_order cl
+				LEFT JOIN c_orderline ol ON ol.c_order_id = cl.c_order_id
+				LEFT JOIN M_InOutLine ml ON ml.c_orderline_id = ol.c_orderline_id
+			WHERE ol.c_orderline_id = :NEW.c_orderline_id;
+		
+			--Obtener numero de la orden
+			SELECT ou.documentno INTO v_orderID
+			FROM M_InOutLine ml 
+				LEFT JOIN c_orderline ol ON ol.c_orderline_id = ml.c_orderline_id
+				LEFT JOIN c_order cl ON cl.c_order_id = ol.c_order_id
+				LEFT JOIN  M_InOut ou ON ou.M_InOut_id = ml.M_InOut_id
+			WHERE ol.c_orderline_id = :NEW.c_orderline_id;
+			
+			--Obtener numero de pedido venta
+			SELECT o.documentno INTO v_docnum
+			FROM c_order o
+				LEFT JOIN c_orderline ol ON o.c_order_id = ol.c_order_id
+			WHERE ol.c_orderline_id = :NEW.c_orderline_id;
+			
+			--Obtener descripcion previa en la cabecera
+			SELECT ou.description INTO v_desc
+			FROM M_InOutLine ml 
+				LEFT JOIN c_orderline ol ON ol.c_orderline_id = ml.c_orderline_id
+				LEFT JOIN c_order cl ON cl.c_order_id = ol.c_order_id
+				LEFT JOIN  M_InOut ou ON ou.M_InOut_id = ml.M_InOut_id
+			WHERE ol.c_orderline_id = :NEW.c_orderline_id;
+			
+			--Saber si pedido ya esta en la descripcion de la cabecera
+			SELECT count(ou.description) INTO v_Check
+			FROM M_InOutLine ml 
+				LEFT JOIN c_orderline ol ON ol.c_orderline_id = ml.c_orderline_id
+				LEFT JOIN c_order cl ON cl.c_order_id = ol.c_order_id
+				LEFT JOIN M_InOut ou ON ou.M_InOut_id = ml.M_InOut_id
+			WHERE ol.c_orderline_id = :NEW.c_orderline_id
+			AND ou.description LIKE CONCAT('%',v_orderdesc,'%');
+			
+			IF (v_Check > 0::NUMERIC) THEN
+				RETURN NEW;
+			ELSE IF (COALESCE(LENGTH(v_orderdesc),0) = 0) THEN
+				RETURN NEW;
+			ELSE IF (v_desc IS NULL) THEN
+				--Actualizar descripcion de la orden en el albaran
+				UPDATE M_InOut SET description = CONCAT('[',v_orderdesc,']') WHERE documentno = v_orderID;
+    			RETURN NEW;
+			ELSE
+				UPDATE M_InOut SET description = SUBSTRING(CONCAT(v_desc,' - [',v_orderdesc,']'),0,254) WHERE documentno = v_orderID;
+				RETURN NEW;
+			END IF;
+			END IF;
+			END IF;
+    	END IF;
+	END IF;
+	
+	IF DELETING THEN 
+		RETURN OLD; 
+	ELSE 
+		RETURN NEW; 
+	END IF; 
+
+END SSFC_DESCRIPTION_ORDER
+]]></body>
+    </trigger>
+  </database>

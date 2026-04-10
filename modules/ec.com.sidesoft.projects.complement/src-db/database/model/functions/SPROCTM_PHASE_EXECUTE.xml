@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SPROCTM_PHASE_EXECUTE">
+    <function name="SPROCTM_PHASE_EXECUTE" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_Record_ID VARCHAR2(32);
+v_AD_User_ID VARCHAR2(32);
+v_AD_Client_ID VARCHAR2(32);
+v_AD_Org_ID VARCHAR2(32);
+v_ResultStr VARCHAR2(2000):='';
+v_Result NUMBER:=1; -- 0=failure
+v_prhasetype VARCHAR2(2);
+v_phase_execute VARCHAR2(60);
+v_generated_exec VARCHAR2(1);
+v_phase_id VARCHAR2(32);
+v_c_project_id VARCHAR2(32);
+v_task_id VARCHAR2(32);
+v_new_line NUMBER;
+v_task_prod_id VARCHAR2(32);
+v_task_mo_id VARCHAR2(32);
+v_task_cif_id VARCHAR2(32);
+v_task_maq_id VARCHAR2(32);
+
+TYPE RECORD IS REF CURSOR;
+Cur_Params RECORD;
+Cur_phase RECORD;
+Cur_task RECORD;
+Cur_tab_products RECORD;
+Cur_tab_mo RECORD; 
+Cur_tab_cif RECORD; 
+Cur_tab_maq RECORD; 
+BEGIN
+
+  FOR Cur_Params IN (
+    SELECT i.Record_ID, i.AD_User_ID, i.AD_Client_ID, i.AD_Org_ID, p.ParameterName,
+        p.P_String, p.P_Number, p.P_Date, p.P_Date_To
+      FROM AD_PINSTANCE i
+      LEFT JOIN AD_PINSTANCE_PARA p ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=  p_ep_instance
+      ORDER BY p.SeqNo
+    ) LOOP
+
+    v_Record_ID := Cur_Params.Record_ID;
+    v_AD_User_ID := Cur_Params.AD_User_ID;
+    v_AD_Client_ID := Cur_Params.AD_Client_ID;
+    v_AD_Org_ID := Cur_Params.AD_Org_ID;
+  END LOOP;
+  v_ResultStr := 'Inicio del proceso';
+    -- Verificar que la fase sea de tipo Cotizacion
+    SELECT COALESCE(em_sproctm_prhasetype, '') ,em_sproctm_phase_execute , em_sproctm_generated_exec , c_project_id
+    INTO v_prhasetype , v_phase_execute, v_generated_exec , v_c_project_id
+    FROM c_projectphase
+    WHERE c_projectphase_ID = v_Record_ID;
+
+    IF(v_prhasetype != 'C' or v_prhasetype = '') THEN
+        RAISE_APPLICATION_ERROR(-20000,'La fase del proyecto debe ser de tipo Cotizacion. ') ;
+    END IF;
+
+    IF(v_phase_execute = 'Y' AND v_generated_exec = 'Y') THEN
+        RAISE_APPLICATION_ERROR(-20000,'La ejecución de fase ya fue generada.') ;
+    END IF;
+    -- Crear nuevo proyecto con los datos de la fase selecionada y que sea de tipo Ejecucion
+    select COALESCE(max(seqno), 0)+10 into v_new_line from c_projectphase
+    WHERE c_project_id =  v_c_project_id ;
+    v_phase_id = get_uuid();
+    FOR Cur_phase IN (
+        SELECT c_project_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, description,
+          startdate, enddate, iscomplete, m_product_id, priceactual, generateorder, c_order_id, c_phase_id, c_projectphase_id, help, 
+          name, qty, seqno, committedamt, iscommitceiling, datecontract, em_sproctm_prhasetype, 
+          em_sproctm_c_order_id, em_sproctm_margin, em_sproctm_create_quot, em_sproctm_asigned_ce, 
+          em_sproctm_phase_execute, em_sproctm_generated_exec
+	    FROM c_projectphase WHERE c_projectphase_ID = v_Record_ID
+    )LOOP
+        INSERT INTO c_projectphase(
+        c_project_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, description, startdate, 
+        enddate, iscomplete, m_product_id, priceactual, generateorder, c_order_id, c_phase_id, c_projectphase_id, help,
+         name, qty, seqno, committedamt, iscommitceiling, datecontract, em_sproctm_prhasetype, em_sproctm_c_order_id,
+          em_sproctm_margin, em_sproctm_create_quot, em_sproctm_asigned_ce, 
+        em_sproctm_phase_execute, em_sproctm_generated_exec)
+        VALUES (Cur_phase.c_project_id , Cur_phase.ad_client_id, Cur_phase.ad_org_id, Cur_phase.isactive, now(), v_AD_User_ID, now(), v_AD_User_ID, 'Fase creada apartir de fase de cotización',
+          Cur_phase.startdate, Cur_phase.enddate, 'N', Cur_phase.m_product_id, Cur_phase.priceactual, Cur_phase.generateorder, 
+          Cur_phase.c_order_id, Cur_phase.c_phase_id, v_phase_id , Cur_phase.help, 
+          'Ejecución', Cur_phase.qty, v_new_line, Cur_phase.committedamt, Cur_phase.iscommitceiling, Cur_phase.datecontract, 'E', 
+          Cur_phase.em_sproctm_c_order_id, Cur_phase.em_sproctm_margin, Cur_phase.em_sproctm_create_quot, Cur_phase.em_sproctm_asigned_ce,         
+          Cur_phase.em_sproctm_phase_execute, 
+          Cur_phase.em_sproctm_generated_exec);
+
+    END LOOP;
+
+    -- Crear tareas
+    FOR Cur_task IN (
+        SELECT c_projecttask_id, c_task_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, seqno, name,
+        description, help, m_product_id, c_projectphase_id, qty, startdate, enddate, iscomplete, priceactual, committedamt, iscommitceiling, 
+        datecontract, em_sproctm_ad_image_id, em_sproctm_c_order_id, em_sproctm_margin, em_sproctm_create_quotation, em_sproctm_isnationalprod,
+        em_sproctm_add_requisition        
+	    FROM c_projecttask WHERE c_projectphase_id = v_Record_ID 
+    )LOOP
+        v_task_id = get_uuid();
+        INSERT INTO c_projecttask(
+	    c_projecttask_id, c_task_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, seqno, name, description,
+        help, m_product_id, c_projectphase_id, qty, startdate, enddate, iscomplete, priceactual, committedamt, iscommitceiling, datecontract,
+        em_sproctm_ad_image_id, em_sproctm_c_order_id, em_sproctm_margin, em_sproctm_create_quotation, em_sproctm_isnationalprod,
+        em_sproctm_add_requisition)
+	    VALUES (v_task_id, Cur_task.c_task_id, Cur_task.ad_client_id, Cur_task.ad_org_id, Cur_task.isactive, Cur_task.created, Cur_task.createdby, 
+        Cur_task.updated, Cur_task.updatedby, Cur_task.seqno, Cur_task.name,
+        Cur_task.description, Cur_task.help, Cur_task.m_product_id, v_phase_id, Cur_task.qty, Cur_task.startdate, Cur_task.enddate,
+        'N', Cur_task.priceactual, Cur_task.committedamt, Cur_task.iscommitceiling, 
+        Cur_task.datecontract, Cur_task.em_sproctm_ad_image_id, Cur_task.em_sproctm_c_order_id, Cur_task.em_sproctm_margin,
+        Cur_task.em_sproctm_create_quotation, Cur_task.em_sproctm_isnationalprod,
+        Cur_task.em_sproctm_add_requisition);
+        -- Crear Tab Productos
+        FOR Cur_tab_products IN(
+            SELECT sproctm_task_prod_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, 
+            c_projecttask_id, m_product_id, requirements_date, qty, c_uom_id, cost, cost_total, ismachine, isimported, create_requisition
+            FROM sproctm_task_prod WHERE c_projecttask_id = Cur_task.c_projecttask_id 
+        )LOOP
+            v_task_prod_id = get_uuid();
+            INSERT INTO sproctm_task_prod(
+            sproctm_task_prod_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby,
+             c_projecttask_id, m_product_id, requirements_date, qty, c_uom_id, cost, cost_total, ismachine, 
+             isimported, create_requisition)
+            VALUES (v_task_prod_id, Cur_tab_products.ad_client_id, Cur_tab_products.ad_org_id, Cur_tab_products.isactive, now(), v_AD_User_ID, now(), v_AD_User_ID,
+             v_task_id, Cur_tab_products.m_product_id, Cur_tab_products.requirements_date, Cur_tab_products.qty, 
+             Cur_tab_products.c_uom_id, Cur_tab_products.cost, Cur_tab_products.cost_total, Cur_tab_products.ismachine, 
+             Cur_tab_products.isimported, Cur_tab_products.create_requisition);
+        END LOOP;
+
+        -- Crear Tab MO
+        FOR Cur_tab_mo IN(
+            SELECT sproctm_task_workforce_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby,
+            c_projecttask_id, c_salary_category_id, qty_budget, costuom, cost_unit_standar, total_cost_budget, qty_executed, total_cost
+	        FROM sproctm_task_workforce WHERE c_projecttask_id = Cur_task.c_projecttask_id 
+        )LOOP
+            v_task_mo_id = get_uuid();
+            INSERT INTO sproctm_task_workforce(
+             sproctm_task_workforce_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby,
+            c_projecttask_id, c_salary_category_id, qty_budget, costuom, cost_unit_standar, total_cost_budget, qty_executed, total_cost
+            )
+            VALUES (v_task_mo_id, Cur_tab_mo.ad_client_id, Cur_tab_mo.ad_org_id, Cur_tab_mo.isactive, now(), v_AD_User_ID, now(), v_AD_User_ID,
+            v_task_id, Cur_tab_mo.c_salary_category_id, Cur_tab_mo.qty_budget, Cur_tab_mo.costuom, Cur_tab_mo.cost_unit_standar, Cur_tab_mo.total_cost_budget,
+            Cur_tab_mo.qty_executed, Cur_tab_mo.total_cost);
+        END LOOP;
+
+        -- Crear Tab CIF
+        FOR Cur_tab_cif IN(
+            SELECT sproctm_task_cif_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, 
+            c_projecttask_id, ma_indirect_cost_id, costuom, qty_budget, cost_unit_standar, total_cost_budget, uomcost_executed, 
+            unit_cost_executed, total_cost_executed
+	        FROM sproctm_task_cif  WHERE c_projecttask_id = Cur_task.c_projecttask_id
+        )LOOP
+            v_task_cif_id = get_uuid();
+            INSERT INTO sproctm_task_cif(
+             sproctm_task_cif_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, 
+            c_projecttask_id, ma_indirect_cost_id, costuom, qty_budget, cost_unit_standar, total_cost_budget, uomcost_executed, 
+            unit_cost_executed, total_cost_executed
+            )
+            VALUES ( v_task_cif_id, Cur_tab_cif.ad_client_id, Cur_tab_cif.ad_org_id, Cur_tab_cif.isactive, now(), v_AD_User_ID, now(), v_AD_User_ID,
+            v_task_id, Cur_tab_cif.ma_indirect_cost_id, Cur_tab_cif.costuom, Cur_tab_cif.qty_budget, Cur_tab_cif.cost_unit_standar,
+            Cur_tab_cif.total_cost_budget, Cur_tab_cif.uomcost_executed, Cur_tab_cif.unit_cost_executed, Cur_tab_cif.total_cost_executed);
+        END LOOP;
+    
+        -- Crear MAQ
+        FOR Cur_tab_maq IN(
+            SELECT sproctm_task_machine_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, 
+            c_projecttask_id, ma_machine_id, costuom, qty_budget, unit_cost, total_cost_budget, units_cost_executed,
+             cost_unit_executed, total_cost_executed
+	        FROM sproctm_task_machine WHERE c_projecttask_id = Cur_task.c_projecttask_id
+
+        )LOOP
+            v_task_maq_id = get_uuid();
+            INSERT INTO sproctm_task_machine(
+            sproctm_task_machine_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, 
+            c_projecttask_id, ma_machine_id, costuom, qty_budget, unit_cost, total_cost_budget, units_cost_executed,
+            cost_unit_executed, total_cost_executed
+            )
+            VALUES (v_task_maq_id, Cur_tab_maq.ad_client_id, Cur_tab_maq.ad_org_id, Cur_tab_maq.isactive, now(), v_AD_User_ID, now(), v_AD_User_ID, 
+            v_task_id, Cur_tab_maq.ma_machine_id, Cur_tab_maq.costuom, Cur_tab_maq.qty_budget, Cur_tab_maq.unit_cost, 
+            Cur_tab_maq.total_cost_budget, Cur_tab_maq.units_cost_executed, Cur_tab_maq.cost_unit_executed, Cur_tab_maq.total_cost_executed
+            );
+        END LOOP;
+		
+    END LOOP;
+
+    -- Actualizar estados
+    UPDATE  c_projectphase set em_sproctm_phase_execute = 'Y', em_sproctm_generated_exec = 'Y'
+    WHERE c_projectphase_ID = v_Record_ID;
+
+   
+    v_ResultStr := 'Completado exitosamente - Fase creada en la línea: ' || v_new_line;
+    --<<FINISH_PROCESS>>
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_ResultStr) ; --OBTG:-20000--
+    AD_UPDATE_PINSTANCE(p_ep_instance, NULL, 'N', v_Result, v_ResultStr) ;
+    RETURN;
+
+EXCEPTION
+WHEN OTHERS THEN
+  DBMS_OUTPUT.PUT_LINE('sproctm_phase_execute exception: '|| v_ResultStr);
+  RAISE;
+END SPROCTM_PHASE_EXECUTE
+]]></body>
+    </function>
+  </database>

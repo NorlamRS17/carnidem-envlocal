@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_PROJECT">
+    <table name="C_PROJECT" primaryKey="C_PROJECT_KEY">
+      <column name="EM_SPROCTM_DOCTYPE" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_DOCUMENTNO" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="C_DOCTYPE" name="EM_SPROCTM_CP_DOCTYPE">
+        <reference local="EM_SPROCTM_DOCTYPE" foreign="C_DOCTYPE_ID"/>
+      </foreign-key>
+    </table>
+  </database>

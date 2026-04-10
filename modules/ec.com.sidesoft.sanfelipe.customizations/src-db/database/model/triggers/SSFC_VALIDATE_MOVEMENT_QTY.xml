@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSFC_VALIDATE_MOVEMENT_QTY">
+    <trigger name="SSFC_VALIDATE_MOVEMENT_QTY" table="M_INOUTLINE" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	c_pedida NUMBER;
+	c_movida NUMBER;
+	v_CountReturn NUMBER:=0;
+BEGIN
+    
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF; 
+
+  SELECT COUNT(*) INTO v_CountReturn FROM m_inout io
+  JOIN c_doctype dt ON dt.c_doctype_id = io.c_doctype_id
+  WHERE io.m_inout_id = :NEW.m_inout_id
+  AND io.movementtype IN ('C-', 'C+')
+  AND dt.isreturn = 'Y';
+  IF v_CountReturn = 0 THEN
+  	IF (UPDATING or INSERTING)THEN
+  
+		 --Cantidad pedida registrada en la orden
+		SELECT ol.qtyordered INTO c_pedida FROM c_orderline ol
+		LEFT JOIN c_order o ON ol.c_order_id = o.c_order_id
+		WHERE ol.c_orderline_id = :NEW.c_orderline_id;
+
+		--Cantidad de productos movidos por orden 
+		SELECT SUM(iol.movementqty) INTO c_movida from m_inoutline iol
+		LEFT JOIN c_orderline ol ON ol.c_orderline_id = iol.c_orderline_id
+		LEFT JOIN c_order o ON ol.c_order_id = o.c_order_id
+		WHERE ol.c_orderline_id = :NEW.c_orderline_id
+		AND iol.m_inoutline_id = :NEW.m_inoutline_id ;
+
+		IF c_pedida IS NULL THEN
+			RAISE_APPLICATION_ERROR(-20000,'@No se encontró la cantidad pedida para la línea de pedido@');
+		ELSIF c_movida > c_pedida THEN
+			RAISE_APPLICATION_ERROR(-20000,'@La cantidad movida es mayor que la cantidad pedida@');
+		END IF;
+
+		return NEW;
+	  END IF;
+  END IF;
+
+  END SSFC_VALIDATE_MOVEMENT_QTY
+]]></body>
+    </trigger>
+  </database>

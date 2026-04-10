@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="0611ACA6E69841D7AC7D7F34308E2780" trl="N">
+    <value column="MsgText" isTrl="N" original="Invalid filter value %0.">Invalid filter value %0.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="1F2DA42F35A7413BACE558B6C621980D" trl="N">
+    <value column="MsgText" isTrl="N" original="Data was tried to be fetched from server without pagination. Request was aborted to prevent server performance issues. This is most likely a bug, please contact your System Administrator.">Data was tried to be fetched from server without pagination. Request was aborted to prevent server performance issues. This is most likely a bug, please contact your System Administrator.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="29586B971CB14D3F91A4DC854EEA00EB" trl="N">
+    <value column="MsgText" isTrl="N" original="Data was tried to be fetched from server without pagination, using manual sources. Request was aborted to prevent server performance issues. This type of requests can be enabled using the 'Allow Unpaged Datasource Manual Request' preference.">Data was tried to be fetched from server without pagination, using manual sources. Request was aborted to prevent server performance issues. This type of requests can be enabled using the 'Allow Unpaged Datasource Manual Request' preference.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="3038E4EC493149F08F9701F22B89176B" trl="N">
+    <value column="MsgText" isTrl="N" original="The name %0 is invalid, use one of the following names: %1">The name %0 is invalid, use one of the following names: %1</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="FF8081812D744D38012D745E4B22001F" trl="N">
+    <value column="MsgText" isTrl="N" original="The record you are saving has already been changed by another user or process. Cancel your changes and refresh the data by clicking the refresh button.">The record you are saving has already been changed by another user or process. Cancel your changes and refresh the data by clicking the refresh button.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

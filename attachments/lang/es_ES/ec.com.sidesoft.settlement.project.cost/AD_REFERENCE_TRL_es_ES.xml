@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="2424713C37C0457FA81F114632F03AFD" trl="N">
+    <value column="Name" isTrl="N" original="Sstpc_DocTypeTable">Sstpc_DocTypeTable</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="31286FEECE2F49D990292A93A8A0C1F9" trl="N">
+    <value column="Name" isTrl="N" original="List Liquidate">List Liquidate</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5D4EF6EAA16349B6A837EE7BF0D2D6D5" trl="N">
+    <value column="Name" isTrl="N" original="LiquidationType List">LiquidationType List</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="714379BE7B9C4835A8A83957CEBA6C4A" trl="N">
+    <value column="Name" isTrl="N" original="Sstpc_WarehouseTable">Sstpc_WarehouseTable</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="79921D40629B42F1ACAD9BFA25F52D69" trl="N">
+    <value column="Name" isTrl="N" original="Sstpc_FinPayment">Sstpc_FinPayment</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BCA339DA3DAC400696777F4F333C28A3" trl="N">
+    <value column="Name" isTrl="N" original="Sstpc_UserTable">Sstpc_UserTable</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BE9E40FF440B4A5BA933C6690E3C804B" trl="N">
+    <value column="Name" isTrl="N" original="Sstpc_PartnerTable">Sstpc_PartnerTable</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C1F5AA1C0DA44E3BBE8B5F0558A32B98" trl="N">
+    <value column="Name" isTrl="N" original="DocStatus List">DocStatus List</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C83FE16EA7214244A4ACF59953F02413" trl="N">
+    <value column="Name" isTrl="N" original="Sstpc_List_Status">Sstpc_List_Status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FA0F3B5C6E33454BA7FB70CAC77E25D7" trl="N">
+    <value column="Name" isTrl="N" original="Sstpc_GLItem">Sstpc_GLItem</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

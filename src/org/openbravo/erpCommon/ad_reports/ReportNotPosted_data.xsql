@@ -276,6 +276,123 @@
         where processed = 'Y'
         and posted not in ('Y', 'D', 'T')
         and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='800176' and ad_client_id=?)
+        union all
+        select ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'A_Amortization' as tablename, A_Amortization_id as id, 0 as GRANDTOTAL, 
+        to_char(description) as description,  
+        coalesce(to_char((select printname 
+        from c_doctype_trl 
+        where c_doctype_id=A_Amortization.c_doctype_id 
+        and ad_language=? 
+        and ad_client_id=?)), 'Amortizacion') as document, '800076' as tab_id, (select docbasetype from c_doctype where c_doctype_id=A_Amortization.c_doctype_id) as docbasetype,
+        A_Amortization_id as record_id
+        from A_Amortization
+        where processed = 'Y'
+        and posted not in ('Y', 'D', 'T')
+        and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='800060' and ad_client_id=?)
+        union all
+        select ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, importdate, 'FIN_BankStatement' as tablename, FIN_BankStatement_id as id, 0 as GRANDTOTAL, 
+        to_char(name) as description,  
+        coalesce(to_char((select printname 
+        from c_doctype_trl 
+        where c_doctype_id=FIN_BankStatement.c_doctype_id 
+        and ad_language=? 
+        and ad_client_id=?)), 'Imported Bank Statements') as document, 'C56E698100314ABBBBD3A89626CA551C' as tab_id, (select docbasetype from c_doctype where c_doctype_id=FIN_BankStatement.c_doctype_id) as docbasetype,
+        FIN_BankStatement_id as record_id
+        from FIN_BankStatement
+        where processed = 'Y'
+        and posted not in ('Y', 'D', 'T')
+        and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='D4C23A17190649E7B78F55A05AF3438C' and ad_client_id=?)
+        union all
+        select ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, datedoc, 'SSPR_Payroll' as tablename, SSPR_Payroll_id as id, 0 as GRANDTOTAL, 
+        to_char(description) as description,  
+        coalesce(to_char((select printname 
+        from c_doctype_trl 
+        where c_doctype_id=SSPR_Payroll.c_doctype_id 
+        and ad_language=? 
+        and ad_client_id=?)), 'Payroll') as document, '746B6484EF2F4B7F9F4733CFE9638C41' as tab_id, (select docbasetype from c_doctype where c_doctype_id=SSPR_Payroll.c_doctype_id) as docbasetype,
+        SSPR_Payroll_id as record_id
+        from SSPR_Payroll
+        where processed = 'Y'
+        and posted not in ('Y', 'D', 'T')
+        and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='BCEEDEC4FE2B4B3FAEA32084BB88AD95' and ad_client_id=?)
+        union all
+        select ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, dateacct, 'SSWS_WithholdingSale' as tablename, SSWS_WithholdingSale_id as id, 0 as GRANDTOTAL, 
+        to_char(description) as description,  
+        coalesce(to_char((select printname 
+        from c_doctype_trl 
+        where c_doctype_id=SSWS_WithholdingSale.c_doctype_id 
+        and ad_language=? 
+        and ad_client_id=?)), 'Withholdings Sales') as document, '81C6304D07B04F7692B57D4BCB6B3CDE' as tab_id, (select docbasetype from c_doctype where c_doctype_id=SSWS_WithholdingSale.c_doctype_id) as docbasetype,
+        SSWS_WithholdingSale_id as record_id
+        from SSWS_WithholdingSale
+        where processed = 'Y'
+        and posted not in ('Y', 'D', 'T')
+        and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='211492B753264EAEBE328BA4FED1F066' and ad_client_id=?)
+        union all
+        select ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, datedoc, 'ssam_alienate' as tablename, ssam_alienate_id as id, 0 as GRANDTOTAL, 
+        to_char(description) as description,  
+        coalesce(to_char((select printname 
+        from c_doctype_trl 
+        where c_doctype_id=ssam_alienate.c_doctype_id 
+        and ad_language=? 
+        and ad_client_id=?)), 'Alienate Assets') as document, '8378AABDDABB486585BD0470144AB669' as tab_id, (select docbasetype from c_doctype where c_doctype_id=ssam_alienate.c_doctype_id) as docbasetype,
+        ssam_alienate_id as record_id
+        from ssam_alienate
+        where processed = 'Y'
+        and posted not in ('Y', 'D', 'T')
+        and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='FC1F2D243F8D4FD1B5562F9B37CECB12' and ad_client_id=?)
+        union all
+        select ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, date, 'sproctm_settlement_cost' as tablename, sproctm_settlement_cost_id as id, 0 as GRANDTOTAL, 
+        to_char(description) as description,  
+        coalesce(to_char((select printname 
+        from c_doctype_trl 
+        where c_doctype_id=sproctm_settlement_cost.c_doctype_id 
+        and ad_language=? 
+        and ad_client_id=?)), 'Settlement Cost Project') as document, 'F0870A416F9D4A079A63B4152DF629CB' as tab_id, (select docbasetype from c_doctype where c_doctype_id=sproctm_settlement_cost.c_doctype_id) as docbasetype,
+        sproctm_settlement_cost_id as record_id
+        from sproctm_settlement_cost
+        where processed = 'Y'
+        and posted not in ('Y', 'D', 'T')
+        and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='B008F71C52F941978FA6D594B8872020' and ad_client_id=?)
+        union all
+        select ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, datedoc, 'sstpc_liquidation_projects' as tablename, sstpc_liquidation_projects_id as id, 0 as GRANDTOTAL, 
+        to_char(description_liq) as description,  
+        coalesce(to_char((select printname 
+        from c_doctype_trl 
+        where c_doctype_id=sstpc_liquidation_projects.c_doctype_id 
+        and ad_language=? 
+        and ad_client_id=?)), 'Liquidation Projects') as document, 'F0870A416F9D4A079A63B4152DF629CB' as tab_id, (select docbasetype from c_doctype where c_doctype_id=sstpc_liquidation_projects.c_doctype_id) as docbasetype,
+        sstpc_liquidation_projects_id as record_id
+        from sstpc_liquidation_projects
+        where processed = 'Y'
+        and posted not in ('Y', 'D', 'T')
+        and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='B008F71C52F941978FA6D594B8872020' and ad_client_id=?)        
+        union all
+        select ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, movementdate, 'sspr_settlement' as tablename, sspr_settlement_id as id, 0 as GRANDTOTAL, 
+        to_char(description) as description,  
+        coalesce(to_char((select printname 
+        from c_doctype_trl 
+        where c_doctype_id=sspr_settlement.c_doctype_id 
+        and ad_language=? 
+        and ad_client_id=?)), 'Final Settlement') as document, '7837F89A03FC4386AA01A2447ECBC848' as tab_id, (select docbasetype from c_doctype where c_doctype_id=sspr_settlement.c_doctype_id) as docbasetype,
+        sspr_settlement_id as record_id
+        from sspr_settlement
+        where processed = 'Y'
+        and posted not in ('Y', 'D', 'T')
+        and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='DC962E28F8E2426DB8C0AD4BF8744B8D' and ad_client_id=?)
+        union all
+        select ad_client_id, TO_CHAR(documentno) AS DOCUMENTNO, movementdate, 'M_Production' as tablename, M_Production_id as id, 0 as GRANDTOTAL, 
+        to_char(description) as description,  
+        coalesce(to_char((select printname 
+        from c_doctype_trl 
+        where c_doctype_id=M_Production.em_spdai_c_doctype_id 
+        and ad_language=? 
+        and ad_client_id=?)), 'M_PRODUCTION') as document, '319' as tab_id, (select docbasetype from c_doctype where c_doctype_id=M_Production.em_spdai_c_doctype_id) as docbasetype,
+        M_Production_id as record_id
+        from M_Production
+        where processed = 'Y'
+        and posted not in ('Y', 'D', 'T')
+        and 'Y'=(select max(isactive) from c_acctschema_table where ad_table_id='325' and ad_client_id=?)
         ) AAA
         where ad_client_id = ?
         and 1=1
@@ -294,18 +411,8 @@
     <Parameter name="adLanguage"/>
     <Parameter name="client"></Parameter>
     <Parameter name="client"></Parameter>
-    <Parameter name="client"></Parameter>
     <Parameter name="adLanguage"/>
     <Parameter name="client"></Parameter>
-    <Parameter name="client"></Parameter>
-    <Parameter name="client"></Parameter>
-    <Parameter name="adLanguage"/>
-    <Parameter name="client"></Parameter>
-    <Parameter name="client"></Parameter>
-    <Parameter name="adLanguage"/>
-    <Parameter name="client"></Parameter>
-    <Parameter name="client"></Parameter>
-    <Parameter name="adLanguage"/>
     <Parameter name="client"></Parameter>
     <Parameter name="client"></Parameter>
     <Parameter name="adLanguage"/>
@@ -314,6 +421,8 @@
     <Parameter name="client"></Parameter>
     <Parameter name="adLanguage"/>
     <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="adLanguage"/>
     <Parameter name="client"></Parameter>
     <Parameter name="client"></Parameter>
     <Parameter name="adLanguage"/>
@@ -338,6 +447,41 @@
     <Parameter name="client"></Parameter>
     <Parameter name="adLanguage"/>
     <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="adLanguage"/>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="adLanguage"/>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>    
+    <Parameter name="adLanguage"/>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>   
+    <Parameter name="adLanguage"/>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="adLanguage"/>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="adLanguage"/>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="adLanguage"/>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="adLanguage"/>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="adLanguage"/>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="adLanguage"/>
+    <Parameter name="client"></Parameter>
+    <Parameter name="client"></Parameter>
+    <Parameter name="adLanguage"/>
     <Parameter name="client"></Parameter>
     <Parameter name="client"></Parameter>
     <Parameter name="parDateFrom" optional="true" after="and 1=1"><![CDATA[AND DATEACCT >= TO_DATE(?) ]]></Parameter>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_MENU" version="">
+  <row id="160ECFB787DF4749B45A8CF90BCCAE57" trl="N">
+    <value column="Name" isTrl="N" original="Zonas Mayoreo (Mantenimiento)">Zonas Mayoreo (Mantenimiento)</value>
+    <value column="Description" isTrl="N" original="Zonas Mayoreo (Mantenimiento)">Zonas Mayoreo (Mantenimiento)</value>
+  </row>
+  <row id="3B53D75E4585483B888654B1FF36FEFF" trl="N">
+    <value column="Name" isTrl="N" original="Marcas de Producto">Marcas de Producto</value>
+    <value column="Description" isTrl="N" original="Marcas de Producto">Marcas de Producto</value>
+  </row>
+  <row id="528E96ED57584B86A9D34B303F8F2932" trl="N">
+    <value column="Name" isTrl="N" original="Zona">Zona</value>
+    <value column="Description" isTrl="N" original="Zona">Zona</value>
+  </row>
+  <row id="BA0D9D6D251C4D61B52CFC772BF0526E" trl="N">
+    <value column="Name" isTrl="N" original="Divisiones de Negocio">Divisiones de Negocio</value>
+    <value column="Description" isTrl="N" original="Divisiones de Negocio">Divisiones de Negocio</value>
+  </row>
+</compiereTrl>

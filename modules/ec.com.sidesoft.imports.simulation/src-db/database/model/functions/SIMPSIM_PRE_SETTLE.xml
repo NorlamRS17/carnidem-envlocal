@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SIMPSIM_PRE_SETTLE">
+    <function name="SIMPSIM_PRE_SETTLE" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult				VARCHAR2(2000);
+	vMessage			VARCHAR2(2000);
+	
+	cPar				RECORD;
+	vRecord				RECORD;
+	vRecordID			VARCHAR2(32);
+	vClientID			VARCHAR2(32);
+	vOrgID				VARCHAR2(32);
+	vUserID				VARCHAR2(32);
+	
+	vCheck			 NUMBER;
+	cCur				RECORD;
+	vTotalCostImport NUMBER;
+	vTotalLineAmount NUMBER;
+	vCalc			 NUMBER;
+	vFactor			 NUMBER;
+	vCost			 NUMBER;
+	vRealCost		 NUMBER;
+	vUnitCost		 NUMBER;
+	
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID) ;
+	vResult := 'PInstanceNotFound';
+	AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+	BEGIN
+
+		vResult := 'ReadingParameters';
+		FOR cPar IN (
+			SELECT i.Record_ID,
+				i.AD_User_ID,
+				i.AD_Client_ID,
+				i.AD_Org_ID
+			FROM AD_PInstance i
+			WHERE i.AD_PInstance_ID = PInstance_ID
+		) LOOP
+			vRecordID := cPar.Record_ID;
+			vClientID := cPar.AD_Client_ID;
+			vOrgID := cPar.AD_Org_ID;
+			vUserID := cPar.AD_User_ID;
+		END LOOP;
+		
+		SELECT * INTO vRecord FROM simpsim_import_simulation WHERE simpsim_import_simulation_id = vRecordID;
+		IF vRecord.processing = 'Y' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@DocBeingProcessed@');
+		END IF;
+		
+		UPDATE simpsim_import_simulation SET processing = 'Y' WHERE simpsim_import_simulation_id = vRecordID;
+		
+		SELECT COUNT(*) INTO vCheck FROM simpsim_imp_sim_line WHERE simpsim_import_simulation_id = vRecordID;
+		IF vCheck = 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, 'No existen líneas');
+		END IF;
+		
+		SELECT COUNT(*) INTO vCheck FROM simpsim_imp_sim_cost WHERE simpsim_import_simulation_id = vRecordID;
+		IF vCheck = 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, 'No existen líneas de costo de importación');
+		END IF;
+
+		-- Total Costo de Importacion
+		SELECT COALESCE(SUM(amountnet),0) INTO vTotalCostImport
+		FROM simpsim_imp_sim_cost
+		WHERE simpsim_import_simulation_id = vRecordID;
+		
+		--Total Importe de lineas
+		SELECT COALESCE(SUM(linenetamt),0) INTO vTotalLineAmount
+		FROM simpsim_imp_sim_line
+		WHERE simpsim_import_simulation_id = vRecordID;
+		
+		FOR cCur IN (
+			SELECT simpsim_imp_sim_line_id, qtyordered, linenetamt, priceactual
+			FROM simpsim_imp_sim_line
+			WHERE simpsim_import_simulation_id = vRecordID AND qtyordered > 0
+		) LOOP
+			vFactor := cCur.linenetamt / vTotalLineAmount;
+			vCost := vFactor * vTotalCostImport;
+			vRealCost := cCur.linenetamt + vCost;
+			vUnitCost := vRealCost / cCur.qtyordered;
+
+			UPDATE simpsim_imp_sim_line SET realcost = ROUND(vRealCost, 4), unitcost = vUnitCost
+			WHERE simpsim_imp_sim_line_id = cCur.simpsim_imp_sim_line_id;
+		END LOOP;
+
+		UPDATE simpsim_import_simulation SET processing = 'N' WHERE simpsim_import_simulation_id = vRecordID;
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage) ;
+		AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, vMessage);
+		RETURN;
+		
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+    UPDATE simpsim_import_simulation SET processing = 'N' WHERE simpsim_import_simulation_id = vRecordID;
+    vResult := '@ERROR='||SQLERRM;
+    DBMS_OUTPUT.PUT_LINE( vResult) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, vResult) ;
+
+    RETURN;
+END SIMPSIM_PRE_SETTLE
+]]></body>
+    </function>
+  </database>

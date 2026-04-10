@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCMECU_SALES_STAGE_UNIQUE_TRG">
+    <trigger name="SCMECU_SALES_STAGE_UNIQUE_TRG" table="SCMECU_PROBABILITY_STAGE" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[    vCheck NUMBER;
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+    
+    IF TG_OP IN ('INSERT', 'UPDATE') THEN
+        SELECT COUNT(sales_stage) INTO vCheck FROM scmecu_probability_stage WHERE sales_stage = :NEW.sales_stage;
+        IF vCheck > 1 THEN
+            RAISE_APPLICATION_ERROR(-20000, 'Etapa de venta duplicada');
+        END IF;
+    END IF;
+    
+    END SCMECU_SALES_STAGE_UNIQUE_TRG
+]]></body>
+    </trigger>
+  </database>

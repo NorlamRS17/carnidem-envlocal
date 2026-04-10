@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSDPM_CREATE_INOUT">
+    <function name="SSDPM_CREATE_INOUT" type="NULL">
+      <parameter name="p_inout" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_result" type="VARCHAR" mode="out">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_ResultJson  TEXT;
+        InOut_ID VARCHAR2(32);
+        v_DocumentNo VARCHAR2(60); 
+		v_Message text;
+		v_Record_ID VARCHAR2(32);
+		v_ResultStr text;
+    BEGIN
+            -- GET:    
+                  
+            --inicio desarrollo
+
+            -- Parametro 
+
+			--p_update:= 'R'; 
+			
+       /************
+        * Shipment
+        */
+		v_Record_ID:=p_inout;
+        DBMS_OUTPUT.PUT_LINE('Create Shipment - ' || v_Record_ID) ;
+        v_ResultStr:='CreateShipment';
+
+        SSDPM_Inout_Create(NULL, p_result, v_Record_ID, NULL, 'Y') ; -- Force Delivery
+
+		--RAISE exception '%','Create Shipment - ' || p_result ;
+		
+		select coalesce((select m_inout_id from m_inout where c_order_id=v_Record_ID limit 1),'0')
+		into p_result
+		from dual;
+
+        DBMS_OUTPUT.PUT_LINE('  Shipment - ' || p_result) ;
+        IF (p_result='0') THEN
+--          RAISE_APPLICATION_ERROR(-20000, '@InOutCreateFailed@');
+      	  v_ResultJson:='0:0';
+		  p_result:=v_ResultJson;
+        ELSE
+          SELECT documentno
+            INTO v_DocumentNo
+          FROM M_INOUT
+          WHERE M_INOUT_ID = p_result;
+          v_Message:='@InoutDocumentno@ ' || v_DocumentNo || ' @beenCreated@';
+    	  v_ResultJson:= p_result || ':' || v_DocumentNo;
+		  p_result:=v_ResultJson;
+        END IF;
+		
+--			v_ResultJson:='1-1->' || v_SQLTable;
+	--	p_result:=coalesce(v_ResultJson,'0:0');
+        --RETURN p_result;
+END SSDPM_CREATE_INOUT
+]]></body>
+    </function>
+  </database>

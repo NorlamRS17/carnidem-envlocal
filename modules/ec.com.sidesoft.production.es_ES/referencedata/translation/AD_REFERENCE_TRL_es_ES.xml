@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="0FE8A1264CD640549F74E6EC0252FAA0" trl="Y">
+    <value column="Name" isTrl="Y" original="MA_WorkRequirement">Orden de fabricación selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
   <row id="4A9371AFD3B1444095A83FF3C4818CE7" trl="N">
     <value column="Name" isTrl="Y" original="Ssprod_m_warehouse -name">Ssprod_m_warehouse -Nombre</value>
     <value column="Description" isTrl="N" original=""/>
@@ -12,6 +17,11 @@
   </row>
   <row id="B78E21D150894BEF81F06C17340237FB" trl="N">
     <value column="Name" isTrl="N" original="SSprod_M_Product">SSprod_M_Product</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C598CA42BB6C4FDFA554D14CBE3BA43E" trl="N">
+    <value column="Name" isTrl="N" original="M_producto Selector">M_producto Selector</value>
     <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
   </row>

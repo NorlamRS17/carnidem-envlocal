@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="3A651C35FB7E405292950352CD09DD46" trl="N">
+    <value column="Name" isTrl="N" original="Obulog_Config_ID">Obulog_Config_ID</value>
+    <value column="PrintName" isTrl="N" original="Obulog_Config_ID">Obulog_Config_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="87622BE79A504BE48BE22DF76CE1D8A2" trl="N">
+    <value column="Name" isTrl="N" original="Older Than Days">Older Than Days</value>
+    <value column="PrintName" isTrl="N" original="Older Than Days">Older Than Days</value>
+    <value column="Description" isTrl="N" original="Older Than Days">Older Than Days</value>
+    <value column="Help" isTrl="N" original="When the clean up process is executed, records older than this number of days will be removed. If this value is 0, all records will be removed.">When the clean up process is executed, records older than this number of days will be removed. If this value is 0, all records will be removed.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C5F5D6EBAE6542A997648A5B646700ED" trl="N">
+    <value column="Name" isTrl="N" original="Truncate Table">Truncate Table</value>
+    <value column="PrintName" isTrl="N" original="Truncate Table">Truncate Table</value>
+    <value column="Description" isTrl="N" original="Truncates all the data in the table">Truncates all the data in the table</value>
+    <value column="Help" isTrl="N" original="Truncate all data in the table (technically truncate table DB statement). When flagged, all data in the table will be completely removed not being possible to define any other restriction.&#10;&#10;It is only possible to truncate a table in case there is no any other table in the system having a foreign key pointing to this one.&#10;&#10;Truncating a table results performs better in terms of time/resources consumption.">Truncate all data in the table (technically truncate table DB statement). When flagged, all data in the table will be completely removed not being possible to define any other restriction.
+
+It is only possible to truncate a table in case there is no any other table in the system having a foreign key pointing to this one.
+
+Truncating a table results performs better in terms of time/resources consumption.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

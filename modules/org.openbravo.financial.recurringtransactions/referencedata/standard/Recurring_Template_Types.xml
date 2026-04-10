@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ob:Openbravo xmlns:ob="http://www.openbravo.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OBRECTX_Template_Type id="97297A71B70543CE8349D0655D0CDD32" identifier="G/L Journal Header">
+    <id>97297A71B70543CE8349D0655D0CDD32</id>
+    <creationDate transient="true">2013-09-23T08:57:07.601Z</creationDate>
+    <createdBy transient="true" id="100" entity-name="ADUser" identifier="Openbravo"/>
+    <updated transient="true">2013-09-29T20:01:37.516Z</updated>
+    <updatedBy transient="true" id="100" entity-name="ADUser" identifier="Openbravo"/>
+    <active>true</active>
+    <module id="93599A50EE2341AEABBEF71691F8BC76" entity-name="ADModule" identifier="Recurring Transactions - 0.2.1 - English (USA)"/>
+    <name>G/L Journal Header</name>
+    <description>Cloner for G/L Journal Header</description>
+    <table id="224" entity-name="ADTable" identifier="GL_Journal"/>
+    <clonerJavaClass>org.openbravo.financial.recurringtransactions.cloner.GLJournalCloner</clonerJavaClass>
+  </OBRECTX_Template_Type>
+</ob:Openbravo>

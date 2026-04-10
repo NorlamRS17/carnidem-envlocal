@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="c_purchase_reconcile_general_ivatable" columnCount="3" printOrder="Horizontal" pageWidth="150" pageHeight="15" orientation="Landscape" columnWidth="50" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" isIgnorePagination="true" uuid="ce0f476d-2b27-4820-9f7a-2f3cff80df9f">
+	<property name="ireport.zoom" value="2.5937424601000076"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<style name="Crosstab Data Text" hAlign="Center"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="c_invoice_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT ivas.rate,
+CASE
+	WHEN taxiva.taxamt <> 0 THEN taxiva.taxamt
+	ELSE '0.00'
+END AS taxamt
+FROM (
+  SELECT rate
+  FROM c_tax ct
+  JOIN c_invoicetax cit ON cit.c_tax_id = ct.c_tax_id
+  JOIN c_invoice ci ON ci.c_invoice_id = cit.c_invoice_id
+  WHERE rate > 0 AND istaxdeductable = 'Y' AND issotrx = 'N'
+  AND isdefault = 'N'
+) AS ivas
+LEFT JOIN (
+  SELECT taxamt, ct.rate
+  FROM c_tax ct
+  INNER JOIN c_invoicetax cit ON ct.c_tax_id = cit.c_tax_id
+  INNER JOIN c_invoice ci ON ci.c_invoice_id = cit.c_invoice_id
+  WHERE ct.rate > 0 AND ct.istaxdeductable = 'Y'
+  AND ci.issotrx = 'N'
+  AND isdefault = 'N'
+  AND cit.c_invoice_id = $P{c_invoice_id}
+) AS taxiva ON ivas.rate = taxiva.rate
+GROUP BY ivas.rate,taxiva.taxamt
+order by ivas.rate;]]>
+	</queryString>
+	<field name="rate" class="java.math.BigDecimal"/>
+	<field name="taxamt" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<printWhenExpression><![CDATA[$F{rate} != null]]></printWhenExpression>
+			<textField isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="50" height="15" uuid="8bd85536-57a6-4cc6-8008-3d19c9fa5d0d">
+					<printWhenExpression><![CDATA[$F{rate} != null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{taxamt}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

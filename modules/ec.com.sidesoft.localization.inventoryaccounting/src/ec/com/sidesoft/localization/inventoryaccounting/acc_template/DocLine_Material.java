@@ -5,7 +5,7 @@ import java.sql.Connection;
 
 import org.apache.log4j.Logger;
 import org.openbravo.base.exception.OBException;
-//import org.openbravo.costing.CostingStatus;
+import org.openbravo.costing.CostingStatus;
 import org.openbravo.dal.core.OBContext;
 import org.openbravo.dal.service.OBDal;
 import org.openbravo.database.ConnectionProvider;
@@ -77,31 +77,31 @@ public class DocLine_Material extends DocLines {
    * @param as
    */
 
-//  public String getProductCosts(String date, AcctSchema as, ConnectionProvider conn, Connection con) {
-//    if (transaction != null && transaction.getTransactionCost() != null
-//        && CostingStatus.getInstance().isMigrated()) {
-//      BigDecimal sign = new BigDecimal(new BigDecimal(getQty()).signum());
-//      return transaction.getTransactionCost().multiply(sign).toString();
-//    } else if (transaction != null && CostingStatus.getInstance().isMigrated()) {
-//      return "";
-//    } else if (CostingStatus.getInstance().isMigrated()) {
-//      // If there isn't any material transaction get the default cost of the product.
-//      try {
-//        Organization legalEntity = OBContext.getOBContext()
-//            .getOrganizationStructureProvider(p_productInfo.m_AD_Client_ID)
-//            .getLegalEntity(OBDal.getInstance().get(Organization.class, m_AD_Org_ID));
-//        return p_productInfo.getProductDefaultCosts(date, null, legalEntity, getWarehouse(),
-//            legalEntity.getCurrency() != null ? legalEntity.getCurrency() : legalEntity.getClient()
-//                .getCurrency());
-//      } catch (OBException e) {
-//        log4jDocLine_Material.error("No standard cost found for product: "
-//            + OBDal.getInstance().get(Product.class, m_M_Product_ID).getIdentifier()
-//            + " DocumentType: " + p_DocumentType + " record id: " + m_TrxHeader_ID);
-//        return "";
-//      }
-//    }
-//    return p_productInfo.getProductCosts(date, "", as, conn, con);
-//  } // getProductCosts
+  public String getProductCosts(String date, AcctSchema as, ConnectionProvider conn, Connection con) {
+    if (transaction != null && transaction.getTransactionCost() != null
+        && CostingStatus.getInstance().isMigrated()) {
+      BigDecimal sign = new BigDecimal(new BigDecimal(getQty()).signum());
+      return transaction.getTransactionCost().multiply(sign).toString();
+    } else if (transaction != null && CostingStatus.getInstance().isMigrated()) {
+      return "";
+    } else if (CostingStatus.getInstance().isMigrated()) {
+      // If there isn't any material transaction get the default cost of the product.
+      try {
+        Organization legalEntity = OBContext.getOBContext()
+            .getOrganizationStructureProvider(p_productInfo.m_AD_Client_ID)
+            .getLegalEntity(OBDal.getInstance().get(Organization.class, m_AD_Org_ID));
+        return p_productInfo.getProductDefaultCosts(date, null, legalEntity, getWarehouse(),
+            legalEntity.getCurrency() != null ? legalEntity.getCurrency() : legalEntity.getClient()
+                .getCurrency());
+      } catch (OBException e) {
+        log4jDocLine_Material.error("No standard cost found for product: "
+            + OBDal.getInstance().get(Product.class, m_M_Product_ID).getIdentifier()
+            + " DocumentType: " + p_DocumentType + " record id: " + m_TrxHeader_ID);
+        return "";
+      }
+    }
+    return p_productInfo.getProductCosts(date, "", as, conn, con);
+  } // getProductCosts
 
   /**
    * Line Account from Product

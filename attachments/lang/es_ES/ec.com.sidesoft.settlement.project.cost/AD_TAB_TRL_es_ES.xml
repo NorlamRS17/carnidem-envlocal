@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="1B5BFE7B06104C0781E6525D2C6796AC" trl="N">
+    <value column="Name" isTrl="Y" original="Movements Product">Movimientos de Productos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2F49C7B0304A4445A1BF574A170984F0" trl="N">
+    <value column="Name" isTrl="Y" original="Material Consumption in Projects">Material Consumidos en Proyectos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4072EB94FFD5453BB6B8AA66D5148500" trl="N">
+    <value column="Name" isTrl="Y" original="Invoice">Facturas</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="578937309A874828A8B99A46C614EECA" trl="N">
+    <value column="Name" isTrl="Y" original="Related Costs">Costos Relacionados</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6340C180FA7F4BDBB1506DD7C3205187" trl="N">
+    <value column="Name" isTrl="Y" original="Consumptions">Consumos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="763AFE8947E54CE6A766FDF843A2CEFD" trl="N">
+    <value column="Name" isTrl="Y" original="Payment">Pagos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9C8948B4B84747F8B789EDC0BB987225" trl="N">
+    <value column="Name" isTrl="Y" original="Comsuption">Consumos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B0F1FC5A43D34590B1F2A419E1A14308" trl="N">
+    <value column="Name" isTrl="Y" original="Related Revenue">Ingresos Relacionados</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BF8FA74DB9994F45B8E3E87E6BE58028" trl="N">
+    <value column="Name" isTrl="Y" original="Liquidation Projects">Liquidación de Proyectos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FBC7CAD629A64FA69A9FCE8453ED52C4" trl="N">
+    <value column="Name" isTrl="Y" original="Payments">Pagos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

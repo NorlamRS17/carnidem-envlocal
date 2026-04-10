@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="39F588BE18AE426DAFD82A817F0379B5" trl="N">
+    <value column="Name" isTrl="N" original="Analysis Tools">Analysis Tools</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="58F0F448C8204B03B0510FDA7A69CA68" trl="N">
+    <value column="Name" isTrl="N" original="Web Services Configuration">Web Services Configuration</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B92C6CCFBB0E4452B52A4BB7163FDF4E" trl="N">
+    <value column="Name" isTrl="N" original="Setup">Setup</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C5A8005407204428AF68FE20AF742304" trl="N">
+    <value column="Name" isTrl="N" original="Web Services">Web Services</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F70A00282DAC43FF849C2343003A4B3C" trl="N">
+    <value column="Name" isTrl="N" original="Web Services Log">Web Services Log</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

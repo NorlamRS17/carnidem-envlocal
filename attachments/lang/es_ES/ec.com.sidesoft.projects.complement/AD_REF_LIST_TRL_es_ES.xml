@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="116F5CCDF3C94A06A740A94091827A77" trl="Y">
+    <value column="Name" isTrl="Y" original="UnComplete">Reactivar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1503F15DA33543908E8FC1A7554A9DB5" trl="N">
+    <value column="Name" isTrl="N" original="Borrador">Borrador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3065ED0BF9DD47A9A605433BF8B6155C" trl="N">
+    <value column="Name" isTrl="N" original="Project Multifase">Project Multifase</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="32396799F0E949CFBF61BE3E538733E4" trl="Y">
+    <value column="Name" isTrl="Y" original="Complete">Completar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3630C6B01EE844458F3C420F4861909D" trl="Y">
+    <value column="Name" isTrl="Y" original="UnPosted">Descontabilizar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="4032187FAC20422E950BBE1D80A4FB1A" trl="Y">
+    <value column="Name" isTrl="Y" original="Posted">Contabilizar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="4A72A90AF9C14668B156A4E716DC6AE6" trl="Y">
+    <value column="Name" isTrl="Y" original="Perfomance">Ejecución</value>
+    <value column="Description" isTrl="N" original="Ejecution">Ejecution</value>
+  </row>
+  <row id="59DFA87E669C4685990E08852B668116" trl="Y">
+    <value column="Name" isTrl="Y" original="Liquidate">Liquidar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="8718BF5E27FE4166B3FA2C93C2DACA97" trl="Y">
+    <value column="Name" isTrl="Y" original="UnLiquidate">Reactivar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="8C374B1D46CC40F48F53321C000ECB38" trl="Y">
+    <value column="Name" isTrl="Y" original="Complet">Completado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B2BDFC88BB144C6DA8E4AA5E69E28CFA" trl="N">
+    <value column="Name" isTrl="N" original="Cotization">Cotization</value>
+    <value column="Description" isTrl="N" original="Cotization">Cotization</value>
+  </row>
+  <row id="C3C4676DB9B84556BD76C6A53249A187" trl="N">
+    <value column="Name" isTrl="N" original="Completado">Completado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C7FE83CF631347D2B7F46B161D028E05" trl="Y">
+    <value column="Name" isTrl="Y" original="Draft">Borrador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="CE1A569AF2244CAFBFC431B091F3B827" trl="N">
+    <value column="Name" isTrl="N" original="Execution">Execution</value>
+    <value column="Description" isTrl="N" original="Execution">Execution</value>
+  </row>
+  <row id="FB4418445610409F83318BC6B923EC0A" trl="Y">
+    <value column="Name" isTrl="Y" original="Cotization">Cotización</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

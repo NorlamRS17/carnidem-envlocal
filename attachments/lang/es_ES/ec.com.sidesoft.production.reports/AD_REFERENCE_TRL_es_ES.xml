@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="3FCD71F391C74C0884CE5FD2C7A0168C" trl="N">
+    <value column="Name" isTrl="N" original="Slps_Locator">Slps_Locator</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9A32E71A2AA2458EBCEEA7C1F890D1FA" trl="N">
+    <value column="Name" isTrl="N" original="Output type Production">Output type Production</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9F6C876E42E442E8A8FE45E229902A36" trl="N">
+    <value column="Name" isTrl="Y" original="Product Category">Categoría de Producto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

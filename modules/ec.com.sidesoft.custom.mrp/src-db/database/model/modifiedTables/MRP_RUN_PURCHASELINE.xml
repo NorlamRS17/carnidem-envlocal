@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE MRP_RUN_PURCHASELINE">
+    <table name="MRP_RUN_PURCHASELINE" primaryKey="MRP_RUN_PURCHASELINE_KEY">
+      <index name="EM_CSCM_SALESFORECASTLINE" unique="false">
+        <index-column name="MRP_SALESFORECASTLINE_ID"/>
+      </index>
+    </table>
+  </database>

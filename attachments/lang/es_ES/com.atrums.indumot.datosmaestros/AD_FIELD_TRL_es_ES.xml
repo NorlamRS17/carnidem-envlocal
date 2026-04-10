@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_FIELD" version="">
+  <row id="0FF1C5384CC242A9BF44490BCB339910" trl="N">
+    <value column="Name" isTrl="N" original="Porcentaje Arancelario">Porcentaje Arancelario</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="23654A510E6C42418535FEC45D1F1AB5" trl="N">
+    <value column="Name" isTrl="N" original="Email">Email</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2950206DAA46428D8021DDED0E5675AE" trl="N">
+    <value column="Name" isTrl="N" original="Email">Email</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="438D004102044F10BE3BE10997DEF5A3" trl="N">
+    <value column="Name" isTrl="N" original="Capacidad">Capacidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5881BAFB5D0B4BF3A4488AE6E044EF9D" trl="N">
+    <value column="Name" isTrl="N" original="Nacionalidad">Nacionalidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="590EBD2AD7AF4E00B75560A8B8315F6C" trl="N">
+    <value column="Name" isTrl="N" original="Ciudad Nacimiento">Ciudad Nacimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6096FF1857E74883886C33C290CC73EB" trl="N">
+    <value column="Name" isTrl="N" original="Zona">Zona</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="63108A473B5F4D81A130D84A9D362DA2" trl="N">
+    <value column="Name" isTrl="N" original="Rol de Pagos">Rol de Pagos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="67ED751712F744EBA86EBA64F59C8C88" trl="N">
+    <value column="Name" isTrl="N" original="IsBlocked">IsBlocked</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="688351773B2B4157A63BB07253291FA7" trl="N">
+    <value column="Name" isTrl="N" original="Vivienda">Vivienda</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6F296E4DAB1B41669F1AAE2B464C3314" trl="N">
+    <value column="Name" isTrl="N" original="Partida Arancelario">Partida Arancelario</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="821142E4B53F4D989D95F576110E7DAD" trl="N">
+    <value column="Name" isTrl="N" original="Nombres">Nombres</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8C05D74BA02A45089526B05D5BC0435A" trl="N">
+    <value column="Name" isTrl="N" original="División">División</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9FA3C63FE16F417B9F6CCF51C72FA617" trl="N">
+    <value column="Name" isTrl="N" original="Meses Residencia">Meses Residencia</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A0E36AC2ACA947028B9295ED34534926" trl="N">
+    <value column="Name" isTrl="N" original="Imprimir Atributos">Imprimir Atributos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B2FF80508CDC4CA38FBF2E86DBC8D0F3" trl="N">
+    <value column="Name" isTrl="N" original="Cobrador">Cobrador</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BB699BDE597D4D08B383778441CE35D6" trl="N">
+    <value column="Name" isTrl="N" original="División">División</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BE121C0E433C44979832A431ACAFC6AE" trl="N">
+    <value column="Name" isTrl="N" original="Total Meses">Total Meses</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C8B0F25396B6493FB6F6172B7D2C4748" trl="N">
+    <value column="Name" isTrl="N" original="Zona Mayoreo">Zona Mayoreo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E028BA03A4F240A98D51D1B5B470DA55" trl="N">
+    <value column="Name" isTrl="N" original="Años de Residencia">Años de Residencia</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E139939DDE9748788CA6C1E9015EFA55" trl="N">
+    <value column="Name" isTrl="N" original="Nivel Educación">Nivel Educación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FD89C3DC3A334B368DB1AC6C3F11C71C" trl="N">
+    <value column="Name" isTrl="N" original="Fecha Nacimiento">Fecha Nacimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SSTPC_LIQUIDATION_PROJECTS">
+    <table name="SSTPC_LIQUIDATION_PROJECTS" primaryKey="SSTPC_LIQ_PROJ_KEY">
+      <column name="EM_SPROCTM_C_PROJECT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

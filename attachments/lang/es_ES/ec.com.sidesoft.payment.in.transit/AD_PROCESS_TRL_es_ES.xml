@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="4D3E885CE4ED4279A88400A30A88F7FE" trl="N">
+    <value column="Name" isTrl="N" original="Process Collection Unlink">Process Collection Unlink</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="EFB77C124D6B422EA9D4BF423F880892" trl="N">
+    <value column="Name" isTrl="N" original="sspitra_coll_unlink">sspitra_coll_unlink</value>
+    <value column="Description" isTrl="N" original="sspitra_coll_unlink">sspitra_coll_unlink</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSWOS_VALIDATE_LINE_TRG">
+    <trigger name="SSWOS_VALIDATE_LINE_TRG" table="ATINDPO_POSTVENTALINEA" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[v_status_From varchar(60);  
+v_m_pricelist_id varchar(32);  
+Cur_Vehicle RECORD;
+v_count NUMBER;
+
+BEGIN
+IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+    
+	IF (UPDATING OR INSERTING ) THEN
+		
+		Select m_pricelist_id Into v_m_pricelist_id
+		From atindpo_postventa
+		Where atindpo_postventa_id = :NEW.atindpo_postventa_id;
+		
+		Select COUNT(*)
+			Into v_count
+		From m_productprice as mpp 
+			Join m_product as mp on (mpp.m_product_id = mp.m_product_id) 
+			Join c_tax as ct on (mp.c_taxcategory_id = ct.c_taxcategory_id)
+		Where mpp.m_product_id = :NEW.m_product_id
+			and mpp.m_pricelist_version_id in (select m_pricelist_version_id 
+											from m_pricelist_version 
+											where m_pricelist_id = v_m_pricelist_id
+											order by validfrom desc limit 1);
+											
+		If (coalesce(v_count, 0) = 0)Then
+			RAISE_APPLICATION_ERROR(-20000, 'El cliente no tiene configurada una lista de precios.');
+		End IF;
+	End If; -- END (TG_OP = 'UPDATE' )
+	
+END SSWOS_VALIDATE_LINE_TRG
+]]></body>
+    </trigger>
+  </database>

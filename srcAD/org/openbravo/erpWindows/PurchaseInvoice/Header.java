@@ -125,6 +125,16 @@ public class Header extends HttpSecureAppServlet {
         }
       }
      
+      if (command.contains("CDB97D9813954027A9808B35E13D72C7")) {
+        SessionInfo.setProcessType("P");
+        SessionInfo.setProcessId("CDB97D9813954027A9808B35E13D72C7");
+        SessionInfo.setModuleId("F2BE1353FC93443D93602FC3C6A82447");
+        if (securedProcess || explicitAccess.contains("CDB97D9813954027A9808B35E13D72C7")) {
+          classInfo.type = "P";
+          classInfo.id = "CDB97D9813954027A9808B35E13D72C7";
+        }
+      }
+     
 
      
       if (explicitAccess.contains("9EB2228A60684C0DBEC12D5CD8D85218") || (securedProcess && command.contains("9EB2228A60684C0DBEC12D5CD8D85218"))) {
@@ -286,6 +296,35 @@ String stradTableId = "318";
           printPageClosePopUp(response, vars);
         }else{       
           printPageButtonEM_Eei_Resendinvoice_2830DECF3F17A498A950BDBA07F0712EE(response, vars, strC_Invoice_ID, stremEeiResendinvoice2, strProcessing);
+        }
+
+     } else if (vars.commandIn("BUTTONEM_Csdfbp_DistcostcenterCDB97D9813954027A9808B35E13D72C7")) {
+        vars.setSessionValue("buttonCDB97D9813954027A9808B35E13D72C7.stremCsdfbpDistcostcenter", vars.getStringParameter("inpemCsdfbpDistcostcenter"));
+        vars.setSessionValue("buttonCDB97D9813954027A9808B35E13D72C7.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
+        vars.setSessionValue("buttonCDB97D9813954027A9808B35E13D72C7.strOrg", vars.getStringParameter("inpadOrgId"));
+        vars.setSessionValue("buttonCDB97D9813954027A9808B35E13D72C7.strClient", vars.getStringParameter("inpadClientId"));
+        
+        
+        HashMap<String, String> p = new HashMap<String, String>();
+        
+        
+        //Save in session needed params for combos if needed
+        vars.setSessionObject("buttonCDB97D9813954027A9808B35E13D72C7.originalParams", FieldProviderFactory.getFieldProvider(p));
+        printPageButtonFS(response, vars, "CDB97D9813954027A9808B35E13D72C7", request.getServletPath());    
+     } else if (vars.commandIn("BUTTONCDB97D9813954027A9808B35E13D72C7")) {
+        String strC_Invoice_ID = vars.getGlobalVariable("inpcInvoiceId", windowId + "|C_Invoice_ID", "");
+        String stremCsdfbpDistcostcenter = vars.getSessionValue("buttonCDB97D9813954027A9808B35E13D72C7.stremCsdfbpDistcostcenter");
+        String strProcessing = vars.getSessionValue("buttonCDB97D9813954027A9808B35E13D72C7.strProcessing");
+        String strOrg = vars.getSessionValue("buttonCDB97D9813954027A9808B35E13D72C7.strOrg");
+        String strClient = vars.getSessionValue("buttonCDB97D9813954027A9808B35E13D72C7.strClient");
+        
+        
+        if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
+          OBError myError = Utility.translateError(this, vars, vars.getLanguage(), Utility.messageBD(this, "NoWriteAccess", vars.getLanguage()));
+          vars.setMessage(tabId, myError);
+          printPageClosePopUp(response, vars);
+        }else{       
+          printPageButtonEM_Csdfbp_DistcostcenterCDB97D9813954027A9808B35E13D72C7(response, vars, strC_Invoice_ID, stremCsdfbpDistcostcenter, strProcessing);
         }
 
     } else if (vars.commandIn("BUTTONCalculate_Promotions9EB2228A60684C0DBEC12D5CD8D85218")) {
@@ -494,6 +533,34 @@ String stradTableId = "318";
         try {
           String pinstance = SequenceIdData.getUUID();
           PInstanceProcessData.insertPInstance(this, pinstance, "830DECF3F17A498A950BDBA07F0712EE", (("C_Invoice_ID".equalsIgnoreCase("AD_Language"))?"0":strC_Invoice_ID), strProcessing, vars.getUser(), vars.getClient(), vars.getOrg());
+          
+          
+          ProcessBundle bundle = ProcessBundle.pinstance(pinstance, vars, this);
+          new ProcessRunner(bundle).execute(this);
+          
+          PInstanceProcessData[] pinstanceData = PInstanceProcessData.select(this, pinstance);
+          myMessage = Utility.getProcessInstanceMessage(this, vars, pinstanceData);
+        } catch (ServletException ex) {
+          myMessage = Utility.translateError(this, vars, vars.getLanguage(), ex.getMessage());
+          if (!myMessage.isConnectionAvailable()) {
+            bdErrorConnection(response);
+            return;
+          } else vars.setMessage(tabId, myMessage);
+        }
+        //close popup
+        if (myMessage!=null) {
+          if (log4j.isDebugEnabled()) log4j.debug(myMessage.getMessage());
+          vars.setMessage(tabId, myMessage);
+        }
+        printPageClosePopUp(response, vars);
+    } else if (vars.commandIn("SAVE_BUTTONEM_Csdfbp_DistcostcenterCDB97D9813954027A9808B35E13D72C7")) {
+        String strC_Invoice_ID = vars.getGlobalVariable("inpKey", windowId + "|C_Invoice_ID", "");
+        String stremCsdfbpDistcostcenter = vars.getStringParameter("inpemCsdfbpDistcostcenter");
+        String strProcessing = vars.getStringParameter("inpprocessing");
+        OBError myMessage = null;
+        try {
+          String pinstance = SequenceIdData.getUUID();
+          PInstanceProcessData.insertPInstance(this, pinstance, "CDB97D9813954027A9808B35E13D72C7", (("C_Invoice_ID".equalsIgnoreCase("AD_Language"))?"0":strC_Invoice_ID), strProcessing, vars.getUser(), vars.getClient(), vars.getOrg());
           
           
           ProcessBundle bundle = ProcessBundle.pinstance(pinstance, vars, this);
@@ -882,6 +949,43 @@ xmlDocument.setParameter("array", dact.toString());
       {
         OBError myMessage = vars.getMessage("830DECF3F17A498A950BDBA07F0712EE");
         vars.removeMessage("830DECF3F17A498A950BDBA07F0712EE");
+        if (myMessage!=null) {
+          xmlDocument.setParameter("messageType", myMessage.getType());
+          xmlDocument.setParameter("messageTitle", myMessage.getTitle());
+          xmlDocument.setParameter("messageMessage", myMessage.getMessage());
+        }
+      }
+
+          try {
+    } catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+
+      
+      out.println(xmlDocument.print());
+      out.close();
+    }
+    private void printPageButtonEM_Csdfbp_DistcostcenterCDB97D9813954027A9808B35E13D72C7(HttpServletResponse response, VariablesSecureApp vars, String strC_Invoice_ID, String stremCsdfbpDistcostcenter, String strProcessing)
+    throws IOException, ServletException {
+      log4j.debug("Output: Button process CDB97D9813954027A9808B35E13D72C7");
+      String[] discard = {"newDiscard"};
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/EM_Csdfbp_DistcostcenterCDB97D9813954027A9808B35E13D72C7", discard).createXmlDocument();
+      xmlDocument.setParameter("key", strC_Invoice_ID);
+      xmlDocument.setParameter("processing", strProcessing);
+      xmlDocument.setParameter("form", "Header_Edition.html");
+      xmlDocument.setParameter("window", windowId);
+      xmlDocument.setParameter("css", vars.getTheme());
+      xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
+      xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
+      xmlDocument.setParameter("processId", "CDB97D9813954027A9808B35E13D72C7");
+      xmlDocument.setParameter("cancel", Utility.messageBD(this, "Cancel", vars.getLanguage()));
+      xmlDocument.setParameter("ok", Utility.messageBD(this, "OK", vars.getLanguage()));
+      
+      {
+        OBError myMessage = vars.getMessage("CDB97D9813954027A9808B35E13D72C7");
+        vars.removeMessage("CDB97D9813954027A9808B35E13D72C7");
         if (myMessage!=null) {
           xmlDocument.setParameter("messageType", myMessage.getType());
           xmlDocument.setParameter("messageTitle", myMessage.getTitle());

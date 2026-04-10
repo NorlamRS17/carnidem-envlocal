@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR_FIELD" version="">
+  <row id="2FDC947C478F4DDD8642CFE27CD30450" trl="N">
+    <value column="Name" isTrl="N" original="taxID">taxID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D9F233FA18714C818CB1A4B11A8E37DE" trl="N">
+    <value column="Name" isTrl="N" original="Name 2">Name 2</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -66,10 +66,6 @@
       <foreign-key foreignTable="C_DOCTYPE" name="SCSDC_SIGNATURESPD_C_DOCTYPE">
         <reference local="C_DOCTYPE_ID" foreign="C_DOCTYPE_ID"/>
       </foreign-key>
-      <index name="SCSDC_SIGNATURES_CDOCTYPE_LINE" unique="false">
-        <index-column name="C_DOCTYPE_ID"/>
-        <index-column name="LINE"/>
-      </index>
       <check name="SCSDC_SIGNATURESPD_ACTIVE_CHK"><![CDATA[ISACTIVE IN ('Y', 'N')]]></check>
       <check name="SCSDC_SIGNATURESPD_AUDIT_CHK"><![CDATA[ISAUDIT IN ('Y', 'N')]]></check>
     </table>

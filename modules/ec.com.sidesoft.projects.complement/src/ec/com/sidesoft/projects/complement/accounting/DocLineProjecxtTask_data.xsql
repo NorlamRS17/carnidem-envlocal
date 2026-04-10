@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="DocLineProjecxtTaskData" package="ec.com.sidesoft.projects.complement.accounting">
+  <SqlClassComment></SqlClassComment>
+  <SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	select
+	sproctm_task_workforce_id, stw.ad_org_id
+	,10 as line, '' as description, round(sdc.total_cost,2) as amount
+	, '100' as c_currency_id, BP.EM_SSPR_COSTCENTER_ID AS C_COSTCENTER_ID
+	, BP.EM_SSPR_USER1_ID AS USER1_ID, BP.EM_SSPR_USER2_ID AS USER2_ID 
+	, BP.C_BPARTNER_ID ,  act.account_id,act.isbalance  
+	from sproctm_task_workforce stw
+	join (
+		select 
+		in_proces_c_elementvalue_id as account_id
+		,'Y' as isbalance, record_id as c_salary_category_id
+		from sproctm_config_account
+		union all
+		select 
+		transfer_c_elementvalue_id
+		,'N' as isbalance, record_id as c_salary_category_id
+		from sproctm_config_account
+	) act on act.c_salary_category_id = stw.c_salary_category_id
+	join sproctm_detail_cost sdc on sdc.record_id = stw.sproctm_task_workforce_id
+	join c_bpartner bp on bp.c_bpartner_id = sdc.c_bpartner_id
+	where sdc.sproctm_detail_cost_id = ?  
+	union all
+	select
+	sproctm_task_cif_id, stw.ad_org_id
+	,10 as line, '' as description, round(sdc.total_cost,2) as amount
+	, '100' as c_currency_id, BP.EM_SSPR_COSTCENTER_ID AS C_COSTCENTER_ID
+	, BP.EM_SSPR_USER1_ID AS USER1_ID, BP.EM_SSPR_USER2_ID AS USER2_ID 
+	, BP.C_BPARTNER_ID ,  act.account_id,act.isbalance  
+	from sproctm_task_cif stw
+	join (
+		select 
+		in_proces_c_elementvalue_id as account_id
+		,'Y' as isbalance, record_id as c_salary_category_id
+		from sproctm_config_account
+		union all
+		select 
+		transfer_c_elementvalue_id
+		,'N' as isbalance, record_id as c_salary_category_id
+		from sproctm_config_account
+	) act on act.c_salary_category_id = stw.MA_Indirect_Cost_id
+	join sproctm_detail_cost sdc on sdc.record_id = stw.sproctm_task_cif_id
+	join c_bpartner bp on bp.c_bpartner_id = sdc.c_bpartner_id
+	where sdc.sproctm_detail_cost_id = ?   
+	union all
+	select
+	C_ProjectTask_id, stw.ad_org_id
+	,10 as line, '' as description, round(sdc.total_cost,2) as amount
+	, '100' as c_currency_id, BP.EM_SSPR_COSTCENTER_ID AS C_COSTCENTER_ID
+	, BP.EM_SSPR_USER1_ID AS USER1_ID, BP.EM_SSPR_USER2_ID AS USER2_ID 
+	, BP.C_BPARTNER_ID ,  act.account_id,act.isbalance  
+	from sproctm_task_machine stw
+	join (
+		select 
+		in_proces_c_elementvalue_id as account_id
+		,'Y' as isbalance, record_id as c_salary_category_id
+		from sproctm_config_account
+		union all
+		select 
+		transfer_c_elementvalue_id
+		,'N' as isbalance, record_id as c_salary_category_id
+		from sproctm_config_account
+	) act on act.c_salary_category_id = stw.MA_Machine_id
+	join sproctm_detail_cost sdc on sdc.record_id = stw.sproctm_task_machine_id
+	join c_bpartner bp on bp.c_bpartner_id = sdc.c_bpartner_id
+	where sdc.sproctm_detail_cost_id = ?  
+      ]]>
+    </Sql>
+    <Parameter name="TaskWorkForceID"/>
+    <Parameter name="TaskWorkForceID"/>
+    <Parameter name="TaskWorkForceID"/>
+  </SqlMethod>
+</SqlClass>

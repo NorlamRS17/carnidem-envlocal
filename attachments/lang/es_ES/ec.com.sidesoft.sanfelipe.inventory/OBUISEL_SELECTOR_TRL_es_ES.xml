@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="5797BD2C35D640F3819969579349F103" trl="N">
+    <value column="Name" isTrl="N" original="WorkReq Selector">WorkReq Selector</value>
+    <value column="Description" isTrl="N" original="WorkReq Selector">WorkReq Selector</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6121E0FB633541B485CDAE4695F53BDB" trl="N">
+    <value column="Name" isTrl="N" original="Selector Cliente Default">Selector Cliente Default</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BDE0C1CB19E34A2CA076019F98948DB5" trl="N">
+    <value column="Name" isTrl="N" original="Product_rotation_inventory">Product_rotation_inventory</value>
+    <value column="Description" isTrl="N" original="Product_rotation_inventory">Product_rotation_inventory</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

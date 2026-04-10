@@ -14,12 +14,12 @@
   v_ResultStr VARCHAR2(2000) := '';  
   v_Status VARCHAR2(60):='';
   v_Processed VARCHAR2(60):='';
-  v_posted VARCHAR2(60):='';
-  v_SqlUpdate  VARCHAR2(260):='';
-  v_SqlSelect  VARCHAR2(260):='';
+  v_SqlUpdate  VARCHAR2(160):='';
+  v_SqlSelect  VARCHAR2(160):='';
   v_Withh_vat NUMBER:=0;	--OBTG:NUMBER--
   v_Withh_rent NUMBER:=0;	--OBTG:NUMBER--
   v_VouchersNumber NUMBER:=0;	--OBTG:NUMBER--
+
 
 BEGIN
   --  Update AD_PInstance
@@ -47,14 +47,11 @@ FOR Cur_Parameter IN (SELECT i.Record_ID,
 		v_Withh_Card_ID:=Cur_Parameter.Record_ID;
 	END LOOP;    v_ResultStr := 'ReadingParameters';
 
-    v_SqlSelect:= 'select status, processed,posted,Withh_vat,Withh_rent,vouchers_number from sswh_withh_card_credit where sswh_withh_card_credit_id =''' || v_Withh_Card_ID ||  '''' ;
+    v_SqlSelect:= 'select status, processed,Withh_vat,Withh_rent,vouchers_number from sswh_withh_card_credit where sswh_withh_card_credit_id =''' || v_Withh_Card_ID ||  '''' ;
 
-    EXECUTE IMMEDIATE v_SqlSelect INTO v_Status, v_Processed,v_posted, v_Withh_vat, v_Withh_rent, v_VouchersNumber;
-	
-	if COALESCE(v_posted,'ND') = 'Y' THEN
-		RAISE_APPLICATION_ERROR(-20000, 'la transacción se encuentra contabilizada y que debe ser descontabilizada previamente para permitir su anulación');
-	end if;
-		
+    EXECUTE IMMEDIATE v_SqlSelect INTO v_Status, v_Processed, v_Withh_vat, v_Withh_rent, v_VouchersNumber;
+
+
     IF COALESCE(v_Status,'ND')='DR' AND COALESCE(v_Processed,'ND') = 'N' THEN
 
 	    IF ((COALESCE(v_Withh_vat,0)<0) OR (COALESCE(v_Withh_rent,0)<0) OR (COALESCE(v_VouchersNumber,0)<0)) THEN
@@ -78,10 +75,10 @@ FOR Cur_Parameter IN (SELECT i.Record_ID,
     
 	    END IF;
 
-	
+
 
     ELSIF COALESCE(v_Status,'ND')='CO' AND COALESCE(v_Processed,'ND') = 'Y' THEN
-		
+
 	    v_SqlUpdate:= 'update sswh_withh_card_credit set status=''' || 'VO' || '''' ||  ',processed =''' || 'N' || '''' || '  where sswh_withh_card_credit_id =''' || v_Withh_Card_ID ||  '''' ;
 
 	    EXECUTE IMMEDIATE v_SqlUpdate; 

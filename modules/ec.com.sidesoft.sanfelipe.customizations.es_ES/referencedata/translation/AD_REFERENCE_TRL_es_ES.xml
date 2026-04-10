@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="26E3E7854AFA4B5190F0E9772897E04A" trl="N">
+    <value column="Name" isTrl="N" original="ThirdDimensionList">ThirdDimensionList</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D73EB2EB00BC49A39CC73EBD2C3D9030" trl="N">
+    <value column="Name" isTrl="N" original="C_Costcenter_Org">C_Costcenter_Org</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

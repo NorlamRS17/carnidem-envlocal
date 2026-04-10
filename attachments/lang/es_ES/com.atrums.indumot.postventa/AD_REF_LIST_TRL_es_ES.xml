@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="15DE83D6FCD74BA5B466D0DE8656BCDA" trl="N">
+    <value column="Name" isTrl="N" original="Proforma">Proforma</value>
+    <value column="Description" isTrl="N" original="Proforma">Proforma</value>
+  </row>
+  <row id="202FC9C4445746AF9383889B47A3327D" trl="N">
+    <value column="Name" isTrl="N" original="En Proceso">En Proceso</value>
+    <value column="Description" isTrl="N" original="En Proceso">En Proceso</value>
+  </row>
+  <row id="3830D1D6E7C24B2987532DC795994BD5" trl="N">
+    <value column="Name" isTrl="N" original="Mantenimiento">Mantenimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="5BE6473A17C54F0EB2987EBE6669DD79" trl="N">
+    <value column="Name" isTrl="N" original="Moto">Moto</value>
+    <value column="Description" isTrl="N" original="Moto">Moto</value>
+  </row>
+  <row id="68BC0C81ADA34354B8F51B8936898E4D" trl="N">
+    <value column="Name" isTrl="N" original="Garantía">Garantía</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7DDD9DE6126D4BBA91ED1ED2DA8C90AE" trl="N">
+    <value column="Name" isTrl="N" original="Reproceso">Reproceso</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="8E82F9FD78844AD8A6F85C7B3C50AA7B" trl="N">
+    <value column="Name" isTrl="N" original="Entregada">Entregada</value>
+    <value column="Description" isTrl="N" original="Entregada">Entregada</value>
+  </row>
+  <row id="9B7630BA74AB4A93B8E879F9BC02147E" trl="N">
+    <value column="Name" isTrl="N" original="Motos">Motos</value>
+    <value column="Description" isTrl="N" original="Motos">Motos</value>
+  </row>
+  <row id="C21AAB981F8D40518D723ED1B50ED02B" trl="N">
+    <value column="Name" isTrl="N" original="Trabajo Listo">Trabajo Listo</value>
+    <value column="Description" isTrl="N" original="Trabajo Listo">Trabajo Listo</value>
+  </row>
+  <row id="C238078A810D481A8E03714C8B869C20" trl="N">
+    <value column="Name" isTrl="N" original="Fuerza de Trabajo">Fuerza de Trabajo</value>
+    <value column="Description" isTrl="N" original="Fuerza de Trabajo">Fuerza de Trabajo</value>
+  </row>
+  <row id="D108D626F6834071BC77DA1820859769" trl="N">
+    <value column="Name" isTrl="N" original="Productos de Fuerza">Productos de Fuerza</value>
+    <value column="Description" isTrl="N" original="Productos de Fuerza">Productos de Fuerza</value>
+  </row>
+  <row id="F94A7D5CB2C04DB992E0F0C5BF45254C" trl="N">
+    <value column="Name" isTrl="N" original="Reparación">Reparación</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

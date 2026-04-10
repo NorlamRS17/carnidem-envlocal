@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="19E86954DFFB4D95BB3D9EB8C73FBA46" trl="N">
+    <value column="Name" isTrl="N" original="Error">Error</value>
+    <value column="PrintName" isTrl="N" original="Error">Error</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="24A0260080AD45699E98CE1FF7D9C94A" trl="N">
+    <value column="Name" isTrl="N" original="Scwsap_Config_ID">Scwsap_Config_ID</value>
+    <value column="PrintName" isTrl="N" original="Scwsap_Config_ID">Scwsap_Config_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="48EA9B29BB3E4D8B9BDE32E2AE709361" trl="N">
+    <value column="Name" isTrl="N" original="Json_Response">Json_Response</value>
+    <value column="PrintName" isTrl="N" original="Json_Response">Json_Response</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4A8878127B83401BA54575FED1EC5EEF" trl="N">
+    <value column="Name" isTrl="N" original="Partner_Name">Partner_Name</value>
+    <value column="PrintName" isTrl="N" original="Partner_Name">Partner_Name</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="659BF6C00411487C822D44C0C071FCD1" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scwsap_Available_App_Orders">Disponible APP pedidos</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scwsap_Available_App_Orders">Disponible APP pedidos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="67A470C0C8BC44EE8611FEF8B12ED24F" trl="N">
+    <value column="Name" isTrl="N" original="Json_Request">Json_Request</value>
+    <value column="PrintName" isTrl="N" original="Json_Request">Json_Request</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6A36DD08F9E04A11B5F673FF1DBA4D6E" trl="N">
+    <value column="Name" isTrl="N" original="Partner_Taxidtype">Partner_Taxidtype</value>
+    <value column="PrintName" isTrl="N" original="Partner_Taxidtype">Partner_Taxidtype</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C7DA4F8EC36D49048CCC8697CC321402" trl="N">
+    <value column="Name" isTrl="N" original="Scwsap_Log_ID">Scwsap_Log_ID</value>
+    <value column="PrintName" isTrl="N" original="Scwsap_Log_ID">Scwsap_Log_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DA259A6D79CE491E986C1A7ABD8B95F3" trl="N">
+    <value column="Name" isTrl="N" original="Services_Context">Services_Context</value>
+    <value column="PrintName" isTrl="N" original="Services_Context">Services_Context</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DA4F151988D9425799E788B1FB95276D" trl="N">
+    <value column="Name" isTrl="N" original="Endpoint">Endpoint</value>
+    <value column="PrintName" isTrl="N" original="Endpoint">Endpoint</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FAAE46F275124CC299155B9D43FACE71" trl="N">
+    <value column="Name" isTrl="N" original="Partner_Taxpayer_ID">Partner_Taxpayer_ID</value>
+    <value column="PrintName" isTrl="N" original="Partner_Taxpayer_ID">Partner_Taxpayer_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

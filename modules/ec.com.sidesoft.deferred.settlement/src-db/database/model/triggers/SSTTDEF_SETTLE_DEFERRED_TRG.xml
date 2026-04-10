@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSTTDEF_SETTLE_DEFERRED_TRG">
+    <trigger name="SSTTDEF_SETTLE_DEFERRED_TRG" table="GL_JOURNAL" fires="after" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+	vCheck NUMBER;
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF UPDATING THEN
+		
+		IF :OLD.docstatus = 'DR' AND :NEW.docstatus = 'CO' THEN
+            UPDATE c_invoice SET em_ssttdef_deferred_cross = 'Y', em_ssttdef_crossing_date = now()
+            WHERE user2_id = :NEW.user2_id
+                AND issotrx = 'Y' AND docstatus = 'CO'
+                AND em_ssttdef_deferred_cross = 'N';
+        ELSEIF :OLD.docstatus = 'CO' AND :NEW.docstatus = 'DR' THEN
+            UPDATE c_invoice SET em_ssttdef_deferred_cross = 'N', em_ssttdef_crossing_date = NULL
+            WHERE user2_id = :OLD.user2_id
+                AND issotrx = 'Y' AND docstatus = 'CO'
+                AND em_ssttdef_deferred_cross = 'Y';
+        END IF;
+		
+	END IF;
+
+	END SSTTDEF_SETTLE_DEFERRED_TRG
+]]></body>
+    </trigger>
+  </database>

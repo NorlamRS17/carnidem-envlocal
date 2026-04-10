@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="5514485492B94EAE96BFCC84327BB0AE" trl="N">
+    <value column="Name" isTrl="N" original="Listado de Categorías">Listado de Categorías</value>
+    <value column="Description" isTrl="N" original="Listado de Categorías">Listado de Categorías</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7483052B8E8E42CEAEFD97E7EA661C2F" trl="N">
+    <value column="Name" isTrl="N" original="Listado Tipos de Generación de Facturas Consolidadas">Listado Tipos de Generación de Facturas Consolidadas</value>
+    <value column="Description" isTrl="N" original="Listado Tipos de Generación de Facturas Consolidadas">Listado Tipos de Generación de Facturas Consolidadas</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D90B106B6EB8462EB254366C86933911" trl="N">
+    <value column="Name" isTrl="N" original="Org Ordenes de Servicio">Org Ordenes de Servicio</value>
+    <value column="Description" isTrl="N" original="Org Ordenes de Servicio">Org Ordenes de Servicio</value>
+    <value column="Help" isTrl="N" original="Org Ordenes de Servicio">Org Ordenes de Servicio</value>
+  </row>
+  <row id="DE1824E41D5F4C799AEA4BC8A47476B2" trl="N">
+    <value column="Name" isTrl="N" original="Listado de estado de Consolidación">Listado de estado de Consolidación</value>
+    <value column="Description" isTrl="N" original="Listado de estado de Consolidación">Listado de estado de Consolidación</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SATHNC_VALIDATE_CODE">
+    <function name="SATHNC_VALIDATE_CODE" type="VARCHAR">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+	v_ResultStr		VARCHAR2(2000) := '';
+	v_Message		TEXT := ''; --OBTG:VARCHAR2--
+	-- Variables
+	Cur				RECORD;
+	vOrderID		VARCHAR2(32);
+	vOrder			RECORD;
+	vDocAction		VARCHAR2(60);
+    vCheck          NUMBER;
+BEGIN
+	-- Begin Get Parameters
+	FOR Cur IN (
+		SELECT *
+		FROM ad_ep_instance_para
+		WHERE ad_ep_instance_id = PInstance_ID
+	) LOOP
+		IF Cur.ParameterName = 'Record_ID' THEN
+			vOrderID := Cur.P_String;
+		ELSEIF Cur.ParameterName = 'DocAction' THEN
+			vDocAction := Cur.P_String;
+		END IF;	
+	END LOOP;
+	-- Finish Get Parameter
+	
+	--<<BEGIN_PROCESS>>
+
+	SELECT o.c_order_id, o.issotrx, o.em_sathnc_code code, TRIM(COALESCE(o.em_sathnc_code2,'')) code2, dt.em_sathnc_auth_required authRequired
+        INTO vOrder
+    FROM c_order o
+        JOIN C_Doctype dt ON dt.C_Doctype_ID = o.C_DoctypeTarget_ID
+    WHERE o.c_order_id = vOrderID;
+
+	IF vOrder.isSoTrx = 'Y' AND vOrder.authRequired = 'Y' THEN
+
+		IF vDocAction = 'CO' THEN
+
+            IF vOrder.code IS NULL THEN
+                RAISE_APPLICATION_ERROR(-20000, 'Esta acción requiere autorización');
+			END IF;
+            
+            IF vOrder.code2 = '' THEN
+                RAISE_APPLICATION_ERROR(-20000, 'Debe ingresar  el código de autorización');
+            ELSEIF vOrder.code != vOrder.code2 THEN
+                RAISE_APPLICATION_ERROR(-20000, 'El código de autorización es incorrecto');
+            END IF;
+            
+            UPDATE c_order SET em_sathnc_authorized = 'Y' WHERE c_order_id = vOrderID;
+            
+		ELSEIF vDocAction = 'RE' THEN
+        
+            UPDATE c_order SET em_sathnc_authorized = 'N', em_sathnc_code = NULL, em_sathnc_code2 = NULL WHERE c_order_id = vOrderID;
+        
+		END IF;
+		
+	END IF; 
+
+	--<<FINISH_PROCESS>>
+		
+	RETURN v_ResultStr;
+END SATHNC_VALIDATE_CODE
+]]></body>
+    </function>
+  </database>

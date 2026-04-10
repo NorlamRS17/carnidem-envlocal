@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR_FIELD" version="">
+  <row id="118083FB925B48BB8F7D550D1F8EB4E7" trl="N">
+    <value column="Name" isTrl="N" original="ID">ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="790D5949213D44B7B91E13D6B65CAC4C" trl="Y">
+    <value column="Name" isTrl="Y" original="processPlan">Plan de producción</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7A1EFE93E93F40BDB411C8F9160D672F" trl="Y">
+    <value column="Name" isTrl="Y" original="documentType">Tipo de documento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="99844C5A21FA49C0AE3891FDB38CA9A7" trl="Y">
+    <value column="Name" isTrl="Y" original="DocumentNo">Nº documento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

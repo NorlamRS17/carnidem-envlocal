@@ -15,6 +15,11 @@
     <value column="Description" isTrl="N" original="">Movimiento entre almacenes</value>
     <value column="Help" isTrl="N" original=""/>
   </row>
+  <row id="5D2AA0E0151E4159BE8AEE7B0E300718" trl="N">
+    <value column="Name" isTrl="Y" original="crprod_mproduct">crprod_mproduct_id</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
   <row id="6E441AA4CFBD43BB9CE5E6A95C3D3653" trl="N">
     <value column="Name" isTrl="Y" original="CRPROD_ParamsAndStatus"> CRPROD_ParamsAndStatus</value>
     <value column="Description" isTrl="N" original=""/>
@@ -26,7 +31,12 @@
     <value column="Help" isTrl="N" original=""/>
   </row>
   <row id="A0058979978A4CBC8739F50C2645704E" trl="N">
-    <value column="Name" isTrl="N" original="em_crprod_tb_workpart">Parte de Fabricación</value>
+    <value column="Name" isTrl="Y" original="em_crprod_tb_workpart">Parte de Fabricación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CCDFEC61A99E45408CA467683A2AA6A6" trl="N">
+    <value column="Name" isTrl="N" original="Work Requirement Selector Custom">Work Requirement Selector Custom</value>
     <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
   </row>

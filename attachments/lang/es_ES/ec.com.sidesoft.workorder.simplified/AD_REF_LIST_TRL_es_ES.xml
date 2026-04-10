@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="049D63D8C5704D8D942DAC5014CCAEF0" trl="N">
+    <value column="Name" isTrl="Y" original="Invoiced">Facturado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="0F5C8A9293DB4691B2412546AF842D93" trl="N">
+    <value column="Name" isTrl="Y" original="Pre-Invoice">Prefactura</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="2E3F90DCE8C5438A980E6A80EB8C9145" trl="N">
+    <value column="Name" isTrl="Y" original="Act of exchanged parts">Acta de repuestos cambiados</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="315DD201E0B941179C0FB6309EF827DB" trl="N">
+    <value column="Name" isTrl="Y" original="Service Order (Consolidated)">Orden servicio (Consolidado)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="60A6601F750D49248C264571B45AE544" trl="N">
+    <value column="Name" isTrl="Y" original="Quotation">Cotización</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A824C0247A3447D4A059A7926DE5166A" trl="N">
+    <value column="Name" isTrl="Y" original="Service order">Orden servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C326EBD7F3CD4E33B71E6CD80060A6C8" trl="N">
+    <value column="Name" isTrl="Y" original="Vehicle delivery certificate">Acta de entrega de vehículos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="EEA4F59A80F64EA3A53E5BE3873E5A00" trl="N">
+    <value column="Name" isTrl="Y" original="Close">Cerrado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

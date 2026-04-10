@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="185DBC29627248DF821ACC813777E5E2" trl="N">
+    <value column="Name" isTrl="N" original="Reference Product Cobro">Reference Product Cobro</value>
+    <value column="Description" isTrl="N" original="Reference Product Cobro">Reference Product Cobro</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="21C2A055CB18405EA3745830EA8B769B" trl="N">
+    <value column="Name" isTrl="N" original="Reference Paymentterm cobr">Reference Paymentterm cobr</value>
+    <value column="Description" isTrl="N" original="Reference Paymentterm cobr">Reference Paymentterm cobr</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="23131DB3825F43D2B2DDB0AC6D5AE5F9" trl="N">
+    <value column="Name" isTrl="N" original="Financial Account Invoice">Financial Account Invoice</value>
+    <value column="Description" isTrl="N" original="Financial Account Invoice - Web Service">Financial Account Invoice - Web Service</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="44D15A82C5234342ADD74260CDEED497" trl="N">
+    <value column="Name" isTrl="N" original="Document Type - Invoice">Document Type - Invoice</value>
+    <value column="Description" isTrl="N" original="DoDocument Type - Invoice">DoDocument Type - Invoice</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7AE9F8840D474F529BDDAC88A66B70A6" trl="N">
+    <value column="Name" isTrl="N" original="Selector type product">Selector type product</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8625D6BB48B448479C756FA5CB620327" trl="N">
+    <value column="Name" isTrl="N" original="Main Credit Operation">Main Credit Operation</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="ADF4B12C193B45A78CA7A7EDC4C7E4EF" trl="N">
+    <value column="Name" isTrl="N" original="constcenter reference cobr">constcenter reference cobr</value>
+    <value column="Description" isTrl="N" original="constcenter reference cobr">constcenter reference cobr</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="EAC95F4E702C43DAAD996CABB3765426" trl="N">
+    <value column="Name" isTrl="N" original="Reference User_1 Cobr">Reference User_1 Cobr</value>
+    <value column="Description" isTrl="N" original="Reference User_1 Cobr">Reference User_1 Cobr</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F26A2058C1F740CDBA1A2552C7F8048B" trl="N">
+    <value column="Name" isTrl="N" original="Payment Method Invoice">Payment Method Invoice</value>
+    <value column="Description" isTrl="N" original="Payment Method Invoice Web service">Payment Method Invoice Web service</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

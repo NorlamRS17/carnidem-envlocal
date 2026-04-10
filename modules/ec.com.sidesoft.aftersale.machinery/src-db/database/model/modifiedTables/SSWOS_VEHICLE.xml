@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SSWOS_VEHICLE">
+    <table name="SSWOS_VEHICLE" primaryKey="SSWOS_VEHICLE_KEY">
+      <column name="EM_SATMAC_SALESREP_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_PROJECT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_MACHINE_TYPE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_ORIGIN" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default><![CDATA[O]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_INVOICE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_INVOICELINE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_NAME" primaryKey="false" required="false" type="VARCHAR" size="100" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_OBSERVATIONS" primaryKey="false" required="false" type="VARCHAR" size="100" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="C_INVOICE" name="EM_SATMAC_MACHINE_INVOICE">
+        <reference local="EM_SATMAC_INVOICE_ID" foreign="C_INVOICE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_INVOICELINE" name="EM_SATMAC_MACHINE_INVOICELINE">
+        <reference local="EM_SATMAC_INVOICELINE_ID" foreign="C_INVOICELINE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_PROJECT" name="EM_SATMAC_PROJECT">
+        <reference local="EM_SATMAC_PROJECT_ID" foreign="C_PROJECT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_USER" name="EM_SATMAC_SALESREP">
+        <reference local="EM_SATMAC_SALESREP_ID" foreign="AD_USER_ID"/>
+      </foreign-key>
+    </table>
+  </database>

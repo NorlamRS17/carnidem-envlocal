@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2013 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+<SqlClass name="DocLineLiquidationProjectData" package="com.sidesoft.settlement.project.cost.liquid_project">
+  <SqlClassComment></SqlClassComment>
+  <SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        SELECT SCL.SSTPC_CONSUMPTION_LINE_ID, SLP.SSTPC_LIQUIDATION_PROJECTS_ID, SLP.AD_ORG_ID, SCL.LINE, TO_CHAR(' -' ) AS DESCRIPTION, TO_CHAR('100') AS C_CURRENCY_ID,
+        SLP.C_COSTCENTER_ID, COALESCE(MPA.EM_SSTPC_PROJECT_COSTS, MPA.P_COGS_ACCT) P_COGS_ACCT, MPA.EM_SSTPC_COST_PROCESS_PROD, COSTCONSUMPTION AS AMOUNT
+        FROM SSTPC_LIQUIDATION_PROJECTS SLP   
+        JOIN SSTPC_CONSUMPTION_LINE SCL ON SLP.SSTPC_LIQUIDATION_PROJECTS_ID = SCL.SSTPC_LIQUIDATION_PROJECTS_ID   
+        JOIN M_PRODUCT MP ON MP.M_PRODUCT_ID = SCL.M_PRODUCT_ID   
+        JOIN M_PRODUCT_ACCT MPA ON MPA.M_PRODUCT_ID = MP.M_PRODUCT_ID   
+        WHERE SLP.SSTPC_LIQUIDATION_PROJECTS_ID = ?
+     ]]>
+     </Sql>
+     <Parameter name="SSTPC_LIQUIDATION_PROJECTS_ID"/>
+   </SqlMethod>
+  </SqlClass>

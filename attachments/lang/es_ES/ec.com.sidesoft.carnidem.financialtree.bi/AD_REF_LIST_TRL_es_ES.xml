@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="060F0F2CAF2B41CABAA5135AF62470E5" trl="N">
+    <value column="Name" isTrl="N" original="Owners_union">Owners_union</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="23A8F9D3F23D4E26AD191ABFE8B6C0C3" trl="N">
+    <value column="Name" isTrl="N" original="Ingress">Ingress</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="38130FD7C7684AFB8AB4ACEAE83DEBE4" trl="N">
+    <value column="Name" isTrl="N" original="Memorandum">Memorandum</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="5617E13D0D644E4DBEC1E41AA374EA5A" trl="N">
+    <value column="Name" isTrl="N" original="Expense">Expense</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="6C9800AB4F0A43928E1C2C7B55BB67F3" trl="N">
+    <value column="Name" isTrl="N" original="Active">Active</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="803239F059004E77B1AD3BABB9F2019F" trl="N">
+    <value column="Name" isTrl="N" original="Passive">Passive</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

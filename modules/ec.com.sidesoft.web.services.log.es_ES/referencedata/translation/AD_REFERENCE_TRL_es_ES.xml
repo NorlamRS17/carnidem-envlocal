@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="123793C1561741FC87A491F4E04FC223" trl="N">
+    <value column="Name" isTrl="N" original="Payment Method Invoice">Payment Method Invoice</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="17D31B8E79F8405EA23FE1AE49F98901" trl="N">
+    <value column="Name" isTrl="N" original="Financial Account Invoice">Financial Account Invoice</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="47A6632264FD4D3986641E1747DABC12" trl="N">
+    <value column="Name" isTrl="N" original="Document Type - Invoice">Document Type - Invoice</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

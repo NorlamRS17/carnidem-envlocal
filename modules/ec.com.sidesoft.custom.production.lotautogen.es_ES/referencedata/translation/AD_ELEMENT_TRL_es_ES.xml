@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="075C261F92724083AF2C0CC83BCC4AD9" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scplag_Ispackage">Tipo de envase</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scplag_Ispackage">Tipo de envase</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="846DC802B6F84DBF8832137077E2A70A" trl="Y">
+    <value column="Name" isTrl="Y" original="Search Key">Producto</value>
+    <value column="PrintName" isTrl="Y" original="Search Key">Producto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="92D3AD2F8C684AB2AC30BE53F8CF216C" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scplag_Isalt_Identifier">Identificador alternativo </value>
+    <value column="PrintName" isTrl="Y" original="EM_Scplag_Isalt_Identifier">Identificador alternativo </value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BAD975A314E4418F8FD38D1645A52776" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scplag_Iselaborationdate">Fecha de elaboración</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scplag_Iselaborationdate">Fecha de elaboración</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

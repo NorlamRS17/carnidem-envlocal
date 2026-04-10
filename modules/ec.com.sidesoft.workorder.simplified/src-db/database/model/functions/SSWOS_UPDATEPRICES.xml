@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSWOS_UPDATEPRICES">
+    <function name="SSWOS_UPDATEPRICES" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[TYPE RECORD IS REF CURSOR;
+	Cur_Parameter RECORD;
+	Cur_serviceorders RECORD;
+
+	v_ResultStr VARCHAR2(2000):= '';  
+	v_n_insertions NUMBER:=0;
+	v_countregistros NUMBER:= 0;
+	v_Message VARCHAR2(2000):='';
+	v_documents VARCHAR2(2000);
+
+
+	v_c_bpartner_id VARCHAR(34):='';--OBTG:VARCHAR2--
+	v_ad_org_id VARCHAR(32):='';--OBTG:VARCHAR2--
+	v_atindpo_postventa_id VARCHAR(32):='';--OBTG:VARCHAR2--
+	V_date_from  DATE;
+	V_date_to  DATE;
+BEGIN
+    --  Update AD_PInstance
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || pinstance_id) ;
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(pinstance_id, NULL, 'Y', NULL, NULL) ;
+BEGIN --BODY
+-- Get Parameters
+v_ResultStr := 'ReadingParameters';
+v_n_insertions := 0;  
+For Cur_Parameter IN
+(select i.Record_ID,
+	p.ParameterName,
+	p.p_date,p.p_string
+from AD_PInstance i
+	left join AD_PInstance_Para p on i.AD_PInstance_ID = p.AD_PInstance_ID
+where i.AD_PInstance_ID = PInstance_ID
+order by p.SeqNo
+)Loop      	  
+If(Cur_Parameter.ParameterName = 'ad_org_id') THEN
+	v_ad_org_id := Cur_Parameter.p_string;      
+End If;
+If(Cur_Parameter.ParameterName = 'atindpo_postventa_id') THEN
+	v_atindpo_postventa_id := Cur_Parameter.p_string;      
+End If;
+If(Cur_Parameter.ParameterName = 'c_bpartner_id') THEN
+	v_c_bpartner_id := Cur_Parameter.p_string;      
+End If;
+If(Cur_Parameter.ParameterName = 'date_from') THEN
+	V_date_from := Cur_Parameter.p_date;      
+End If;
+If(Cur_Parameter.ParameterName = 'date_to') THEN
+	V_date_to := Cur_Parameter.p_date;      
+End If;
+End Loop;
+
+	For Cur_serviceorders IN (
+		Select documentno
+			, pvl.atindpo_postventalinea_id
+			, pp.pricelist as "precio_tarifa"
+			, pp.pricelist - (pp.pricelist * coalesce(atindpo_discount,0)/100) as "precio_unitario"
+		From atindpo_postventa pv
+			Join c_bpartner bp on bp.c_bpartner_id = pv.c_bpartner_id
+			Join atindpo_postventalinea pvl on pvl.atindpo_postventa_id = pv.atindpo_postventa_id
+			Join m_product p on p.m_product_id = pvl.m_product_id
+			Join m_productprice pp on pp.m_product_id = p.m_product_id 
+			Join  m_pricelist_version plv on plv.m_pricelist_version_id = pp.m_pricelist_version_id 
+								And plv.m_pricelist_id = bp.m_pricelist_id
+								And plv.validfrom < now()
+		Where (pv.ad_org_id  = v_ad_org_id or v_ad_org_id is null) 
+			And pv.fecha between V_date_from and V_date_to
+			And (pv.c_bpartner_id = v_c_bpartner_id Or v_c_bpartner_id is null)
+	)Loop      	  
+		
+		update atindpo_postventalinea set 
+			atindpo_unitprice = Cur_serviceorders.precio_unitario
+			,Atindpo_Pricelist = Cur_serviceorders.precio_tarifa
+		Where atindpo_postventalinea_id = Cur_serviceorders.atindpo_postventalinea_id;
+		v_documents:=coalesce(v_documents,'')||' -'||Cur_serviceorders.documentno;
+	End Loop;-- END Cur_serviceorders
+	If (v_documents is null) Then
+		RAISE_APPLICATION_ERROR(-20000,'@Sswos_PriceListNotUpdate@');
+	End If;
+
+	v_Message := '@Sswos_PriceListUpdate@: ' || v_documents || '.';
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message) ;
+ AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, v_Message) ;
+
+RETURN;
+
+END; --BODY
+	  EXCEPTION
+	  WHEN OTHERS THEN
+	    v_ResultStr:= '@ERROR=' || SQLERRM;
+	    DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+	    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+	    RETURN;
+END SSWOS_UPDATEPRICES
+]]></body>
+    </function>
+  </database>

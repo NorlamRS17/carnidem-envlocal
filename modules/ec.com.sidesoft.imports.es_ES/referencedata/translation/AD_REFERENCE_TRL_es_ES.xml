@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="08282342BE8742CCAB6EB2DA84A3C8F5" trl="N">
+    <value column="Name" isTrl="N" original="Ssip_Meanstransport">Ssip_Meanstransport</value>
+    <value column="Description" isTrl="N" original="Means Transport Reference">Means Transport Reference</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="0A0783B2947C4CA58D1FEB4D549415EE" trl="N">
+    <value column="Name" isTrl="N" original="Ssip_Customer">Ssip_Customer</value>
+    <value column="Description" isTrl="N" original="Ssip_Customer">Ssip_Customer</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="25001C7B4ED14EEBA86EF66FCAADD3BF" trl="N">
+    <value column="Name" isTrl="N" original="Port">Port</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5EDBFF9461644E2D8DCE3A99DBF2D69C" trl="N">
+    <value column="Name" isTrl="N" original="Campign">Campign</value>
+    <value column="Description" isTrl="N" original="Campign">Campign</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="79C5CD1E99C84A9E9E49F133932BE34D" trl="N">
+    <value column="Name" isTrl="N" original="Fixed Taxes">Fixed Taxes</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="84D3002746DA47E0B6BA8FF0286830D3" trl="N">
+    <value column="Name" isTrl="N" original="Ccampign">Ccampign</value>
+    <value column="Description" isTrl="N" original="Ccampign">Ccampign</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8918ABAF5BF2428FAC1F7B170EC7A933" trl="N">
+    <value column="Name" isTrl="Y" original="Campaign selector Import">Selector de Campaña Importaciones</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9171DD3D1EEF49F591BE5BC5B6A4A3B7" trl="N">
+    <value column="Name" isTrl="N" original="Additionalcosts">Additionalcosts</value>
+    <value column="Description" isTrl="N" original="Additionalcosts">Additionalcosts</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A5370272C4F14D05B0388B1838F529EB" trl="N">
+    <value column="Name" isTrl="N" original="Ssip_Seller">Ssip_Seller</value>
+    <value column="Description" isTrl="N" original="Ssip_Seller">Ssip_Seller</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E4D5D7C8E19A4524B806050B234654DD" trl="N">
+    <value column="Name" isTrl="N" original="Import Status">Import Status</value>
+    <value column="Description" isTrl="N" original="Import Status">Import Status</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F2A36ED939ED45C9BDCFC793D667BF57" trl="N">
+    <value column="Name" isTrl="N" original="Apportionment">Apportionment</value>
+    <value column="Description" isTrl="N" original="Apportionment">Apportionment</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

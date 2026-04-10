@@ -5,6 +5,10 @@
       <check name="MA_MEASURE_SHIFT_SHIFT_CHECK"><![CDATA[SHIFT IN ('M', 'T')]]></check>
     </removeCheckChange>
     <columnSizeChange tablename="MA_MEASURE_SHIFT" columnname="EM_SPQULY_TOTALQTY" newSize="20" newScale="6" oldSize="20" oldScale="0"/>
+    <columnDataChange tablename="AD_PROCESS" columnname="PROCEDURENAME" pkRow="800048">
+      <oldValue><![CDATA[M_Move_Locator]]></oldValue>
+      <newValue><![CDATA[crprod_move_locator]]></newValue>
+    </columnDataChange>    
     <columnDataChange tablename="OBUISEL_SELECTOR" columnname="DISPLAYFIELD_ID" pkRow="5DAD8ED22C004ACC81266EE2F94C7E82">
       <oldValue><![CDATA[F7AD95B30BBD40FAAA08B82561695156]]></oldValue>
       <newValue><![CDATA[6196D6B5FB2C4687ADA29E013798EB70]]></newValue>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="9EB67D7B8AFA4BD9BBA09BDA63EAA271" trl="Y">
+    <value column="Name" isTrl="Y" original="Send Prefecture">Enviar Pre-Factura</value>
+    <value column="Description" isTrl="Y" original="Send Prefecture">Enviar Pre-Factura</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DD298068BB6341E18B2FF7E88E331746" trl="Y">
+    <value column="Name" isTrl="Y" original="Send Mail for Service Orders Background">Enviar Correo para Órdenes de Servicio en Segundo Plano</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="AB8AD005252D469FB785EB4AD92C00B2" trl="N">
+    <value column="Name" isTrl="N" original="Recurring Transaction Processor">Recurring Transaction Processor</value>
+    <value column="Description" isTrl="N" original="Create recurring transactions based on recurring rules">Create recurring transactions based on recurring rules</value>
+    <value column="Help" isTrl="N" original="Create recurring transactions based on recurring rules">Create recurring transactions based on recurring rules</value>
+  </row>
+</compiereTrl>

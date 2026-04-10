@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUIAPP_PROCESS" version="">
+  <row id="547347DACADC4378B2EAACD69287563F" trl="N">
+    <value column="Name" isTrl="Y" original="MaterialMgmtShipmentInOut - Project Prod">Albarán (Cliente) - Producto Proyecto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E511D6CD1B9B4519B4FA16AA4B7C12F6" trl="N">
+    <value column="Name" isTrl="Y" original="Goods Movements - Project Product">Movimiento entre almacenes - Producto Proyecto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUIAPP_PROCESS" version="">
+  <row id="10DB34ABBE254B7781B307E081F94A46" trl="N">
+    <value column="Name" isTrl="N" original="Copy Terminal">Copy Terminal</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="48436E0B9D0B4AC7AE1A6A724DABD7C9" trl="N">
+    <value column="Name" isTrl="N" original="Copy Retail Store">Copy Retail Store</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

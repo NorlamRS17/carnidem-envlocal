@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+<SqlClass name="CopyFromOrdenServicioData" package="com.atrums.indumot.postventa.erpCommon.ad_actionButton">
+<SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+            select pv.atindpo_postventa_id,
+                   pv.documentno as docnoOrderSrv, 
+                   pv.fechaventa as fechaOrdersvr,
+                   pvl.line, 
+                   p.name as producto, 
+                   a.description,
+                   u.name as unidad, 
+                   pvl.cantidad, 
+                   io.documentno as docnoGuia
+            from atindpo_postventa pv
+            left join atindpo_postventalinea pvl on pv.atindpo_postventa_id = pvl.atindpo_postventa_id
+            left join m_product p on pvl.m_product_id = p.m_product_id
+            left join c_uom u on p.c_uom_id = u.c_uom_id
+            left join m_inoutline iol on iol.m_inoutline_id = iol.m_inoutline_id
+            left join m_inout io on iol.m_inout_id = io.m_inout_id
+            left join m_attributesetinstance a on pvl.m_attributesetinstance_id = a.m_attributesetinstance_id
+            where pv.docstatus in ('TL','ET')
+            and pv.c_bpartner_id = ?
+            order by 1, 2, 3
+      ]]>
+    </Sql>
+    <Field name="rownum" value="count"/>
+    <Parameter name="cBpartnerId"/>
+  </SqlMethod>
+  <SqlMethod name="set" type="constant" return="multiple">
+      <SqlMethodComment></SqlMethodComment>
+      <Sql></Sql>
+  </SqlMethod>
+</SqlClass>

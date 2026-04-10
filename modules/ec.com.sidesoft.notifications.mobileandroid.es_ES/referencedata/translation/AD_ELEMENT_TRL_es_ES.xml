@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0446940B042347E580C45446E7635D83" trl="N">
+    <value column="Name" isTrl="Y" original="Notification Type">Tipo de notificaciòn</value>
+    <value column="PrintName" isTrl="Y" original="Notification Type">Tipo de notificaciòn</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="18E65428D86741E7ADF425B0726AC7F9" trl="N">
+    <value column="Name" isTrl="N" original="Devices Mobile">Devices Mobile</value>
+    <value column="PrintName" isTrl="N" original="Devices Mobile">Devices Mobile</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2481A6C4F6774D659E000B1CF90A0B47" trl="N">
+    <value column="Name" isTrl="Y" original="Alert Mobile">Alerta móvil</value>
+    <value column="PrintName" isTrl="Y" original="Alert Mobile">Alerta móvil</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2F917FA7492E4E019730290A056E5B9E" trl="N">
+    <value column="Name" isTrl="N" original="Setup Android Push Notifications">Setup Android Push Notifications</value>
+    <value column="PrintName" isTrl="N" original="Setup Android Push Notifications">Setup Android Push Notifications</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3213253D180C46ED82E2044969394D8C" trl="N">
+    <value column="Name" isTrl="Y" original="Name">Nombre</value>
+    <value column="PrintName" isTrl="Y" original="Name">Nombre</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3922745C389C431F81087BAECABBD7D0" trl="N">
+    <value column="Name" isTrl="N" original="Logs Device">Logs Device</value>
+    <value column="PrintName" isTrl="N" original="Logs Device">Logs Device</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5BAF497B4665451697E64B3B35E9764A" trl="N">
+    <value column="Name" isTrl="N" original="Test Push Notify">Test Push Notify</value>
+    <value column="PrintName" isTrl="N" original="Test Push Notify">Test Push Notify</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="75714A242F014BD28A9A7E3F60B9F4DB" trl="N">
+    <value column="Name" isTrl="Y" original="App Notification">App Notificaciones</value>
+    <value column="PrintName" isTrl="Y" original="App Notification">App Notificaciones</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9298E5F2D9134EF8953C458C8B91D7E2" trl="N">
+    <value column="Name" isTrl="N" original="Device key">Device key</value>
+    <value column="PrintName" isTrl="N" original="Device key">Device key</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="99FD58C7757141F1821F673CC6F7255E" trl="N">
+    <value column="Name" isTrl="N" original="Template Json Notify">Template Json Notify</value>
+    <value column="PrintName" isTrl="N" original="Template Json Notify">Template Json Notify</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B2A5DE755FC14AAA90AE568118C4FE6B" trl="N">
+    <value column="Name" isTrl="N" original="Server key">Server key</value>
+    <value column="PrintName" isTrl="N" original="Server key">Server key</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DBF95170AE884625847679FE283BDFC3" trl="N">
+    <value column="Name" isTrl="Y" original="Date Notification">Fecha de Notificación</value>
+    <value column="PrintName" isTrl="N" original="Date Notification">Date Notification</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E4F93BC9E3D74647B4AA5E23B1C034B4" trl="N">
+    <value column="Name" isTrl="Y" original="End notification">Fin notificación</value>
+    <value column="PrintName" isTrl="Y" original="End notification">Fin notificación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EAA7D62CD2D148669E46989F73611A23" trl="N">
+    <value column="Name" isTrl="N" original="Url Firebase Cloud Messaging">Url Firebase Cloud Messaging</value>
+    <value column="PrintName" isTrl="N" original="Url Firebase Cloud Messaging">Url Firebase Cloud Messaging</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

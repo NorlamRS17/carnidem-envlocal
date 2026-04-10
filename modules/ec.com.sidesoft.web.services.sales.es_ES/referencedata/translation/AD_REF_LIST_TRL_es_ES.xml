@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="558ACBB7758E4EF78E6C6A67317C1554" trl="Y">
+    <value column="Name" isTrl="Y" original="Service">Servicios</value>
+    <value column="Description" isTrl="Y" original="Service">Servicios</value>
+  </row>
+  <row id="63A018A99C37493B94EF11534FFA61CD" trl="Y">
+    <value column="Name" isTrl="Y" original="Assists">Asistencias</value>
+    <value column="Description" isTrl="Y" original="Assists">Asistencias</value>
+  </row>
+  <row id="C81FCB1B98FB437BA782E6BB597482D3" trl="Y">
+    <value column="Name" isTrl="Y" original="Collection Expenses">Gastos de Cobanzas</value>
+    <value column="Description" isTrl="Y" original="Collection Expenses">Gastos de Cobanzas</value>
+  </row>
+  <row id="F95DA3A574894D9080435E65B82C456E" trl="Y">
+    <value column="Name" isTrl="Y" original="reversed">Reversado</value>
+    <value column="Description" isTrl="Y" original="reversed">Reversado</value>
+  </row>
+</compiereTrl>

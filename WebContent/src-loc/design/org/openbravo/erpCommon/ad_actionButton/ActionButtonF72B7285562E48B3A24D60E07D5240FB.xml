@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<REPORT>
+<template id="class" file="ActionButtonF72B7285562E48B3A24D60E07D5240FB.html"></template>
+
+<PARAMETER id="paramLanguage" name="language" default=""></PARAMETER>
+<PARAMETER id="paramCSS" name="css" attribute="href" replace="Default"></PARAMETER>
+<PARAMETER id="paramCSS_print" name="css" attribute="href" replace="Default"></PARAMETER>
+<PARAMETER id="key" name="key" default="" attribute="value"></PARAMETER>
+<PARAMETER id="form" name="form" default="" attribute="action"></PARAMETER>
+<PARAMETER id="processing" name="processing" default="" attribute="value"></PARAMETER>
+<PARAMETER id="window" name="window" default="" attribute="value"></PARAMETER>
+<PARAMETER id="paramCheck" name="check" default="Y"></PARAMETER>
+<PARAMETER id="paramDirectory" name="directory" default=""></PARAMETER>
+<PARAMETER id="processId" name="processId" default="PROCESS"></PARAMETER>
+<PARAMETER id="trlFormType" name="trlFormType" default="PROCESS"></PARAMETER>
+<PARAMETER id="processName" name="processName" replace="#processName#" default=""></PARAMETER>
+<PARAMETER id="processDescription" name="processDescription" replace="#processDescription#" default=""></PARAMETER>
+<PARAMETER id="processHelp" name="processHelp" replace="#processHelp#" default=""></PARAMETER>
+
+
+<PARAMETER id="buttonOK" name="ok" attribute="onmouseover" replace="xx" default=""></PARAMETER>
+<PARAMETER id="buttonOK" name="ok" attribute="onfocus" replace="xx" default=""></PARAMETER>
+<PARAMETER id="imgButtonOK" name="ok" attribute="alt" replace="xx" default=""></PARAMETER>
+<PARAMETER id="imgButtonOK" name="ok" attribute="title" replace="xx" default=""></PARAMETER>
+<PARAMETER id="tdButtonOK" name="ok"></PARAMETER>
+
+<PARAMETER id="buttonCancel" name="cancel" attribute="onmouseover" replace="xx" default=""></PARAMETER>
+<PARAMETER id="buttonCancel" name="cancel" attribute="onfocus" replace="xx" default=""></PARAMETER>
+<PARAMETER id="imgButtonCancel" name="cancel" attribute="alt" replace="xx" default=""></PARAMETER>
+<PARAMETER id="imgButtonCancel" name="cancel" attribute="title" replace="xx" default=""></PARAMETER>
+<PARAMETER id="tdButtonCancel" name="cancel"></PARAMETER>
+
+
+<PARAMETER id="messageBoxID" name="messageType" attribute="class" replace="yy" default="HIDDEN"></PARAMETER>
+<PARAMETER id="messageBoxIDTitle" name="messageTitle" default=""></PARAMETER>
+<PARAMETER id="messageBoxIDMessage" name="messageMessage" default=""></PARAMETER>
+
+
+
+<PARAMETER id="sscgr_qualitycontroltype" name="sscgr_qualitycontroltype" attribute="value"/>
+<SUBREPORT id="reportsscgr_qualitycontroltype" name="reportsscgr_qualitycontroltype" report="org/openbravo/erpCommon/reference/List">
+  <ARGUMENT name="parameterListSelected" withId="sscgr_qualitycontroltype"/>
+</SUBREPORT>
+<PARAMETER id="sscgr_group_id" name="sscgr_group_id" attribute="value" default="N" replaceCharacters="htmlPreformated"/>
+<PARAMETER id="sscgr_partnersc_id" name="sscgr_partnersc_id" attribute="value" default="N" replaceCharacters="htmlPreformated"/>
+<PARAMETER id="sscgr_inoutsc_id" name="sscgr_inoutsc_id" attribute="value" default="N" replaceCharacters="htmlPreformated"/>
+<PARAMETER id="sscgr_productsc_id" name="sscgr_productsc_id" attribute="value" default="N" replaceCharacters="htmlPreformated"/>
+
+
+<PARAMETER id="sscgr_ticketsc" name="sscgr_ticketsc" attribute="value"></PARAMETER>
+
+
+<PARAMETER id="outputType" name="outputType" attribute="value"/>
+<SUBREPORT id="reportoutputType" name="reportoutputType" report="org/openbravo/erpCommon/reference/List">
+  <ARGUMENT name="parameterListSelected" withId="outputType"/>
+</SUBREPORT>
+
+
+<DISCARD id="discard"></DISCARD>
+
+<LABEL id="lbl::sscgr_qualitycontroltype" name="lbl::sscgr_qualitycontroltype" replace="#sscgr_qualitycontroltype#">sscgr_qualitycontroltypelbl</LABEL>
+<LABEL id="lbl::sscgr_group_id" name="lbl::sscgr_group_id" replace="#sscgr_group_id#">sscgr_group_idlbl</LABEL>
+<LABEL id="lbl::sscgr_partnersc_id" name="lbl::sscgr_partnersc_id" replace="#sscgr_partnersc_id#">sscgr_partnersc_idlbl</LABEL>
+<LABEL id="lbl::sscgr_inoutsc_id" name="lbl::sscgr_inoutsc_id" replace="#sscgr_inoutsc_id#">sscgr_inoutsc_idlbl</LABEL>
+<LABEL id="lbl::sscgr_productsc_id" name="lbl::sscgr_productsc_id" replace="#sscgr_productsc_id#">sscgr_productsc_idlbl</LABEL>
+<LABEL id="lbl::sscgr_ticketsc" name="lbl::sscgr_ticketsc" replace="#sscgr_ticketsc#">sscgr_ticketsclbl</LABEL>
+<LABEL id="lbl::outputType" name="lbl::outputType" replace="#outputType#">outputTypelbl</LABEL>
+
+</REPORT>

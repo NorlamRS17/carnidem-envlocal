@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="079865825A0545B5A43A5D82C8DF0241" trl="N">
+    <value column="Name" isTrl="N" original="atindpo_postventalinea">atindpo_postventalinea</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C8E35B979E2A405D906904590E30E425" trl="N">
+    <value column="Name" isTrl="N" original="SpsmvatTransferStatus">SpsmvatTransferStatus</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

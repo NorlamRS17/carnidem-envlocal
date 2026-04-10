@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE GL_JOURNALLINE">
+    <table name="GL_JOURNALLINE" primaryKey="GL_JOURNALENTRY_KEY">
+      <column name="EM_SSIMPCN_TYPE" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSIMPCN_IMP_CONSOL_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="SSIMPCN_IMP_CONSOLIDATION" name="EM_SSIMPCN_JL_IC">
+        <reference local="EM_SSIMPCN_IMP_CONSOL_ID" foreign="SSIMPCN_IMP_CONSOLIDATION_ID"/>
+      </foreign-key>
+    </table>
+  </database>

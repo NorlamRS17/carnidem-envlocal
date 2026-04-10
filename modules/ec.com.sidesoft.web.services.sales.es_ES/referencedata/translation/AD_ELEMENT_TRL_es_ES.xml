@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="21B77D3DA1EC41E2A33168992233C17A" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Crossdocumenttype">Cruce Tipo de Documento</value>
+    <value column="PrintName" isTrl="Y" original="Cross Document Type">Cruce Tipo de Documento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5273D3B1FA164291B8C5B9CBD608043E" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Ispay_Portal_User">Usuario Portal de Cobros</value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Ispay_Portal_User">Usuario Portal de Cobros</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="69769D1121C84EB1845B1A3D5DC3E41B" trl="Y">
+    <value column="Name" isTrl="Y" original="Allowed in payment portal">Permitido en portal de pagos</value>
+    <value column="PrintName" isTrl="Y" original="Allowed in payment portal">Permitido en portal de pagos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2DC33ED8ED774857BCE2D4ADFAF57082" trl="Y">
+    <value column="Name" isTrl="Y" original="Document Type - Invoice">Tipo de Documento Factura A+S</value>
+    <value column="PrintName" isTrl="Y" original="Document Type - Invoice">Tipo de Documento Factura A+S</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2DF4698092764B959976D1C544354CA2" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_SWSSL_ISCAL_COL_EXP">Gasto de Cobranza Calculado</value>
+    <value column="PrintName" isTrl="Y" original="EM_SWSSL_ISCAL_COL_EXP">Gasto de Cobranza Calculado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4164FA57348E45F58C79E1CFE5A2D27B" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Product_Exp_ID">Item Gastos de Cobranza</value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Product_Exp_ID">Item Gastos de Cobranza</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4F09EEE886604785BDB1EEBE59DAC86B" trl="Y">
+    <value column="Name" isTrl="Y" original="Financial Account - Payment">Depositar en - Cobro </value>
+    <value column="PrintName" isTrl="Y" original="Financial Account - Payment">Depositar en - Cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5921278B0C0B4D56B10D17FB8902AF01" trl="N">
+    <value column="Name" isTrl="N" original="Generate Transaction">Generate Transaction</value>
+    <value column="PrintName" isTrl="N" original="Generate Transaction">Generate Transaction</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5CEE33A179314DDEB1299BA42F1044FD" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Deposit_In_Ant_ID">Depositar en - Anticipo </value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Deposit_In_Ant_ID">Depositar en - Anticipo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8330D3A8C7A74C51A93AA7049C78536A" trl="Y">
+    <value column="Name" isTrl="Y" original="Document Type - Payment">Tipo de Documento Cobro</value>
+    <value column="PrintName" isTrl="Y" original="Document Type - Payment">Tipo de Documento Cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9087B4A01FBB4472B391826781B8DD1C" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Revreason">Razón de Reverso</value>
+    <value column="PrintName" isTrl="Y" original="Reverse Reason">Razón de Reverso</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="AF1E7CF781D54704BDB4E7C5FFD10175" trl="N">
+    <value column="Name" isTrl="Y" original="No. Main Collection Credit Operation">No. Cobro Principal - Cruce</value>
+    <value column="PrintName" isTrl="N" original="No. Cobro Principal - Cruce">No. Cobro Principal - Cruce</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="AF1E7CF781D54704BDB4E7C5FFD10175" trl="N">
+    <value column="Name" isTrl="N" original="No. Main Collection Credit Operation">No. Main Collection Credit Operation</value>
+    <value column="PrintName" isTrl="N" original="No. Main Collection Credit Operation">No. Main Collection Credit Operation</value>
+    <value column="Description" isTrl="N" original="">No. Cobro Principal Operación Crédito</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B3AF61BBA77D403F8CA7264532B55588" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Payment_Method_ID">Método de pago - Cobro</value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Payment_Method_ID">Método de pago - Cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B754A3F5638243638B0068098CEEF274" trl="Y">
+    <value column="Name" isTrl="Y" original="Payment Method Invoice">Método de Pago Fact. A+S</value>
+    <value column="PrintName" isTrl="Y" original="Payment Method - Invoice">Método de Pago Fact. A+S</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B9C492DD0B4743C4952A472F8016C31F" trl="Y">
+    <value column="Name" isTrl="Y" original="em_swssl_payment_origin_id">Cobro Origen</value>
+    <value column="PrintName" isTrl="N" original="Cobro Origen">Cobro Origen</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C1E5F816801B413DA32F5AD844B44C2E" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Payment_Method_Ant_ID">Método de pago - Anticipo</value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Payment_Method_Ant_ID">Método de pago - Anticipo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C2139E4FB86A45C7BEBEBC80CF46688A" trl="N">
+    <value column="Name" isTrl="Y" original="em_swssl_import_charged_total">Importe Total Cobrado</value>
+    <value column="PrintName" isTrl="N" original="Importe Total Cobrado">Importe Total Cobrado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CDA7280A98A5439A820B4C2EE6789B7F" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_C_Paymentterm_Inv_ID">Condiciones de Pago Fact. A+S</value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_C_Paymentterm_Inv_ID">Condiciones de Pago Fact. A+S</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D36A70C5A2644E2892431E0572B1704C" trl="Y">
+    <value column="Name" isTrl="Y" original="em_swssl_typeprod">Tipo de producto</value>
+    <value column="PrintName" isTrl="Y" original="em_swssl_typeprod">Tipo de producto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D65F0DD3095A4A46B56A12FC11B68D45" trl="N">
+    <value column="Name" isTrl="Y" original="em_swssl_invoice_a_s">Factura A/S</value>
+    <value column="PrintName" isTrl="N" original="Factura A/S">Factura A/S</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D8731B7E5D8243B68DBCA0FE264DB9C0" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Doctype_Advance_ID">Tipo de Documento Anticipo</value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Doctype_Advance_ID">Tipo de Documento Anticipo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EA5C9D3815E748109AED12EE4B75C4CF" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Business_Unit_Inv_ID">Unidad de Negocio Fact. A+S</value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Business_Unit_Inv_ID">Unidad de Negocio Fact. A+S</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EF09F30A47BA41F98D9A77DD0B54C075" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Revdocumenttype">N.Cred. Tipo de Documento </value>
+    <value column="PrintName" isTrl="Y" original="Document Type">N.Cred. Tipo de Documento </value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EF0BB670389448C8A748DB6E0A6769E4" trl="Y">
+    <value column="Name" isTrl="Y" original="isrefinancing">Refinanciamiento</value>
+    <value column="PrintName" isTrl="N" original="Refinanciamiento">Refinanciamiento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original="isrefinancing">isrefinancing</value>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F0E48C80866A40A79658172B67A7FF79" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Crossfin_Account_ID">Cruce Depositar en</value>
+    <value column="PrintName" isTrl="Y" original="Cros Deposit to">Cruce Depositar en</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F871A2D1D3E64C03B677C0A73003EED1" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Cost_Center_Inv_ID">Centro de Costos Fact. A+S</value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Cost_Center_Inv_ID">Centro de Costos Fact. A+S</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FC69D6186A4D4ADA8FBC1CFAAA04CE39" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Revpaymentmethod_ID">N.Cred. Método de Pago</value>
+    <value column="PrintName" isTrl="Y" original="Payment Method">N.Cred. Método de Pago</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

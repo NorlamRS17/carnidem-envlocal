@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_INVENTORY">
+    <table name="M_INVENTORY" primaryKey="M_INVENTORY_KEY">
+      <column name="EM_ECSCB_BREAKDOWN_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="ECSCB_BREAKDOWN" name="EM_ECSCB_BREAKD_FK_INVENTORY">
+        <reference local="EM_ECSCB_BREAKDOWN_ID" foreign="ECSCB_BREAKDOWN_ID"/>
+      </foreign-key>
+    </table>
+  </database>

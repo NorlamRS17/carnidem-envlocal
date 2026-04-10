@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE ATINDPO_POSTVENTA">
+    <table name="ATINDPO_POSTVENTA" primaryKey="ATINDPO_POSTVENTA_KEY">
+      <column name="EM_SSWOSRE_PRINTDOCUMENTS" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

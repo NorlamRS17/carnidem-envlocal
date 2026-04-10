@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_FIELD" version="">
+  <row id="7FFF3E59819D4B229D8513E0B3E987D0" trl="N">
+    <value column="Name" isTrl="N" original="HQL Where Clause">HQL Where Clause</value>
+    <value column="Description" isTrl="N" original="Remove only the records matching this criteria">Remove only the records matching this criteria</value>
+    <value column="Help" isTrl="N" original="HQL where clause that will be used to delete only the records that match this criteria. In case this field is not set, all records will be deleted.">HQL where clause that will be used to delete only the records that match this criteria. In case this field is not set, all records will be deleted.</value>
+  </row>
+  <row id="B9A3BB99CD334F538B1A310823A48161" trl="N">
+    <value column="Name" isTrl="N" original="Date Column to Check">Date Column to Check</value>
+    <value column="Description" isTrl="N" original="Date Column to Check">Date Column to Check</value>
+    <value column="Help" isTrl="N" original="It is the date column that will be applied the &quot;Older Than&quot; filter to in order to determine the records to be removed.&#10;&#10;In case no column is selected, &quot;Creation Date&quot; will be taken by default.">It is the date column that will be applied the "Older Than" filter to in order to determine the records to be removed.
+
+In case no column is selected, "Creation Date" will be taken by default.</value>
+  </row>
+  <row id="DB76A0E00FC741669D32BC8F5D6DCCBB" trl="N">
+    <value column="Name" isTrl="N" original="Log Table">Log Table</value>
+    <value column="Description" isTrl="N" original="Log table">Log table</value>
+    <value column="Help" isTrl="N" original="Log table from which records will be deleted when clean up process is executed.">Log table from which records will be deleted when clean up process is executed.</value>
+  </row>
+</compiereTrl>

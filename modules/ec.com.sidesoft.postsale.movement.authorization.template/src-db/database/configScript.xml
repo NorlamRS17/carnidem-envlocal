@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_PROCESS_ID" pkRow="07DAF4054E4B463E8FD3DDA885D87FB9">
+      <oldValue><![CDATA[3B581E33CE334A9E9388817E625EF040]]></oldValue>
+      <newValue><![CDATA[A37402A9673B4048A245E413D60263B9]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISSESSIONATTR" pkRow="27EBF209E4AE4106AE040DA8F42A9534">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_PROCESS_ID" pkRow="3947D19A90D3469EBFA5AAA6BE85CCDC">
+      <oldValue><![CDATA[F89256BCEF2544969FAAE31506003E93]]></oldValue>
+      <newValue><![CDATA[0483599196D442B0B7C4032DF3CD1496]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_PROCESS_ID" pkRow="DA569191E3724B248DDF12309F594642">
+      <oldValue/>
+      <newValue><![CDATA[D76FECE66C5748B1A30275734FFAFD5B]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="EM_OBUIAPP_PROCESS_ID" pkRow="DA569191E3724B248DDF12309F594642">
+      <oldValue><![CDATA[6ACB9D8947C84BDAAAAE597891A59A3B]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+  </vector>

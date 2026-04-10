@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSWOS_BINNACLE_TRG">
+    <trigger name="SSWOS_BINNACLE_TRG" table="ATINDPO_POSTVENTA" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[v_status_From varchar(60);  
+v_status_To varchar(60);  
+Cur_Vehicle RECORD;
+v_count NUMBER;
+
+BEGIN
+IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+    
+	IF (INSERTING OR UPDATING ) THEN
+		If(INSERTING)Then
+			v_status_From:=NULL;
+			v_count := 1;
+		ELSE
+			If(:OLD.docstatus<>:NEW.docstatus)Then
+				v_count := 1;
+			ELSE
+				v_count := 0;
+			End IF;
+			v_status_From:=:OLD.docstatus;
+		End IF;
+		v_status_To	:= :NEW.docstatus;
+
+		If(v_count>0)Then
+			INSERT INTO public.sswos_binnacle(
+				sswos_binnacle_id	, ad_client_id, ad_org_id, createdby, updatedby, status_from, status_to, atindpo_postventa_id)
+			VALUES (get_uuid()		, :NEW.ad_client_id, :NEW.ad_org_id, :NEW.updatedby, :NEW.updatedby, v_status_From,
+				v_status_To, :NEW.atindpo_postventa_id);
+		End IF;
+		
+
+	End If; -- END (TG_OP = 'INSERT' OR TG_OP = 'UPDATE' )
+	
+END SSWOS_BINNACLE_TRG
+]]></body>
+    </trigger>
+  </database>

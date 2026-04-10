@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSIMPCN_IMP_CONSOL_REACTIVATE">
+    <function name="SSIMPCN_IMP_CONSOL_REACTIVATE" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult				VARCHAR2(2000);
+	vMessage			VARCHAR2(2000);
+	
+	cPar				RECORD;
+	vRecord				RECORD;
+	vRecordID			VARCHAR2(32);
+	vClientID			VARCHAR2(32);
+	vOrgID				VARCHAR2(32);
+	vUserID				VARCHAR2(32);
+	
+	vCheck			 NUMBER;
+	
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID) ;
+	vResult := 'PInstanceNotFound';
+ AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+	BEGIN
+
+		vResult := 'ReadingParameters';
+		FOR cPar IN (
+			SELECT i.Record_ID,
+				i.AD_User_ID,
+				i.AD_Client_ID,
+				i.AD_Org_ID,
+				pa.ParameterName,
+				pa.P_String,
+				pa.P_Number,
+				pa.P_Date
+			FROM AD_PInstance i
+				LEFT JOIN AD_PInstance_Para AS pa ON pa.AD_PInstance_ID = i.AD_PInstance_ID
+			WHERE i.AD_PInstance_ID = PInstance_ID
+		) LOOP
+			vRecordID := cPar.Record_ID;
+			vClientID := cPar.AD_Client_ID;
+			vOrgID := cPar.AD_Org_ID;
+			vUserID := cPar.AD_User_ID;
+		END LOOP;
+		
+		SELECT * INTO vRecord FROM ssimpcn_imp_consolidation WHERE ssimpcn_imp_consolidation_id = vRecordID;
+		IF vRecord.processing = 'Y' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@DocBeingProcessed@');
+		END IF;
+
+		UPDATE ssimpcn_imp_consolidation SET processing = 'Y' WHERE ssimpcn_imp_consolidation_id = vRecordID;
+		
+		SELECT COUNT(*) INTO vCheck
+		FROM ssimpcn_imp_consol_line icl
+			JOIN c_order o ON o.C_Campaign_ID = icl.C_Campaign_ID AND o.EM_Ssip_Importstatus = 'LL'
+		WHERE icl.ssimpcn_imp_consolidation_id = vRecordID;
+		IF vCheck > 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, 'No se puede reactivar el documento porque existen importaciones liquidadas en las líneas');
+		END IF;
+		
+		UPDATE ssimpcn_imp_consolidation SET processing = 'N', docstatus = 'DR'  WHERE ssimpcn_imp_consolidation_id = vRecordID;
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage) ;
+	 AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, vMessage);
+		RETURN;
+		
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+    UPDATE ssimpcn_imp_consolidation SET processing = 'N' WHERE ssimpcn_imp_consolidation_id = vRecordID;
+    vResult := '@ERROR='||SQLERRM;
+    DBMS_OUTPUT.PUT_LINE( vResult) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, vResult) ;
+
+    RETURN;
+END SSIMPCN_IMP_CONSOL_REACTIVATE
+]]></body>
+    </function>
+  </database>

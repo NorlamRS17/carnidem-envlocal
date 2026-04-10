@@ -1,0 +1,57 @@
+# Sincronización por punteros: last_commits.json + scripts/env_pointer_sync.py
+# 1ª ejecución sin last_commits.json: solo guarda SHA remotos (no copia árbol).
+# Siguientes: si cambia el SHA de una fuente, aplica solo git diff (orden: core → capas → módulos).
+
+name: Update env (punteros)
+
+on:
+  push:
+    branches: [main]
+
+env:
+  CORE_REPO: "NorlamRS17/OpenbravoEstandar18Q3.5CoreMarlon"
+  CORE_MERGE_REPOS: >-
+    NorlamRS17/CarnidemCore
+  MODULE_REPOS: >-
+    NorlamRS17/Estandar24Q1
+    NorlamRS17/SidesoftProfesionalProduccion
+    NorlamRS17/Carnidem_Marlon
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ambiente
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+          path: repo-b
+          fetch-depth: 0
+          submodules: false
+
+      - name: Punteros y deltas (Python + JSON)
+        env:
+          SYNC_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
+          REPO_B: ${{ github.workspace }}/repo-b
+          COMMIT_MSG_FILE: ${{ github.workspace }}/commit_message.txt
+          CORE_REPO: ${{ env.CORE_REPO }}
+          CORE_MERGE_REPOS: ${{ env.CORE_MERGE_REPOS }}
+          MODULE_REPOS: ${{ env.MODULE_REPOS }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_NUMBER: ${{ github.run_number }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+        run: python3 "${{ github.workspace }}/repo-b/scripts/env_pointer_sync.py"
+
+      - name: Commit y push
+        run: |
+          cd "${{ github.workspace }}/repo-b"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if [[ -n $(git status -s) ]]; then
+            git commit -q -F "${{ github.workspace }}/commit_message.txt"
+            git push -q origin main
+          else
+            echo "Sin cambios en el repo del ambiente."
+          fi

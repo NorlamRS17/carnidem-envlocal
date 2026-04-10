@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUIAPP_PROCESS" version="">
+  <row id="712F7749479741518483423B8766BC0C" trl="N">
+    <value column="Name" isTrl="Y" original="CollectionProposal">Propuestas de cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F21EE5E8558B49D3AB45F07D4AA47A67" trl="N">
+    <value column="Name" isTrl="Y" original="Upload File Bank">Cargar lineas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

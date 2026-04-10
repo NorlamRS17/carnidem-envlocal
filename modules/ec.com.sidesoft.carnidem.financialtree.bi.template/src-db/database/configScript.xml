@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="OBUISEL_SELECTOR" columnname="DISPLAYFIELD_ID" pkRow="2E64F551C7C4470C80C29DBA24B34A5F">
+      <oldValue/>
+      <newValue><![CDATA[970BAD3358774ED191B4DB1B08F5EA8F]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="F06C9E59A590493A8EA9F00248996699">
+      <oldValue><![CDATA[95E2A8B50A254B2AAE6774B8C2F28120]]></oldValue>
+      <newValue><![CDATA[30]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="F06C9E59A590493A8EA9F00248996699">
+      <oldValue><![CDATA[84BD487714B04B838A8D562A30E8792C]]></oldValue>
+      <newValue><![CDATA[800060]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_TABLE" columnname="WHERECLAUSE" pkRow="FA8E19B4F25440CDA63D2AF90500C9DE">
+      <oldValue><![CDATA[(C_BPartner.IsVendor='Y' OR C_BPartner.IsEmployee='Y')]]></oldValue>
+      <newValue><![CDATA[C_BPartner.IsSalesRep='Y']]></newValue>
+    </columnDataChange>
+  </vector>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="3668ABDAA70D438F956977891241248C" trl="N">
+    <value column="Name" isTrl="N" original="PDF">PDF</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="71A93DE10C134A55AEE91FED9E7925DB" trl="N">
+    <value column="Name" isTrl="N" original="Csv">Csv</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="DF8040B61F814A72AA586E44D4261ECA" trl="N">
+    <value column="Name" isTrl="N" original="Excel">Excel</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F2906D631EDF48D6A8D52729F3E60E51" trl="N">
+    <value column="Name" isTrl="N" original="Html">Html</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

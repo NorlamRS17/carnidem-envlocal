@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_mov_bod_gr" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select mv.m_movement_id as codigomov,
+        mv.movementdate::date as fecha,
+       'Traspaso-'||mv.documentno as orden,
+        mvl.movementqty as cantidad,
+       coalesce(mv.description,'') as descripcion,
+       (select name from c_uom where c_uom_id = mvl.c_uom_id) as um,
+       (select value from m_product where m_product_id = mvl.m_product_id) as codigoproducto,
+        (select coalesce(description,'') from m_movementline where m_movementline_id = mvl.m_movementline_id)  || ' ' || (select name from m_product where m_product_id = mvl.m_product_id) as descripcionProducto,
+        (select name from m_product where m_product_id = mvl.m_product_id) as marca,
+        (select description from m_attributesetinstance where m_attributesetinstance_id = mvl.m_attributesetinstance_id) as atributo,
+        (select name from ad_org where ad_org_id=mv.ad_org_id) as Sucursal_Destino
+from m_movementline mvl, m_movement mv
+where mv.m_movement_id=$P{DOCUMENT_ID}
+and mvl.m_movement_id = mv.m_movement_id]]>
+	</queryString>
+	<field name="codigomov" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="orden" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="um" class="java.lang.String"/>
+	<field name="codigoproducto" class="java.lang.String"/>
+	<field name="descripcionproducto" class="java.lang.String"/>
+	<field name="marca" class="java.lang.String"/>
+	<field name="atributo" class="java.lang.String"/>
+	<field name="sucursal_destino" class="java.lang.String"/>
+	<pageHeader>
+		<band height="285" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="401" y="99" width="100" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="281" y="174" width="252" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sucursal_destino}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="281" y="200" width="252" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{sucursal_destino}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="401" y="76" width="100" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{orden}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{codigoproducto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="107" y="0" width="333" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{marca}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="456" y="0" width="73" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

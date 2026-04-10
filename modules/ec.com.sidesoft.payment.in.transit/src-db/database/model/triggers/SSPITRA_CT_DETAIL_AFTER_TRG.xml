@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPITRA_CT_DETAIL_AFTER_TRG">
+    <trigger name="SSPITRA_CT_DETAIL_AFTER_TRG" table="SSPITRA_CT_DETAIL" fires="after" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[	vAmount NUMBER;
+BEGIN
+	IF UPDATING THEN
+		SELECT SUM(amount) INTO vAmount FROM sspitra_ct_detail WHERE sspitra_collectiontransit_id=:NEW.sspitra_collectiontransit_id;
+		UPDATE sspitra_collectiontransit SET amount=vAmount WHERE sspitra_collectiontransit_id=:NEW.sspitra_collectiontransit_id;
+	END IF;
+
+END SSPITRA_CT_DETAIL_AFTER_TRG
+]]></body>
+    </trigger>
+  </database>

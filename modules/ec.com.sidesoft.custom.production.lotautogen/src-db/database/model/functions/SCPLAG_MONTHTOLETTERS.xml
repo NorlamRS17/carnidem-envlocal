@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SCPLAG_MONTHTOLETTERS">
+    <function name="SCPLAG_MONTHTOLETTERS" type="VARCHAR">
+      <parameter name="p_monthnumber" type="NUMERIC" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_result VARCHAR2(4000):='';
+    
+BEGIN
+
+	IF(p_monthnumber= 01) THEN 
+		v_result := 'ENE';
+	ELSIF(p_monthnumber= 02) THEN 
+		v_result := 'FEB';
+	ELSIF(p_monthnumber= 03) THEN 
+		v_result := 'MAR';
+	ELSIF(p_monthnumber= 04) THEN 
+		v_result := 'ABR';		
+	ELSIF(p_monthnumber= 05) THEN 
+		v_result := 'MAY';
+	ELSIF(p_monthnumber= 06) THEN 
+		v_result := 'JUN';
+	ELSIF(p_monthnumber= 07) THEN 
+		v_result := 'JUL';					
+	ELSIF(p_monthnumber= 08) THEN 
+		v_result := 'AGO';
+	ELSIF(p_monthnumber= 09) THEN 
+		v_result := 'SEP';
+	ELSIF(p_monthnumber= 10) THEN 
+		v_result := 'OCT';
+	ELSIF(p_monthnumber= 11) THEN 
+		v_result := 'NOV';								
+	ELSIF(p_monthnumber= 12) THEN 
+		v_result := 'DIC';		
+	ELSE
+		v_result := '';	
+	END IF ;
+
+RETURN v_result;
+END SCPLAG_MONTHTOLETTERS
+]]></body>
+    </function>
+  </database>

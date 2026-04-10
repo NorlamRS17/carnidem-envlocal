@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="2187">
+      <oldValue><![CDATA[@Processed@='Y']]></oldValue>
+      <newValue><![CDATA[@SSAPYAL_ReadonlyPaymentTerm@='N' | @Processed@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="2924">
+      <oldValue/>
+      <newValue><![CDATA[@SSAPYAL_EditPaymentTerm@='N']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="3500">
+      <oldValue><![CDATA[@Processed@='Y']]></oldValue>
+      <newValue><![CDATA[@SSAPYAL_ReadonlyPaymentTerm@='N' | @Processed@='Y']]></newValue>
+    </columnDataChange>
+  </vector>

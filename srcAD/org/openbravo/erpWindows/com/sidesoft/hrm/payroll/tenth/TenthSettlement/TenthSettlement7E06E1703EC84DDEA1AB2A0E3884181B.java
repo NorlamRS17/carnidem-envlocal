@@ -30,7 +30,7 @@ public class TenthSettlement7E06E1703EC84DDEA1AB2A0E3884181B extends HttpSecureA
   
   private static final String windowId = "0B869CDD039E4358AEF6C6E62DD36A74";
   private static final String tabId = "7E06E1703EC84DDEA1AB2A0E3884181B";
-  private static final int accesslevel = 7;
+  private static final int accesslevel = 3;
   private static final String moduleId = "913FE64FE6F74E51A6929D2A21460CFB";
   
   @Override

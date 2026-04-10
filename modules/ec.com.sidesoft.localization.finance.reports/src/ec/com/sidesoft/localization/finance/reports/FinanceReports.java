@@ -36,7 +36,7 @@ public class FinanceReports extends BaseReportActionHandler {
       crtOrgType.setMaxResults(1);
       if (crtOrgType.count() > 0) {
         OrganizationType orgType = (OrganizationType) crtOrgType.uniqueResult();
-        // org = orgType.getOrganizationList().get(0);
+        org = orgType.getOrganizationList().get(0);
       }
 
       jsonContent = new JSONObject(content);

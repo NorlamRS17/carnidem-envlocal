@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSSOIN_ORDER_CLOSE0">
+    <function name="SSSOIN_ORDER_CLOSE0" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_c_order_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[DECLARE
+
+TYPE RECORD IS REF CURSOR;
+
+  Cur_Parameter  RECORD;
+  
+  v_Client_ID VARCHAR2(32);
+  v_Org_ID VARCHAR2(32);
+  v_User_ID VARCHAR2(32) ;
+  v_ResultStr VARCHAR2(2000) := '';  
+  v_Record_ID  VARCHAR2(32);
+  V_MESSAGE VARCHAR2(2000):='';
+  V_Processing Varchar2(60);
+  v_exist NUMBER;
+  
+BEGIN
+  BEGIN --BODY
+    IF (pinstance_id IS NOT NULL) THEN
+        -- Get Parameters
+        v_ResultStr := 'ReadingParameters';
+        FOR Cur_Parameter IN (
+            SELECT i.Record_ID,
+                i.AD_User_ID,
+                i.AD_Client_ID,
+                i.AD_Org_ID
+            FROM AD_PInstance i
+            WHERE i.AD_PInstance_ID = PInstance_ID
+	    )
+        LOOP
+            v_Record_ID := Cur_Parameter.Record_ID;
+            v_Client_ID := Cur_Parameter.AD_Client_ID;
+            v_Org_ID := Cur_Parameter.AD_Org_ID;
+            v_User_ID := Cur_Parameter.AD_User_ID;
+
+        END LOOP; -- End Get Parameter
+    END IF;
+    
+    IF p_c_order_id is not null THEN
+        v_Record_ID := p_c_order_id;
+    END IF;
+    
+    select count(*) into v_exist from c_orderline where c_order_id = v_Record_ID and (qtyordered <> qtydelivered or qtyordered <> qtyinvoiced);
+    
+    IF v_exist > 0 THEN
+        UPDATE C_ORDER SET DocStatus='CO', docaction='--', EM_Sssoin_Generalstatus='DI', processed='Y' where c_order_id = v_Record_ID;
+    ELSE
+        UPDATE C_ORDER SET DocStatus='CO', docaction='--', EM_Sssoin_Generalstatus='CS', processed='Y' where c_order_id = v_Record_ID;
+    END IF;
+    
+    IF (pinstance_id IS NOT NULL) THEN
+      --  Update AD_PInstance
+      DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished - ' || v_Message) ;
+      AD_UPDATE_PINSTANCE(pinstance_id, NULL, 'N', 1, V_MESSAGE) ;
+    END IF;
+    RETURN;
+    
+  END; --BODY
+  EXCEPTION
+  WHEN OTHERS THEN
+    -- Set processing 'N'
+    Update c_order c Set Processing = 'N' Where c.c_order_id = V_Record_Id;
+    v_ResultStr:= '@ERROR=' || SQLERRM;
+    DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+    RETURN;
+END SSSOIN_ORDER_CLOSE0
+]]></body>
+    </function>
+  </database>

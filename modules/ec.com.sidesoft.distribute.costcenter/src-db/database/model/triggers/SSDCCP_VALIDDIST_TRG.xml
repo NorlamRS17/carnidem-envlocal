@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSDCCP_VALIDDIST_TRG">
+    <trigger name="SSDCCP_VALIDDIST_TRG" table="SSDCCP_DISTCOSTCENTER" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[
+
+    v_DateNull DATE := TO_DATE('31-12-9999','DD-MM-YYYY');
+    v_AuxAmt NUMBER;
+    v_AmtRes NUMBER;
+    v_TotalInvoice NUMBER;
+    v_Status  character varying(60);
+    v_Posted  character varying(60);
+    v_Amount NUMBER;
+    v_DistCostCenter character varying(32);
+    v_InvoiceID character varying(32);
+    
+        
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+
+
+    IF (INSERTING OR UPDATING)   THEN  
+		v_Amount:= :NEW.AMOUNT;
+		v_InvoiceID:= :NEW.C_INVOICE_ID;
+		v_DistCostCenter:=:NEW.SSDCCP_DISTCOSTCENTER_ID;
+
+		SELECT TOTALLINES, docstatus, posted  
+		INTO v_TotalInvoice, v_Status, v_Posted  
+		FROM C_INVOICE WHERE C_INVOICE_ID = v_InvoiceID;
+
+
+		--RAISE_APPLICATION_ERROR(-20000, v_AuxAmt) ;
+
+		IF (v_Status='DR') THEN
+		
+			SELECT
+			COALESCE((SELECT SUM(AMOUNT) AS sum_ 
+			FROM ssdccp_distcostcenter 
+			WHERE C_INVOICE_ID = v_InvoiceID
+			AND SSDCCP_DISTCOSTCENTER_ID<> v_DistCostCenter),0)
+			INTO v_AmtRes
+			FROM DUAL;
+			
+			v_AuxAmt:= v_AmtRes + v_Amount;
+
+			--RAISE_APPLICATION_ERROR(-20000, v_AuxAmt) ;
+				
+			IF (v_AuxAmt<=v_TotalInvoice) THEN
+				:NEW.AMOUNT:= v_Amount;
+			ELSE
+				IF (v_AuxAmt>v_TotalInvoice) THEN
+					RAISE_APPLICATION_ERROR(-20000, 'El total distribuido no coincide con el valor de la factura') ;
+				END IF;
+			END IF;
+		END IF;
+
+
+		IF (v_Status='CO' OR v_Posted='Y') THEN
+			RAISE_APPLICATION_ERROR(-20000, '@20501@') ;
+		END IF;
+ 
+    END IF;
+
+
+    IF DELETING  THEN  
+
+		v_Amount:= :OLD.AMOUNT;
+		v_InvoiceID:= :OLD.C_INVOICE_ID;
+		v_DistCostCenter:=:OLD.SSDCCP_DISTCOSTCENTER_ID;
+
+		SELECT TOTALLINES, docstatus, POSTED
+		INTO v_TotalInvoice, v_Status,v_Posted
+		FROM C_INVOICE WHERE C_INVOICE_ID = v_InvoiceID;
+
+	
+		IF (v_Status='DR') THEN
+		
+			SELECT
+			COALESCE((SELECT SUM(AMOUNT) AS sum_ 
+			FROM ssdccp_distcostcenter 
+			WHERE C_INVOICE_ID = v_InvoiceID
+			AND SSDCCP_DISTCOSTCENTER_ID<> v_DistCostCenter),0)
+			INTO v_AmtRes
+			FROM DUAL;
+			
+			v_AuxAmt:= v_Amount - v_AmtRes ;
+				
+			IF (v_AuxAmt<=v_TotalInvoice AND v_AuxAmt>=0) THEN
+				:OLD.AMOUNT:= v_AuxAmt;
+
+			END IF;
+		END IF;
+
+		-- If invoice is processed, is not allowed to change C_INVOICE
+
+		IF (v_Status='CO' OR v_Posted='Y') THEN
+			RAISE_APPLICATION_ERROR(-20000, '@20501@') ;
+		END IF;
+ 
+ 
+    END IF;    
+ 
+END SSDCCP_VALIDDIST_TRG
+]]></body>
+    </trigger>
+  </database>

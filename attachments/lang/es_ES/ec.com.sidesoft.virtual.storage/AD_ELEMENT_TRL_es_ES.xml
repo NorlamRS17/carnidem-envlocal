@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="2D95C3BA4D8243C2AD00DC37499739A2" trl="Y">
+    <value column="Name" isTrl="Y" original="Reposition (%)">% de reposición</value>
+    <value column="PrintName" isTrl="Y" original="Reposition (%)">% de reposición</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="51234775607E41D3BF57B23938B4750C" trl="Y">
+    <value column="Name" isTrl="Y" original="Reposition BP">Reposición BP</value>
+    <value column="PrintName" isTrl="Y" original="Reposition BP">Reposición BP</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="65FBBCBC72C94A1C85EB94C7DEAB5F0B" trl="Y">
+    <value column="Name" isTrl="Y" original="Capacity">Capacidad</value>
+    <value column="PrintName" isTrl="Y" original="Capacity">Capacidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6773D212866B445280BF1D18B20AC402" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssvs_Virtualstorage">Bodega Virtual</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssvs_Virtualstorage">Bodega Virtual</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7B5229EC54464733B95D2FB1819907DD" trl="Y">
+    <value column="Name" isTrl="Y" original="Main">Principal</value>
+    <value column="PrintName" isTrl="Y" original="Main">Principal</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

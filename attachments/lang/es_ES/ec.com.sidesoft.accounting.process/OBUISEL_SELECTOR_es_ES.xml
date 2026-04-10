@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_ES" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="5ABB05501545403BB520437AD17B0653" trl="N">
+    <value column="Name" isTrl="N" original="Table selector">Table selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B3A636933E9E4DDAA6EDCBFE178AF3A5" trl="N">
+    <value column="Name" isTrl="N" original="Document Type selector">Document Type selector</value>
+    <value column="Description" isTrl="N" original="Document Type selector">Document Type selector</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

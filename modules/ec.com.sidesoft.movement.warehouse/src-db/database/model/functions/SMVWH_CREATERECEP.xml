@@ -1,0 +1,214 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SMVWH_CREATERECEP">
+    <function name="SMVWH_CREATERECEP" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[p_record_id VARCHAR(60);
+    p_docAction VARCHAR(60);
+    p_user VARCHAR(60);
+    v_ResultStr VARCHAR2(2000):='';
+    Cur_Params RECORD;
+    rOrder RECORD;
+    cOrderLine RECORD;
+    vDescription VARCHAR(255):='';
+    vLineBreak TEXT:='';
+	vMovement		record;
+	curLines		RECORD;
+	curImeis		RECORD;
+	vuid VARCHAR(32);
+	loc			RECORD;
+BEGIN
+
+    FOR Cur_Params IN (
+        SELECT *
+        FROM ad_ep_instance_para
+        WHERE ad_ep_instance_id = p_ep_instance
+    ) LOOP
+        IF cur_params.parametername = 'DocAction' THEN
+            p_docaction := Cur_Params.p_string;
+        ELSIF (cur_params.parametername = 'Record_ID') THEN
+            p_record_id := cur_params.p_string;
+        ELSIF (cur_params.parametername = 'User') THEN
+            p_user := cur_params.p_string;
+        END IF;
+    END LOOP;
+    
+				
+	SELECT 
+		mmov.em_Smvwh_location_from, 
+		mmov.ad_client_id,
+		mware.m_warehouse_id,
+		ador.ad_org_id as ad_org, 
+		ador.EM_Ssrs_C_Doctypeto_ID as Doctype, 
+		(SELECT ad_sequence_doctype(ador.EM_Ssrs_C_Doctypeto_ID, NULL, 'Y') FROM dual) as seqnum,
+		mmov.MovementDate as mdate,
+		mmov.name as name,
+		mmov.description as description,
+		'Transferencia origen: '|| mmov.documentno as adddescription,
+		now()::date as trasnportdate,
+		mmov.EM_Smvwh_Generatedrecep as EM_Smvwh_Generatedrecepp,
+		'N'::character varying as EM_Smvwh_Generatedrecep,
+		mmov.EM_Smvwh_Location_Transit, 
+		mmov.EM_Smvwh_Location_To 
+		into vMovement
+		FROM M_Movement mmov
+		left join m_locator mloc on mloc.m_locator_id = mmov.em_Smvwh_location_from
+		left join m_warehouse mware on mware.m_warehouse_id = mloc.m_warehouse_id
+		left join ad_org ador on ador.ad_org_id = mware.ad_org_id
+		where M_Movement_id = p_record_id
+	;
+	
+	if vMovement.EM_Smvwh_Generatedrecepp = 'Y' then
+	
+		if 
+			vMovement.EM_Smvwh_Location_From is NULL or vMovement.EM_Smvwh_Location_From = ''
+			then
+			RAISE_APPLICATION_ERROR(-20000, 'No se puede generar recepción si no existe ubicacion Origen') ;
+		elsif
+			vMovement.EM_Smvwh_Location_Transit is NULL or vMovement.EM_Smvwh_Location_Transit = ''
+			then
+			RAISE_APPLICATION_ERROR(-20000, 'No se puede generar recepción si no existe ubicacion Transito') ;
+		elsif
+			vMovement.EM_Smvwh_Location_To is NULL or vMovement.EM_Smvwh_Location_To = ''
+			then
+			RAISE_APPLICATION_ERROR(-20000, 'No se puede generar recepción si no existe ubicacion Destino') ;
+		end if;
+
+		vuid := get_uuid();
+
+		INSERT
+		    INTO M_Movement	
+		      (
+			M_Movement_ID,
+				  AD_Client_ID, 
+				  AD_Org_ID, 
+				  ISACTIVE,
+				  CREATED, 
+				  CREATEDBY, 
+				  UPDATED,
+				  UPDATEDBY,
+				  EM_Ssrs_C_Doctype_ID, 
+				  DocumentNo, 
+				  MovementDate,
+				  Name, 
+				  Description, 
+				  EM_Eei_Description,
+				  EM_Smvai_Enddateoftransport, 
+				  EM_Smvwh_Generatedrecep, 
+				  EM_Smvwh_Location_To, 
+				  EM_Smvwh_Location_Transit, 
+				  EM_Smvwh_Location_From
+			
+		      )
+		      VALUES
+		      (
+				vuid, 
+				  vMovement.ad_client_id,
+				  vMovement.ad_org, 
+				  'Y',
+				  now(), 
+				  vMovement.ad_client_id, 
+				  now(), 
+				  vMovement.ad_client_id,
+				  vMovement.Doctype, 
+				  vMovement.seqnum, 
+				  --now(), 
+				  vMovement.mdate, 
+				  vMovement.name, 
+				  vMovement.description, 
+				  vMovement.adddescription,
+				  vMovement.trasnportdate, 
+				  vMovement.EM_Smvwh_Generatedrecep, 
+				  null, 
+				  null, 
+				  null
+		      );
+			  
+			  FOR curLines in (	  
+				  
+				  select * 
+				  from M_MovementLine
+				  where M_Movement_ID = p_record_id
+			  
+			  ) loop
+			  			  
+				select EM_Smvwh_Location_Transit, EM_Smvwh_Location_From
+				into loc
+				from M_Movement
+				where M_Movement_id = p_record_id;
+						  
+			  	INSERT
+		    INTO M_MovementLine	
+		      (
+			M_MovementLine_id,
+				  AD_Client_ID, 
+				  AD_Org_ID, 
+				  ISACTIVE,
+				  CREATED, 
+				  CREATEDBY, 
+				  UPDATED,
+				  UPDATEDBY,
+				  m_movement_id,
+				  m_locator_id,
+				  m_locatorto_id,
+				  m_product_id,
+				  line,
+				  movementqty,
+				  description,
+				  m_attributesetinstance_id,
+				  m_product_uom_id,
+				  quantityorder,
+				  c_uom_id,
+				  m_reservation_id,
+				  c_aum,
+				  aumqty,
+				  em_ssrs_resupply_id,
+				  em_ssrs_resupplyline_id,
+				  em_sprli_identifier
+				  
+		      )
+		      VALUES
+		      (
+				get_uuid(),
+				  curLines.AD_Client_ID, 
+				  curLines.AD_Org_ID, 
+				  curLines.ISACTIVE,
+				  curLines.CREATED, 
+				  curLines.CREATEDBY, 
+				  curLines.UPDATED,
+				  curLines.UPDATEDBY,
+				  vuid,
+				  loc.EM_Smvwh_Location_Transit,
+				  loc.EM_Smvwh_Location_From,
+				  curLines.m_product_id,
+				  curLines.line,
+				  curLines.movementqty,
+				  curLines.description,
+				  curLines.m_attributesetinstance_id,
+				  curLines.m_product_uom_id,
+				  curLines.quantityorder,
+				  curLines.c_uom_id,
+				  curLines.m_reservation_id,
+				  curLines.c_aum,
+				  curLines.aumqty,
+				  curLines.em_ssrs_resupply_id,
+				  curLines.em_ssrs_resupplyline_id,
+				  curLines.em_sprli_identifier
+		      )
+		      ;
+			  end loop;
+			  
+	-- RAISE_APPLICATION_ERROR(-20000, 'Revisa el check ' || vMovement.EM_Smvwh_Generatedrecepp) ;
+
+	else 
+	
+	end if;
+	
+    EXCEPTION WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('smvwh_createrecep exception: '|| v_ResultStr);
+    RAISE;
+END SMVWH_CREATERECEP
+]]></body>
+    </function>
+  </database>

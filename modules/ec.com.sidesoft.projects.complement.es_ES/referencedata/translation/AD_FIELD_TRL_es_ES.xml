@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_FIELD" version="">
+  <row id="8DF1B4E67D4A48A6B58B0FA934D74AC8" trl="Y">
+    <value column="Name" isTrl="Y" original="Detail Workforce">Detalle Mano de Obra</value>
+    <value column="Description" isTrl="Y" original="Detail Workforce">Detalle Mano de Obra</value>
+    <value column="Help" isTrl="Y" original="Detail Workforce">Detalle Mano de Obra</value>
+  </row>
+  <row id="1D47A47CBCF9488DAF619B6BAFF38FFB" trl="Y">
+    <value column="Name" isTrl="Y" original="Detail CIF">Detalle Costo Indirecto</value>
+    <value column="Description" isTrl="Y" original="Detail CIF">Detalle Costo Indirecto</value>
+    <value column="Help" isTrl="Y" original="Detail CIF">Detalle Costo Indirecto</value>
+  </row>
+  <row id="9D32E232992B47D094ACF717CF05A067" trl="Y">
+    <value column="Name" isTrl="Y" original="Detail Machine">Detalle Máquina</value>
+    <value column="Description" isTrl="Y" original="Detail Machine">Detalle Máquina</value>
+    <value column="Help" isTrl="Y" original="Detail Machine">Detalle Máquina</value>
+  </row>
+</compiereTrl>    

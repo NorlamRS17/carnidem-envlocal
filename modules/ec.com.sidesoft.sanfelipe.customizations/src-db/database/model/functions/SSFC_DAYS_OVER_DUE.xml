@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSFC_DAYS_OVER_DUE">
+    <function name="SSFC_DAYS_OVER_DUE" type="NUMERIC">
+      <parameter name="p_payment_schedule_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vRecord				RECORD;
+BEGIN
+	SELECT ps.fin_payment_schedule_id, ps.duedate, MAX(pa.paymentdate) last_payment, ps.outstandingamt,
+		CASE
+			WHEN ps.outstandingamt = 0 THEN CASE
+				WHEN (MAX(pa.paymentdate)::DATE - ps.duedate::DATE) > 0 THEN MAX(pa.paymentdate)::DATE - ps.duedate::DATE
+				ELSE 0
+			END ELSE CASE
+				WHEN ps.duedate::DATE < now()::DATE THEN now()::DATE - ps.duedate::DATE
+				ELSE 0
+			END
+		END daysoverdue
+	INTO vRecord
+	FROM fin_payment_schedule ps
+		LEFT JOIN fin_payment_scheduledetail psd ON psd.fin_payment_schedule_invoice = ps.fin_payment_schedule_id
+		LEFT JOIN fin_payment_detail pd ON pd.fin_payment_detail_id = psd.fin_payment_detail_id
+		LEFT JOIN fin_payment pa ON pa.fin_payment_id = pd.fin_payment_id
+	WHERE ps.fin_payment_schedule_id = p_payment_schedule_id
+	GROUP BY ps.fin_payment_schedule_id;
+	
+	RETURN COALESCE(vRecord.daysoverdue,0);
+END SSFC_DAYS_OVER_DUE
+]]></body>
+    </function>
+  </database>

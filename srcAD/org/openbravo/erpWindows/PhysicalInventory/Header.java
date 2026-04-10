@@ -54,10 +54,16 @@ public class Header extends HttpSecureAppServlet {
      SessionInfo.setSessionId(vars.getSessionValue("#AD_Session_ID"));
      SessionInfo.setQueryProfile("manualProcess");
      
-      if (command.contains("36F2D08523FE4E4C9A8B8000CDEF2A39")) {
+      if (command.contains("CBD470CCB8274C60AB970DD9A8B9C9AD")) {
         SessionInfo.setProcessType("P");
-        SessionInfo.setProcessId("36F2D08523FE4E4C9A8B8000CDEF2A39");
-        SessionInfo.setModuleId("F96807E5A0A446B1BF0933FD3AF93D5F");
+        SessionInfo.setProcessId("CBD470CCB8274C60AB970DD9A8B9C9AD");
+        SessionInfo.setModuleId("2D7CEA90FCE740D682EECD6109AA448F");
+      }
+     
+      if (command.contains("1D22EE8C9F834A8E8051257DE39CBDB4")) {
+        SessionInfo.setProcessType("P");
+        SessionInfo.setProcessId("1D22EE8C9F834A8E8051257DE39CBDB4");
+        SessionInfo.setModuleId("4119D4B538D9476297DE34C2C5E99946");
       }
      
       try {
@@ -89,9 +95,14 @@ public class Header extends HttpSecureAppServlet {
      
 
      
-      if (explicitAccess.contains("36F2D08523FE4E4C9A8B8000CDEF2A39") || (securedProcess && command.contains("36F2D08523FE4E4C9A8B8000CDEF2A39"))) {
+      if (explicitAccess.contains("CBD470CCB8274C60AB970DD9A8B9C9AD") || (securedProcess && command.contains("CBD470CCB8274C60AB970DD9A8B9C9AD"))) {
         classInfo.type = "P";
-        classInfo.id = "36F2D08523FE4E4C9A8B8000CDEF2A39";
+        classInfo.id = "CBD470CCB8274C60AB970DD9A8B9C9AD";
+      }
+     
+      if (explicitAccess.contains("1D22EE8C9F834A8E8051257DE39CBDB4") || (securedProcess && command.contains("1D22EE8C9F834A8E8051257DE39CBDB4"))) {
+        classInfo.type = "P";
+        classInfo.id = "1D22EE8C9F834A8E8051257DE39CBDB4";
       }
      
     }
@@ -174,25 +185,25 @@ public class Header extends HttpSecureAppServlet {
           printPageButtonUpdateQty106(response, vars, strM_Inventory_ID, strupdateqty, strProcessing);
         }
 
-    } else if (vars.commandIn("BUTTONProcessing36F2D08523FE4E4C9A8B8000CDEF2A39")) {
-        vars.setSessionValue("button36F2D08523FE4E4C9A8B8000CDEF2A39.strprocessing", vars.getStringParameter("inpprocessing"));
-        vars.setSessionValue("button36F2D08523FE4E4C9A8B8000CDEF2A39.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
-        vars.setSessionValue("button36F2D08523FE4E4C9A8B8000CDEF2A39.strOrg", vars.getStringParameter("inpadOrgId"));
-        vars.setSessionValue("button36F2D08523FE4E4C9A8B8000CDEF2A39.strClient", vars.getStringParameter("inpadClientId"));
+    } else if (vars.commandIn("BUTTONProcessingCBD470CCB8274C60AB970DD9A8B9C9AD")) {
+        vars.setSessionValue("buttonCBD470CCB8274C60AB970DD9A8B9C9AD.strprocessing", vars.getStringParameter("inpprocessing"));
+        vars.setSessionValue("buttonCBD470CCB8274C60AB970DD9A8B9C9AD.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
+        vars.setSessionValue("buttonCBD470CCB8274C60AB970DD9A8B9C9AD.strOrg", vars.getStringParameter("inpadOrgId"));
+        vars.setSessionValue("buttonCBD470CCB8274C60AB970DD9A8B9C9AD.strClient", vars.getStringParameter("inpadClientId"));
         
         
         HashMap<String, String> p = new HashMap<String, String>();
         
         
         //Save in session needed params for combos if needed
-        vars.setSessionObject("button36F2D08523FE4E4C9A8B8000CDEF2A39.originalParams", FieldProviderFactory.getFieldProvider(p));
-        printPageButtonFS(response, vars, "36F2D08523FE4E4C9A8B8000CDEF2A39", request.getServletPath());
-      } else if (vars.commandIn("BUTTON36F2D08523FE4E4C9A8B8000CDEF2A39")) {
+        vars.setSessionObject("buttonCBD470CCB8274C60AB970DD9A8B9C9AD.originalParams", FieldProviderFactory.getFieldProvider(p));
+        printPageButtonFS(response, vars, "CBD470CCB8274C60AB970DD9A8B9C9AD", request.getServletPath());
+      } else if (vars.commandIn("BUTTONCBD470CCB8274C60AB970DD9A8B9C9AD")) {
         String strM_Inventory_ID = vars.getGlobalVariable("inpmInventoryId", windowId + "|M_Inventory_ID", "");
-        String strprocessing = vars.getSessionValue("button36F2D08523FE4E4C9A8B8000CDEF2A39.strprocessing");
-        String strProcessing = vars.getSessionValue("button36F2D08523FE4E4C9A8B8000CDEF2A39.strProcessing");
-        String strOrg = vars.getSessionValue("button36F2D08523FE4E4C9A8B8000CDEF2A39.strOrg");
-        String strClient = vars.getSessionValue("button36F2D08523FE4E4C9A8B8000CDEF2A39.strClient");
+        String strprocessing = vars.getSessionValue("buttonCBD470CCB8274C60AB970DD9A8B9C9AD.strprocessing");
+        String strProcessing = vars.getSessionValue("buttonCBD470CCB8274C60AB970DD9A8B9C9AD.strProcessing");
+        String strOrg = vars.getSessionValue("buttonCBD470CCB8274C60AB970DD9A8B9C9AD.strOrg");
+        String strClient = vars.getSessionValue("buttonCBD470CCB8274C60AB970DD9A8B9C9AD.strClient");
 
         
         if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
@@ -200,7 +211,35 @@ public class Header extends HttpSecureAppServlet {
           vars.setMessage(tabId, myError);
           printPageClosePopUp(response, vars);
         }else{       
-          printPageButtonProcessing36F2D08523FE4E4C9A8B8000CDEF2A39(response, vars, strM_Inventory_ID, strprocessing, strProcessing);
+          printPageButtonProcessingCBD470CCB8274C60AB970DD9A8B9C9AD(response, vars, strM_Inventory_ID, strprocessing, strProcessing);
+        }
+    } else if (vars.commandIn("BUTTONEM_Ssipdv_Generate_Key1D22EE8C9F834A8E8051257DE39CBDB4")) {
+        vars.setSessionValue("button1D22EE8C9F834A8E8051257DE39CBDB4.stremSsipdvGenerateKey", vars.getStringParameter("inpemSsipdvGenerateKey"));
+        vars.setSessionValue("button1D22EE8C9F834A8E8051257DE39CBDB4.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
+        vars.setSessionValue("button1D22EE8C9F834A8E8051257DE39CBDB4.strOrg", vars.getStringParameter("inpadOrgId"));
+        vars.setSessionValue("button1D22EE8C9F834A8E8051257DE39CBDB4.strClient", vars.getStringParameter("inpadClientId"));
+        
+        
+        HashMap<String, String> p = new HashMap<String, String>();
+        
+        
+        //Save in session needed params for combos if needed
+        vars.setSessionObject("button1D22EE8C9F834A8E8051257DE39CBDB4.originalParams", FieldProviderFactory.getFieldProvider(p));
+        printPageButtonFS(response, vars, "1D22EE8C9F834A8E8051257DE39CBDB4", request.getServletPath());
+      } else if (vars.commandIn("BUTTON1D22EE8C9F834A8E8051257DE39CBDB4")) {
+        String strM_Inventory_ID = vars.getGlobalVariable("inpmInventoryId", windowId + "|M_Inventory_ID", "");
+        String stremSsipdvGenerateKey = vars.getSessionValue("button1D22EE8C9F834A8E8051257DE39CBDB4.stremSsipdvGenerateKey");
+        String strProcessing = vars.getSessionValue("button1D22EE8C9F834A8E8051257DE39CBDB4.strProcessing");
+        String strOrg = vars.getSessionValue("button1D22EE8C9F834A8E8051257DE39CBDB4.strOrg");
+        String strClient = vars.getSessionValue("button1D22EE8C9F834A8E8051257DE39CBDB4.strClient");
+
+        
+        if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
+          OBError myError = Utility.translateError(this, vars, vars.getLanguage(), Utility.messageBD(this, "NoWriteAccess", vars.getLanguage()));
+          vars.setMessage(tabId, myError);
+          printPageClosePopUp(response, vars);
+        }else{       
+          printPageButtonEM_Ssipdv_Generate_Key1D22EE8C9F834A8E8051257DE39CBDB4(response, vars, strM_Inventory_ID, stremSsipdvGenerateKey, strProcessing);
         }
 
     } else if (vars.commandIn("SAVE_BUTTONGenerateList105")) {
@@ -272,10 +311,44 @@ PInstanceProcessData.insertPInstanceParam(this, pinstance, "40", "ABC", strabc, 
         }
         printPageClosePopUp(response, vars);
 
-    } else if (vars.commandIn("SAVE_BUTTONProcessing36F2D08523FE4E4C9A8B8000CDEF2A39")) {
+    } else if (vars.commandIn("SAVE_BUTTONProcessingCBD470CCB8274C60AB970DD9A8B9C9AD")) {
         String strM_Inventory_ID = vars.getGlobalVariable("inpKey", windowId + "|M_Inventory_ID", "");
         
-        ProcessBundle pb = new ProcessBundle("36F2D08523FE4E4C9A8B8000CDEF2A39", vars).init(this);
+        ProcessBundle pb = new ProcessBundle("CBD470CCB8274C60AB970DD9A8B9C9AD", vars).init(this);
+        HashMap<String, Object> params= new HashMap<String, Object>();
+       
+        params.put("M_Inventory_ID", strM_Inventory_ID);
+        params.put("adOrgId", vars.getStringParameter("inpadOrgId"));
+        params.put("adClientId", vars.getStringParameter("inpadClientId"));
+        params.put("tabId", tabId);
+        
+        
+        
+        pb.setParams(params);
+        OBError myMessage = null;
+        try {
+          new ProcessRunner(pb).execute(this);
+          myMessage = (OBError) pb.getResult();
+          myMessage.setMessage(Utility.parseTranslation(this, vars, vars.getLanguage(), myMessage.getMessage()));
+          myMessage.setTitle(Utility.parseTranslation(this, vars, vars.getLanguage(), myMessage.getTitle()));
+        } catch (Exception ex) {
+          myMessage = Utility.translateError(this, vars, vars.getLanguage(), ex.getMessage());
+          log4j.error(ex);
+          if (!myMessage.isConnectionAvailable()) {
+            bdErrorConnection(response);
+            return;
+          } else vars.setMessage(tabId, myMessage);
+        }
+        //close popup
+        if (myMessage!=null) {
+          if (log4j.isDebugEnabled()) log4j.debug(myMessage.getMessage());
+          vars.setMessage(tabId, myMessage);
+        }
+        printPageClosePopUp(response, vars);
+    } else if (vars.commandIn("SAVE_BUTTONEM_Ssipdv_Generate_Key1D22EE8C9F834A8E8051257DE39CBDB4")) {
+        String strM_Inventory_ID = vars.getGlobalVariable("inpKey", windowId + "|M_Inventory_ID", "");
+        
+        ProcessBundle pb = new ProcessBundle("1D22EE8C9F834A8E8051257DE39CBDB4", vars).init(this);
         HashMap<String, Object> params= new HashMap<String, Object>();
        
         params.put("M_Inventory_ID", strM_Inventory_ID);
@@ -448,13 +521,13 @@ comboTableData = null;
     }
 
 
-    void printPageButtonProcessing36F2D08523FE4E4C9A8B8000CDEF2A39(HttpServletResponse response, VariablesSecureApp vars, String strM_Inventory_ID, String strprocessing, String strProcessing)
+    void printPageButtonProcessingCBD470CCB8274C60AB970DD9A8B9C9AD(HttpServletResponse response, VariablesSecureApp vars, String strM_Inventory_ID, String strprocessing, String strProcessing)
     throws IOException, ServletException {
-      log4j.debug("Output: Button process 36F2D08523FE4E4C9A8B8000CDEF2A39");
+      log4j.debug("Output: Button process CBD470CCB8274C60AB970DD9A8B9C9AD");
       String[] discard = {"newDiscard"};
       response.setContentType("text/html; charset=UTF-8");
       PrintWriter out = response.getWriter();
-      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/Processing36F2D08523FE4E4C9A8B8000CDEF2A39", discard).createXmlDocument();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/ProcessingCBD470CCB8274C60AB970DD9A8B9C9AD", discard).createXmlDocument();
       xmlDocument.setParameter("key", strM_Inventory_ID);
       xmlDocument.setParameter("processing", strProcessing);
       xmlDocument.setParameter("form", "Header_Edition.html");
@@ -462,13 +535,50 @@ comboTableData = null;
       xmlDocument.setParameter("css", vars.getTheme());
       xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
       xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
-      xmlDocument.setParameter("processId", "36F2D08523FE4E4C9A8B8000CDEF2A39");
+      xmlDocument.setParameter("processId", "CBD470CCB8274C60AB970DD9A8B9C9AD");
       xmlDocument.setParameter("cancel", Utility.messageBD(this, "Cancel", vars.getLanguage()));
       xmlDocument.setParameter("ok", Utility.messageBD(this, "OK", vars.getLanguage()));
       
       {
-        OBError myMessage = vars.getMessage("36F2D08523FE4E4C9A8B8000CDEF2A39");
-        vars.removeMessage("36F2D08523FE4E4C9A8B8000CDEF2A39");
+        OBError myMessage = vars.getMessage("CBD470CCB8274C60AB970DD9A8B9C9AD");
+        vars.removeMessage("CBD470CCB8274C60AB970DD9A8B9C9AD");
+        if (myMessage!=null) {
+          xmlDocument.setParameter("messageType", myMessage.getType());
+          xmlDocument.setParameter("messageTitle", myMessage.getTitle());
+          xmlDocument.setParameter("messageMessage", myMessage.getMessage());
+        }
+      }
+
+          try {
+    } catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+
+      
+      out.println(xmlDocument.print());
+      out.close();
+    }
+    void printPageButtonEM_Ssipdv_Generate_Key1D22EE8C9F834A8E8051257DE39CBDB4(HttpServletResponse response, VariablesSecureApp vars, String strM_Inventory_ID, String stremSsipdvGenerateKey, String strProcessing)
+    throws IOException, ServletException {
+      log4j.debug("Output: Button process 1D22EE8C9F834A8E8051257DE39CBDB4");
+      String[] discard = {"newDiscard"};
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/EM_Ssipdv_Generate_Key1D22EE8C9F834A8E8051257DE39CBDB4", discard).createXmlDocument();
+      xmlDocument.setParameter("key", strM_Inventory_ID);
+      xmlDocument.setParameter("processing", strProcessing);
+      xmlDocument.setParameter("form", "Header_Edition.html");
+      xmlDocument.setParameter("window", windowId);
+      xmlDocument.setParameter("css", vars.getTheme());
+      xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
+      xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
+      xmlDocument.setParameter("processId", "1D22EE8C9F834A8E8051257DE39CBDB4");
+      xmlDocument.setParameter("cancel", Utility.messageBD(this, "Cancel", vars.getLanguage()));
+      xmlDocument.setParameter("ok", Utility.messageBD(this, "OK", vars.getLanguage()));
+      
+      {
+        OBError myMessage = vars.getMessage("1D22EE8C9F834A8E8051257DE39CBDB4");
+        vars.removeMessage("1D22EE8C9F834A8E8051257DE39CBDB4");
         if (myMessage!=null) {
           xmlDocument.setParameter("messageType", myMessage.getType());
           xmlDocument.setParameter("messageTitle", myMessage.getTitle());

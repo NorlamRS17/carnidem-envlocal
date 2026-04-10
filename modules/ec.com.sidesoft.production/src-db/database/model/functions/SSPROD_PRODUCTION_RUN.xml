@@ -52,6 +52,13 @@
     CUR_PL_Post RECORD;
 
     cur_ValidProd RECORD;
+	cur_prod 	RECORD;
+	v_nump 		RECORD;
+	v_loc		RECORD;
+	cur_bom_jp	RECORD;
+	v_mess		TEXT;
+	v_bomlocator	TEXT;
+	v_bomname	TEXT;
     
   -- Parameter Variables
   MustBeStocked CHAR(1) ;
@@ -118,7 +125,92 @@ BEGIN --BODY
   END LOOP; -- Get Parameter
   DBMS_OUTPUT.PUT_LINE('  Record_ID=' || v_Record_ID) ;
   -- Processing:1:2:3 Lock :4:5:6:7
-  -- TODO
+  
+for cur_prod in (
+	select mpro.name, 
+		mpp.m_product_id, 
+		mpp.line, 
+		mpp.productionqty,
+		mpp.m_locator_id
+	from M_PRODUCTION mp
+	left join M_PRODUCTIONPLAN mpp on mpp.M_PRODUCTION_ID = mp.M_PRODUCTION_ID
+	left join m_product mpro on mpro.m_product_id = mpp.m_product_id
+	where mp.M_PRODUCTION_id = v_Record_ID
+	and mpro.ProductType = 'I'
+	and mpro.IsStocked = 'Y'
+)loop
+	
+	select mp.name, mpb.bomqty, mpb.M_ProductBOM_ID, mp.ProductType, mp.IsStocked
+	into v_nump
+	from m_product mp
+	left join M_Product_BOM mpb on mpb.m_product_id = mp.m_product_id
+	where mp.m_product_id = cur_prod.m_product_id
+	and mp.IsBOM='Y'
+	and mp.ProductType = 'I'
+	and mp.IsStocked = 'Y';
+	
+	if (v_nump is null ) then
+	RAISE_APPLICATION_ERROR(-20000, 'El producto en la linea ' || cur_prod.line || ' no es de tipo lista de materiales');
+	END IF;
+	
+	for cur_bom_jp in(
+	select mp.name, mpb.bomqty, mpb.M_ProductBOM_ID, mp.ProductType, mp.IsStocked
+	from m_product mp
+	left join M_Product_BOM mpb on mpb.m_product_id = mp.m_product_id
+	where mp.m_product_id = cur_prod.m_product_id
+	and mp.IsBOM='Y'
+	and mp.ProductType = 'I'
+	and mp.IsStocked = 'Y'
+	)LOOP
+	
+		select mp.M_Product_ID, mp.name, sum(msd.QtyOnHand) as qtydis
+		into v_loc
+		from m_product mp
+		left join m_storage_detail msd on msd.m_product_id = mp.m_product_id
+		where msd.m_locator_id = cur_prod.m_locator_id
+			and mp.m_product_id = cur_bom_jp.M_ProductBOM_ID
+			and mp.ProductType = 'I'
+			and mp.IsStocked = 'Y'
+		group by mp.M_Product_ID, mp.name;
+		
+		select name
+		into v_bomname
+		from m_product
+		where m_product_id = cur_bom_jp.M_ProductBOM_ID;
+		
+		select value 
+		into v_bomlocator
+		from m_locator
+		where m_locator_id = cur_prod.m_locator_id;
+		
+		if (cur_bom_jp.ProductType = 'I' and cur_bom_jp.IsStocked = 'Y' and cur_bom_jp.M_ProductBOM_ID = v_loc.M_Product_ID) then
+			if (v_loc is null) then
+			v_mess := 'Error en la linea ' || cur_prod.line 
+				|| '. Producto ' || v_bomname 
+				|| ' No Disponible en el Hueco ' || v_bomlocator;
+			RAISE_APPLICATION_ERROR(-20000, v_mess);
+			end if;
+
+			if ((cur_prod.productionqty*cur_bom_jp.bomqty)>v_loc.qtydis) then
+			v_mess:= 'Error en la linea ' || cur_prod.line 
+				|| '. Stock necesario para el producto ' || v_loc.name || ' -> ' ||(cur_prod.productionqty*cur_bom_jp.bomqty)
+				|| '. Stock disponible ' || v_loc.qtydis
+				|| '. Revisar el Hueco ligado';
+			RAISE_APPLICATION_ERROR(-20000, v_mess);
+
+			END IF;
+		
+		end if;
+		
+	END LOOP;
+	
+	
+
+END LOOP;
+
+-- RAISE_APPLICATION_ERROR(-20000, 'Verifica correctamente los materiales');
+
+-- TODO
   /**
   * Get Info + Lock
   */
@@ -175,7 +267,7 @@ BEGIN --BODY
 	  
 	  IF COALESCE(v_Msgtext,'ND') <> 'ND' AND v_AcumProdcution>0 THEN 
 		v_Msgtext:= 'En la pestaña Plan de Produccion la(s) siguiente(s) linea(s);' || v_Msgtext || ' no tiene componentes en negativo.';
-		RAISE v_Msgtext;  --OBTG:-20000--
+		RAISE v_Msgtext;
 	  END IF;
   END IF;
   

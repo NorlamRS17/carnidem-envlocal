@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCOMST_COMMISSIONAMT_TRG">
+    <trigger name="SCOMST_COMMISSIONAMT_TRG" table="C_COMMISSIONAMT" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[
+    /*************************************************************************
+    * The contents of this file are subject to the Compiere Public
+    * License 1.1 ("License"); You may not use this file except in
+    * compliance with the License. You may obtain a copy of the License in
+    * the legal folder of your Openbravo installation.
+    * Software distributed under the License is distributed on an
+    * "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    * implied. See the License for the specific language governing rights
+    * and limitations under the License.
+    * The Original Code is  Compiere  ERP &  Business Solution
+    * The Initial Developer of the Original Code is Jorg Janke and ComPiere, Inc.
+    * Portions created by Jorg Janke are Copyright (C) 1999-2001 Jorg Janke,
+    * parts created by ComPiere are Copyright (C) ComPiere, Inc.;
+    * All Rights Reserved.
+    * Contributor(s): Openbravo SLU
+    * Contributions are Copyright (C) 2001-2008 Openbravo, S.L.U.
+    *
+    * Specifically, this derivative work is based upon the following Compiere
+    * file and version.
+    *************************************************************************
+    * Update Header GrandTotal
+    * Convert Amount to Commission Currrency
+    * Calculate Commission Amount
+    */
+	v_AmtSubtract	 NUMBER;
+	v_AmtMultiplier	 NUMBER;
+	v_QtySubtract	 NUMBER;
+	v_QtyMultiplier	 NUMBER;
+	v_IsPositiveOnly	CHAR(1);
+	--
+	v_Result		 NUMBER;
+	
+	vBasisStatus		VARCHAR2(60);
+	
+BEGIN
+    
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;
+	END IF;
+
+	IF UPDATING OR DELETING THEN
+		-- DBMS_OUTPUT.PUT_LINE('C_CommissionAmt_Trg - Subtract');
+		-- Subtract old Amount from Header
+		UPDATE C_CommissionRun SET GrandTotal = GrandTotal - :OLD.CommissionAmt WHERE C_CommissionRun_ID = :OLD.C_CommissionRun_ID;
+	END IF;
+	
+	IF INSERTING OR UPDATING THEN
+		-- DBMS_OUTPUT.PUT_LINE('C_CommissionAmt_Trg - Get Info');
+		-- Get Info From CommissionLine
+		SELECT AmtSubtract,
+			AmtMultiplier,
+			QtySubtract,
+			QtyMultiplier,
+			IsPositiveOnly
+			INTO v_AmtSubtract,
+			v_AmtMultiplier,
+			v_QtySubtract,
+			v_QtyMultiplier,
+			v_IsPositiveOnly
+		FROM C_CommissionLine
+		WHERE C_CommissionLine_ID = :NEW.C_CommissionLine_ID;
+		
+		-- Quantities
+		v_Result :=(:NEW.ActualQty - v_QtySubtract) * v_QtyMultiplier;
+		IF v_IsPositiveOnly = 'Y' AND v_Result < 0 THEN
+			v_Result := 0;
+		END IF;
+		
+		SELECT EM_SCOMST_BasisStatus INTO vBasisStatus FROM C_CommissionRun WHERE C_CommissionRun_ID = :NEW.C_CommissionRun_ID;
+		IF vBasisStatus = 'SCOMST_CBCSMP' THEN
+			v_Result := (:NEW.CommissionAmt - v_AmtSubtract);
+		ELSE
+            -- Amount
+		    :NEW.CommissionAmt := v_Result;
+            
+			v_Result := (:NEW.ConvertedAmt - v_AmtSubtract) * v_AmtMultiplier;
+		END IF;
+        
+		IF v_IsPositiveOnly = 'Y' AND v_Result < 0 THEN
+			v_Result := 0;
+		END IF;
+        
+        IF vBasisStatus != 'SCOMST_CBCSMP' THEN
+		    :NEW.CommissionAmt := :NEW.CommissionAmt + v_Result;
+        END IF;
+		
+		-- Add new Amount to Header
+		-- DBMS_OUTPUT.PUT_LINE('C_CommissionAmt_Trg - Add');
+		UPDATE C_CommissionRun SET GrandTotal = GrandTotal + :NEW.CommissionAmt WHERE C_CommissionRun_ID = :NEW.C_CommissionRun_ID;
+	END IF;
+	
+	END SCOMST_COMMISSIONAMT_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SPROCTM_PROD_PROJECT_TRG">
+    <trigger name="SPROCTM_PROD_PROJECT_TRG" table="M_REQUISITIONLINE" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[ 
+    v_prodcuts_wf_id VARCHAR(32);
+    v_qty_tab_prod NUMBER;
+    v_c_projecttask_id VARCHAR(32);
+    v_cost NUMBER;
+    v_ismachine VARCHAR(3);
+    v_isimported VARCHAR(3);
+    v_diference NUMBER;
+    v_mo_original_id VARCHAR(32);
+    v_mo_new_line_id VARCHAR(32);
+    v_get_uuid VARCHAR(32);
+BEGIN
+ 
+   IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+
+    IF  (INSERTING ) THEN
+        -- Actualizar estados y cantidad en productos solapa bajo tarea proyecto multifase
+        IF (:NEW.EM_Sproctm_Task_Prod_ID IS NOT NULL) THEN
+                UPDATE Sproctm_Task_Prod 
+                SET QTY_Requirement = :NEW.qty , Reqstatus = :NEW.Reqstatus
+                WHERE Sproctm_Task_Prod_ID = :NEW.EM_Sproctm_Task_Prod_ID;
+        END IF;
+       
+    END IF; 
+
+    IF  (UPDATING) THEN
+        v_mo_original_id = :OLD.EM_Sproctm_Task_Prod_ID;
+        v_mo_new_line_id = :NEW.EM_Sproctm_Task_Prod_ID;
+        -- Verificar el esatdo y modificarlo en la necesidad
+        IF (v_mo_original_id IS NOT NULL) THEN
+               UPDATE Sproctm_Task_Prod 
+               SET Reqstatus = :NEW.Reqstatus
+               WHERE Sproctm_Task_Prod_ID = v_mo_original_id;
+        END IF;
+        
+        IF (v_mo_original_id IS NOT NULL AND :NEW.Reqstatus IN ('O')) THEN
+            -- Verificar si el cambio es de un valor mayor a menor crear una nueva linea en la solpa Productos bajo tarea
+            -- Diviendiendo las cantidades de la necesidad para cuadra con las cantidades de lo productos  bajo tarea.
+            SELECT qty INTO v_qty_tab_prod --QTY_Original
+            FROM Sproctm_Task_Prod 
+            WHERE Sproctm_Task_Prod_ID = v_mo_original_id;
+                IF(  :NEW.qty != v_qty_tab_prod ) THEN
+                
+                    IF ( :NEW.qty  > v_qty_tab_prod) THEN 
+                        -- modificar valores actuales en el mismo Producto bajo tarea
+                        UPDATE Sproctm_Task_Prod 
+                        SET qty = :NEW.qty 
+                        , Reqstatus = :NEW.Reqstatus
+                        , qty_requirement = :NEW.qty
+                        , cost_total = (:NEW.qty * cost)
+                        WHERE Sproctm_Task_Prod_ID = v_mo_original_id;
+                        
+                    ELSE
+                        -- Nuevo valor menor al original de solapa producto en tarea multifase ( nueva linea en producto bajo tarea)
+                        -- Obtener el ID del Producto bajo tarea en la linea modificandose
+                    
+                        select c_projecttask_id , cost, ismachine , isimported 
+                        INTO v_c_projecttask_id , v_cost, v_ismachine , v_isimported 
+                        from sproctm_task_prod 
+                        where sproctm_task_prod_id = v_mo_original_id ;
+
+                            IF(v_c_projecttask_id is not null ) THEN 
+                                -- Actualiza el original al valor actual y crea uno nuevo con la diferencia faltante a lo original.
+                                v_diference = ABS(v_qty_tab_prod - :NEW.qty);
+                            
+                                -- Crea la nueva linea en productos bajo tarea
+                                v_get_uuid = get_uuid();
+                                INSERT INTO sproctm_task_prod(
+                                sproctm_task_prod_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby, 
+                                c_projecttask_id, m_product_id, requirements_date, qty, 
+                                c_uom_id, cost, cost_total, 
+                                ismachine, isimported,
+                                create_requisition, value, qty_requirement, reqstatus)
+                                VALUES (v_get_uuid, :NEW.ad_client_id , :NEW.ad_org_id , 'Y', now(),:new.createdby , now(), :new.updatedby,
+                                v_c_projecttask_id, :new.m_product_id , :new.Needbydate , :new.qty, 
+                                :new.c_uom_id, v_cost, (v_cost * :new.qty) , 
+                                v_ismachine, v_isimported, 
+                                :new.Needbydate, null, :new.qty, :new.reqstatus );
+
+                                    -- modifica el valor de la linea original - con la diferencia que quedo al restar la cantidad de la necesidad original
+                                    -- Este producto ya no es necesidad eliminar la relacion a la necesidad.
+                                    UPDATE sproctm_task_prod 
+                                    SET  Reqstatus = ''
+                                    , qty = v_diference 
+                                    , qty_requirement = v_diference
+                                    , cost_total = (cost * v_diference)
+                                    WHERE sproctm_task_prod_ID = v_mo_original_id ;
+                                    -- modifica la necesidad original modificada asignandole el nuevo ID de Prodcuto Tarea 
+                                    -- Campo de la lineas de la necesidad al crear desde la fase
+                                    :NEW.EM_Sproctm_Task_Prod_ID = v_get_uuid;
+                            
+
+                            END IF;
+                  
+                    END IF;
+                    
+                END IF;
+        END IF;
+    END IF; 
+  IF  (DELETING) THEN
+        v_mo_original_id = :OLD.EM_Sproctm_Task_Prod_ID;
+        -- Verificar el esatdo y modificarlo en la necesidad
+        IF (v_mo_original_id IS NOT NULL) THEN
+               UPDATE Sproctm_Task_Prod 
+               SET Reqstatus = ''
+               WHERE Sproctm_Task_Prod_ID = v_mo_original_id;
+        END IF;
+    END IF; 
+    
+   END SPROCTM_PROD_PROJECT_TRG
+]]></body>
+    </trigger>
+  </database>

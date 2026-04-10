@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_Imports_Detail" pageWidth="1872" pageHeight="595" orientation="Landscape" columnWidth="1832" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9972bd6e-734a-48ba-b0a7-1ff939d3d432">
+	<property name="ireport.zoom" value="0.7513148009015881"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="AD_USER_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_Bpartner_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT bp.name AS "tercero",
+cc.name AS "importacion",
+co.description,
+CASE 	WHEN co.em_ssip_importstatus = 'NL' THEN 'No liquidado'
+	WHEN co.em_ssip_importstatus = 'PL' THEN 'Preliquidado'
+	WHEN co.em_ssip_importstatus = 'LL' THEN 'Liquidado'
+	ELSE co.em_ssip_importstatus
+END AS "liquidado",
+co.dateordered,
+mt.name AS "mediotransporte",
+op.name AS "puertosalida",
+ap.name AS "puertollegada",
+id.numrefaduana,
+id.numberdui,
+id.paymentdatedui,
+id.releasedatedui,
+id.numberchecked,
+id.tradingdata,
+CASE
+	WHEN id.insuranceapplies='Y' THEN 'SI'
+	WHEN id.insuranceapplies='N' THEN 'NO'
+	ELSE id.insuranceapplies
+END AS "aplicaseguros",
+id.datedispatch,
+id.arrivaldate,
+(SELECT COALESCE(cb.name,au.name) FROM ad_user au LEFT JOIN c_bpartner cb ON cb.c_bpartner_id = au.c_bpartner_id WHERE au.ad_user_id=$P{AD_USER_ID}) AS "usuario",
+NOW() AS "fechaimpresion",
+(SELECT o.ad_org_id FROM ad_org AS o JOIN ad_user AS u ON u.ad_client_id=o.ad_client_id WHERE o.ad_orgtype_id ='1' AND u.ad_user_id=$P{AD_USER_ID}) AS "AD_ORG_ID"
+FROM c_order co
+LEFT JOIN c_bpartner bp ON co.c_bpartner_id = bp.c_bpartner_id
+LEFT JOIN c_campaign cc ON co.c_campaign_id = cc.c_campaign_id
+LEFT JOIN ssip_importdata id ON co.c_order_id = id.c_order_id
+LEFT JOIN ssip_meanstransport mt ON id.ssip_meanstransport_id = mt.ssip_meanstransport_id
+LEFT JOIN ssip_porttype op ON id.outputport = op.ssip_porttype_id
+LEFT JOIN ssip_porttype ap ON id.portarrival = ap.ssip_porttype_id
+WHERE co.em_ssip_isimports ='Y'
+AND ( TO_CHAR($P{DateFrom}) IS NULL OR TO_DATE(co.dateordered,'dd-MM-yyyy') >= TO_DATE(TO_CHAR($P{DateFrom}),'yyyy-MM-dd'))
+AND ( TO_CHAR($P{DateTo}) IS NULL OR TO_DATE(co.dateordered,'dd-MM-yyyy') <= TO_DATE(TO_CHAR($P{DateTo}),'yyyy-MM-dd'))
+AND (co.c_bpartner_id = $P{C_Bpartner_ID} OR $P{C_Bpartner_ID}IS NULL)
+ORDER BY co.dateordered]]>
+	</queryString>
+	<field name="tercero" class="java.lang.String"/>
+	<field name="importacion" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="liquidado" class="java.lang.String"/>
+	<field name="dateordered" class="java.sql.Timestamp"/>
+	<field name="mediotransporte" class="java.lang.String"/>
+	<field name="puertosalida" class="java.lang.String"/>
+	<field name="puertollegada" class="java.lang.String"/>
+	<field name="numrefaduana" class="java.lang.String"/>
+	<field name="numberdui" class="java.lang.String"/>
+	<field name="paymentdatedui" class="java.sql.Timestamp"/>
+	<field name="releasedatedui" class="java.sql.Timestamp"/>
+	<field name="numberchecked" class="java.lang.String"/>
+	<field name="tradingdata" class="java.lang.String"/>
+	<field name="aplicaseguros" class="java.lang.String"/>
+	<field name="datedispatch" class="java.sql.Timestamp"/>
+	<field name="arrivaldate" class="java.sql.Timestamp"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="fechaimpresion" class="java.sql.Timestamp"/>
+	<field name="AD_ORG_ID" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy h.mm a" isBlankWhenNull="true">
+				<reportElement x="1215" y="20" width="616" height="20" uuid="60e4c11b-22f1-480b-a024-2316f6464834"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fechaimpresion}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1215" y="40" width="616" height="20" uuid="967e6a9b-750b-4344-9e34-2be96a79fbdd"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="175" y="0" width="1656" height="20" uuid="fe45eebf-d38b-4610-b997-9c46fe932d32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Detalle de Importaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1102" y="20" width="113" height="20" uuid="5591bfa3-f75c-4dbe-af4c-2c80fc0e6478"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha impresión:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1102" y="40" width="113" height="20" uuid="a5711cc7-e7fd-4b8c-8c83-1a04965763a9"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="278" y="20" width="824" height="20" uuid="22bd3fe4-81cf-4375-81a8-728afd6bd75c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{DateFrom}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="278" y="40" width="824" height="20" uuid="e4209f4b-264d-4eb6-a880-da7c8ced7517"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{DateTo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="175" y="20" width="103" height="20" uuid="ba357d99-387d-45a7-bca6-27cb2b9633fb"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="40" width="103" height="20" uuid="1c54907d-a505-4efb-a7a4-f13044997761"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="175" height="60" uuid="919894e0-5922-4220-b442-c338f24586d1"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{AD_ORG_ID})]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="175" height="30" uuid="719963ff-070e-44c7-9113-0c518308d689"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tercero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="484" y="0" width="103" height="30" uuid="6e7daee0-0339-4d73-a35a-49029b811f11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de pedido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="690" y="0" width="103" height="30" uuid="ea401b59-85c3-4224-9db9-187a0f1b04b6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Puerto de salida]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1730" y="0" width="101" height="30" uuid="e58cf0f5-8b26-4214-959f-67f59d891a0c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de llegada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="793" y="0" width="103" height="30" uuid="79ee6664-855b-4a80-8f85-09799760c899"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Puerto de llegada]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1318" y="0" width="103" height="30" uuid="615c41b7-1ae6-4009-8d14-e7b3f1e06f07"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N. de factura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1524" y="0" width="103" height="30" uuid="ef2f05a8-c21e-413d-aeb2-481f92352473"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aplica seguros]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1627" y="0" width="103" height="30" uuid="7785b9ee-76d1-4e11-bbc2-120b35c99ef8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de despacho]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="0" width="103" height="30" uuid="999ae6f9-d2bb-442c-a586-c983ecfac51e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="999" y="0" width="103" height="30" uuid="3bfa4464-f439-41e9-83fd-b9b1ea4d4890"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Número DUI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="896" y="0" width="103" height="30" uuid="8b489896-3680-4dfd-b248-3a767228e426"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N. liquidación SENAE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="381" y="0" width="103" height="30" uuid="c9bd8b30-3e20-406f-90d7-a1eb4505f06e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="278" y="0" width="103" height="30" uuid="d20e937f-387d-4b82-9623-9d6976f95dc1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1215" y="0" width="103" height="30" uuid="9668b369-8c88-468c-a3af-a4c5248d60f0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de aduana]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1102" y="0" width="113" height="30" uuid="f20a817e-f287-4279-954d-f6a3d5a13063"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de fact. fábrica]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="587" y="0" width="103" height="30" uuid="39da8ec3-3b3e-4cc5-8a40-c070b4a9fdab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Medio de transporte]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1421" y="0" width="103" height="30" uuid="c266461f-696b-485d-b9cc-38b8cb955cf9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de aforo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="175" height="20" uuid="8e314335-8635-4ddd-a81a-82b1457d3756"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tercero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="484" y="0" width="103" height="20" uuid="388ef3c7-52df-4e9f-9ccb-27a690934f38"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{dateordered}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="690" y="0" width="103" height="20" uuid="0b85120e-84e5-407f-a143-6fb1550012aa"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{puertosalida}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1730" y="0" width="101" height="20" uuid="e2e785d7-59a7-4d44-bad1-941aa02cb186"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{arrivaldate}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="793" y="0" width="103" height="20" uuid="c8c99813-027e-4cb0-9ba3-09f7ead127cc"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{puertollegada}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1318" y="0" width="103" height="20" uuid="222a8de2-2c07-42e9-bd8d-c1c59510d08d"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numberchecked}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1524" y="0" width="103" height="20" uuid="1e207743-edf8-4ef7-8e11-ba6f5ea6af40"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{aplicaseguros}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1627" y="0" width="103" height="20" uuid="e0e712f6-dd86-4bf0-a7fe-5b2c67c51081"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{datedispatch}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="175" y="0" width="103" height="20" uuid="5e2b70b9-ba52-4250-b353-bec64f3a1f59"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{importacion}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="999" y="0" width="103" height="20" uuid="8eddc4d7-5bc3-4630-83a6-60bc57f4c4c9"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numberdui}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="896" y="0" width="103" height="20" uuid="038fa93e-2b6e-42f7-b72a-826cadca17a4"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numrefaduana}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="381" y="0" width="103" height="20" uuid="905dd86a-da44-4fa9-8445-980cec16c75a"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{liquidado}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="278" y="0" width="103" height="20" uuid="8f27343f-9415-444d-b5df-5707b1ac7e7b"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1215" y="0" width="103" height="20" uuid="cbe8dd35-6d90-4678-b002-047ca970f9da"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{releasedatedui}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1102" y="0" width="113" height="20" uuid="a6398990-94ca-448e-8689-bace0d45a15b"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{paymentdatedui}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="587" y="0" width="103" height="20" uuid="550bfe5f-3dca-4f57-892b-0fc96d5daae3"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{mediotransporte}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1421" y="0" width="103" height="20" uuid="eb6c0cc4-49bf-4ef2-aad2-8b5e9bed2fc8"/>
+				<box leftPadding="1" rightPadding="1"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tradingdata}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

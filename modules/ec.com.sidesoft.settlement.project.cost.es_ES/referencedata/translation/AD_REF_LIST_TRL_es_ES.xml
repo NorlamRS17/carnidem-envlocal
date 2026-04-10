@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="1D22021BA54840C18A965B88F8D64C3E" trl="N">
+    <value column="Name" isTrl="N" original="Draft">Draft</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1F1F34156A3047A9B57232948ADFE5AF" trl="N">
+    <value column="Name" isTrl="Y" original="Pre Liauidation">Pre Liquidación</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="59A9E2A4E3394AC38A4819FC75827C7E" trl="N">
+    <value column="Name" isTrl="N" original="Liquidation of Projects">Liquidation of Projects</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="78D1160305904BF7893A2EAF448B6951" trl="N">
+    <value column="Name" isTrl="Y" original="Total Liquidation">Liquidación Total</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="89B95A50BD1D4015932AE341CB20DC2D" trl="N">
+    <value column="Name" isTrl="Y" original="Partial">Parcial</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="9206A014A37E4DE588093DDCB0128A8A" trl="N">
+    <value column="Name" isTrl="Y" original="Liquidate">Liquidar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B50BD7E0787F415FB2FEF0E85B21EFFB" trl="N">
+    <value column="Name" isTrl="Y" original="Liquidated">Liquidado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B6385646D1F444ACAE6E1B1ACEBAD671" trl="N">
+    <value column="Name" isTrl="Y" original="Liquidate">Liquidar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C3B331B587004DB6B3D351D8A615B507" trl="N">
+    <value column="Name" isTrl="Y" original="Liquidation">Liquidación</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E72359B010C145B38C010B3C0FAB3E65" trl="N">
+    <value column="Name" isTrl="N" original="Liquidated">Liquidated</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="FC0E5EE2F093452EB35982A9950DF7BA" trl="N">
+    <value column="Name" isTrl="Y" original="Complete">Completar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

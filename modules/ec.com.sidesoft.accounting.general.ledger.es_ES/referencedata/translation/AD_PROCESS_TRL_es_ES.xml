@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="6B9AE40BDB8C491B9897F9D30C09A2EA" trl="Y">
+    <value column="Name" isTrl="Y" original="Ssaglrd Factacct Transaction Description">Ssaglrd Descripción Transacción Libro Mayor</value>
+    <value column="Description" isTrl="Y" original="Ssaglrd Factacct Transaction Description">Ssaglrd Descripción Transacción Libro Mayor</value>
+    <value column="Help" isTrl="Y" original="Get Transacction Description from  Factacct, used in the General Ledger Detailed Report ">Obtener la Descripción de la Transacción del Libro Mayor, utilizado en el reporte detallado del libro mayor</value>
+  </row>
+  <row id="83E53F931D6E4508BD068FE343A3E7D1" trl="Y">
+    <value column="Name" isTrl="Y" original="Ssaglrd Factacct Transaction Document Number">Ssaglrd Número de Documento de Transacción de Libro Mayor</value>
+    <value column="Description" isTrl="Y" original="Ssaglrd Factacct Transaction Document Number">Ssaglrd Número de Documento de Transacción de Libro Mayor</value>
+    <value column="Help" isTrl="N" original="Get Transaction Document Number from  Factacct, used in the General Ledger Detailed Report">Get Transaction Document Number from  Factacct, used in the General Ledger Detailed Report</value>
+  </row>
+  <row id="A9C93D5456E3441F907ED96A113E0477" trl="Y">
+    <value column="Name" isTrl="Y" original="General Ledger Report Detailed">Reporte Libro Mayor Detallado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

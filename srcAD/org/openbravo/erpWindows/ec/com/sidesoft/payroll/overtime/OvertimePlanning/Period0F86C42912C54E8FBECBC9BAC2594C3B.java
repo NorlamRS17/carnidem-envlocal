@@ -30,7 +30,7 @@ public class Period0F86C42912C54E8FBECBC9BAC2594C3B extends HttpSecureAppServlet
   
   private static final String windowId = "FD82225C38D84C4DAB3DC03AFE671CD0";
   private static final String tabId = "0F86C42912C54E8FBECBC9BAC2594C3B";
-  private static final int accesslevel = 7;
+  private static final int accesslevel = 3;
   private static final String moduleId = "7AE924E93FD044AEBF69D6D5F6C87F27";
   
   @Override

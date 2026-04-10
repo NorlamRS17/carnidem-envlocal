@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSIMPCN_IMP_CONSOL_PROCESS">
+    <function name="SSIMPCN_IMP_CONSOL_PROCESS" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult				VARCHAR2(2000);
+	vMessage			VARCHAR2(2000);
+	
+	cPar				RECORD;
+	vRecord				RECORD;
+	vRecordID			VARCHAR2(32);
+	vClientID			VARCHAR2(32);
+	vOrgID				VARCHAR2(32);
+	vUserID				VARCHAR2(32);
+	
+	vCheck			 NUMBER;
+	vTotal			 NUMBER;
+	cLine				RECORD;
+	vFactor			 NUMBER;
+	
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID) ;
+	vResult := 'PInstanceNotFound';
+ AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+	BEGIN
+
+		vResult := 'ReadingParameters';
+		FOR cPar IN (
+			SELECT i.Record_ID,
+				i.AD_User_ID,
+				i.AD_Client_ID,
+				i.AD_Org_ID,
+				pa.ParameterName,
+				pa.P_String,
+				pa.P_Number,
+				pa.P_Date
+			FROM AD_PInstance i
+				LEFT JOIN AD_PInstance_Para AS pa ON pa.AD_PInstance_ID = i.AD_PInstance_ID
+			WHERE i.AD_PInstance_ID = PInstance_ID
+		) LOOP
+			vRecordID := cPar.Record_ID;
+			vClientID := cPar.AD_Client_ID;
+			vOrgID := cPar.AD_Org_ID;
+			vUserID := cPar.AD_User_ID;
+		END LOOP;
+		
+		SELECT * INTO vRecord FROM ssimpcn_imp_consolidation WHERE ssimpcn_imp_consolidation_id = vRecordID;
+		IF vRecord.processing = 'Y' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@DocBeingProcessed@');
+		END IF;
+
+		UPDATE ssimpcn_imp_consolidation SET processing = 'Y' WHERE ssimpcn_imp_consolidation_id = vRecordID;
+		
+		SELECT COUNT(*), SUM(amount) INTO vCheck, vTotal FROM ssimpcn_imp_consol_line WHERE ssimpcn_imp_consolidation_id = vRecordID;
+		IF vCheck = 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, 'No existen líneas');
+		ELSEIF COALESCE(vTotal) <= 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, 'La sumatoria de las líneas debe ser mayor a cero');
+		END IF;
+		
+		SELECT COUNT(*) INTO vCheck FROM ssimpcn_importation_cost WHERE ssimpcn_imp_consolidation_id = vRecordID;
+		IF vCheck = 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, 'No existen líneas de costo');
+		END IF;
+		
+		FOR cLine IN (
+			SELECT * FROM ssimpcn_imp_consol_line WHERE ssimpcn_imp_consolidation_id = vRecordID
+		) LOOP
+		
+			vFactor := cLine.amount / vTotal;
+			DELETE FROM ssimpcn_imp_consol_detail WHERE ssimpcn_imp_consol_line_id = cLine.ssimpcn_imp_consol_line_id;
+			INSERT INTO ssimpcn_imp_consol_detail (
+				ssimpcn_imp_consol_detail_id, ad_client_id, ad_org_id, createdby, updatedby,
+				ssimpcn_imp_consol_line_id, c_bpartner_id, "date", c_doctype_id, documentno,
+				referenceno, amountnet, c_invoiceline_id, gl_journalline_id
+			)
+			SELECT get_uuid(), vClientID, vOrgID, vUserID, vUserID,
+				cLine.ssimpcn_imp_consol_line_id, c_bpartner_id, "date", c_doctype_id, documentno,
+				referenceno, amountnet * vFactor, c_invoiceline_id, gl_journalline_id
+			FROM ssimpcn_importation_cost
+			WHERE ssimpcn_imp_consolidation_id = vRecordID;
+			
+		END LOOP;
+		
+		UPDATE ssimpcn_imp_consolidation SET processing = 'N', docstatus = 'CO'  WHERE ssimpcn_imp_consolidation_id = vRecordID;
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage) ;
+	 AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, vMessage);
+		RETURN;
+		
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+    UPDATE ssimpcn_imp_consolidation SET processing = 'N' WHERE ssimpcn_imp_consolidation_id = vRecordID;
+    vResult := '@ERROR='||SQLERRM;
+    DBMS_OUTPUT.PUT_LINE( vResult) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, vResult) ;
+
+    RETURN;
+END SSIMPCN_IMP_CONSOL_PROCESS
+]]></body>
+    </function>
+  </database>

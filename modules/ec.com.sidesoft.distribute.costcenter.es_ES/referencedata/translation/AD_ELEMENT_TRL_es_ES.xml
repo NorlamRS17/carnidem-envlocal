@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="25E12C2E17C548C0AE1AE7872ABB58E9" trl="N">
+    <value column="Name" isTrl="Y" original="Distribute Cost Center">Distribución Centro de Costos</value>
+    <value column="PrintName" isTrl="Y" original="Distribute Cost Center">Distribución Centro de Costos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9963714361F04BCBBABBC3A61CB569D6" trl="N">
+    <value column="Name" isTrl="Y" original="Porcentage">Porcentaje</value>
+    <value column="PrintName" isTrl="Y" original="Porcentage">Porcentaje</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9F1BADCB719A46828B666E1FADD1A9F5" trl="N">
+    <value column="Name" isTrl="Y" original="Dist. Cost center">Dist. Centro de Costos</value>
+    <value column="PrintName" isTrl="Y" original="Dist. Cost center">Dist. Centro de Costos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

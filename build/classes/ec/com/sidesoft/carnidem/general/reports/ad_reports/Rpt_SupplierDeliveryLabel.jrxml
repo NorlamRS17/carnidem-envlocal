@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_SupplierDeliveryLabel" pageWidth="108" pageHeight="270" columnWidth="108" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b1c8e77e-9248-4fc6-984a-4660188a9501">
+	<property name="ireport.zoom" value="2.357947691000003"/>
+	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="sscgr_inout_id" class="java.lang.String"/>
+	<parameter name="sscgr_product_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sscgr_ticket" class="java.lang.String">
+		<defaultValueExpression><![CDATA["1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sscgr_ticket_safe" class="java.lang.String">
+		<defaultValueExpression><![CDATA[($P{sscgr_ticket} != null && $P{sscgr_ticket}.toString().trim().length() > 0) ? $P{sscgr_ticket}.toString().split(";")[0].trim() : "1"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT data.ad_org_id, data.producto, data.cantidad, data.codigo_compra,
+  data.fecha_recepcion, data.fecha_elaboracion, data.fecha_caducidad
+FROM (
+  SELECT
+    io.AD_Org_ID AS ad_org_id,
+    mp.name AS producto,
+    TRIM(COALESCE(iol.movementqty::text, '') || ' ' || COALESCE(uom.name, '')) AS cantidad,
+    COALESCE(asi.description, '') AS codigo_compra,
+    to_char(io.movementdate, 'DD/MM/YYYY') AS fecha_recepcion,
+    to_char(io.movementdate, 'DD/MM/YYYY') AS fecha_elaboracion,
+    CASE
+      WHEN mas.isguaranteedate = 'Y' AND mas.guaranteedays IS NOT NULL THEN to_char(io.movementdate + COALESCE(mas.guaranteedays, 0), 'DD/MM/YYYY')
+      ELSE NULL
+    END AS fecha_caducidad
+  FROM M_InOut io
+  JOIN M_InOutLine iol ON iol.M_InOut_ID = io.M_InOut_ID AND iol.movementqty <> 0
+  JOIN M_Product mp ON mp.M_Product_ID = iol.M_Product_ID
+  LEFT JOIN M_AttributeSetInstance asi ON asi.M_AttributeSetInstance_ID = iol.M_AttributeSetInstance_ID
+  LEFT JOIN M_AttributeSet mas ON mas.M_AttributeSet_ID = mp.M_AttributeSet_ID
+  LEFT JOIN C_UOM uom ON uom.C_UOM_ID = iol.C_UOM_ID
+  WHERE io.M_InOut_ID = $P{sscgr_inout_id}
+    AND ($P{sscgr_product_id} IS NULL OR $P{sscgr_product_id} = '' OR iol.M_Product_ID = $P{sscgr_product_id})
+) data
+CROSS JOIN generate_series(1, (
+  SELECT CASE
+    WHEN COALESCE(TRIM($P{sscgr_ticket_safe}), '') = '' THEN 1
+    ELSE GREATEST(1, CAST(TRIM($P{sscgr_ticket_safe}) AS INTEGER))
+  END
+)) AS s(num)
+ORDER BY data.producto, s.num]]>
+	</queryString>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.String"/>
+	<field name="codigo_compra" class="java.lang.String"/>
+	<field name="fecha_recepcion" class="java.lang.String"/>
+	<field name="fecha_elaboracion" class="java.lang.String"/>
+	<field name="fecha_caducidad" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="240" splitType="Stretch">
+			<image hAlign="Left" vAlign="Top" onErrorType="Blank">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="12" y="0" width="85" height="43" uuid="a1b2c3d4-2d25-4dc8-a938-8cc59fff0c7c"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{ad_org_id})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="43" width="108" height="24" uuid="140ebaa3-d839-4268-9104-ace5a4de8586"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PENDIENTE MONITOREO SEGURIDAD Y CALIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="67" width="108" height="10" uuid="778cf8ae-c14d-4c56-9ff4-12ed8d1ae0ca"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="77" width="108" height="10" uuid="9480d935-aba3-446c-8c99-eac36cad73e4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="87" width="108" height="10" uuid="47564e1c-09b3-48ec-a46f-e221d1fd8362"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="97" width="108" height="10" uuid="e2490eb5-52c1-482a-8bd3-cfa11eae8dcf"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="107" width="108" height="10" uuid="1a2b3c4d-5e6f-4a5b-8c9d-0e1f2a3b4c5d"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CODIGO COMPRA:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="117" width="108" height="10" uuid="2b3c4d5e-6f7a-5b6c-9d0e-1f2a3b4c5d6e"/>
+				<textElement textAlignment="Center">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigo_compra}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="127" width="108" height="10" uuid="3c4d5e6f-7a8b-6c7d-0e1f-2a3b4c5d6e7f"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA RECEPCION:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="137" width="108" height="10" uuid="4d5e6f7a-8b9c-7d8e-1f2a-3b4c5d6e7f8a"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_recepcion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="147" width="108" height="10" uuid="5e6f7a8b-9c0d-8e9f-2a3b-4c5d6e7f8a9b"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA ELABORACIÓN:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="157" width="108" height="10" uuid="6f7a8b9c-0d1e-9f0a-3b4c-5d6e7f8a9b0c"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_elaboracion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="167" width="108" height="10" uuid="7a8b9c0d-1e2f-0a1b-4c5d-6e7f8a9b0c1d"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA DE CADUCIDAD:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="177" width="108" height="10" uuid="8b9c0d1e-2f3a-1b2c-5d6e-7f8a9b0c1d2e"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_caducidad}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="FixRelativeToBottom" x="0" y="188" width="108" height="52" uuid="fcc45099-b14b-4073-b311-71a0579909f7"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="07966997FE79413585764907AD23F688" trl="Y">
+    <value column="Name" isTrl="Y" original="yes">Si</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="52329CAE7F5740E298DCD5A1CB88EBE9" trl="Y">
+    <value column="Name" isTrl="Y" original="Night Shift ">turno de noche</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="788CFA44E9CB483895B3389E51573D8B" trl="Y">
+    <value column="Name" isTrl="Y" original="no">No</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

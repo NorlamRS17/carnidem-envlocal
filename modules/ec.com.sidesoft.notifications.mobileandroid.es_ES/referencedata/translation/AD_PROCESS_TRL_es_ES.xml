@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="B1F0FE8A671C417EA0257CD691D19DB0" trl="N">
+    <value column="Name" isTrl="N" original="Create Alert Mobile">Create Alert Mobile</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F41B28D5D2294D9B930D6D2E0C38BAEF" trl="N">
+    <value column="Name" isTrl="N" original="Test Push Notify">Test Push Notify</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

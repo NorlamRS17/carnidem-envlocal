@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.33196"/>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_VAL_RULE_ID" pkRow="C2B3550416934E0997553A95F75C543C">
+      <oldValue/>
+      <newValue><![CDATA[8B682E67A416405C9D0376EC68240FAA]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="7DB0B7A59B2D438F961E8BE6879E0231">
+      <oldValue><![CDATA[@M_Offer_Type_ID@='94AEA884F5AD4EABB72322832B9C5172']]></oldValue>
+      <newValue><![CDATA[@M_Offer_Type_ID@='94AEA884F5AD4EABB72322832B9C5172'|@M_Offer_Type_ID@='35FAE3ECD27349398B8C827B1264F485']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="804F049F6EB44E1ABD22B6D7FB455794">
+      <oldValue><![CDATA[@M_Offer_Type_ID@='94AEA884F5AD4EABB72322832B9C5172' & @EM_Obdisc_Is_Gift@='Y']]></oldValue>
+      <newValue><![CDATA[(@M_Offer_Type_ID@='94AEA884F5AD4EABB72322832B9C5172'|@M_Offer_Type_ID@='35FAE3ECD27349398B8C827B1264F485') & @EM_Obdisc_Is_Gift@='Y']]></newValue>
+    </columnDataChange>
+  </vector>

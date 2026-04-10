@@ -5,9 +5,5 @@
         <default/>
         <onCreateDefault/>
       </column>
-      <index name="EM_SSCCCIN_IDXFT_CLOSECASH" unique="false">
-        <index-column name="functionBasedColumn" functionExpression="STATEMENTDATE"/>
-        <whereClause><![CDATA[EM_SCCC_CASH_CLOUSURE_ID IS NULL AND EM_SCCC_ISCASHCLOUSURE<>'Y']]></whereClause>
-      </index>
     </table>
   </database>

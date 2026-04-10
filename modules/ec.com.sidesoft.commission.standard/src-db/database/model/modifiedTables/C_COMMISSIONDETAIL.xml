@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_COMMISSIONDETAIL">
+    <table name="C_COMMISSIONDETAIL" primaryKey="C_COMMISSIONDETAIL_KEY">
+      <column name="EM_SCOMST_COMMISSION_AMOUNT" primaryKey="false" required="true" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCOMST_BPARTNER_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCOMST_PAID_DATE" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCOMST_DATEINVOICED" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCOMST_DUEDATE" primaryKey="false" required="false" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="C_BPARTNER" name="EM_SCOMST_CD_BPARTNER">
+        <reference local="EM_SCOMST_BPARTNER_ID" foreign="C_BPARTNER_ID"/>
+      </foreign-key>
+    </table>
+  </database>

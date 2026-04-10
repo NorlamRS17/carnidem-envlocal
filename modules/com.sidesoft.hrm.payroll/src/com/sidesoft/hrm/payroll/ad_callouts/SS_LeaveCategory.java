@@ -21,42 +21,42 @@ package com.sidesoft.hrm.payroll.ad_callouts;
 
 import javax.servlet.ServletException;
 
-import org.apache.commons.lang.StringUtils;
+//import org.openbravo.erpCommon.businessUtility.BpartnerMiscData;
+//importar el xsql - en estecaso desde eldirectorio - pakete
+import org.hibernate.criterion.Restrictions;
+import org.openbravo.dal.service.OBCriteria;
 import org.openbravo.dal.service.OBDal;
 import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
 
 import com.sidesoft.hrm.payroll.ssprleavecategory;
 
 public class SS_LeaveCategory extends SimpleCallout {
-
   private static final long serialVersionUID = 1L;
 
+  @SuppressWarnings("null")
   @Override
   protected void execute(CalloutInfo info) throws ServletException {
 
-    String strLeaveCategoryId =
-        info.getStringParameter("inpssprLeaveCategoryId", null);
+    String StrLeaveCategory = info.getStringParameter("inpssprLeaveCategoryId", null);
 
-    if (StringUtils.isBlank(strLeaveCategoryId)) {
-      return;
+    if (!StrLeaveCategory.isEmpty()) {
+
+      OBCriteria<ssprleavecategory> ObjLeaveCategory = OBDal.getInstance().createCriteria(
+          ssprleavecategory.class);
+      ObjLeaveCategory.add(Restrictions.eq(ssprleavecategory.PROPERTY_ID, StrLeaveCategory));
+
+      if (ObjLeaveCategory.count() > 0) {
+        // configuracion vacaiones
+        String StrSpecs = ObjLeaveCategory.list().get(0).getSpecs().toString();
+
+        if (!StrSpecs.isEmpty()) {
+          info.addResult("inpspecs", StrSpecs);
+        } else {
+          info.addResult("inpspecs", StrSpecs);
+        }
+      }
     }
 
-    // Obtener directamente por ID (más eficiente)
-    ssprleavecategory leaveCategory =
-        OBDal.getInstance().get(ssprleavecategory.class, strLeaveCategoryId);
-
-    if (leaveCategory == null) {
-      return;
-    }
-
-    String specs = leaveCategory.getSpecs();
-
-    if (specs == null) {
-      specs = "";
-    }
-
-    // Mismo resultado funcional: setear siempre inpspecs
-    info.addResult("inpspecs", specs);
   }
-}
 
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_MENU" version="">
+  <row id="1088377DB97B464B99A7C57A7ACAA9FC" trl="N">
+    <value column="Name" isTrl="N" original="Carga Repuesto">Carga Repuesto</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1C0365ACC4C449148B9837FEA22D212A" trl="N">
+    <value column="Name" isTrl="N" original="Registros Reemplazos">Registros Reemplazos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="32826D47091B48B09093ACDE8B43F45D" trl="N">
+    <value column="Name" isTrl="N" original="Productos y Sustitutos">Productos y Sustitutos</value>
+    <value column="Description" isTrl="N" original=" Productos y Sustitutos"> Productos y Sustitutos</value>
+  </row>
+  <row id="F180F256F9DE4B1FB220C1C3940F8A9C" trl="N">
+    <value column="Name" isTrl="N" original="Orden de Servicio">Orden de Servicio</value>
+    <value column="Description" isTrl="N" original="Indumoto Postventa especificacion ventana">Indumoto Postventa especificacion ventana</value>
+  </row>
+</compiereTrl>

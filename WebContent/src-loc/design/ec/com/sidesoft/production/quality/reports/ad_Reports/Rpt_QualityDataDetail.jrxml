@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="columns" columnCount="7" printOrder="Horizontal" pageWidth="545" pageHeight="842" columnWidth="75" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" uuid="adca597a-f8d3-4f9f-ae19-21b3272acdb9">
+	<property name="ireport.zoom" value="1.5026296018031553"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<parameter name="DATEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERDECIMAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_WEB" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SOURCE_PATH" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ma_ccp_id" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT to_char(t.measurehour,'hh:ss') as h_medida
+,t.em_spquly_takenumber as no_toma
+,mc.name as p_control
+,v.valuetype
+,COALESCE(v_string,CASE WHEN v_char='N' THEN 'NO' ELSE 'SI' END) v_string
+,COALESCE(v_number,0) as v_number
+FROM ma_measure_shift s
+JOIN ma_measure_group g ON g.ma_measure_shift_id=s.ma_measure_shift_id
+JOIN ma_measure_time t ON t.ma_measure_group_id=g.ma_measure_group_id
+JOIN ma_measure_values v ON v.ma_measure_time_id=t.ma_measure_time_id
+LEFT JOIN ma_ccp mc ON mc.ma_ccp_id=v.ma_ccp_id
+WHERE s.ma_measure_shift_id=$P{DOCUMENT_ID}
+AND mc.ma_ccp_id=$P{ma_ccp_id}
+ORDER BY t.measurehour,v.seqno]]>
+	</queryString>
+	<field name="h_medida" class="java.lang.String"/>
+	<field name="no_toma" class="java.math.BigDecimal"/>
+	<field name="p_control" class="java.lang.String"/>
+	<field name="valuetype" class="java.lang.String"/>
+	<field name="v_string" class="java.lang.String"/>
+	<field name="v_number" class="java.math.BigDecimal"/>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="75" height="15" isPrintWhenDetailOverflows="true" uuid="160c2caa-87e8-4757-8b6d-7ff9daad46e8"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{no_toma}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="15">
+			<printWhenExpression><![CDATA[$F{valuetype}.equals("N")]]></printWhenExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="75" height="15" isPrintWhenDetailOverflows="true" uuid="91ef78c5-4eae-43a4-9f64-8a6848961018"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{v_number}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+		</band>
+		<band height="15">
+			<printWhenExpression><![CDATA[$F{valuetype}.equals("T") || $F{valuetype}.equals("C")]]></printWhenExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="0" y="0" width="75" height="15" isPrintWhenDetailOverflows="true" uuid="58cfb238-800d-43ea-9a57-8fa96237b1e5"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{v_string}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

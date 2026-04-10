@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_atindpo_Prefactura_subreport1" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2be491a7-90c0-4293-ba6a-522377c0c733">
+	<property name="ireport.zoom" value="1.6105100000000023"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERDECIMAL" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+      mp.value AS "codigo"
+    , mp.name AS "producto"
+    , (Case When mp.producttype = 'S'
+		Then atpt.cantidad
+		ELSE atpt.em_sswos_transfer
+	End) AS "cantidad"
+From atindpo_postventalinea as atpt
+	Left join m_product as mp on atpt.m_product_id = mp.m_product_id
+Where atpt.atindpo_postventa_id = $P{DOCUMENT_ID} AND mp.producttype='I'
+Order by mp.name]]>
+	</queryString>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<pageHeader>
+		<band height="40">
+			<staticText>
+				<reportElement mode="Opaque" x="45" y="25" width="100" height="15" backcolor="#C9C9C9" uuid="ab272b7f-5e20-453c-953d-6e92479f57a2"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<topPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<leftPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<bottomPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<rightPen lineWidth="1.0" lineColor="#FEFEFE"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="145" y="25" width="305" height="15" backcolor="#C9C9C9" uuid="483fcc8e-df8f-4a2e-8dda-2d22c52a6a47"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<topPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<leftPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<bottomPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<rightPen lineWidth="1.0" lineColor="#FEFEFE"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="450" y="25" width="60" height="15" backcolor="#C9C9C9" uuid="4815e69a-3b9d-4c3a-869b-2806465068be"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<topPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<leftPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<bottomPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<rightPen lineWidth="1.0" lineColor="#FEFEFE"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="45" y="10" width="465" height="15" backcolor="#FF0000" uuid="33447fec-9760-411e-aefd-ee2896d1f602"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<topPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<leftPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<bottomPen lineWidth="1.0" lineColor="#FEFEFE"/>
+					<rightPen lineWidth="1.0" lineColor="#FEFEFE"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[Repuestos]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="555" height="10" uuid="95526f61-f836-46d4-8b9c-f59b70f1b6bf"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="45" y="0" width="100" height="15" uuid="f1ad2f14-0c2a-4507-8c34-b63302ead287"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="145" y="0" width="305" height="15" uuid="d70a92b3-fa9e-4cfb-be70-1188d41ecea3"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="450" y="0" width="60" height="15" uuid="0a3c3c15-e8d3-4a3b-a463-724ff3bbe2ab"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

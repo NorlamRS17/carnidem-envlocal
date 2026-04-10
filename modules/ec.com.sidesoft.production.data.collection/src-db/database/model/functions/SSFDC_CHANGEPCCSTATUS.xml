@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSFDC_CHANGEPCCSTATUS">
+    <function name="SSFDC_CHANGEPCCSTATUS" type="VARCHAR">
+      <parameter name="pinstanceid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[pInstance RECORD;
+	vMessageOK VARCHAR2(2000) := '';
+	vMessageError VARCHAR2(2000) := '';
+	vRecordID VARCHAR2(32);
+	vRecord RECORD;
+	v_shareswap RECORD; 
+	v_LINECOUNT RECORD;
+	vResult VARCHAR2(2000) := '';
+	vQR RECORD;
+BEGIN
+	DBMS_OUTPUT.PUT_LINE( 'Updating PInstance - Processing ' || pInstanceID);
+	vMessageError := 'PInstanceNotFound';
+ AD_UPDATE_PINSTANCE(pInstanceID, NULL, 'Y', NULL, NULL);
+	BEGIN
+		--Obtener los parametros
+		FOR pInstance IN (
+			SELECT
+				i.Record_ID,
+				i.AD_User_ID,
+				p.ParameterName,
+				p.P_String,
+				p.P_Number,
+				p.P_Date
+			FROM AD_PInstance AS i
+				LEFT JOIN AD_PInstance_Para AS p ON i.AD_PInstance_ID=p.AD_PInstance_ID
+			WHERE i.AD_PInstance_ID=pInstanceID
+			ORDER BY p.SeqNo
+		) LOOP
+			vRecordID := pInstance.Record_ID;
+		END LOOP;
+
+		--Obtener el registro
+		select * 
+		into v_shareswap
+		from MA_Measure_Shift sswap
+		where MA_Measure_Shift_ID = vRecordID;
+		--Edicion JP4633--
+		
+		--Fin Edicion JP4633--
+		
+		--- Edit JP ---
+		
+		update MA_Measure_Shift
+		set EM_Ssfdc_Status = 'CP',
+		EM_Ssfdc_Completed = 'Y'
+		where MA_Measure_Shift_ID = v_shareswap.MA_Measure_Shift_id
+		and EM_Ssfdc_Status = 'DR';
+		
+		DBMS_OUTPUT.PUT_LINE( 'Updating PInstance - Finished ' || vMessageOK);
+	 AD_UPDATE_PINSTANCE(pInstanceID, NULL, 'N', 1, vMessageOK);
+		RETURN 'OK';
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+	vMessageError := '@ERROR=' || SQLERRM;
+	DBMS_OUTPUT.PUT_LINE( vMessageError);
+ AD_UPDATE_PINSTANCE(pInstanceID, NULL, 'N', 0, vMessageError);
+	RETURN vMessageError;
+END SSFDC_CHANGEPCCSTATUS
+]]></body>
+    </function>
+  </database>

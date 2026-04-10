@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="7F5E421830A443ADACA962B6AE546906" trl="Y">
+    <value column="Name" isTrl="Y" original="Consumption Report">Reporte de consumos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CD0DB709A7074EE4A2D61C4C45DCE93F" trl="N">
+    <value column="Name" isTrl="N" original="Report consumption">Report consumption</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="1037F420468B4E4F8F306924B2F0219F" trl="N">
+    <value column="Text" isTrl="N" original="Item you have marked as cleared">Item you have marked as cleared</value>
+  </row>
+  <row id="10684F30E310498E9D6ACC194397B90C" trl="N">
+    <value column="Text" isTrl="N" original="Hide Transactions after statement date">Hide Transactions after statement date</value>
+  </row>
+  <row id="229163AFD48E45A286C0DBE27ECA6A78" trl="N">
+    <value column="Text" isTrl="N" original="Cleared">Cleared</value>
+  </row>
+  <row id="26C6C9A56B524ECAA3A04AC5E4A2B49C" trl="N">
+    <value column="Text" isTrl="N" original="Deposito">Deposito</value>
+  </row>
+  <row id="2EB7E16FD73643B39BE722ED3FB4749E" trl="N">
+    <value column="Text" isTrl="N" original="Hide cleared">Hide cleared</value>
+  </row>
+  <row id="308B8825B63F4C02B771CEB80F6770B3" trl="N">
+    <value column="Text" isTrl="N" original="Transaction Date">Transaction Date</value>
+  </row>
+  <row id="34F69EA2337446A6AE1850568CF5DDD2" trl="N">
+    <value column="Text" isTrl="N" original="zz">zz</value>
+  </row>
+  <row id="3EECB99E5F764F2391C675AE29387481" trl="N">
+    <value column="Text" isTrl="N" original="zz">zz</value>
+  </row>
+  <row id="4BE7FA93020D4163B5A5F950C230C581" trl="N">
+    <value column="Text" isTrl="N" original="Ending Balance">Ending Balance</value>
+  </row>
+  <row id="4C4EF1605F254F1E83FC54CEBC4FA5D9" trl="N">
+    <value column="Text" isTrl="N" original="G/L Item">G/L Item</value>
+  </row>
+  <row id="50C795BF49F04DAF9DEDF024CB84B5C6" trl="N">
+    <value column="Text" isTrl="N" original="AddPayment">AddPayment</value>
+  </row>
+  <row id="53D71F601D3A49F69BC5B0190E2CCDC9" trl="N">
+    <value column="Text" isTrl="N" original="Primary Filter">Primary Filter</value>
+  </row>
+  <row id="5AD66974A419425F9CC3956259BF0447" trl="N">
+    <value column="Text" isTrl="N" original="Paid Out">Paid Out</value>
+  </row>
+  <row id="61F64C0D456B484DBC83E0264873C849" trl="N">
+    <value column="Text" isTrl="N" original="Transaction Type">Transaction Type</value>
+  </row>
+  <row id="683DFAA090274FF2865554A9E6DF04F5" trl="N">
+    <value column="Text" isTrl="N" original="Difference to clear">Difference to clear</value>
+  </row>
+  <row id="74F642CBD14D43CE9B9089F61D3DDB20" trl="N">
+    <value column="Text" isTrl="N" original="1st Dimension">1st Dimension</value>
+  </row>
+  <row id="7691A689BE1A4A5AAFA190C45F0A82F3" trl="N">
+    <value column="Text" isTrl="N" original="Currently cleared">Currently cleared</value>
+  </row>
+  <row id="7FA0558926A04EB4BC6D6EDEEB1D85D1" trl="N">
+    <value column="Text" isTrl="N" original="Details">Details</value>
+  </row>
+  <row id="803126DB99E549DD885E9B95E110069D" trl="N">
+    <value column="Text" isTrl="N" original="Statement Date">Statement Date</value>
+  </row>
+  <row id="850543EFCD8140739E2816FD67EEFC5E" trl="N">
+    <value column="Text" isTrl="N" original="Add Payment In/Out">Add Payment In/Out</value>
+  </row>
+  <row id="9497E55B97A54E928F03A4BC76A3B107" trl="N">
+    <value column="Text" isTrl="N" original="2nd Dimension">2nd Dimension</value>
+  </row>
+  <row id="972F1247993245B08B423A283ABA2E6B" trl="N">
+    <value column="Text" isTrl="N" original="Add Transaction">Add Transaction</value>
+  </row>
+  <row id="992722D0F4E440B6BB77E288D40B4AED" trl="N">
+    <value column="Text" isTrl="N" original="(this is the result of the last reconciliation)">(this is the result of the last reconciliation)</value>
+  </row>
+  <row id="A91E63AA5986499DAF1184F1FA7C402C" trl="N">
+    <value column="Text" isTrl="N" original="Details">Details</value>
+  </row>
+  <row id="ACB77A4F3A834A79B63BBE08A917C7B5" trl="N">
+    <value column="Text" isTrl="N" original="Received In">Received In</value>
+  </row>
+  <row id="B082A18694D64167B3FE0E989ED67280" trl="N">
+    <value column="Text" isTrl="N" original="Beginning Balance">Beginning Balance</value>
+  </row>
+  <row id="B26BC9B21A8B4CEEB47F572A1616995F" trl="N">
+    <value column="Text" isTrl="N" original="Reconcile">Reconcile</value>
+  </row>
+  <row id="B817474C879E4C4CBF5FAE0152566C71" trl="N">
+    <value column="Text" isTrl="N" original="Difference">Difference</value>
+  </row>
+  <row id="BA260F180A864BD9AA14334B81B44A76" trl="N">
+    <value column="Text" isTrl="N" original="Financial Account">Financial Account</value>
+  </row>
+  <row id="BCA95304927D4186800696E9C4CD5B15" trl="N">
+    <value column="Text" isTrl="N" original="Reconciliation">Reconciliation</value>
+  </row>
+  <row id="C167CB491ED64169A602FD37A33F5BC3" trl="N">
+    <value column="Text" isTrl="N" original="Accounting Dimensions">Accounting Dimensions</value>
+  </row>
+  <row id="D52FA25DFF044D538B463B501296FE32" trl="N">
+    <value column="Text" isTrl="N" original="Paid out">Paid out</value>
+  </row>
+  <row id="D615D760E3554DFA8FAB887326B96F88" trl="N">
+    <value column="Text" isTrl="N" original="Clear all">Clear all</value>
+  </row>
+  <row id="D6204CF804594C16B75C66916B51CD9F" trl="N">
+    <value column="Text" isTrl="N" original="Nro Deposito">Nro Deposito</value>
+  </row>
+  <row id="E2BA4EC2E175493E807C2D6FFB57A6D8" trl="N">
+    <value column="Text" isTrl="N" original="(this is what the statement says)">(this is what the statement says)</value>
+  </row>
+  <row id="EB68430AD8A44B17822A8A6880ABE18C" trl="N">
+    <value column="Text" isTrl="N" original="Show transactions for alternative financial account">Show transactions for alternative financial account</value>
+  </row>
+  <row id="F44B3FFDC3A84D279F9829B91D7023AF" trl="N">
+    <value column="Text" isTrl="N" original="Cost Center">Cost Center</value>
+  </row>
+  <row id="FA476D246DCF40AA96033A177F04C06A" trl="N">
+    <value column="Text" isTrl="N" original="Payment In/Out">Payment In/Out</value>
+  </row>
+  <row id="FBA20FEC4195499DAF0C98B9BD1AB739" trl="N">
+    <value column="Text" isTrl="N" original="Received in">Received in</value>
+  </row>
+</compiereTrl>

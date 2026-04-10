@@ -395,9 +395,9 @@ BEGIN
    where Instance_key is not null
      and activation_key is not null;
      
-  if v_isObps = 0 then
+  /*if v_isObps = 0 then
     RAISE EXCEPTION '%', '@OBPSNeededForAudit@' ;
-  end if;  	
+  end if;*/  	
 	
   for cur_triggers in (select *
                          from user_triggers
@@ -542,7 +542,7 @@ SELECT COALESCE(MAX(RECORD_REVISION),0)+1
                         and upper(c.columnname) = u.column_name
                         AND u.data_type != 'BYTEA'
                         and upper(c.columnname) not in ('CREATED','CREATEDBY','UPDATED', 'UPDATEDBY')
-			and c.isexcludeaudit='N'
+			                  and c.isexcludeaudit='N'
                         order by c.position) loop
 
       if (cur_tables.IsAuditInserts = 'N' and cur_cols.isKey='N' ) then
@@ -712,5 +712,3 @@ BEGIN
 END ; $BODY$
   LANGUAGE plpgsql VOLATILE
 /-- END
- 
-

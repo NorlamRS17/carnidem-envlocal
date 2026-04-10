@@ -168,7 +168,7 @@ FROM   c_invoice i
                  AND psiv.expected <> 0
        left join fin_payment_detail_v pdv
               ON psiv.fin_payment_sched_inv_v_id =
-                 pdv.fin_payment_sched_inv_id
+                 pdv.fin_payment_sched_inv_v_id
                  AND pdv.fin_payment_detail_v_id IS NOT NULL
        left join c_doctype dt
               ON i.c_doctype_id = dt.c_doctype_id
@@ -628,7 +628,7 @@ FROM   c_invoice i
                  AND psiv.expected <> 0
        left join fin_payment_detail_v pdv
               ON psiv.fin_payment_sched_inv_v_id =
-                 pdv.fin_payment_sched_inv_id
+                 pdv.fin_payment_sched_inv_v_id
                  AND pdv.fin_payment_detail_v_id IS NOT NULL
        left join c_doctype dt
               ON i.c_doctype_id = dt.c_doctype_id

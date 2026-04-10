@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SPROCTM_MAQ_TRG">
+    <trigger name="SPROCTM_MAQ_TRG" table="SPROCTM_TASK_MACHINE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[    
+    totalWithSimilarMaq NUMBER;
+    v_machineId VARCHAR2(32);
+
+BEGIN
+ 
+   IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+
+    IF  (INSERTING OR UPDATING ) THEN
+        IF  (INSERTING ) THEN
+            v_machineId = :NEW.MA_Machine_ID;
+        END IF;
+
+
+        IF  (UPDATING ) THEN
+            IF(COALESCE(:OLD.MA_Machine_ID, '')  != :NEW.MA_Machine_ID ) THEN
+                v_machineId = :NEW.MA_Machine_ID;
+            END IF;
+        END IF;
+
+        IF(:NEW.MA_Machine_ID is not null ) THEN
+            -- Validations 
+            -- Verificar si ya existe esa categoria salarial 
+            -- en las lineas de la Mano de Obra con respecto a esa tarea.
+            SELECT count(*) as totalWithSimilarMaq 
+            INTO  totalWithSimilarMaq
+            FROM sproctm_task_machine 
+            where c_projecttask_id =  :NEW.c_projecttask_id
+            AND MA_Machine_ID = v_machineId;
+            
+            IF (totalWithSimilarMaq >= 1) THEN
+                RAISE_APPLICATION_ERROR(-20000, '@sproctm_Maq_OnlyIndirectMaq@');
+            END IF;
+            
+        END IF;
+
+    END IF;
+
+    END SPROCTM_MAQ_TRG
+]]></body>
+    </trigger>
+  </database>

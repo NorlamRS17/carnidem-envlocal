@@ -1,0 +1,916 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_Ssimacc_Importation" pageWidth="1148" pageHeight="842" columnWidth="1108" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ee0c861b-7fc8-400e-9d23-649d97d4d482">
+	<property name="ireport.zoom" value="1.1000000000000045"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.wrap.text" value="false"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+	<parameter name="DATETO" class="java.util.Date"/>
+	<parameter name="C_CAMPAIGN_ID" class="java.lang.String"/>
+	<parameter name="AD_USER_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[(
+SELECT *
+    --, TO_CHAR(ROW_NUMBER () OVER (PARTITION BY importation ORDER BY importation) lineimp
+FROM (select
+cc.value as "importation"
+, linetrx as "linetrx"
+, documentno as "documentno"
+, cbp.name as "partner"
+, cd.name as "documenttype"
+, datetrx as "datetrx"
+, amountdr as "amountdr"
+, amountcr as "amountcr"
+, 0 as "saldo"
+, saldo as "saldototal"
+, to_char(now(),'dd/mm/YYYYY') "dateactual"
+, (select name from ad_user where ad_user_id =$P{AD_USER_ID} ) as "username"
+, (select ad_org_id from ad_org where AD_ORGTYPE_ID = '1') as "ad_org_id"
+, (select
+ 	status
+ from
+	(select case EM_Ssip_Importstatus
+ 		when 'NL' then 'No Liquidado'
+ 		when 'PL' then 'Preliquidado'
+ 		when 'LL' then 'Liquidado'
+ 		end as status , ROW_NUMBER () OVER () as numline
+ 		from c_order
+ 		where c_campaign_id = campaign_id
+		and issotrx='N'
+ 	) rep
+ where numline=1
+) as "status2"
+, coalesce((select
+ 	coalesce(status,'No Liquidado') as status
+ from
+	(select case  when ($P{DATETO} < movementdate) then 'No Liquidado'
+ 		else 'Liquidado'
+ 		end as status , ROW_NUMBER () OVER () as numline
+ 		from m_inout
+ 		where c_campaign_id = campaign_id
+		and issotrx='N'
+ 	) rep
+ where numline=1
+),'No Liquidado')  as "status"
+from
+(
+		select
+		ci.documentno
+		,ci.c_bpartner_id
+		,ci.c_doctype_id
+		,ci.dateinvoiced as datetrx
+		,10 as linetrx
+		, cil.amountdr  * (
+		select case when docbasetype='APC' and isreversal='Y' then -1 else 1 end  from c_doctype where  c_doctype_id = ci.c_doctype_id
+		) as amountdr
+		, 0 as amountcr
+		,cil.campaign_id
+		, cil.amountdr  * (
+		select case when docbasetype='APC' and isreversal='Y' then -1 else 1 end  from c_doctype where  c_doctype_id = ci.c_doctype_id
+		)	as saldo
+		from c_invoice ci
+		join (
+			select sum(linenetamt) as amountdr, em_ssip_campaign_id as campaign_id
+			,c_invoice_id
+			from c_invoiceline cil
+			where em_ssip_importtype='Y'
+			group by em_ssip_campaign_id,c_invoice_id
+		) cil on ci.c_invoice_id = cil.c_invoice_id
+		where date(ci.dateinvoiced) <=$P{DATETO}
+		and (cil.campaign_id = $P{C_CAMPAIGN_ID} or $P{C_CAMPAIGN_ID} is null)
+		and ci.issotrx='N'
+
+		union all
+
+		select
+		jb.documentno
+		,'' as c_bpartner_id
+		,(
+			select
+				doctype
+			from
+			(
+				select c_doctype_id as doctype,row_number() OVER () ROWNUM
+				from c_doctype
+				where docbasetype='GLJ' and ad_table_id ='224'
+			) rep
+			where ROWNUM =1
+		) as c_doctype_id
+		,jb.datedoc as datetrx
+		,20 as linetrx
+		, jl.amountdr as amountdr
+		, 0 as amountcr
+		, jl.campaign_id
+		, jl.amountdr as saldo
+		from GL_JournalBatch jb
+		left join GL_Journal j on jb.GL_JournalBatch_id=j.GL_JournalBatch_id
+		left join (
+					select sum(amtsourcedr) as amountdr,GL_Journal_id,c_campaign_id as campaign_id
+					from GL_JournalLine
+					where EM_Ssip_Importcosts='Y'
+					group by GL_Journal_id, c_campaign_id
+				  ) jl on jl.GL_Journal_id=j.GL_Journal_id
+		where  (campaign_id = $P{C_CAMPAIGN_ID} or $P{C_CAMPAIGN_ID} is null)
+		and date(jb.datedoc) <=$P{DATETO}
+		and jl.amountdr >0
+
+		union all
+		select
+		mi.documentno
+		,mi.c_bpartner_id
+		,mi.c_doctype_id
+		,mi.movementdate as datetrx
+		,30 as linetrx
+		, 0 as amountdr
+		, mil.amountcr as amountcr
+		, mi.c_campaign_id
+		, mil.amountcr*-1 as saldo
+		from m_inout mi
+		join (
+
+			select sum(amountcr)  as amountcr, m_inout_id
+			from
+			(select col.priceactual * mil.movementqty as amountcr
+			, mil.m_inout_id
+			from m_inoutline mil
+			join c_orderline col on mil.c_orderline_id = col.c_orderline_id
+			) rep
+			group by m_inout_id
+
+		) mil on mil.m_inout_id = mi.m_inout_id
+		where (c_campaign_id = $P{C_CAMPAIGN_ID} or $P{C_CAMPAIGN_ID} is null)
+		and date(mi.movementdate) <=$P{DATETO}
+		and mi.issotrx='N'
+
+		union all
+
+		select
+		jb.documentno
+		,'' as c_bpartner_id
+		,(
+			select
+				doctype
+			from
+			(
+				select c_doctype_id as doctype,row_number() OVER () ROWNUM
+				from c_doctype
+				where docbasetype='GLJ' and ad_table_id ='224'
+			) rep
+			where ROWNUM =1
+		) as c_doctype_id
+		,jb.datedoc as datetrx
+		,25 as linetrx
+		, 0 as amountdr
+		, jl.amtsourcecr as amountcr
+		, jl.c_campaign_id
+		, jl.amtsourcecr as saldo
+		from  GL_JournalLine jl
+		join GL_Journal j on jl.GL_Journal_id=j.GL_Journal_id
+		join GL_JournalBatch jb on jb.GL_JournalBatch_id=j.GL_JournalBatch_id
+		where jl.c_campaign_id is not null and  amtsourcecr>0
+		and (jl.c_campaign_id = $P{C_CAMPAIGN_ID} or $P{C_CAMPAIGN_ID} is null)
+		and date(jb.datedoc) <=$P{DATETO}
+
+) repimp
+left join c_bpartner cbp on repimp.c_bpartner_id = cbp.c_bpartner_id
+left join c_campaign cc on cc.c_campaign_id = repimp.campaign_id
+left join c_doctype cd on cd.c_doctype_id = repimp.c_doctype_id
+where coalesce(repimp.campaign_id,'ND')<>'ND'
+and coalesce(repimp.campaign_id,'ND') in (
+
+select
+campaign_id
+from
+(
+select
+campaign_id, round(sum(amountdr),2) as amountdr,round(sum(amountcr),2) as amountcr
+from
+(select
+cc.c_campaign_id as campaign_id
+, amountdr as amountdr
+, amountcr as amountcr
+from
+(
+		select
+		ci.documentno
+		,ci.c_bpartner_id
+		,ci.c_doctype_id
+		,ci.dateinvoiced as datetrx
+		,10 as linetrx
+		, cil.amountdr  * (
+		select case when docbasetype='APC' and isreversal='Y' then -1 else 1 end  from c_doctype where  c_doctype_id = ci.c_doctype_id
+		) as amountdr
+		, 0 as amountcr
+		,cil.campaign_id
+		, cil.amountdr  * (
+		select case when docbasetype='APC' and isreversal='Y' then -1 else 1 end  from c_doctype where  c_doctype_id = ci.c_doctype_id
+		)	as saldo
+		from c_invoice ci
+		join (
+			select sum(linenetamt) as amountdr, em_ssip_campaign_id as campaign_id
+			,c_invoice_id
+			from c_invoiceline cil
+			where em_ssip_importtype='Y'
+			group by em_ssip_campaign_id,c_invoice_id
+		) cil on ci.c_invoice_id = cil.c_invoice_id
+		where date(ci.dateinvoiced) <=$P{DATETO}
+		and (cil.campaign_id = $P{C_CAMPAIGN_ID} or $P{C_CAMPAIGN_ID} is null)
+		and ci.issotrx='N'
+
+		union all
+
+		select
+		jb.documentno
+		,'' as c_bpartner_id
+		,(
+			select
+				doctype
+			from
+			(
+				select c_doctype_id as doctype,row_number() OVER () ROWNUM
+				from c_doctype
+				where docbasetype='GLJ' and ad_table_id ='224'
+			) rep
+			where ROWNUM =1
+		) as c_doctype_id
+		,jb.datedoc as datetrx
+		,20 as linetrx
+		, jl.amountdr as amountdr
+		, 0 as amountcr
+		, jl.campaign_id
+		, jl.amountdr as saldo
+		from GL_JournalBatch jb
+		left join GL_Journal j on jb.GL_JournalBatch_id=j.GL_JournalBatch_id
+		left join (
+					select sum(amtsourcedr) as amountdr,GL_Journal_id,c_campaign_id as campaign_id
+					from GL_JournalLine
+					where EM_Ssip_Importcosts='Y'
+					group by GL_Journal_id, c_campaign_id
+				  ) jl on jl.GL_Journal_id=j.GL_Journal_id
+		where  (campaign_id = $P{C_CAMPAIGN_ID} or $P{C_CAMPAIGN_ID} is null)
+		and date(jb.datedoc) <=$P{DATETO}
+		and jl.amountdr >0
+
+		union all
+		select
+		mi.documentno
+		,mi.c_bpartner_id
+		,mi.c_doctype_id
+		,mi.movementdate as datetrx
+		,30 as linetrx
+		, 0 as amountdr
+		, mil.amountcr as amountcr
+		, mi.c_campaign_id
+		, mil.amountcr*-1 as saldo
+		from m_inout mi
+		join (
+
+			select sum(amountcr)  as amountcr, m_inout_id
+			from
+			(select col.priceactual * mil.movementqty as amountcr
+			, mil.m_inout_id
+			from m_inoutline mil
+			join c_orderline col on mil.c_orderline_id = col.c_orderline_id
+			) rep
+			group by m_inout_id
+
+		) mil on mil.m_inout_id = mi.m_inout_id
+		where (c_campaign_id = $P{C_CAMPAIGN_ID} or $P{C_CAMPAIGN_ID} is null)
+		and date(mi.movementdate) <=$P{DATETO}
+		and mi.issotrx='N'
+
+		union all
+
+		select
+		jb.documentno
+		,'' as c_bpartner_id
+		,(
+			select
+				doctype
+			from
+			(
+				select c_doctype_id as doctype,row_number() OVER () ROWNUM
+				from c_doctype
+				where docbasetype='GLJ' and ad_table_id ='224'
+			) rep
+			where ROWNUM =1
+		) as c_doctype_id
+		,jb.datedoc as datetrx
+		,25 as linetrx
+		, 0 as amountdr
+		, jl.amtsourcecr as amountcr
+		, jl.c_campaign_id
+		, jl.amtsourcecr as saldo
+		from  GL_JournalLine jl
+		join GL_Journal j on jl.GL_Journal_id=j.GL_Journal_id
+		join GL_JournalBatch jb on jb.GL_JournalBatch_id=j.GL_JournalBatch_id
+		where jl.c_campaign_id is not null and  amtsourcecr>0
+		and (jl.c_campaign_id = $P{C_CAMPAIGN_ID} or $P{C_CAMPAIGN_ID} is null)
+		and date(jb.datedoc) <=$P{DATETO}
+
+) repimp
+left join c_bpartner cbp on repimp.c_bpartner_id = cbp.c_bpartner_id
+left join c_campaign cc on cc.c_campaign_id = repimp.campaign_id
+left join c_doctype cd on cd.c_doctype_id = repimp.c_doctype_id
+ ) rep
+group by campaign_id
+
+) rep2
+where amountdr <> amountcr and abs(round(amountdr,2) - round(amountcr,2))>0
+)
+
+UNION ALL
+
+SELECT
+    ca.value importation
+    , CASE WHEN i.documentno IS NOT NULL THEN 10 ELSE 20 END linetrx
+    , icd.documentno
+    , bp.name partner
+    , dt.name documenttype
+    , icd.date datetrx
+    , ROUND(icd.amountnet, cu.costingprecision) * CASE
+        WHEN i.documentno IS NOT NULL AND dt.docbasetype = 'APC' AND isreversal = 'Y' THEN -1
+        ELSE 1
+    END amountdr
+    , 0 amountcr
+    , 0 saldo
+    , ROUND(icd.amountnet, cu.costingprecision) * CASE
+        WHEN i.documentno IS NOT NULL AND dt.docbasetype = 'APC' AND isreversal = 'Y' THEN -1
+        ELSE 1
+    END saldototal
+    , TO_CHAR(NOW(), 'dd/mm/YYYYY') dateactual
+    , u.name username
+    , org.ad_org_id
+    , r.name status2
+    , CASE WHEN io.m_inout_id IS NOT NULL AND DATE(io.movementdate) <= DATE($P{DATETO}) THEN 'Liquidado' ELSE 'No Liquidado' END status
+FROM ssimpcn_imp_consolidation ic
+    JOIN ssimpcn_imp_consol_line icl ON icl.ssimpcn_imp_consolidation_id = ic.ssimpcn_imp_consolidation_id
+    JOIN c_campaign ca ON ca.c_campaign_id = icl.c_campaign_id
+    JOIN c_order o ON o.c_campaign_id = ca.c_campaign_id
+        AND issotrx = 'N'
+    JOIN ad_ref_list_v r ON r.ad_reference_id = 'E4D5D7C8E19A4524B806050B234654DD' AND ad_language = 'es_ES'
+        AND r.value = o.EM_Ssip_Importstatus
+    JOIN ssimpcn_imp_consol_detail icd ON icd.ssimpcn_imp_consol_line_id = icl.ssimpcn_imp_consol_line_id
+    LEFT JOIN c_bpartner bp ON bp.c_bpartner_id = icd.c_bpartner_id
+    JOIN c_doctype dt ON dt.c_doctype_id = icd.c_doctype_id
+    LEFT JOIN (
+        SELECT i.documentno, i.c_currency_id, il.EM_Ssimpcn_Imp_Consol_ID
+        FROM c_invoice i
+            JOIN c_invoiceline il ON il.c_invoice_id = i.c_invoice_id
+                AND il.EM_Ssip_Importtype = 'Y' AND il.EM_Ssimpcn_Type = 'C'
+                AND il.EM_Ssimpcn_Imp_Consol_ID IS NOT NULL
+        WHERE i.issotrx = 'N' AND i.docstatus = 'CO'
+    ) i ON i.EM_Ssimpcn_Imp_Consol_ID = ic.ssimpcn_imp_consolidation_id
+        AND i.documentno = icd.documentno
+    LEFT JOIN (
+        SELECT jb.documentno, j.c_currency_id, jl.EM_Ssimpcn_Imp_Consol_ID
+        FROM gl_journalbatch jb
+            JOIN gl_journal j ON j.gl_journalbatch_id = jb.gl_journalbatch_id AND j.docstatus = 'CO'
+            JOIN gl_journalline jl ON jl.gl_journal_id = j.gl_journal_id
+                AND jl.EM_Ssip_Importcosts = 'Y' AND jl.EM_Ssimpcn_Type = 'C'
+                AND jl.EM_Ssimpcn_Imp_Consol_ID IS NOT NULL
+    ) j ON j.EM_Ssimpcn_Imp_Consol_ID = ic.ssimpcn_imp_consolidation_id
+        AND j.documentno = icd.documentno
+    JOIN c_currency cu ON cu.c_currency_id = COALESCE(i.c_currency_id, j.c_currency_id)
+    JOIN ad_org org ON org.ad_orgtype_id = '1'
+    JOIN ad_user u ON u.ad_user_id = $P{AD_USER_ID}
+    LEFT JOIN m_inout io ON io.c_campaign_id = ca.c_campaign_id AND io.issotrx = 'N'
+WHERE ic.docstatus = 'CO'
+    AND DATE(icd.date) <= $P{DATETO}
+    AND (icl.c_campaign_id = $P{C_CAMPAIGN_ID} OR $P{C_CAMPAIGN_ID} IS NULL)
+) A
+ORDER BY importation, linetrx--, lineimp ASC
+        )]]>
+	</queryString>
+	<field name="importation" class="java.lang.String"/>
+	<field name="linetrx" class="java.lang.Integer"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="partner" class="java.lang.String"/>
+	<field name="documenttype" class="java.lang.String"/>
+	<field name="datetrx" class="java.sql.Timestamp"/>
+	<field name="amountdr" class="java.math.BigDecimal"/>
+	<field name="amountcr" class="java.math.BigDecimal"/>
+	<field name="saldo" class="java.lang.Integer"/>
+	<field name="saldototal" class="java.math.BigDecimal"/>
+	<field name="dateactual" class="java.lang.String"/>
+	<field name="username" class="java.lang.String"/>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="status2" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<variable name="v_dr" class="java.math.BigDecimal" resetType="Group" resetGroup="Importation" calculation="Sum">
+		<variableExpression><![CDATA[$F{amountdr}]]></variableExpression>
+	</variable>
+	<variable name="v_cr" class="java.math.BigDecimal" resetType="Group" resetGroup="Importation" calculation="Sum">
+		<variableExpression><![CDATA[$F{amountcr}]]></variableExpression>
+	</variable>
+	<variable name="v_saldo" class="java.math.BigDecimal" resetType="Group" resetGroup="Importation" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldototal}]]></variableExpression>
+	</variable>
+	<variable name="v_Totaldr" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{amountdr}]]></variableExpression>
+	</variable>
+	<variable name="v_Totalcr" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{amountcr}]]></variableExpression>
+	</variable>
+	<group name="Importation">
+		<groupExpression><![CDATA[$F{importation}]]></groupExpression>
+		<groupHeader>
+			<band/>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<textField pattern="#,##0.00">
+					<reportElement x="708" y="0" width="100" height="20" uuid="c5b50429-829c-45ff-9809-6d8d3513d7df"/>
+					<box rightPadding="3">
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{v_dr}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="808" y="0" width="100" height="20" uuid="f6591155-7dab-4bf9-96e8-f5a7ac7dc202"/>
+					<box rightPadding="3">
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{v_cr}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="608" y="0" width="100" height="20" uuid="33b2e133-cd9b-453a-bdbf-84ebf90f9db4"/>
+					<box rightPadding="3">
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total "]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00">
+					<reportElement x="908" y="0" width="100" height="20" uuid="e64707c8-b7d6-4e50-975a-14b833c0649d"/>
+					<box rightPadding="3">
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{v_dr}.doubleValue() - $V{v_cr}.doubleValue()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="472" y="0" width="136" height="20" uuid="89172117-165d-49e3-bc8a-2ae50072fc1b"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA["          "]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="286" y="0" width="186" height="20" uuid="8c2cdd80-6561-4492-9a17-4a6c7a624344"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA["          "]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="100" y="0" width="186" height="20" uuid="128c5c10-dba0-4bf6-9645-033b377217b5"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA["          "]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="100" height="20" uuid="343dc7c0-7fb8-461d-a516-2d050fe2c97d"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textFieldExpression><![CDATA[$F{importation}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="1008" y="0" width="100" height="20" uuid="7a49c9a1-73a9-4450-8af0-a3e9521df64c"/>
+					<box>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="81" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="100" height="58" uuid="ed13cbbe-cbe4-4e42-89f1-e8415d9c2b4f"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{ad_org_id})]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1008" y="0" width="100" height="18" uuid="cb906f6a-a227-435b-bf2c-b9f685925cb3"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dateactual}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="908" y="0" width="100" height="18" uuid="a7bce9a0-814c-4a0b-a09f-9e4924102cc1"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha impresión: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="908" y="18" width="100" height="13" uuid="1d19da70-b43b-4d27-8338-447b814eb6e0"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1008" y="18" width="100" height="13" uuid="5213c5cc-50df-47fb-9e85-9159f5fb2606"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{username}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="100" y="31" width="1008" height="27" uuid="8ddda756-3b3b-4d39-b7d1-72a1daf9057d"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTES DE IMPORTACION EN CURSO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="e75637fb-480f-41a7-9b84-567acabd2bfe"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° Importación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="186" height="20" uuid="7331792e-cfc9-4810-8989-93dd4bd6bb0d"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tercero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="0" width="186" height="20" uuid="7398de6a-e3e3-404a-a6b6-59f7f0c1dccc"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="472" y="0" width="136" height="20" uuid="6d96c91b-ec52-47ce-bfbd-2610e513ea7c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="608" y="0" width="100" height="20" uuid="e8807d1a-6eef-4a9c-90b7-100509ba9842"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="708" y="0" width="100" height="20" uuid="770134e2-0348-4178-a4e3-609160b3f7f5"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Debe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="808" y="0" width="100" height="20" uuid="e169397e-fe16-4e40-8c9f-96e381524466"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Haber]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="908" y="0" width="100" height="20" uuid="8338d90e-3f9d-458a-b2eb-418a00df45c4"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1008" y="0" width="100" height="20" uuid="231c0881-df78-44bc-a588-627a2ccbae93"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="100" height="20" uuid="1a25c7ec-91b8-447d-b9d0-4a8533901226"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{importation}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="0" width="186" height="20" uuid="dcb5ee36-5ac8-4a4e-86f8-8cc187179750"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{partner}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="286" y="0" width="186" height="20" uuid="45acfaf7-b1d5-4ba4-ba09-b5a14d919b6d"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{documenttype}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="472" y="0" width="136" height="20" uuid="fc7a3d00-30e0-4b5a-88ce-821df326de59"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="608" y="0" width="100" height="20" uuid="a6ddb0ac-8680-435a-97c8-b573c37a56fa"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{datetrx}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="708" y="0" width="100" height="20" uuid="0ba1ad06-f7e3-435d-983d-e6315d36d945"/>
+				<box rightPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{amountdr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="808" y="0" width="100" height="20" uuid="d5c16d04-18ba-497d-a34f-e8a2daf17d93"/>
+				<box rightPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{amountcr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="908" y="0" width="100" height="20" uuid="172cd5c6-22c0-4bf1-82ed-86c4b26c4192"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["          "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1008" y="0" width="100" height="20" uuid="cf8bdadf-4c37-49a1-b831-bef24f457746"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["          "]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="37">
+			<textField pattern="#,##0.00">
+				<reportElement x="708" y="0" width="100" height="20" uuid="2486685f-fd1d-467b-8aa5-f911f7d6b7b6"/>
+				<box rightPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{v_Totaldr}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="808" y="0" width="100" height="20" uuid="7d3246d1-e152-4aa8-94f9-ed4307e6248a"/>
+				<box rightPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{v_Totalcr}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="608" y="0" width="100" height="20" uuid="b97d37a1-610c-42ba-a629-969970719cda"/>
+				<box rightPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gran Total "]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="908" y="0" width="100" height="20" uuid="df844573-f53c-4a88-92f8-b02358b1cc79"/>
+				<box rightPadding="3">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{v_Totaldr}.doubleValue() - $V{v_Totalcr}.doubleValue()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="472" y="0" width="136" height="20" uuid="3dbf2129-3319-44bc-b328-2d012ed18542"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["          "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="286" y="0" width="186" height="20" uuid="fcb03cea-bc86-4008-bc7d-19ccd806d8ee"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["          "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="0" width="186" height="20" uuid="b5bd00a8-c8e9-4939-96bf-f94c13b56efb"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["          "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="a29d5aa9-d4a8-4e46-8141-62e51686228a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["          "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1008" y="0" width="100" height="20" uuid="ccb91d71-bac3-4e92-892f-04f940d16bc0"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["          "]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

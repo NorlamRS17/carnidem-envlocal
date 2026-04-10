@@ -1,18 +1,117 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="22C271A20F5A406B89FC0424C5B03B4A" trl="N">
+    <value column="Text" isTrl="N" original="\nKG">\nKG</value>
+  </row>
+  <row id="27CCE53151AF475CB594F450919D2364" trl="N">
+    <value column="Text" isTrl="N" original="DESPERDICIO">DESPERDICIO</value>
+  </row>
+  <row id="2D104683320C453D9946EBA69FB531C8" trl="N">
+    <value column="Text" isTrl="N" original="Hora:">Hora:</value>
+  </row>
+  <row id="302DF5E976D54186A7375BC7E2029707" trl="N">
+    <value column="Text" isTrl="N" original="MERMA DE INYECCIÓN RESPECTO A LA MATERIA PRIMA">MERMA DE INYECCIÓN RESPECTO A LA MATERIA PRIMA</value>
+  </row>
+  <row id="357C9567143B4C1B8CE183CDE743DAE7" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Inicio:">Fecha Inicio:</value>
+  </row>
+  <row id="395B5AEF3B08407EA13420DEBEA90F1B" trl="N">
+    <value column="Text" isTrl="N" original="Hora:">Hora:</value>
+  </row>
   <row id="3B8531766DA74749872C47EDCEC66BF7" trl="N">
     <value column="Text" isTrl="N" original="Parte:">Parte:</value>
   </row>
-  <row id="504DF19140F94CE49DF9681F8A7D73A1" trl="N">
-    <value column="Text" isTrl="N" original="kg">kg</value>
+  <row id="42D98B609C434567B0551898285A6C6E" trl="N">
+    <value column="Text" isTrl="N" original="PRODUCTO TERMINADO">PRODUCTO TERMINADO</value>
+  </row>
+  <row id="4382553CEBA64F40AC3F21FF1B1AEC3F" trl="N">
+    <value column="Text" isTrl="N" original="Usuario:">Usuario:</value>
+  </row>
+  <row id="44DDAA42AC504989A5B004B0849FBD02" trl="N">
+    <value column="Text" isTrl="N" original="PRODUCTO EN PROCESO COCIDO">PRODUCTO EN PROCESO COCIDO</value>
+  </row>
+  <row id="45D46143563E4F1589FF9578C01A7B94" trl="N">
+    <value column="Text" isTrl="N" original="RECORTE">RECORTE</value>
+  </row>
+  <row id="46E05058BB884A9AA1ED280670235FAE" trl="N">
+    <value column="Text" isTrl="N" original="% RECORTE">% RECORTE</value>
+  </row>
+  <row id="47403D59ADC84A3F8FA662B44FF222EB" trl="N">
+    <value column="Text" isTrl="N" original="Página:">Página:</value>
+  </row>
+  <row id="4AABDC8FC90B4B33A92619A2E621B26E" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Fin:">Fecha Fin:</value>
+  </row>
+  <row id="4B44049307354CE2AF5BA5D4A9F8B38D" trl="N">
+    <value column="Text" isTrl="N" original="Página:">Página:</value>
+  </row>
+  <row id="4B841BEF9D24439F902EEB048BD34F3F" trl="N">
+    <value column="Text" isTrl="N" original="N° DOCUMENTO">N° DOCUMENTO</value>
+  </row>
+  <row id="4F680EBFBD844005BA72E064C1A60414" trl="N">
+    <value column="Text" isTrl="N" original="FECHA">FECHA</value>
+  </row>
+  <row id="5A975A81688C439FB6A8507EE8CE687A" trl="N">
+    <value column="Text" isTrl="N" original="CÓDIGO">CÓDIGO</value>
+  </row>
+  <row id="63542A45055F447E9E1E0D255A90DD64" trl="N">
+    <value column="Text" isTrl="N" original="PRODUCTO">PRODUCTO</value>
+  </row>
+  <row id="6FED6DBFEB9047638470AFADA73E7B01" trl="N">
+    <value column="Text" isTrl="N" original="N° DOCUMENTO">N° DOCUMENTO</value>
   </row>
   <row id="728A11C1E6024C81834726D49324F21C" trl="N">
     <value column="Text" isTrl="N" original="Nombre premezcla funcional:">Nombre premezcla funcional:</value>
   </row>
+  <row id="737CBCEE8DF34418B0174A1E38962BBD" trl="N">
+    <value column="Text" isTrl="N" original="TOTALES">TOTALES</value>
+  </row>
+  <row id="7E0C643354DD425587DB8A6BD5CF9799" trl="N">
+    <value column="Text" isTrl="N" original="PÉRDIDA INYECCIÓN">PÉRDIDA INYECCIÓN</value>
+  </row>
+  <row id="85BBF0A19778462FB4F5B945321FFE48" trl="N">
+    <value column="Text" isTrl="N" original="Usuario:">Usuario:</value>
+  </row>
   <row id="8A12264779344C419E5691D982DD0D43" trl="N">
     <value column="Text" isTrl="N" original="Fecha:">Fecha:</value>
   </row>
+  <row id="8D34D14B928B4D4E843BB203BE6B887A" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Inicio:">Fecha Inicio:</value>
+  </row>
+  <row id="9BC8D7F0D1004C4E9922F5F531B10F7A" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Fin:">Fecha Fin:</value>
+  </row>
+  <row id="A6C1E3BAB0DB4CE8B8204029D4B1E8DE" trl="N">
+    <value column="Text" isTrl="N" original="% DESPERDICIO">% DESPERDICIO</value>
+  </row>
   <row id="B0AD3ED963BE4468A92B4400743947B9" trl="N">
     <value column="Text" isTrl="N" original="Orden De fabricación:">Orden De fabricación:</value>
+  </row>
+  <row id="B1E8B4B2DD3D44AEABED55EF991C0DDE" trl="N">
+    <value column="Text" isTrl="N" original="MERMAS Y DESPERDICIOS DE EMPAQUE">MERMAS Y DESPERDICIOS DE EMPAQUE</value>
+  </row>
+  <row id="B4DEF02DCF28462880ED8EF5CCE85AF7" trl="N">
+    <value column="Text" isTrl="N" original="Fecha:">Fecha:</value>
+  </row>
+  <row id="BB3853963A164553A94EF87A57BFDC91" trl="N">
+    <value column="Text" isTrl="N" original="FECHA">FECHA</value>
+  </row>
+  <row id="C10D9D00EAB54D449FADD2546463E035" trl="N">
+    <value column="Text" isTrl="N" original="PRODUCTO">PRODUCTO</value>
+  </row>
+  <row id="C591F1540E8C4343A2B904DF906C2423" trl="N">
+    <value column="Text" isTrl="N" original="MERMA">MERMA</value>
+  </row>
+  <row id="D659E72E031243589101A46AD041B00E" trl="N">
+    <value column="Text" isTrl="N" original="% MERMA">% MERMA</value>
+  </row>
+  <row id="D868EAAF19B24B498D36F9E56E3363C7" trl="N">
+    <value column="Text" isTrl="N" original="CODIGO">CODIGO</value>
+  </row>
+  <row id="E137C166956941AFBD4CAD92B13E1ED6" trl="N">
+    <value column="Text" isTrl="N" original="TOTAL PÉRDIDA INYECCIÓN:">TOTAL PÉRDIDA INYECCIÓN:</value>
+  </row>
+  <row id="EEA85003857142CB9712961340381D57" trl="N">
+    <value column="Text" isTrl="N" original="Fecha:">Fecha:</value>
   </row>
 </compiereTrl>

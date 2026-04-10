@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="1E6CA3A62CF2460F8D8F44CABE4A66DB" trl="N">
+    <value column="Name" isTrl="Y" original="Import Workforce - Task">Importar Mano de obra (Tarea)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7930C89ED16D446DBB6E5CB4F805736B" trl="N">
+    <value column="Name" isTrl="Y" original="Import Products - Task">Importar Productos (Tarea)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="799DB0B6498248F3A24BFF2E94ACA901" trl="Y">
+    <value column="Name" isTrl="Y" original="Settlements Projects Cost">Liquidación de costos proyectos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="94C73DECC702497E8275F075ED055201" trl="N">
+    <value column="Name" isTrl="Y" original="Import Details (MO - CIF -MAQ)">Importar Detalles (MO - CIF -MAQ)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

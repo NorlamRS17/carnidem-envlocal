@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="0219F47D79304607A564C31BB947EB4C" trl="N">
+    <value column="Text" isTrl="N" original="VALOR FACTURA">VALOR FACTURA</value>
+  </row>
+  <row id="054BEB9B546D482EBB30402B08E6CC18" trl="N">
+    <value column="Text" isTrl="N" original="SALDO">SALDO</value>
+  </row>
+  <row id="05BC77FE25014CBCA7FB98FD000E5BE0" trl="N">
+    <value column="Text" isTrl="N" original="RESPONSABLE">RESPONSABLE</value>
+  </row>
+  <row id="087D5BF2EEDB4E7EBAF62F69B1824739" trl="N">
+    <value column="Text" isTrl="N" original="ORGANIZACIÓN">ORGANIZACIÓN</value>
+  </row>
+  <row id="158B0DF8C14E482EA924366A9AF5EBEB" trl="N">
+    <value column="Text" isTrl="N" original="FECHA DE CORTE:">FECHA DE CORTE:</value>
+  </row>
+  <row id="1D745B7F27B84450B36588CCEA2229BE" trl="N">
+    <value column="Text" isTrl="N" original="NÚMERO FACTURA">NÚMERO FACTURA</value>
+  </row>
+  <row id="2AF1CECEADEE4B26A7733B6AE8202AB5" trl="N">
+    <value column="Text" isTrl="N" original="&lt;b&gt;Fecha de Impresión: &lt;/b&gt;&lt;br&gt;">&lt;b&gt;Fecha de Impresión: &lt;/b&gt;&lt;br&gt;</value>
+  </row>
+  <row id="2DA50675AA7B4724B25311E292DEDF86" trl="N">
+    <value column="Text" isTrl="N" original="TODAS">TODAS</value>
+  </row>
+  <row id="3DEC3E6AEF664D5D993928719D5F4F2F" trl="N">
+    <value column="Text" isTrl="N" original="IDENTIFICACIÓN">IDENTIFICACIÓN</value>
+  </row>
+  <row id="42947A65157A4C568C8FE04954A4EF09" trl="N">
+    <value column="Text" isTrl="N" original="FECHA">FECHA</value>
+  </row>
+  <row id="48D7415A0C2A4338A40522D35EDE4163" trl="N">
+    <value column="Text" isTrl="N" original="Total p_control">Total p_control</value>
+  </row>
+  <row id="57F21DB8699141E98F04554A912E4CEA" trl="N">
+    <value column="Text" isTrl="N" original="CLIENTE">CLIENTE</value>
+  </row>
+  <row id="6F50DD44B9224267AA3C79506DC93C62" trl="N">
+    <value column="Text" isTrl="N" original="Total h_medida">Total h_medida</value>
+  </row>
+  <row id="7198459E687D48AD8D53BE4AE885208C" trl="N">
+    <value column="Text" isTrl="N" original="REPORTE DE FACTURAS SIN RETENCIÓN">REPORTE DE FACTURAS SIN RETENCIÓN</value>
+  </row>
+  <row id="72CB6C03D5B6406388E87B0971F07D1A" trl="N">
+    <value column="Text" isTrl="N" original="FUENTES SAN FELIPE">FUENTES SAN FELIPE</value>
+  </row>
+  <row id="9C56DB330E2D4CD7A9C5CB6B74AA1988" trl="N">
+    <value column="Text" isTrl="N" original="TOTALES">TOTALES</value>
+  </row>
+  <row id="A773B926A1494FE98D63575D83CF6086" trl="N">
+    <value column="Text" isTrl="N" original="IDENTIFICACIÓN:">IDENTIFICACIÓN:</value>
+  </row>
+  <row id="AB8AEFAF8087469B913BAFEAFC3E3993" trl="N">
+    <value column="Text" isTrl="N" original="CONTROL DE PARAMETROS DE MATERIAS PRIMAS E INSUMOS AUXILIARES EN BASE A FICHA TECNICA">CONTROL DE PARAMETROS DE MATERIAS PRIMAS E INSUMOS AUXILIARES EN BASE A FICHA TECNICA</value>
+  </row>
+  <row id="BC34568329734622B851EC4256D5969F" trl="N">
+    <value column="Text" isTrl="N" original="&lt;b&gt;PAG. &lt;/b&gt;">&lt;b&gt;PAG. &lt;/b&gt;</value>
+  </row>
+  <row id="ED4BE8D9C15C40FF88E86413091AB343" trl="N">
+    <value column="Text" isTrl="N" original="&lt;br&gt;&lt;b&gt;Usuario: &lt;/b&gt;&lt;br&gt;">&lt;br&gt;&lt;b&gt;Usuario: &lt;/b&gt;&lt;br&gt;</value>
+  </row>
+  <row id="FA1CD7A8710C452A8DABEB1AB664B712" trl="N">
+    <value column="Text" isTrl="N" original="Total header_column">Total header_column</value>
+  </row>
+</compiereTrl>

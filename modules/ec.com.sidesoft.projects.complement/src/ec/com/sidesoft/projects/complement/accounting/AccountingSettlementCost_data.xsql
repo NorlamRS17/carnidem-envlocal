@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="AccountingSettlementCostData" package="ec.com.sidesoft.projects.complement.accounting">
+  <SqlClassComment></SqlClassComment>
+  <SqlMethod name="selectRecord" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        select
+        ssc.AD_CLIENT_ID, ssc.AD_ORG_ID
+        ,DATE AS DATEDOC, '100' AS C_CURRENCY_ID
+        ,ssc.c_doctype_id  C_DOCTYPE_ID
+        ,ssc.documentno AS DOCUMENTNO   
+        ,POSTED,0 AS VALUE  
+        ,coalesce(c_project_id,'ND') as c_project_id, coalesce(c_projectphase_id,'ND') as c_projectphase_id , coalesce(C_ProjectTask_id,'ND') as C_ProjectTask_id
+        from sproctm_settlement_cost ssc   
+        where ssc.sproctm_settlement_cost_id = ?              
+
+      ]]>
+     </Sql>
+     <Parameter name="id"/>
+   </SqlMethod>
+</SqlClass>

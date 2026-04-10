@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_WINDOW" version="">
+  <row id="969784C0C4DE4DECADAC55B6852AE2B4" trl="N">
+    <value column="Name" isTrl="N" original="Zonas Mayoreo (Mantenimiento)">Zonas Mayoreo (Mantenimiento)</value>
+    <value column="Description" isTrl="N" original="Zonas Mayoreo (Mantenimiento)">Zonas Mayoreo (Mantenimiento)</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A673DE73A56949B68C08B2DC471BF81B" trl="N">
+    <value column="Name" isTrl="N" original="Zona">Zona</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DDC0AC0897C84ED0BA3B6F3CD82240F8" trl="N">
+    <value column="Name" isTrl="N" original="Marcas de Producto">Marcas de Producto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FCC226CA04AC4687807EC990F9F6EEC3" trl="N">
+    <value column="Name" isTrl="N" original="Divisiones de Negocio">Divisiones de Negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_atimv_cheque" pageWidth="695" pageHeight="471" columnWidth="599" leftMargin="40" rightMargin="56" topMargin="20" bottomMargin="20">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.1000000000000005"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="144"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="Label" forecolor="#999999" fontSize="14" isBold="true"/>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="DOCUMENT_NAME" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ATTACH" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="BASE_WEB" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SHOW_LOGO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SHOW_COMPANYDATA" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="HEADER_MARGIN" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{BASE_DESIGN} + "/com/atrums/indumot/formatoimpresion/erpReports/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+p.documentno as PAYMENTNO,
+coalesce(p.em_co_nombre_banco, bp.name) AS BUSINESSPARTNER,
+p.paymentdate as PAYMENT_DATE,
+p.amount as TOTAL,
+pm.name as PAYMENT_METHOD,
+cur.cursymbol as CURRENCY,
+p.isreceipt as ISRECEIPT,
+org.ad_org_id as legalentity,
+org.name as LE_NAME,
+ad_orginfo.taxid as LE_TAXID,
+'PRUEBA' as LE_LOCATION,
+rtrim(c_location.city) || ', ' || to_date(p.paymentdate) + 0 as LE_CITY,
+(select atimv_numero_letras(p.amount)) as TEXTO,
+date_part ('Day', p.paymentdate) as DIA,
+date_part ('Month', p.paymentdate) as MES,
+date_part ('Year', p.paymentdate) as ANIO,
+coalesce(p.em_co_nombre_banco, bp.name) as EMPRESA,
+P.DESCRIPTION
+FROM fin_payment p join c_bpartner bp on (p.c_bpartner_id=bp.c_bpartner_id)
+     join c_currency cur on (p.c_currency_id=cur.c_currency_id)
+     left outer join fin_paymentmethod pm on (p.fin_paymentmethod_id=pm.fin_paymentmethod_id),
+     ad_org org,
+     ad_orginfo,
+     c_location
+WHERE p.ad_org_id=org.ad_org_id
+      and org.ad_org_id = ad_orginfo.ad_org_id
+      and ad_orginfo.c_location_id = c_location.c_location_id
+      and p.fin_payment_id=$P{DOCUMENT_ID}]]>
+	</queryString>
+	<field name="PAYMENTNO" class="java.lang.String"/>
+	<field name="businesspartner" class="java.lang.String"/>
+	<field name="payment_date" class="java.sql.Timestamp"/>
+	<field name="TOTAL" class="java.math.BigDecimal"/>
+	<field name="payment_method" class="java.lang.String"/>
+	<field name="currency" class="java.lang.String"/>
+	<field name="isreceipt" class="java.lang.String"/>
+	<field name="legalentity" class="java.lang.String"/>
+	<field name="le_name" class="java.lang.String"/>
+	<field name="le_taxid" class="java.lang.String"/>
+	<field name="le_location" class="java.lang.String"/>
+	<field name="LE_CITY" class="java.lang.String"/>
+	<field name="TEXTO" class="java.lang.String"/>
+	<field name="dia" class="java.lang.Double"/>
+	<field name="mes" class="java.lang.Double"/>
+	<field name="anio" class="java.lang.Double"/>
+	<field name="EMPRESA" class="java.lang.String"/>
+	<field name="DESCRIPTION" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="265" splitType="Stretch">
+			<textField>
+				<reportElement x="142" y="89" width="153" height="13"/>
+				<textElement>
+					<font fontName="Courier New" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{LE_CITY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="57" width="329" height="26"/>
+				<textElement>
+					<font fontName="Courier New" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TEXTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="167" y="35" width="301" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMPRESA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="482" y="35" width="81" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="11"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="53" y="211" width="131" height="13"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PAYMENTNO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="226" width="421" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="243" width="421" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{EMPRESA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="132" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="599" height="132"/>
+				<subreportParameter name="DOCUMENT_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Rpt_atimv_detallecheque.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="33" splitType="Stretch">
+			<textField>
+				<reportElement x="22" y="7" width="329" height="26"/>
+				<textElement>
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{TEXTO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="1DAF21742FA144CE8B8F6973B67F0172" trl="N">
+    <value column="Name" isTrl="N" original="Work Effort Selector">Work Effort Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3389A5CCE8AF47D1AE8B13FA671E8916" trl="N">
+    <value column="Name" isTrl="N" original="Employee Selector">Employee Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4774A3BDAB4F4D0F84D63DC2345B7969" trl="N">
+    <value column="Name" isTrl="N" original="Supplier Delivery Notes">Supplier Delivery Notes</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5DAD8ED22C004ACC81266EE2F94C7E82" trl="N">
+    <value column="Name" isTrl="N" original="Work Requirement Selector">Work Requirement Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5FED672FEC3344FA968B1F3EC394C444" trl="N">
+    <value column="Name" isTrl="N" original="Goods Receipt Line Product Selector">Goods Receipt Line Product Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="76B8B89CD07543719A7C0B7925F0AAD2" trl="N">
+    <value column="Name" isTrl="N" original="Criticla Control Points Selector">Criticla Control Points Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8A500695D6BB429E8164A3A1708187E0" trl="N">
+    <value column="Name" isTrl="N" original="Selector Finished Product">Selector Finished Product</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8B88ED9F540345FFA5C4D9C8BC730C81" trl="N">
+    <value column="Name" isTrl="N" original="Supplier Selector">Supplier Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9F01D0B2E2AB4D628679B8F558F744A0" trl="N">
+    <value column="Name" isTrl="N" original="Critical Control Point">Critical Control Point</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B9E609B16B424BED8077297C977D3034" trl="N">
+    <value column="Name" isTrl="N" original="Finished Product Selector">Finished Product Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

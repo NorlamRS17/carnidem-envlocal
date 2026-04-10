@@ -1,0 +1,264 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSDCCP_DISTCOSTCENTER2">
+    <function name="SSDCCP_DISTCOSTCENTER2" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+  v_ResultStr VARCHAR2(2000):='';
+  v_Message VARCHAR2(2000):='';
+  v_Record_ID VARCHAR2(32);
+  v_Result NUMBER:=0; -- failure
+  v_User VARCHAR2(32);
+  v_IsProcessing CHAR(1) ;
+  v_IsProcessed VARCHAR2(60) ;
+  v_is_included NUMBER:=0;
+  v_available_period NUMBER:=0;
+
+  --Added by PSarobe 13062007
+  v_line NUMBER;
+  v_Aux NUMBER;
+  
+  -- Parameter
+  TYPE RECORD IS REF CURSOR;
+    Cur_Parameter RECORD;
+    Cur_Lines RECORD;
+    Cur_User1 RECORD;
+    
+    -- Parameter Variables
+    v_InvDate DATE;
+    v_Client_ID VARCHAR2(32) ;
+    v_Org_ID VARCHAR2(32);
+    v_CostCenter_ID VARCHAR2(32);
+    v_InvoiceLine_ID  VARCHAR2(32);
+    v_Product_ID  VARCHAR2(32);
+    v_Count NUMBER:=0;
+    V_Countuser1 NUMBER:=0;
+    V_CountCostCenter1 NUMBER:=0;
+    v_CountAux NUMBER:=0;
+    v_PorcentajeDistribucionTotal NUMBER:=0;
+    v_PorcentajeDistribucion NUMBER:=0;
+	v_TotalDistribucionPorcentage NUMBER:=0;
+   
+    V_Amount NUMBER;
+    v_Totalamt NUMBER;
+    v_TotalInvoice NUMBER;
+    v_CalLine NUMBER;
+    v_porcentage100 NUMBER;
+    v_TotalLinePorcentage NUMBER;
+    PROCESS_ERROR BOOLEAN:=false;
+    END_PROCESS BOOLEAN:=false;
+    END_PROCESSING BOOLEAN:=false;
+
+  BEGIN
+    --  Update AD_PInstance
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing') ;
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+  BEGIN --BODY
+    -- Get Parameters
+    v_ResultStr:='ReadingParameters';
+    FOR Cur_Parameter IN
+      (SELECT i.Record_ID,
+        i.AD_User_ID,
+        p.ParameterName,
+        p.P_String,
+        p.P_Number,
+        p.P_Date
+      FROM AD_PInstance i
+      LEFT JOIN AD_PInstance_Para p
+        ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=PInstance_ID
+      ORDER BY p.SeqNo
+      )
+    LOOP
+      v_Record_ID:=Cur_Parameter.Record_ID;
+      v_User:=Cur_Parameter.AD_User_ID;
+    END LOOP; -- Get Parameter
+    DBMS_OUTPUT.PUT_LINE('  Record_ID=' || v_Record_ID) ;
+    v_ResultStr:='Success Distribute Cost Center';
+  
+    DELETE FROM ssdccp_distcostcenter WHERE C_INVOICE_ID = v_Record_ID;
+
+    SELECT COALESCE((SELECT COUNT(*) 
+    FROM C_COSTCENTER WHERE em_ssdccp_isdistcostcenter = 'Y'),0)
+    INTO V_CountCostCenter1
+    FROM DUAL;
+
+    IF (V_CountCostCenter1=0) THEN
+	RAISE_APPLICATION_ERROR(-20000,'@Ssdccp_SetupErrorCost@');
+    END IF;
+
+    IF (V_CountCostCenter1>1) THEN
+	RAISE_APPLICATION_ERROR(-20000,'@Ssdccp_SetupErrorCost2@');
+    END IF;
+   
+   
+    SELECT COALESCE((SELECT SUM(EM_Ssdccp_Distportje) 
+	  FROM USER1 WHERE em_ssdccp_isdistcostcenter = 'Y'),0)
+	   INTO v_PorcentajeDistribucionTotal
+		FROM DUAL;
+   
+     IF (v_PorcentajeDistribucionTotal>100) THEN
+	  RAISE_APPLICATION_ERROR(-20000,'@Ssdccp_porjedistrib@' || ' ' || v_PorcentajeDistribucionTotal);
+     END IF;
+   
+   
+
+	IF (V_CountCostCenter1=1) THEN
+
+		SELECT COALESCE((SELECT C_COSTCENTER_ID
+		FROM C_COSTCENTER WHERE em_ssdccp_isdistcostcenter = 'Y'),'')
+		INTO v_CostCenter_ID
+		FROM DUAL;
+
+	    FOR Cur_Lines IN (
+		SELECT 
+		CIL.AD_CLIENT_ID,
+		CIL.AD_ORG_ID,
+		CIL.C_INVOICELINE_ID,
+		CIL.C_INVOICE_ID,
+		linenetamt as linenetamt,
+		CIL.M_PRODUCT_ID,
+		CI.TOTALLINES
+		FROM C_INVOICELINE CIL 
+		JOIN C_INVOICE CI ON CI.C_INVOICE_ID = CIL.C_INVOICE_ID
+		--LEFT JOIN C_COSTCENTER CC ON (CC.C_COSTCENTER_ID = COALESCE(CIL.C_COSTCENTER_ID, v_CostCenter_ID) AND cc.em_ssdccp_isdistcostcenter = 'Y')
+		WHERE CIL.C_INVOICE_ID = v_Record_ID
+	    )LOOP
+		-- v_User
+			
+		--v_CostCenter_ID:= coalesce(Cur_Lines.C_COSTCENTER_ID,'ND');
+		v_Org_ID:=Cur_Lines.AD_ORG_ID;
+		v_Totalamt:= Cur_Lines.linenetamt;
+		v_Product_ID:= Cur_Lines.M_PRODUCT_ID;
+		
+		IF ( v_Totalamt>0) THEN
+
+			SELECT COALESCE((SELECT COUNT(*) 
+			FROM USER1 WHERE em_ssdccp_isdistcostcenter = 'Y' AND EM_Ssdccp_distportje = 0 ),0)
+			INTO V_Countuser1
+			FROM DUAL;
+
+			V_Amount:= Cur_Lines.linenetamt;
+			v_Client_ID:= Cur_Lines.AD_CLIENT_ID;
+			v_Org_ID:= Cur_Lines.AD_ORG_ID;
+			v_InvoiceLine_ID:= Cur_Lines.C_INVOICELINE_ID;
+
+			IF (V_Countuser1=0 AND v_PorcentajeDistribucionTotal <> 100) THEN
+				RAISE_APPLICATION_ERROR(-20000,'@Ssdccp_SetupErrorUser1@');
+			END IF;
+			
+			v_TotalDistribucionPorcentage:=0;
+
+			
+			IF (v_PorcentajeDistribucionTotal > 0) THEN
+
+				FOR Cur_User1 IN(
+					SELECT
+					USER1_ID,
+					EM_Ssdccp_Distportje
+					FROM USER1 WHERE em_ssdccp_isdistcostcenter = 'Y' AND EM_Ssdccp_Distportje > 0
+				)LOOP
+
+					    v_CalLine:= round((V_Amount*(Cur_User1.EM_Ssdccp_Distportje)/100),2);
+					    v_TotalDistribucionPorcentage:= v_TotalDistribucionPorcentage + v_CalLine;					   					   
+					   
+					    insert into ssdccp_distcostcenter (
+						    ssdccp_distcostcenter_id, ad_client_id, ad_org_id, isactive, 
+						    created, createdby, updated, updatedby, c_invoiceline_id, c_invoice_id, 
+						    c_costcenter_id, user1_id, porcentage, amount,M_PRODUCT_ID)
+					    VALUES (get_uuid()
+						    ,  v_Client_ID
+						    ,  v_Org_ID
+						    , 'Y'
+						    , now(), v_User, now(), v_User, null
+						    , v_Record_ID
+						    , v_CostCenter_ID
+						    , Cur_User1.USER1_ID
+						    , Cur_User1.EM_Ssdccp_Distportje
+						    , v_CalLine 
+						    , v_Product_ID
+						    );						    
+				
+				END LOOP;
+			 
+			END IF;
+			
+			IF (V_Countuser1 > 0 AND v_PorcentajeDistribucionTotal < 100) THEN
+
+				v_porcentage100:= (100-v_PorcentajeDistribucionTotal)/V_Countuser1;
+				v_CountAux:=0;
+				v_TotalLinePorcentage:=0;
+				v_CalLine:=0;
+				-- V_Amount = V_Amount - v_TotalDistribucionPorcentage;
+				v_Totalamt = v_Totalamt - v_TotalDistribucionPorcentage;
+				--RAISE_APPLICATION_ERROR(-20000,'@Ssdccp_SetupErrorUser1@' || V_Amount || '' ||  v_TotalDistribucionPorcentage);
+
+				FOR Cur_User1 IN(
+					SELECT
+					USER1_ID
+					FROM USER1 WHERE em_ssdccp_isdistcostcenter = 'Y' AND EM_Ssdccp_Distportje = 0
+				)LOOP
+                        
+					    v_CalLine:= round((V_Amount*(v_porcentage100)/100),2);
+					    v_TotalLinePorcentage:= v_TotalLinePorcentage + v_CalLine;
+					    v_CountAux:=v_CountAux+1;
+					   
+					   --RAISE_APPLICATION_ERROR(-20000,'@Ssdccp_SetupErrorCost2@' || ' --- ' || v_CalLine || ' - ');
+					   
+					    
+					    IF (v_CountAux=V_Countuser1) THEN
+						v_TotalInvoice:= v_Totalamt - v_TotalLinePorcentage;					     
+						IF (v_TotalInvoice<>0 ) THEN
+							v_TotalLinePorcentage:=v_TotalLinePorcentage-v_CalLine;
+							v_TotalInvoice:= v_Totalamt - v_TotalLinePorcentage;
+							v_CalLine:= v_TotalInvoice;						    
+							
+						END IF;
+					    END IF;
+
+					    insert into ssdccp_distcostcenter (
+						    ssdccp_distcostcenter_id, ad_client_id, ad_org_id, isactive, 
+						    created, createdby, updated, updatedby, c_invoiceline_id, c_invoice_id, 
+						    c_costcenter_id, user1_id, porcentage, amount,M_PRODUCT_ID)
+					    VALUES (get_uuid()
+						    ,  v_Client_ID
+						    ,  v_Org_ID
+						    , 'Y'
+						    , now(), v_User, now(), v_User, null
+						    , v_Record_ID
+						    , v_CostCenter_ID
+						    , Cur_User1.USER1_ID
+						    , v_porcentage100
+						    , v_CalLine 
+						    , v_Product_ID
+						    );						    
+				
+				END LOOP;
+			 
+			END IF;
+			
+		END IF;
+		
+	    END LOOP;
+	   
+	END IF;
+      AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, v_ResultStr) ;   
+    
+END; --BODY
+EXCEPTION
+WHEN OTHERS THEN
+  v_ResultStr:= '@ERROR=' || SQLERRM;
+  DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+  --To be fixed or deprecated
+  DBMS_OUTPUT.PUT_LINE(v_Message) ;
+  --
+  ROLLBACK;
+  --
+  AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+  RETURN;
+END SSDCCP_DISTCOSTCENTER2
+]]></body>
+    </function>
+  </database>

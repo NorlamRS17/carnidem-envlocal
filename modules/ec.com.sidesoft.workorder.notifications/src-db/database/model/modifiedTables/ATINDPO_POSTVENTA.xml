@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE ATINDPO_POSTVENTA">
+    <table name="ATINDPO_POSTVENTA" primaryKey="ATINDPO_POSTVENTA_KEY">
+      <column name="EM_SSWON_SENDPREFECTURE" primaryKey="false" required="false" type="VARCHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

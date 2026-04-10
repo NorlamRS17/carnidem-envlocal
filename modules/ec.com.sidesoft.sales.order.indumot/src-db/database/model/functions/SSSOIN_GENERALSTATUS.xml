@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSSOIN_GENERALSTATUS">
+    <function name="SSSOIN_GENERALSTATUS" type="NULL">
+      <parameter name="pinstance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[pRecordID VARCHAR2(32);
+	pMessage VARCHAR2(2000);
+	pDocAction VARCHAR2(60);
+	pUserID VARCHAR2(32);
+	pResult NUMBER;
+	vParams RECORD;
+	vOrder RECORD;
+	vOrderLines RECORD;
+BEGIN
+	
+	FOR vParams IN (
+		SELECT *
+		FROM ad_ep_instance_para
+		WHERE ad_ep_instance_id = pInstance
+	) LOOP
+		IF (vParams.parametername LIKE 'DocAction') THEN
+			pDocAction := vParams.p_string;
+		ELSIF (vParams.parametername LIKE 'Record_ID') THEN
+			pRecordID := vParams.p_string;
+		ELSIF (vParams.parametername LIKE 'User') THEN
+			pUserID := vParams.p_string;
+		ELSIF (vParams.parametername LIKE 'Message') THEN
+			pMessage := vParams.p_text;
+		ELSIF (vParams.parametername LIKE 'Result') THEN
+			pResult := vParams.p_number;
+		END IF;
+	END LOOP;
+	
+	--Repuramos el pedido de venta
+ 	SELECT * INTO vOrder FROM c_order WHERE c_order_id=pRecordID;
+	IF vOrder.c_order_id IS NULL THEN
+		RETURN;
+	END IF;
+	--Al procesar el pedido
+	IF vOrder.docstatus = 'IP' THEN
+        IF vOrder.InvoiceRule <> 'D' THEN
+		    UPDATE c_order SET  em_sssoin_generalstatus='Q' WHERE c_order_id=pRecordID;
+	    END IF;
+    --Al cerrar el pedido
+	ELSEIF vOrder.docstatus = 'CL' THEN
+		UPDATE c_order SET em_sssoin_generalstatus='CL' WHERE c_order_id=pRecordID;
+	END IF;
+    
+    UPDATE c_order SET EM_Sssoin_Complete = now(), EM_Sssoin_CompleteBy = pUserID 
+	WHERE c_order_id=pRecordID;
+
+    IF vOrder.InvoiceRule <> 'I' THEN
+		--Obtenemos las cantidades de las lineas del pedido
+		FOR vOrderLines IN (
+			SELECT 
+			sum(qtyordered) as c_orden,
+			sum(qtyinvoiced) as c_factura,
+			sum(qtydelivered) as c_albaran
+			FROM c_orderline 
+			WHERE c_order_id=vOrder.c_order_id
+		) LOOP
+			--Validamos la cantidad del pedido con la cantidad despachada/facturada
+			IF vOrderLines.c_orden = vOrderLines.c_albaran AND vOrderLines.c_orden <> vOrderLines.c_factura  THEN
+				--Actualizamos el estado general en el pedido
+            	UPDATE c_order SET em_sssoin_generalstatus='D' WHERE c_order_id=vOrder.c_order_id;
+
+			ELSEIF vOrderLines.c_orden = vOrderLines.c_albaran AND vOrderLines.c_orden = vOrderLines.c_factura THEN
+            	UPDATE c_order SET em_sssoin_generalstatus='I' WHERE c_order_id=vOrder.c_order_id;
+
+			ELSEIF vOrderLines.c_orden <> vOrderLines.c_albaran AND vOrderLines.c_orden <> vOrderLines.c_factura THEN
+            	UPDATE c_order SET em_sssoin_generalstatus='Q' WHERE c_order_id=vOrder.c_order_id;
+
+			END IF;
+		END LOOP;
+    END IF;
+END SSSOIN_GENERALSTATUS
+]]></body>
+    </function>
+  </database>

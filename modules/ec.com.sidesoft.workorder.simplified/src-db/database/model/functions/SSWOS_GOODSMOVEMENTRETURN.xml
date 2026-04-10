@@ -1,0 +1,253 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSWOS_GOODSMOVEMENTRETURN">
+    <function name="SSWOS_GOODSMOVEMENTRETURN" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[TYPE RECORD IS REF CURSOR;
+  Cur_Parameter RECORD;
+  Cur_Projecttask  RECORD;
+  Cur_Stock RECORD;
+  Cur_MovementLine RECORD;
+
+  v_User_ID VARCHAR2(32) ;
+  v_process_id VARCHAR2(32) ;
+  v_Ad_Client_id VARCHAR2(32) ;
+  v_Record_ID VARCHAR2(32) ;
+  v_RecordHead_ID VARCHAR2(32) ;
+  v_ResultStr VARCHAR2(2000) := '';  
+  v_result NUMBER:=0; --OBTG:NUMBER--
+  v_errormsg  VARCHAR(2000):='';       
+  v_Message VARCHAR2(2000) := '';  
+
+
+    -- Parameter Variables
+   v_contar NUMBER:=0; --OBTG:NUMBER--
+   v_contarqty NUMBER:=0; --OBTG:NUMBER--
+   
+   v_documenttype VARCHAR2(2000) := '';
+   v_documentno VARCHAR2(100) := '';
+   v_mov_id VARCHAR2(32);
+   v_organization VARCHAR2(32);
+   v_localizeto VARCHAR2(32);
+   v_postventalinea_id VARCHAR2(32);
+   v_movement_id VARCHAR2(32);
+   v_pinstance_vac_id VARCHAR2(32);
+   v_cantidad NUMBER:=0; --OBTG:NUMBER--
+   v_continuar NUMBER:=1; --OBTG:NUMBER--
+   v_quantity NUMBER:=0; --OBTG:NUMBER--
+   v_lines_exists NUMBER:=0; --OBTG:NUMBER--
+   v_lines_resp NUMBER:=0; --OBTG:NUMBER--
+   
+   v_document_no_seq VARCHAR2(50);
+   v_line NUMBER:=0; --OBTG:NUMBER--
+   v_qtytemp NUMBER:=0; --OBTG:NUMBER--
+   v_uom_id VARCHAR2(32);
+BEGIN
+  --  Update AD_PInstance
+  DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_pinstance_id) ;
+  v_ResultStr := 'PInstanceNotFound';
+  AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+  BEGIN --BODY
+
+      FOR Cur_Parameter IN
+      (SELECT i.Record_ID, i.AD_User_ID, p.ParameterName, p.P_String, p.P_Number, p.P_Date, i.ad_user_id, i.ad_process_id
+      FROM AD_PInstance i  
+      LEFT JOIN AD_PInstance_Para p
+        ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=p_PInstance_ID
+      ORDER BY p.SeqNo
+      )
+    LOOP
+      --v_Record_ID:=Cur_Parameter.Record_ID;
+          v_RECORD_ID:= Cur_Parameter.Record_ID;
+          v_User_ID:= Cur_Parameter.ad_user_id;
+          v_process_id:= Cur_Parameter.ad_process_id;
+      -- RAISE NO_DATA_FOUND || RECORD_ID; --OBTG:v_-20000--
+	IF Cur_Parameter.ParameterName = 'EM_Ssrs_C_Doctype_ID' THEN
+	v_documenttype:=Cur_Parameter.P_String;
+      END IF;
+      IF Cur_Parameter.ParameterName = 'AD_Org_ID_N' THEN
+	v_organization:=Cur_Parameter.P_String;
+      END IF;
+      IF Cur_Parameter.ParameterName = 'M_LocatorTo_ID' THEN
+	v_localizeto:=Cur_Parameter.P_String;
+      END IF;
+    END LOOP; -- Get Parameter
+
+	Select pv.ad_org_id,pv.ad_client_id, 'Generado desde Orden de Servicio: '||pv.documentno , pv.atindpo_postventa_id
+		INTO v_organization, v_Ad_Client_id, v_documentno ,v_RecordHead_ID
+	From atindpo_postventa  pv
+    Join atindpo_postventalinea pvl on pvl.atindpo_postventa_id = pv.atindpo_postventa_id
+	Where pvl.atindpo_postventalinea_id = v_RECORD_ID;
+	
+	Select c_doctype_id, m_locator_id 
+		INTO v_documenttype, v_localizeto
+	From sswos_so_transfer  
+	Where ad_org_id = v_organization;
+
+	If(v_documenttype is null or v_localizeto is null)Then
+		RAISE_APPLICATION_ERROR(-20000, 'No hay registro en configuración orden de servicio.') ;
+	End IF;
+	
+	SELECT count(*)
+		into v_contar
+	FROM atindpo_postventalinea pvl
+	left join m_product p on pvl.m_product_id=p.m_product_id 
+	where pvl.atindpo_postventalinea_id = v_RECORD_ID
+		and pvl.M_product_id is not null
+		and p.producttype = 'I';
+
+	
+	IF v_contar > 0 THEN 
+	  
+		Select ad_sequence_doctype(v_documenttype,'','N') into v_document_no_seq;
+		
+		
+		If(v_document_no_seq is null)Then
+			RAISE_APPLICATION_ERROR(-20000, 'El tipo de documento para transferencia no tiene configurada una secuencia.') ;
+		End IF;
+		v_line 		:= 10;
+		v_movement_id	:= get_uuid();
+			
+		insert into m_movement(
+			  M_Movement_id		, ad_client_id		, ad_org_id		, createdby		, updatedby
+			, name			, description		, movementdate		, posted		, processed
+			, processing		, move_fromto_locator	, documentno		, em_ssin_documentno	, em_ssrs_c_doctype_id	) 
+			
+		values(   v_movement_id 	, v_Ad_Client_id	, v_organization	, v_User_ID		, v_User_ID
+			, now()	, v_documentno		, now()	, 'N'			, 'N'			
+			, 'N'			, 'N'			, v_document_no_seq	, v_document_no_seq	, v_documenttype	) ;	
+					
+		FOR Cur_Projecttask IN(
+			Select 	ml.movementqty as "qty"
+				, ml.m_locator_id
+				, ml.m_locatorto_id
+				, ml.m_product_id
+				, ml.m_attributesetinstance_id
+				, ml.movementqty
+				, ml.c_uom_id
+				, t.atindpo_postventalinea_id
+				, p.producttype 
+				, t.sswos_transfer_id
+				, ml.ad_client_id
+			From m_movementline ml
+				Join m_product p on p.m_product_id = ml.m_product_id 
+				Join sswos_transfer t On t.m_movement_id = ml.m_movement_id 
+					And t.isactive = 'Y'
+				Join atindpo_postventalinea pvl on pvl.atindpo_postventalinea_id = t.atindpo_postventalinea_id
+			Where pvl.m_product_id = ml.m_product_id
+				And pvl.atindpo_postventalinea_id = v_RECORD_ID
+				
+		) LOOP
+			IF Cur_Projecttask.producttype = 'I' THEN
+				v_postventalinea_id := Cur_Projecttask.atindpo_postventalinea_id;
+				v_cantidad := Cur_Projecttask.Qty;	
+				v_lines_exists := 0;
+				v_localizeto := Cur_Projecttask.m_locatorto_id;
+				FOR Cur_Stock IN(
+					Select s.qtyonhand as qtyonhand, s.m_locator_id as m_locator_id 
+					From m_warehouse w 
+						Left Join m_locator l on l.m_warehouse_id=w.m_warehouse_id
+						Left Join M_Product_Stock_V s on l.m_locator_id = s.m_locator_id
+					Where w.ad_org_id = v_organization
+						And s.qtyonhand > 0 
+						And s.m_product_id = Cur_Projecttask.M_Product_ID
+						And s.m_locator_id is not null And s.m_locator_id = v_localizeto
+				)LOOP
+					IF v_cantidad >= Cur_Stock.qtyonhand THEN
+						v_qtytemp	:= Cur_Stock.qtyonhand;
+						v_cantidad	:= v_cantidad-Cur_Stock.qtyonhand;
+					ELSE
+						v_qtytemp	:= v_cantidad;
+						v_cantidad	:= 0;
+					END IF;
+
+					Insert Into M_MovementLine (
+						  M_MovementLine_ID	, ad_client_id			, ad_org_id		, createdby			, updatedby
+						, m_movement_id		, m_locator_id			, m_locatorto_id	, m_product_id			, line
+						, movementqty		, description			, c_uom_id		, m_attributesetinstance_id)
+					Values(get_uuid()		, Cur_Projecttask.ad_client_id	, v_organization	, v_User_ID			, v_User_ID
+						, v_movement_id		, v_localizeto 			, Cur_Projecttask.m_locator_id, Cur_Projecttask.M_Product_ID	, v_line
+						, v_qtytemp		, ''				, Cur_Projecttask.c_uom_id,Cur_Projecttask.m_attributesetinstance_id);
+
+					v_line := v_line + 10;
+					v_lines_exists := v_lines_exists + 1;
+
+					EXIT WHEN v_cantidad = 0;
+				END LOOP;
+				v_lines_resp 		:= v_lines_resp + v_lines_exists;
+				v_quantity		:= Cur_Projecttask.Qty-v_cantidad;
+				v_postventalinea_id 	:= Cur_Projecttask.atindpo_postventalinea_id;
+
+				Update atindpo_postventalinea set 
+					em_sswos_transfer = 0
+				where atindpo_postventalinea_id = v_postventalinea_id;
+				
+				If(v_lines_exists>0)Then
+					Update sswos_transfer set isactive = 'N' Where sswos_transfer_id = Cur_Projecttask.sswos_transfer_id;
+					INSERT INTO sswos_transfer (
+						  sswos_transfer_id	, ad_client_id			, ad_org_id		, createdby		, updatedby
+						, atindpo_postventa_id	, atindpo_postventalinea_id	, transfers		, quantity		, date_transfer
+						, m_movement_id		, isactive
+					) VALUES (  get_uuid()		, Cur_Projecttask.ad_client_id	, v_organization	, v_User_ID		, v_User_ID
+						, v_RecordHead_ID		, v_postventalinea_id		, v_document_no_seq	, v_quantity * -1		, now()
+						, v_movement_id		, 'N');
+				End IF;
+			END IF;
+		END LOOP;
+		--Procesar Movimiento entre almacenes
+		If(v_lines_resp > 0)Then
+			v_pinstance_vac_id := get_uuid();
+			insert into AD_PINSTANCE(
+				  ad_pinstance_id		, ad_process_id		, record_id			, isprocessing		, created	, ad_user_id
+				, updated			, result		, errormsg			, ad_client_id		, ad_org_id	,createdby
+				, updatedby			, isactive)
+			values(   v_pinstance_vac_id		, v_process_id		, v_movement_id			, 'N'			, now(), v_User_ID
+				, now()		, 1			, '@Insert@: Instance vacations', v_Ad_Client_id	, v_organization, v_User_ID
+				, v_User_ID			, 'Y');
+
+		 M_MOVEMENT_POST(v_pinstance_vac_id);
+					
+			Select coalesce(to_number((select pi.result
+						from ad_pinstance pi 
+						where pi.ad_pinstance_id = v_pinstance_vac_id)),to_number(1))
+			Into v_result 
+			From dual;
+
+			Select coalesce(to_char((select pi.errormsg 
+					From ad_pinstance pi 
+					Where pi.ad_pinstance_id = v_pinstance_vac_id)),to_char(''))
+			Into v_errormsg
+			From dual;
+					
+			If v_result = 0 then
+				v_errormsg := REPLACE(v_errormsg, 'ERROR=', '@');
+				RAISE_APPLICATION_ERROR(-20000, v_errormsg) ;
+			End if;
+			-- Fin - Procesar Movimiento entre almacenes
+		 AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, 'Movimiento procesado con éxito N°:'||v_document_no_seq) ;
+			RETURN;
+		ELSE
+			DELETE FROM m_movement WHERE m_movement_id = v_movement_id;
+
+		 AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, 'Existen algunos productos sin stock.') ;
+			RETURN;
+		End IF;
+
+	ELSE
+	 AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, '@Sswos_itemstype@') ;
+	END IF;
+  END; --BODY
+  EXCEPTION
+    WHEN OTHERS THEN
+      v_ResultStr:= '@ERROR=' || SQLERRM;
+      DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+      IF(p_PInstance_ID IS NOT NULL) THEN
+        AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+      END IF;
+      RETURN;
+END SSWOS_GOODSMOVEMENTRETURN
+]]></body>
+    </function>
+  </database>

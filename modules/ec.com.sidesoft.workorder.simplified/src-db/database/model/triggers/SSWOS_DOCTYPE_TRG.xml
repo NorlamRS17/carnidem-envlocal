@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSWOS_DOCTYPE_TRG">
+    <trigger name="SSWOS_DOCTYPE_TRG" table="ATINDPO_POSTVENTA" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[v_IsNew varchar(90):='Y';  
+Cur_Vehicle RECORD;
+v_count NUMBER;
+
+BEGIN
+
+	IF (INSERTING ) THEN
+		IF(:NEW.em_sswos_c_doctypetargets_id is not null OR :NEW.em_sswos_c_doctypetarget_id is not null)Then
+			If(:NEW.em_sswos_c_doctypetarget_id is not null )Then
+				:NEW.em_sswos_c_doctypetargets_id := :NEW.em_sswos_c_doctypetarget_id;
+				:NEW.c_doctype_id := :NEW.em_sswos_c_doctypetarget_id;
+			End IF;
+			If(:NEW.em_sswos_c_doctypetargets_id is not null )Then
+
+				:NEW.em_sswos_c_doctypetarget_id:=:NEW.em_sswos_c_doctypetargets_id;
+				:NEW.c_doctype_id := :NEW.em_sswos_c_doctypetargets_id;
+			End IF;
+		ELSE
+				:NEW.em_sswos_c_doctypetargets_id := :NEW.c_doctype_id;
+				:NEW.em_sswos_c_doctypetarget_id := :NEW.c_doctype_id;
+		End IF;
+	End If; -- END (TG_OP = 'INSERT' OR TG_OP = 'UPDATE' )
+	END SSWOS_DOCTYPE_TRG
+]]></body>
+    </trigger>
+  </database>

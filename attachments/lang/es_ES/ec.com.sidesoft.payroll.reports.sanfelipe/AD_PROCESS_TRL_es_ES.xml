@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="294AC292E3284BC2A62DC49D13262F96" trl="Y">
+    <value column="Name" isTrl="Y" original="File Payroll Payment Coop. cacpeco">Archivo Pago Nómina Coop. cacpeco</value>
+    <value column="Description" isTrl="Y" original="File Payroll Payment Coop. cacpeco">Archivo Pago Nómina Coop. cacpeco</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3BFC7A44E4CA4D51B2521EE14851F723" trl="Y">
+    <value column="Name" isTrl="Y" original="File Payment Utilities Coop. cacpeco">Archivo Pago Utilidades Coop. Cacpeco</value>
+    <value column="Description" isTrl="Y" original="File Payment Utilities Coop. cacpeco">Archivo Pago Utilidades Coop. Cacpeco</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A4D8642E96FD4C56B00E416970861990" trl="Y">
+    <value column="Name" isTrl="Y" original="File Payment Tenths Coop. cacpeco">Archivo Pago Décimos Coop. Cacpeco</value>
+    <value column="Description" isTrl="Y" original="File Payment Tenths Coop. cacpeco">Archivo Pago Décimos Coop. Cacpeco</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CD4BB1F36A0F439994B2E43781C17B3F" trl="Y">
+    <value column="Name" isTrl="Y" original="Payroll Report SanFelipe">Pago  de quincena  Cooperativa  Cacpeco</value>
+    <value column="Description" isTrl="Y" original="Payroll Report SanFelipe">Pago  de quincena  Cooperativa  Cacpeco</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

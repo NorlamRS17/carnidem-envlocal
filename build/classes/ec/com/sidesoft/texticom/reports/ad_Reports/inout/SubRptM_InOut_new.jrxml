@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SubRptM_InOut_new" pageWidth="328" pageHeight="600" columnWidth="328" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b3f285ed-96c8-4c04-9e91-d9172b1f71ef">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="0.9330147604194666"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="default" vAlign="Middle" fontName="Bitstream Vera Sans" fontSize="10"/>
+	<style name="Report_Title" fontName="Bitstream Vera Sans" fontSize="18">
+		<box leftPadding="5"/>
+	</style>
+	<style name="Group_Data_Label" fontName="Bitstream Vera Sans" fontSize="11" isBold="true"/>
+	<style name="Report_Subtitle" forecolor="#555555" fontName="Bitstream Vera Sans" fontSize="14">
+		<box leftPadding="5"/>
+	</style>
+	<style name="Total_Field" mode="Opaque" forecolor="#000000" backcolor="#CCCCCC" vAlign="Middle">
+		<box leftPadding="5"/>
+	</style>
+	<style name="Detail_Header" mode="Opaque" forecolor="#FFFFFF" backcolor="#555555" vAlign="Middle">
+		<box leftPadding="5">
+			<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="GroupHeader_DarkGray" mode="Opaque" forecolor="#FFFFFF" backcolor="#555555" vAlign="Middle" fontName="Bitstream Vera Sans" fontSize="14">
+		<box leftPadding="5"/>
+	</style>
+	<style name="GroupHeader_Gray" mode="Opaque" backcolor="#999999"/>
+	<style name="Detail_Line">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==1)]]></conditionExpression>
+			<style mode="Opaque" backcolor="#CCCCCC"/>
+		</conditionalStyle>
+	</style>
+	<style name="Total_Gray" mode="Opaque" forecolor="#000000" backcolor="#CCCCCC"/>
+	<parameter name="BASE_WEB" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA["'1000069'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false"/>
+	<parameter name="M_Product_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+sum(coalesce(movementqty,0)) as "movementqty",
+rep.order as "order",
+poreference as "poreference"
+from
+(
+SELECT io.ad_org_id AS organizationid
+  , io.documentno
+  , COALESCE(iol.movementqty,0) AS movementqty
+  , bp.name AS bpartner
+  , p.value AS product_code
+  , p.name AS product_name
+  , COALESCE(p.em_sscrtxt_units_per_box,0) AS units_per_box
+  , o.documentno AS order
+  , (COALESCE(iol.movementqty,0)/CASE WHEN COALESCE(p.em_sscrtxt_units_per_box,0)=0 THEN 1 ELSE p.em_sscrtxt_units_per_box END)::INTEGER AS full_boxes_total
+  , CASE WHEN COALESCE(p.em_sscrtxt_units_per_box,0)*(COALESCE(iol.movementqty,0)/CASE WHEN COALESCE(p.em_sscrtxt_units_per_box,0)=0 THEN 1 ELSE p.em_sscrtxt_units_per_box END)::INTEGER<COALESCE(iol.movementqty,0) THEN 1 ELSE 0 END AS partial_boxes_total
+  , CASE WHEN COALESCE(p.em_sscrtxt_units_per_box,0)*(COALESCE(iol.movementqty,0)/CASE WHEN COALESCE(p.em_sscrtxt_units_per_box,0)=0 THEN 1 ELSE p.em_sscrtxt_units_per_box END)::INTEGER<COALESCE(iol.movementqty,0) THEN iol.movementqty ELSE 0 END AS partial_boxes
+, o.poreference
+FROM m_inout AS io
+  JOIN m_inoutline AS iol ON iol.m_inout_id=io.m_inout_id
+  JOIN c_bpartner AS bp ON bp.c_bpartner_id=io.c_bpartner_id
+  JOIN m_product AS p ON p.m_product_id=iol.m_product_id
+  LEFT JOIN c_orderline AS ol ON ol.c_orderline_id=iol.c_orderline_id
+  LEFT JOIN c_order AS o ON o.c_order_id=ol.c_order_id
+WHERE io.m_inout_id=$P{DOCUMENT_ID} AND iol.m_product_id=$P{M_Product_ID}
+ORDER BY p.value, o.documentno
+) rep
+group by  rep.order , poreference]]>
+	</queryString>
+	<field name="movementqty" class="java.math.BigDecimal"/>
+	<field name="order" class="java.lang.String"/>
+	<field name="poreference" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20">
+			<textField isBlankWhenNull="true">
+				<reportElement x="90" y="0" width="120" height="20" uuid="0ac6d442-9dc2-4d67-8268-f6e1e75e114a"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{order}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="90" height="20" uuid="845914a7-06e4-4c16-9741-7784665e7800"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{movementqty}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="210" y="0" width="118" height="20" uuid="ca188727-5780-47da-95f5-b371ccc5a4ed"/>
+				<box leftPadding="2" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{poreference}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

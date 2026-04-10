@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="4862554135954A1BA810DB0630BD5510" trl="Y">
+    <value column="Name" isTrl="Y" original="Limit">Limite</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="965FE05A26334DAC85803C4E38D64AD8" trl="Y">
+    <value column="Name" isTrl="Y" original="Review">Revisión</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D688F5EDEC0E4991ADABEC3B5A3BDA3B" trl="Y">
+    <value column="Name" isTrl="Y" original="Weekly">Semanal</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="DB02F251A8364ED1A3B3D327CDC41387" trl="Y">
+    <value column="Name" isTrl="Y" original="Appropriate">Adecuado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="EFBA49D1B8C148A08CFC24D37FC8CBD9" trl="Y">
+    <value column="Name" isTrl="Y" original="Lost">Pérdida</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="FA604038A7D14C78A269004C708A2813" trl="Y">
+    <value column="Name" isTrl="Y" original="Monthly">Mensual</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

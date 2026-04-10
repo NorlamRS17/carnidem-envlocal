@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="869E47B1601749FDA31EC0473560159A" trl="Y">
+    <value column="Name" isTrl="Y" original="Element Value List">Lista de Cuentas Contables</value>
+    <value column="Description" isTrl="Y" original="Element Value List">Lista de Cuentas Contables</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AE8B3B59AD9A48FD8A2881993139C56D" trl="Y">
+    <value column="Name" isTrl="Y" original="Business Partner List">Lista de Terceros </value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

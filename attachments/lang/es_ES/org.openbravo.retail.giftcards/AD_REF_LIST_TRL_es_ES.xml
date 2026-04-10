@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="0152B275A1E14F3191F9FC0A572FD80D" trl="N">
+    <value column="Name" isTrl="N" original="Cancel Giftcard Transaction">Cancel Giftcard Transaction</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="037C1B6A4B2F4516A5BAC600488C2849" trl="N">
+    <value column="Name" isTrl="N" original="Gift Card Template">Gift Card Template</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="08FAE21F26EA4A0F90D9FC0EB694316E" trl="N">
+    <value column="Name" isTrl="N" original="Giftcard Certificate">Giftcard Certificate</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="10B8F9DF7A484A8A803B37B45F7A195B" trl="N">
+    <value column="Name" isTrl="N" original="Used">Used</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="11631B6751144889BBBC311D1E20BB0E" trl="N">
+    <value column="Name" isTrl="N" original="Cancel Giftcard">Cancel Giftcard</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="12A29E9D636F427994017701476AC04D" trl="N">
+    <value column="Name" isTrl="N" original="Consume Giftcard Lines">Consume Giftcard Lines</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="194D8752B8784E3FA4ECB04678691371" trl="N">
+    <value column="Name" isTrl="N" original="Revert Giftcard Amount">Revert Giftcard Amount</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1B90205435DD457D8B6616455F797DB0" trl="N">
+    <value column="Name" isTrl="N" original="Allow reimbursed a Gift Card">Allow reimbursed a Gift Card</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1EF14B07434049F7A75F61529F8FD1ED" trl="N">
+    <value column="Name" isTrl="Y" original="New">Nuevo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="2A32228BF6E541DEA51552787222683E" trl="N">
+    <value column="Name" isTrl="N" original="Consume Giftcard Amount">Consume Giftcard Amount</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3366940251CF493488F638E202A8F471" trl="N">
+    <value column="Name" isTrl="N" original="Credit Note Template">Credit Note Template</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3DFAE2B9F2FA4FBCB52B058E1D0B1A83" trl="N">
+    <value column="Name" isTrl="N" original="Reimbursed">Reimbursed</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3E96EE3E35CB491B87F52C23A0DEC5FD" trl="N">
+    <value column="Name" isTrl="N" original="Consume Giftcard Lines">Consume Giftcard Lines</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="4821DCD5E6BA46289CFDBF1EF170AFA8" trl="N">
+    <value column="Name" isTrl="N" original="Gift Card Certificate creation">Gift Card Certificate creation</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="4B720E61FF89422F876A7948A42655EB" trl="N">
+    <value column="Name" isTrl="N" original="Partially used">Partially used</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="636ACA2C5CE34DA383DF0744CC0DB4BA" trl="N">
+    <value column="Name" isTrl="N" original="Revert Giftcard Amount">Revert Giftcard Amount</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7126BA59B76E4A8D994FD28091939685" trl="N">
+    <value column="Name" isTrl="N" original="Cancel Giftcard">Cancel Giftcard</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7762BB5E044B4A82849397536C908C77" trl="N">
+    <value column="Name" isTrl="N" original="Based on Credit Note">Based on Credit Note</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="79DBE4E936D245CCAE810F596ADBF179" trl="N">
+    <value column="Name" isTrl="N" original="Based on Voucher">Based on Voucher</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7AD5698CF16B48B48582E3F101100EE4" trl="N">
+    <value column="Name" isTrl="N" original="Allow to refund Product Gift Cards and Gift Vouchers">Allow to refund Product Gift Cards and Gift Vouchers</value>
+    <value column="Description" isTrl="N" original="Allows user to be able to refund product gift cards and gift vouchers opened from the Gift Card Viewer selector">Allows user to be able to refund product gift cards and gift vouchers opened from the Gift Card Viewer selector</value>
+  </row>
+  <row id="8BF0AC7674A1416491ED5301E2CBFAF2" trl="N">
+    <value column="Name" isTrl="N" original="Expired">Expired</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="9EB05A5FF291479AB2F41E94B2B8C32E" trl="N">
+    <value column="Name" isTrl="N" original="Web POS credit notes">Web POS credit notes</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A0A8A9F637B64291975068DB7EF6A47F" trl="N">
+    <value column="Name" isTrl="N" original="Based on Product Gift Card">Based on Product Gift Card</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="ACC82D02E8FA4BA29B471C0D4C9915AB" trl="N">
+    <value column="Name" isTrl="Y" original="Gift card">Tarjeta regalo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B05DF5A9FCCE4D8799E98BD49CD091CD" trl="N">
+    <value column="Name" isTrl="N" original="Gift Voucher payment">Gift Voucher payment</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B68E2308B8A7437CA80371E47143A70B" trl="N">
+    <value column="Name" isTrl="N" original="Cancel Giftcard Transaction">Cancel Giftcard Transaction</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B9DD4027EF1E48C481D8C10FEBEBC5DF" trl="N">
+    <value column="Name" isTrl="N" original="Based on G/L Item">Based on G/L Item</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C7CFE986FD1446018A400AD479FE01E8" trl="N">
+    <value column="Name" isTrl="N" original="Giftcard Certificate">Giftcard Certificate</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C9FD204A39984DC5BDA8BD0E932A1178" trl="N">
+    <value column="Name" isTrl="Y" original="Gift Card payment">Pago con tarjeta regalo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="CBAD7DF8932F484287B3989BD6609BC7" trl="N">
+    <value column="Name" isTrl="N" original="Close Gift Card">Close Gift Card</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D00F599734D74E06A6C30E90C289413C" trl="N">
+    <value column="Name" isTrl="Y" original="Gift voucher">Vale de compra</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D36F950309554C5F9D7D9ABAF43284C9" trl="N">
+    <value column="Name" isTrl="N" original="Reimbursed">Reimbursed</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="DB75241758534A628D5504589B0D1107" trl="N">
+    <value column="Name" isTrl="N" original="Created">Created</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E5869ABDD2D144AE9BB073F4A61F6E45" trl="N">
+    <value column="Name" isTrl="Y" original="Closed">Cerrado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E94D29C3F7F14422873FC60F9C464C85" trl="N">
+    <value column="Name" isTrl="Y" original="Partial">Parcialmente</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

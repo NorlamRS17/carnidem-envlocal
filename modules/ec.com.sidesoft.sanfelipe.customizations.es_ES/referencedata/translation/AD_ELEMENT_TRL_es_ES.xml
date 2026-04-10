@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="19DEDC654C5B412680901232E8823E3D" trl="Y">
+    <value column="Name" isTrl="Y" original="phone_tm_cb">Teléfono</value>
+    <value column="PrintName" isTrl="N" original="Teléfono">Teléfono</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3D0D81E1D4DF490FA8EEE702415F7675" trl="Y">
+    <value column="Name" isTrl="Y" original="Name2_new">Nombre Comercial</value>
+    <value column="PrintName" isTrl="N" original="Nombre Comercial">Nombre Comercial</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5950A82A7FA948D1B7649E4158B5A2A8" trl="Y">
+    <value column="Name" isTrl="Y" original="origen_tm_cb">Origen</value>
+    <value column="PrintName" isTrl="N" original="Origen">Origen</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="69B6EFCB32D844E5A6AEA6B0CC933BB9" trl="Y">
+    <value column="Name" isTrl="Y" original="Name1_new">Nombre fiscal</value>
+    <value column="PrintName" isTrl="N" original="Nombre fiscal">Nombre fiscal</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7E79C0089A914F13A1E27B38A90CFB53" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssfc_Costcenter_ID">Centro de costos</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssfc_Costcenter_ID">Centro de costos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="82C934C3033F4AFDAB2FC239A3F1D58B" trl="Y">
+    <value column="Name" isTrl="Y" original="Distribution Channel_new">Canal de Distribución</value>
+    <value column="PrintName" isTrl="N" original="Canal de Distribución">Canal de Distribución</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A2F43B10B5384A668123428E733A5602" trl="Y">
+    <value column="Name" isTrl="Y" original="price_list_tm_cb">Tarifa</value>
+    <value column="PrintName" isTrl="N" original="Tarifa">Tarifa</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

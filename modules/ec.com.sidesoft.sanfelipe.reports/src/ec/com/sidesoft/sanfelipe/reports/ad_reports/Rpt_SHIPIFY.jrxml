@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_SHIPIFY" pageWidth="2384" pageHeight="595" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="2356" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14" isSummaryWithPageHeaderAndFooter="true" uuid="cfaf7223-c06e-4591-8e0f-b406a2336150">
+	<property name="ireport.zoom" value="1.5026296018031553"/>
+	<property name="ireport.x" value="1589"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.sheet.names.all" value="Reporte SHIPIFY"/>
+	<property name="net.sf.jasperreports.export.csv.field.delimiter" value=";"/>
+	<import value="org.openbravo.dal.core.OBContext"/>
+	<parameter name="DATEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERDECIMAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_WEB" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SOURCE_PATH" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="DateFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT REPLACE(TRIM(bp.name),',','.') as tercero
+,REPLACE(TRIM(EM_Atimdm_Email),',','.') as email
+,COALESCE(bpl.phone,bpl.phone2) as phone
+,REPLACE(TRIM(bpl.name),',','.') as dir
+--,REPLACE(TRIM(o.description),',','.') as instrucciones
+,REPLACE(TRIM(p.name),',','.') as producto
+,qtyordered
+,ol.linenetamt+olt.taxamt as total
+,bpl.em_sspsi_latitude
+,bpl.em_sspsi_longitude
+,lc.city
+,o.documentno as numero_pedido_venta
+FROM c_orderline ol
+JOIN m_product p ON p.m_product_id=ol.m_product_id
+JOIN c_order o ON o.c_order_id=ol.c_order_id
+JOIN c_bpartner bp ON bp.c_bpartner_id=o.c_bpartner_id
+JOIN c_bpartner_location bpl ON bpl.c_bpartner_location_id=o.c_bpartner_location_id
+JOIN c_location lc ON lc.c_location_id=bpl.c_location_id
+LEFT JOIN (SELECT sum(taxamt) as taxamt,c_orderline_id FROM c_orderlinetax
+GROUP BY c_orderline_id) olt ON olt.c_orderline_id=ol.c_orderline_id
+JOIN c_doctype d ON d.c_doctype_id=o.c_doctype_id
+LEFT JOIN c_location l ON l.c_location_id=bpl.c_location_id
+WHERE o.issotrx='Y'
+AND d.IsReturn='N'
+AND (d.DocBaseType='SOO' or o.c_doctypetarget_id is not null)
+AND o.DocStatus = 'CO'
+AND o.dateordered between $P{DateFrom} AND $P{DateTo}
+AND bp.Customer_Blocking = 'N'
+ORDER BY o.dateordered,o.documentno,ol.line]]>
+	</queryString>
+	<field name="tercero" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="phone" class="java.lang.String"/>
+	<field name="dir" class="java.lang.String"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="qtyordered" class="java.math.BigDecimal"/>
+	<field name="total" class="java.math.BigDecimal"/>
+	<field name="em_sspsi_latitude" class="java.lang.String"/>
+	<field name="em_sspsi_longitude" class="java.lang.String"/>
+	<field name="city" class="java.lang.String"/>
+	<field name="numero_pedido_venta" class="java.lang.String"/>
+	<variable name="REPORT_PAGE" class="java.lang.Integer" resetType="None" incrementType="Page">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="281" y="0" width="100" height="30" uuid="5de17d4c-d953-4c5a-a050-5a6e24dfc757"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TELEFONO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="381" y="0" width="165" height="30" uuid="c6fa9d96-5a4e-49ec-93c8-54df7c2d387f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DIRECCION"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="663" y="0" width="91" height="30" uuid="36edab54-6541-4b13-9a81-9a5015adc35f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VECINDARIO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="754" y="0" width="97" height="30" uuid="b12cd8f9-3ef7-4aa0-9721-74a669048894"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["LATITUD"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="546" y="0" width="117" height="30" uuid="97cf42bf-ac83-43d0-96b1-fed782e8441c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NUMERO_DIRECCION"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="851" y="0" width="119" height="30" uuid="f22a38c2-3e13-4f8d-bfcb-a00863dc4308"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["LONGITUD"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="181" height="30" uuid="41a3231d-e6d1-4461-aa5f-73a3aad0de9c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DESTINATARIO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="181" y="0" width="100" height="30" uuid="38953c04-b2fe-4b04-981f-85a1bf564fb8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CORREO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="970" y="0" width="119" height="30" uuid="41908d2e-c96d-45c4-99de-54df295ee7de"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CIUDAD"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1297" y="0" width="148" height="30" uuid="51eee2ab-a3ff-4678-8f2f-b251895c7364"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NOMBRE_PRODUCTO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1445" y="0" width="119" height="30" uuid="8d82719d-2b05-40ac-ba12-5d6a6355043f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CANTIDAD_PRODUCTO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1564" y="0" width="90" height="30" uuid="439f79f1-1418-4c9b-a716-285b4d2fb1f6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ID_PRODUCTO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1654" y="0" width="119" height="30" uuid="2bf844d5-694c-4043-86fc-40beab2bb4d5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TAMAÑO_PRODUCTO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1773" y="0" width="137" height="30" uuid="aa53b8d2-c74a-459d-8e18-42a8b66723c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PAGO_CONTRA_ENTREGA"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1910" y="0" width="100" height="30" uuid="ac838746-efb2-4aa9-9311-335dc07ecf6c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ID_REFERENCIA"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2010" y="0" width="91" height="30" uuid="4a8e1823-ab14-4ada-b531-48fffa02f661"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["HORA_ENTREGA"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2101" y="0" width="70" height="30" uuid="89d1aebc-654f-4ef1-b1b4-c6cf192af2fa"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ETIQUETA"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2171" y="0" width="70" height="30" uuid="f29bd89c-c47c-4951-8b09-db4eab66654e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PESO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2241" y="0" width="115" height="30" uuid="85597598-4adc-4895-bdee-4aefc7417412"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PRECIO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1089" y="0" width="208" height="30" uuid="81e08434-2a91-47c0-a2fb-fb9d007b1c44"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["INSTRUCCIONES"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="281" y="0" width="100" height="12" isPrintWhenDetailOverflows="true" uuid="9ddcb1e2-8296-4468-afa2-65f6c081fea3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="381" y="0" width="165" height="12" isPrintWhenDetailOverflows="true" uuid="ee4242bf-b12e-485c-84f4-b4de1a7d8311"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dir}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="546" y="0" width="117" height="12" isPrintWhenDetailOverflows="true" uuid="42f2b8c7-23c2-4edf-842f-67afc68e5854"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="663" y="0" width="91" height="12" isPrintWhenDetailOverflows="true" uuid="6dde9648-efcd-4ff5-963f-e97a32f86c22"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="851" y="0" width="119" height="12" isPrintWhenDetailOverflows="true" uuid="819df1a7-f37c-4ae6-be6d-8c27f45f0909"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sspsi_longitude}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="181" y="0" width="100" height="12" isPrintWhenDetailOverflows="true" uuid="8e11c4dc-888d-4a08-a677-878ed7d0a605"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="181" height="12" isPrintWhenDetailOverflows="true" uuid="472e46b8-fb80-4174-ad6a-775339459bfd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tercero}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{DATEFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="754" y="0" width="97" height="12" isPrintWhenDetailOverflows="true" uuid="ccae388c-43ec-4b00-82d4-f7c07de0189f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{em_sspsi_latitude}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="970" y="0" width="119" height="12" isPrintWhenDetailOverflows="true" uuid="065e74ca-eb64-4a31-9bf7-81c1fa914063"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{city}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1297" y="0" width="148" height="12" isPrintWhenDetailOverflows="true" uuid="88c13bfc-b0b0-4b86-b0e0-d58e2b4692cd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1445" y="0" width="119" height="12" isPrintWhenDetailOverflows="true" uuid="5170d319-4989-4536-a76b-66cc9f518695"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtyordered}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1564" y="0" width="90" height="12" isPrintWhenDetailOverflows="true" uuid="6c3753df-3e39-4adb-9f01-c11e03d5672d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1654" y="0" width="119" height="12" isPrintWhenDetailOverflows="true" uuid="44c17ae9-6784-491e-8403-a9a034cac910"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[1]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1773" y="0" width="137" height="12" isPrintWhenDetailOverflows="true" uuid="a660efdc-fcbe-4ec0-9d4e-95275203e92b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1910" y="0" width="100" height="12" isPrintWhenDetailOverflows="true" uuid="e93b8b5d-0868-4c0a-adae-efe7fbe63cdf"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="2010" y="0" width="91" height="12" isPrintWhenDetailOverflows="true" uuid="2e4de012-2b28-4b51-b7e5-c0517b6645c0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="2101" y="0" width="70" height="12" isPrintWhenDetailOverflows="true" uuid="004f5e27-1f62-41c1-b4c1-28e68ea4059f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="2171" y="0" width="70" height="12" isPrintWhenDetailOverflows="true" uuid="a6a52694-8443-4e90-abe2-f087cd8cd774"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="2241" y="0" width="115" height="12" isPrintWhenDetailOverflows="true" uuid="382443e8-42c8-4beb-be5c-bd7786e1101e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1089" y="0" width="208" height="12" isPrintWhenDetailOverflows="true" uuid="e78d5125-ea30-4bbc-a765-9d94042a8604"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero_pedido_venta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+</jasperReport>

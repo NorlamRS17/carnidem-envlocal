@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<provider>
+  <bean>
+    <name>orderoute</name>
+    <class>ec.com.sidesoft.web.services.order.route.service.orderoute</class>
+    <singleton>true</singleton>
+  </bean>
+  <bean>
+    <name>CreateStandars</name>
+    <class>ec.com.sidesoft.web.services.order.route.service.Ssfor_ManageStandars</class>
+    <singleton>true</singleton>
+  </bean>
+  <bean>
+    <name>ValidateWorkEffort</name>
+    <class>ec.com.sidesoft.web.services.order.route.service.Ssfor_ValidateWorkEffort</class>
+    <singleton>true</singleton>
+  </bean>
+  <bean>
+    <name>SalesOrderTrackingReport</name>
+    <class>ec.com.sidesoft.web.services.order.route.service.Ssfor_SalesOrderTrackingReport</class>
+    <singleton>true</singleton>
+  </bean>
+</provider>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="32AB14CF56EF4188B9C2A6F07519FC04" trl="N">
+    <value column="Name" isTrl="N" original="Daily">Daily</value>
+    <value column="Description" isTrl="N" original="Daily periodicity">Daily periodicity</value>
+  </row>
+  <row id="8E6BC7C0F76D49A9B3B363C9A83C4A37" trl="N">
+    <value column="Name" isTrl="N" original="Yearly">Yearly</value>
+    <value column="Description" isTrl="N" original="Yearly periodicity">Yearly periodicity</value>
+  </row>
+  <row id="B85607DEEA2C4132B131626FF7D638C4" trl="N">
+    <value column="Name" isTrl="N" original="Monthly">Monthly</value>
+    <value column="Description" isTrl="N" original="Monthly periodicity">Monthly periodicity</value>
+  </row>
+  <row id="F4FE28E149084556B2EA54C053A5245B" trl="N">
+    <value column="Name" isTrl="N" original="Quarterly">Quarterly</value>
+    <value column="Description" isTrl="N" original="Quarterly periodicity">Quarterly periodicity</value>
+  </row>
+</compiereTrl>

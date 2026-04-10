@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSWOS_MOVEMENT_STATUS_TRG">
+    <trigger name="SSWOS_MOVEMENT_STATUS_TRG" table="SSWOS_TRANSFER" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[   
+vstatus VARCHAR2(32);
+v_count NUMBER:=0;
+
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+    IF(DELETING) THEN
+	SELECT sum(em_sswos_transfer) INTO v_count FROM atindpo_postventalinea WHERE atindpo_postventalinea_id = :OLD.atindpo_postventalinea_id;
+	IF coalesce(v_count,0)>0 THEN  
+		RAISE_APPLICATION_ERROR(-20000, '@20501@') ;
+	END IF;
+    END IF;
+
+  END SSWOS_MOVEMENT_STATUS_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CommissionReport" pageWidth="828" pageHeight="400" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="800" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14" uuid="cfaf7223-c06e-4591-8e0f-b406a2336150">
+	<property name="ireport.zoom" value="1.3636363636363675"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AD_Org_ID" class="java.lang.String"/>
+	<parameter name="C_BPartner_ID" class="java.lang.String"/>
+	<parameter name="C_CommissionRun_ID" class="java.lang.String"/>
+	<parameter name="IsNotPayed" class="java.lang.String"/>
+	<parameter name="AD_User_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["100"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+ org.ad_org_id organizationid
+ , u.username AS username
+ , TO_CHAR(NOW(),'YYYY-MM-DD hh:mi:ss am') currentdate
+ , c.*
+FROM (
+  SELECT bp.name bp_name, cd.em_scomst_paid_date paid_date, cd.reference,
+   i.documentno||' - '||TO_CHAR(i.dateinvoiced,'DD-MM-YYYY')||' - '||i.grandtotal||' - '||il.line||' - '||il.linenetamt invoiceline,
+   cd.info, cd.actualamt, cd.em_scomst_commission_amount commission_amount, ba.name ba_name, cr.documentno,
+   cd.em_scomst_dateinvoiced dateinvoiced, cd.em_scomst_duedate duedate
+  FROM C_CommissionDetail cd
+   JOIN c_invoiceline il ON il.c_invoiceline_id = cd.c_invoiceline_id
+   JOIN c_invoice i ON i.c_invoice_id = il.c_invoice_id
+   JOIN c_bpartner bp ON bp.c_bpartner_id = i.c_bpartner_id
+   JOIN c_commissionamt ca ON ca.c_commissionamt_id = cd.c_commissionamt_id
+   JOIN c_commissionrun cr ON cr.c_commissionrun_id = ca.c_commissionrun_id
+   JOIN c_commission c ON c.c_commission_id = cr.c_commission_id
+   JOIN c_bpartner ba ON ba.c_bpartner_id = c.c_bpartner_id
+  WHERE COALESCE($P{IsNotPayed},'N') = 'N'
+   AND (cd.ad_org_id = $P{AD_Org_ID} OR $P{AD_Org_ID} = '0')
+   AND c.c_bpartner_id = $P{C_BPartner_ID}
+   AND cr.c_commissionrun_id = $P{C_CommissionRun_ID}
+
+  UNION
+
+  SELECT bp.name bp_name, paid_date, uc.reference,
+   i.documentno||' - '||TO_CHAR(i.dateinvoiced,'DD-MM-YYYY')||' - '||i.grandtotal||' - '||il.line||' - '||il.linenetamt invoiceline,
+   uc.info, uc.actualamt, uc.commission_amount, ba.name ba_name, cr.documentno,
+   uc.dateinvoiced, uc.duedate
+  FROM scomst_unpaid_commission uc
+   JOIN c_invoiceline il ON il.c_invoiceline_id = uc.c_invoiceline_id
+   JOIN c_invoice i ON i.c_invoice_id = il.c_invoice_id
+   JOIN c_bpartner bp ON bp.c_bpartner_id = i.c_bpartner_id
+   JOIN c_commissionamt ca ON ca.c_commissionamt_id = uc.c_commissionamt_id
+   JOIN c_commissionrun cr ON cr.c_commissionrun_id = ca.c_commissionrun_id
+   JOIN c_commission c ON c.c_commission_id = cr.c_commission_id
+   JOIN c_bpartner ba ON ba.c_bpartner_id = c.c_bpartner_id
+  WHERE COALESCE($P{IsNotPayed},'N') = 'Y'
+   AND (uc.ad_org_id = $P{AD_Org_ID} OR $P{AD_Org_ID} = '0')
+   AND c.c_bpartner_id = $P{C_BPartner_ID}
+   AND cr.c_commissionrun_id = $P{C_CommissionRun_ID}
+ ) c
+ JOIN ad_user u ON u.ad_user_id = $P{AD_User_ID}
+ JOIN ad_org org ON org.ad_org_id = $P{AD_Org_ID}]]>
+	</queryString>
+	<field name="organizationid" class="java.lang.String"/>
+	<field name="username" class="java.lang.String"/>
+	<field name="currentdate" class="java.lang.String"/>
+	<field name="bp_name" class="java.lang.String"/>
+	<field name="paid_date" class="java.sql.Timestamp"/>
+	<field name="reference" class="java.lang.String"/>
+	<field name="invoiceline" class="java.lang.String"/>
+	<field name="info" class="java.lang.String"/>
+	<field name="actualamt" class="java.math.BigDecimal"/>
+	<field name="commission_amount" class="java.math.BigDecimal"/>
+	<field name="ba_name" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="dateinvoiced" class="java.sql.Timestamp"/>
+	<field name="duedate" class="java.sql.Timestamp"/>
+	<variable name="total1" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{actualamt}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="total2" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{commission_amount}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<title>
+		<band height="87" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="200" height="58" uuid="e244cc02-b2a7-495b-bb04-7c2a5fe3b483"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{organizationid})]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="200" y="0" width="600" height="10" uuid="554ee6bf-8f1a-472e-ac54-3eb32502f3ce"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>Usuario: </b>"+$F{username}+" / <b>Fecha: </b>"+$F{currentdate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="58" width="800" height="29" forecolor="#F90906" uuid="202fbfe4-562a-4b04-96db-d040da736f82"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DETALLE DE COMISIONES"+ ($P{IsNotPayed} == null || $P{IsNotPayed}.equals("N") ? "" : " NO") +" PAGADAS"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="65" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="40" width="120" height="25" uuid="b2ba3d3b-549c-4d9d-b4bc-b6d96250c834"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tercero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="40" width="80" height="25" uuid="da6e5c05-6f0e-4d63-8987-043dacf0fbce"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de vencimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="40" width="80" height="25" uuid="bbd7f4e8-b042-4a84-8de7-2f1e75db50b2"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Referencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="40" width="120" height="25" uuid="9f1a4813-386a-4415-b55f-eb1b19fb58e0"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Línea de la factura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="680" y="40" width="60" height="25" uuid="2afbc30d-d77a-4d0e-96bc-c2b1382bee62"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="740" y="40" width="60" height="25" uuid="8ab67a07-cf14-4f46-aba4-241b65bdd9d5"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe comisión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="560" y="40" width="120" height="25" uuid="db8933bd-6042-4824-bd60-c133243523b0"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Información]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="800" height="20" uuid="2c5c943e-7f86-40e5-acea-5c67e48190bb"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="120" y="20" width="240" height="20" uuid="5bd72e0f-cf81-442c-a7a1-5a83bcf799ee"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ba_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="680" y="20" width="120" height="20" uuid="ee860478-50ef-4d45-aa02-2606485c97a2"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="20" width="120" height="20" uuid="612b5258-9ce3-43cd-9fbc-2e5406ca2234"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AGENTE COMERCIAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="20" width="320" height="20" uuid="c2536501-6aff-48d3-8661-5270c235f4a9"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DOCUMENTO NO.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="40" width="80" height="25" uuid="b39f478b-8451-443b-9b0f-2b43feb6343e"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pagado en]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="40" width="80" height="25" uuid="f16499bd-efb1-4319-bec5-0ea851d63c21"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de factura]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="120" height="12" uuid="d61429c4-2620-458e-a21e-c7cbb2b21a62"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bp_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="200" y="0" width="80" height="12" uuid="c19975f7-5a07-4ca6-9661-4ed1a1854957"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{duedate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="360" y="0" width="80" height="12" uuid="02e9ccef-f3dc-4447-aa11-d2b747a67782"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reference}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="440" y="0" width="120" height="12" uuid="3dd95743-0d49-481b-91cf-6283d0da69fb"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{invoiceline}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="680" y="0" width="60" height="12" uuid="4308f778-ab72-4036-9a5e-361ef8bd1d19"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{actualamt}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="560" y="0" width="120" height="12" uuid="30edb883-146c-47d0-bcaa-d2c2907516b6"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{info}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="740" y="0" width="60" height="12" uuid="f1a0e6f5-be7f-4f87-b2bc-20523f016f99"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{commission_amount}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="280" y="0" width="80" height="12" uuid="1e976d2a-a8a1-4bfb-b938-e4683893342b"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paid_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="120" y="0" width="80" height="12" uuid="dd87c5a8-eafc-4d33-a845-0645e4e08ef1"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dateinvoiced}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="18">
+			<textField>
+				<reportElement x="0" y="0" width="400" height="10" uuid="4a22b48f-a757-4505-83c8-2c1245da90ae"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + "/"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="400" y="0" width="400" height="10" uuid="894436d1-3e0a-4c60-8ad6-7ff55dd6ba56"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="10" width="800" height="8" uuid="9ff8787e-8c58-4ee7-9cd8-7d93e6850952"/>
+				<textElement verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<text><![CDATA[/ec/com/sidesoft/commission/standard/ad_reports/CommissionReport.jrxml]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="50">
+			<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="680" y="0" width="60" height="12" uuid="f28ade6d-48b5-4f59-b6fa-5e902258fd90"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total1}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="680" height="12" uuid="204fab32-6434-4666-825a-1b4af58ec0b5"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="740" y="0" width="60" height="12" uuid="082ecab6-31f6-419a-a0b4-0f252ef0f1bc"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total2}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+		</band>
+	</summary>
+	<noData>
+		<band height="237">
+			<textField>
+				<reportElement x="0" y="58" width="800" height="29" forecolor="#F90906" uuid="8fd8665c-eb1c-4570-952b-eb05b404e625"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DETALLE DE COMISIONES"+ ($P{IsNotPayed} == null || $P{IsNotPayed}.equals("N") ? "" : " NO") +" PAGADAS"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="200" height="58" uuid="4fdfca10-8bce-4575-af27-c59e1d364b79"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{organizationid})]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="87" width="800" height="150" forecolor="#000000" uuid="62f7ac99-bb5a-4a24-bdcd-944f89d71c3c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No se encontró información para mostrar"]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>

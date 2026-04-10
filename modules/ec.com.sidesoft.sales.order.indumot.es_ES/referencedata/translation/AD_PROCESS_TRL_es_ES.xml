@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="0975D4E74CF64854937F0A01FF2AEBDD" trl="Y">
+    <value column="Name" isTrl="Y" original="Credit Request">Solicitar Crédito</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="0A7E13F197124C33B7EA0A741AA186D0" trl="Y">
+    <value column="Name" isTrl="Y" original="Close oder">Cerrar pedido</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3DC4B1F3C5BC4FA7A9F19B245BEEDBD2" trl="Y">
+    <value column="Name" isTrl="Y" original="Credit Approve">Aprobar Crédito</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9A73D168C1A5476DB49AB30E94DF5D35" trl="Y">
+    <value column="Name" isTrl="Y" original="Close inprogress orders">Cerrar pedidos en progreso</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

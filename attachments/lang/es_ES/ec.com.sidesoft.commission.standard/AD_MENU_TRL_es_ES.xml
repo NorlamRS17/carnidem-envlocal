@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="703E28F7D9174EA3AB1F43A386ECD8B6" trl="Y">
+    <value column="Name" isTrl="Y" original="Advisor type settings">Configuración de tipos de asesores</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7FD8D5FC7B0B44B898E490BCC9ADFEAD" trl="Y">
+    <value column="Name" isTrl="Y" original="Commission Report">Reporte de Comisiones</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

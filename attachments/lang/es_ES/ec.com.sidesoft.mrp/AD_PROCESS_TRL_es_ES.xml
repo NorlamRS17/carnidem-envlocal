@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="590066A49B89482786E6183DC0E99FE3" trl="Y">
+    <value column="Name" isTrl="Y" original="Process Forecast">Procesar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7BAC6EE253C1421DB315381970945F2D" trl="N">
+    <value column="Name" isTrl="N" original="Products Forecast">Products Forecast</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9C2EFD6499474BDBBD7C0420507EAF3D" trl="N">
+    <value column="Name" isTrl="N" original="Order Forecast">Order Forecast</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A1FB2F43434F4D78AB303281B87E5A59" trl="Y">
+    <value column="Name" isTrl="Y" original="Approve Forecast">Aprobar previsión (SSMRP)</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BEC86D9993B248B1BF4371FAC0D6AA26" trl="N">
+    <value column="Name" isTrl="N" original="Generate Work Requirements">Generate Work Requirements</value>
+    <value column="Description" isTrl="N" original="Generate Work Requirements">Generate Work Requirements</value>
+    <value column="Help" isTrl="N" original="Generate Work Requirements">Generate Work Requirements</value>
+  </row>
+</compiereTrl>

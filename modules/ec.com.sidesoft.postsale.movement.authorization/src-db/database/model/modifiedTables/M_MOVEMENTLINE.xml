@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_MOVEMENTLINE">
+    <table name="M_MOVEMENTLINE" primaryKey="M_MOVEMENTLINE_KEY">
+      <column name="EM_SPSMVAT_PVL_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="ATINDPO_POSTVENTALINEA" name="EM_SPSMVAT_PVL_ID">
+        <reference local="EM_SPSMVAT_PVL_ID" foreign="ATINDPO_POSTVENTALINEA_ID"/>
+      </foreign-key>
+    </table>
+  </database>

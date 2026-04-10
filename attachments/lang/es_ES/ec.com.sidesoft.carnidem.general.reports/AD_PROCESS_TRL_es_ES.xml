@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="71A081C91AA04103B5238A2036CEECDD" trl="Y">
+    <value column="Name" isTrl="Y" original="MP Inventories">Reporte existencias de materias primas por código de compra</value>
+    <value column="Description" isTrl="Y" original="MP Inventories">Reporte existencias de materias primas por código de compra</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A9D5AA3324D24D189B9332FFC1A9E7FE" trl="Y">
+    <value column="Name" isTrl="Y" original="Summary Accounts Receivable">Estado CxC - Detallado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

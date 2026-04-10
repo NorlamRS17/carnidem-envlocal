@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="3BFDD718F46C423692C0CCE07BE63D8D" trl="Y">
+    <value column="Name" isTrl="Y" original="crpcoBusinessLine">Línea de Negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="5E961109C81A47049FEBD99790F7A273" trl="Y">
+    <value column="Name" isTrl="Y" original="crpcoLocationStatus">Estado del local</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="681C18192700462A9FF9FEA30D9B6A6A" trl="Y">
+    <value column="Name" isTrl="Y" original="CrpcoBusinesActivityTime">Tiempo de Actividad del Negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="21EBE69095FF4F2F9351EA9BC01A889A" trl="N">
+    <value column="Name" isTrl="N" original="Report Format">Report Format</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3EC058AFC5974A0C870B88C7951BFE92" trl="N">
+    <value column="Name" isTrl="N" original="Document Status">Document Status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

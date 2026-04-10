@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SIMPSIM_BLOCK_IS_TRG">
+    <trigger name="SIMPSIM_BLOCK_IS_TRG" table="SIMPSIM_IMPORT_SIMULATION" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[
+	vCheck NUMBER;
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF DELETING THEN
+
+		IF :OLD.docstatus = 'CO' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@CannotDeleteTrx@');
+		END IF;
+
+	END IF;
+
+	END SIMPSIM_BLOCK_IS_TRG
+]]></body>
+    </trigger>
+  </database>

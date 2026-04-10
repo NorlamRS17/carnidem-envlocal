@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+<!--6E97A2CED8D74A078190FED1FC62D81B--><AD_VAL_RULE>
+<!--6E97A2CED8D74A078190FED1FC62D81B-->  <AD_VAL_RULE_ID><![CDATA[6E97A2CED8D74A078190FED1FC62D81B]]></AD_VAL_RULE_ID>
+<!--6E97A2CED8D74A078190FED1FC62D81B-->  <AD_CLIENT_ID><![CDATA[0]]></AD_CLIENT_ID>
+<!--6E97A2CED8D74A078190FED1FC62D81B-->  <AD_ORG_ID><![CDATA[0]]></AD_ORG_ID>
+<!--6E97A2CED8D74A078190FED1FC62D81B-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
+<!--6E97A2CED8D74A078190FED1FC62D81B-->  <NAME><![CDATA[UOM - WorkRequirement ]]></NAME>
+<!--6E97A2CED8D74A078190FED1FC62D81B-->  <TYPE><![CDATA[S]]></TYPE>
+<!--6E97A2CED8D74A078190FED1FC62D81B-->  <CODE><![CDATA[C_Uom.C_Uom_ID in (select aum.C_Uom_ID
+from M_Production pt
+left join M_ProductionPlan ofpt on ofpt.M_Production_id = pt.M_Production_id
+left join MA_Wrphase fof on fof.MA_Wrphase_id = ofpt.MA_Wrphase_id
+left join MA_WorkRequirement odf on odf.MA_WorkRequirement_ID = fof.MA_WorkRequirement_ID
+left join M_ProductionLine mpln on mpln.M_ProductionPlan_ID = ofpt.M_ProductionPlan_ID
+left join M_Product mp on mp.M_Product_id = mpln.M_Product_id
+left join M_Product_AUM aum on aum.M_Product_id = mp.M_Product_id
+where odf.MA_WorkRequirement_id = @MA_WorkRequirement_id@
+AND Productiontype = '+')]]></CODE>
+<!--6E97A2CED8D74A078190FED1FC62D81B-->  <AD_MODULE_ID><![CDATA[44D687F20DD341AA92BDAEF3F5F8A20C]]></AD_MODULE_ID>
+<!--6E97A2CED8D74A078190FED1FC62D81B--></AD_VAL_RULE>
+
+<!--70F2C41E89524591B7F27726ACBE3711--><AD_VAL_RULE>
+<!--70F2C41E89524591B7F27726ACBE3711-->  <AD_VAL_RULE_ID><![CDATA[70F2C41E89524591B7F27726ACBE3711]]></AD_VAL_RULE_ID>
+<!--70F2C41E89524591B7F27726ACBE3711-->  <AD_CLIENT_ID><![CDATA[0]]></AD_CLIENT_ID>
+<!--70F2C41E89524591B7F27726ACBE3711-->  <AD_ORG_ID><![CDATA[0]]></AD_ORG_ID>
+<!--70F2C41E89524591B7F27726ACBE3711-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
+<!--70F2C41E89524591B7F27726ACBE3711-->  <NAME><![CDATA[Production of WorkRequirement]]></NAME>
+<!--70F2C41E89524591B7F27726ACBE3711-->  <TYPE><![CDATA[S]]></TYPE>
+<!--70F2C41E89524591B7F27726ACBE3711-->  <CODE><![CDATA[M_Production.M_Production_id in (select pt.M_Production_Id
+from M_Production pt
+left join M_ProductionPlan ofpt on ofpt.M_Production_id = pt.M_Production_id
+left join MA_Wrphase fof on fof.MA_Wrphase_id = ofpt.MA_Wrphase_id
+left join MA_WorkRequirement odf on odf.MA_WorkRequirement_ID = fof.MA_WorkRequirement_ID
+where odf.MA_WorkRequirement_ID = @MA_WorkRequirement_id@)]]></CODE>
+<!--70F2C41E89524591B7F27726ACBE3711-->  <AD_MODULE_ID><![CDATA[44D687F20DD341AA92BDAEF3F5F8A20C]]></AD_MODULE_ID>
+<!--70F2C41E89524591B7F27726ACBE3711--></AD_VAL_RULE>
+
+</data>

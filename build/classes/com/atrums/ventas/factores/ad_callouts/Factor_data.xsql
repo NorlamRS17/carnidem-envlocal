@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2012 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+
+<SqlClass name="FactorData" package="com.atrums.ventas.factores.ad_callouts">
+  <SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        select f.entrada as entrada, 
+               f.recargo as recargo, 
+               f.financiamiento as financiamiento,
+               '0' as iva
+          from atvef_factor f
+         where case when exists (select 1 from atvef_factor af where af.m_product_id = ?)
+                then f.m_product_id = ?
+                when exists (select 1 from atvef_factor af where af.m_product_category_id = (select mp.m_product_category_id from m_product mp where  mp.m_product_id = ?))
+                then f.m_product_category_id = (select mp.m_product_category_id from m_product mp where  mp.m_product_id = ?)
+                end
+        order by f.datefrom, f.m_product_id desc limit 1
+
+      ]]>
+    </Sql>
+    <Parameter name="strProductoId"/>
+    <Parameter name="strProductoId"/>
+    <Parameter name="strProductoId"/>
+    <Parameter name="strProductoId"/>
+  </SqlMethod>
+  
+    <SqlMethod name="selectIva" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+            select rate as iva
+              from c_tax 
+             where c_tax_id = ?
+      ]]>
+    </Sql>
+    <Parameter name="strTaxId"/>
+  </SqlMethod>
+  
+</SqlClass>

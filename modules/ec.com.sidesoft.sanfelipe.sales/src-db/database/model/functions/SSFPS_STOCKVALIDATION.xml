@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSFPS_STOCKVALIDATION">
+    <function name="SSFPS_STOCKVALIDATION" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[p_record_id VARCHAR(60);
+    p_docAction VARCHAR(60);
+    p_user VARCHAR(60);
+	p_doctype_id VARCHAR(60);
+	p_docbasetype VARCHAR(60);
+	p_docsubtype VARCHAR(60);
+	p_issotrxcd CHARACTER;
+	p_isreturn CHARACTER;
+    v_ResultStr VARCHAR2(2000):='';
+    Cur_Params RECORD;
+    rOrder RECORD;
+    cOrderLine RECORD;
+    vDescription VARCHAR(255):='';
+    vLineBreak TEXT:='';
+	vStockAva NUMBER(10,2);
+	vStockOrdered NUMBER(10,2);
+	vData		RECORD;
+	CurLines 	RECORD;
+	
+BEGIN
+
+    FOR Cur_Params IN (
+        SELECT *
+        FROM ad_ep_instance_para
+        WHERE ad_ep_instance_id = p_ep_instance
+    ) LOOP
+        IF cur_params.parametername = 'DocAction' THEN
+            p_docaction := Cur_Params.p_string;
+        ELSIF (cur_params.parametername = 'Record_ID') THEN
+            p_record_id := cur_params.p_string;
+        ELSIF (cur_params.parametername = 'User') THEN
+            p_user := cur_params.p_string;
+        END IF;
+    END LOOP;
+
+	SELECT 
+	cd.docbasetype,cd.docsubtypeso,cd.issotrx,cd.isreturn
+	into p_docbasetype, p_docsubtype,p_issotrxcd,p_isreturn
+	FROM c_doctype cd left join c_order co
+	on co.c_doctypetarget_id = cd.c_doctype_id
+	WHERE co.c_order_id = p_record_id;
+	
+	
+	IF p_docbasetype = 'SOO' AND p_docsubtype = 'WR'  AND p_issotrxcd = 'Y' AND p_isreturn = 'N'  THEN
+
+	FOR CurLines in (
+		
+		SELECT  
+			col.m_warehouse_id as ware,
+			mp.name as namep,
+			co.c_order_id as coid,
+			col.m_product_id as prodid,
+			sum(Coalesce(col.qtyordered, 0)) as qtyordered
+		FROM c_order co
+		left join m_warehouse mw on mw.m_warehouse_id = co.m_warehouse_id
+		LEFT join C_OrderLine col on col.c_order_id = co.c_order_id
+		left join m_product mp on mp.m_product_id = col.m_product_id
+		WHERE col.c_order_id = p_record_id	
+		and co.issotrx = 'Y'
+		and mp.IsStocked = 'Y'
+		GROUP by col.m_product_id, mp.name, mp.m_product_id, col.m_warehouse_id, co.c_order_id
+
+	) loop
+		
+		select coalesce(QTY_Available, 0)
+		into vStockOrdered
+		from M_Product_Price_Warehouse_v
+		where m_warehouse_id = CurLines.ware
+		and m_product_id = CurLines.prodid
+		group by QTY_Available;
+	
+		if vStockOrdered is null or vStockOrdered<=0 then
+		
+		vLineBreak := 'No dispone de ' || CurLines.namep 
+						|| ' es necesario un minimo de '
+						|| Coalesce(CurLines.qtyordered, 0)
+						|| ' El Stock disponible actual es de '
+						|| Coalesce(vStockOrdered, 0);
+			if p_docaction = 'CO' then
+				RAISE_APPLICATION_ERROR(-20000, vLineBreak)	;
+			end if;
+		end if;
+		
+		if vStockOrdered is not null then
+		
+			if Coalesce(CurLines.qtyordered, 0) > vStockOrdered then
+			
+			vLineBreak:='No hay suficiente en stock para el producto:' || CurLines.namep 
+								|| ' Stock Necesario: ' || Coalesce(CurLines.qtyordered, 0)
+								|| ' Stock Disponible: ' || Coalesce(vStockOrdered, 0);
+			
+				if p_docaction = 'CO' then
+					RAISE_APPLICATION_ERROR(-20000, vLineBreak)	;
+				end if;
+			end if;
+		end if;
+		
+	end loop;
+  END IF;
+END SSFPS_STOCKVALIDATION
+]]></body>
+    </function>
+  </database>

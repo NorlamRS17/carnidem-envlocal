@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="2232">
+      <oldValue><![CDATA[@Processed@='Y' | @GROSSPRICE@='Y']]></oldValue>
+      <newValue><![CDATA[(@Processed@='Y' | @GROSSPRICE@='Y')  | (@ssucp_allowPriceChangesOL@='N' & @Processed@='Y') |
+(@ssucp_allowPriceChangesOL@='N' & @Processed@='N') ]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="3843">
+      <oldValue><![CDATA[@Processed@='Y'|@GROSSPRICE@='Y']]></oldValue>
+      <newValue><![CDATA[(@Processed@='Y'|@GROSSPRICE@='Y' )  | ((@ssucp_allowPriceChangesIL@='N' & @Processed@='Y') | (@ssucp_allowPriceChangesIL@='N' & @Processed@='N') )]]></newValue>
+    </columnDataChange>
+  </vector>

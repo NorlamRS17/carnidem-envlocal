@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="251A3C3020424AAD8CFAC52403EE888C" trl="N">
+    <value column="Name" isTrl="N" original="List Type Report">List Type Report</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B916DD1199F643A29F853C03B0486B60" trl="N">
+    <value column="Name" isTrl="N" original="Reference Import">Reference Import</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E98C0C21878046818616A669D7A00B9B" trl="N">
+    <value column="Name" isTrl="N" original="User_Import">User_Import</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

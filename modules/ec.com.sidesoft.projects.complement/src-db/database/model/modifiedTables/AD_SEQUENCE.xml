@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE AD_SEQUENCE">
+    <table name="AD_SEQUENCE" primaryKey="AD_SEQUENCE_KEY">
+      <column name="EM_SPROCTM_PROJECT_SEQ" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <check name="EM_SPROCTM_PROJECT_SEQ"><![CDATA[EM_SPROCTM_PROJECT_SEQ IN ('Y', 'N')]]></check>
+    </table>
+  </database>

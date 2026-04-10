@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="C1B92D589B0849C5AF92D021EFC38602" trl="Y">
+    <value column="Name" isTrl="Y" original="Configuration - Status / Report">Configuracion - Estado / Reporte</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CE3CA6A180EE4BD18D38FC9A355416D6" trl="Y">
+    <value column="Name" isTrl="Y" original="Mail Delivery Settings for Service Orders">Configuración de Envió de Correo para Ordenes de Servicios</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="0C3BE83E88F34365849EBB5C1B94618F" trl="Y">
+    <value column="Name" isTrl="Y" original="Day">Díario</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="15596E9180E04D4380DFF9DC118DFDB4" trl="Y">
+    <value column="Name" isTrl="Y" original="Draft">Borrador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="20D93C7C20414F64A0690F428FBE5BFC" trl="Y">
+    <value column="Name" isTrl="Y" original="Autoregressive Integrated Moving Average (ARIMA)">Autorregresión integrada con movimiento promedio (ARIMA)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="4075E7AF2C1A42FDB0CEFCD83C19793C" trl="Y">
+    <value column="Name" isTrl="Y" original="Week">Semanal</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="6023689695544966BE29D038708A6459" trl="Y">
+    <value column="Name" isTrl="Y" original="Reactivate Forecast">Reactivar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="6BBAD55F39054BB99B2FEA0E504FA2FD" trl="Y">
+    <value column="Name" isTrl="Y" original="Autoregression (AR)">Autoregresión (AR)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="6F463C9228D54D859AA35D1F10C9148D" trl="Y">
+    <value column="Name" isTrl="Y" original="Cost">Costo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="930F74A24FC34AF49BA4FAE5EE178000" trl="Y">
+    <value column="Name" isTrl="Y" original="Moving Average (MA)">Movimiento Promedio (MA)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="9BB1982DAD75406DB3F6DBD2B24DE1C3" trl="N">
+    <value column="Name" isTrl="Y" original="Price">Precio</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="AEF94A83F9A04C03A51B2A79CD96B40E" trl="Y">
+    <value column="Name" isTrl="Y" original="Approve">Aprobado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C0007824C0BE43E98B2AC149BBD97DBC" trl="Y">
+    <value column="Name" isTrl="Y" original="Month">Mensual</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C97A27C559D44BB6950FE493E2036909" trl="Y">
+    <value column="Name" isTrl="Y" original="Autoregressive Moving Average (ARMA)">Autorregresión del movimiento promedio (ARMA)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E6D3AED5283E4A25A343021092D3A717" trl="Y">
+    <value column="Name" isTrl="Y" original="Year">Anual</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="EB42C5CAE868403FBCD95FC49488D2FB" trl="Y">
+    <value column="Name" isTrl="Y" original="Approve Forecast">Aprobar previsión</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

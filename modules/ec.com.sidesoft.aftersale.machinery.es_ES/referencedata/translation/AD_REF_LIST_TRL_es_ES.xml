@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="179542ADC6134C049BF5417B8659A1C9" trl="Y">
+    <value column="Name" isTrl="Y" original="Maintenance contracts">Contratos de mantenimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="2A264F3B318841B7B6AFEDAFAB5355F7" trl="Y">
+    <value column="Name" isTrl="Y" original="Finalized">Finalizado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="46797CBA60FC417694DF4022B3CAA375" trl="Y">
+    <value column="Name" isTrl="Y" original="Invoice">Factura</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="4B71C09A8B954DC3919836C51C7540D4" trl="Y">
+    <value column="Name" isTrl="Y" original="In progress">En curso</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="6BB2A605B192493A83A7022740541942" trl="Y">
+    <value column="Name" isTrl="Y" original="Maintenance Promotion">Promoción Mantenimientos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7382BF93D88942DF9F219301D95BF12D" trl="Y">
+    <value column="Name" isTrl="Y" original="Project">Proyecto</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A84D92D2F8DF4F5BA346E76AB58F9BA6" trl="Y">
+    <value column="Name" isTrl="Y" original="Corrective Maintenance On Demand">Mantenimiento Correctivo Bajo Demanda</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C0E5ADAB97A8474BB057BF85D6844DA4" trl="Y">
+    <value column="Name" isTrl="Y" original="Others">Otro</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D43D05128D8041C79E3CE9305EFE2DFF" trl="Y">
+    <value column="Name" isTrl="Y" original="Warranty contracts">Contratos de garantía</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D95E8A1D924E451482DD97B06A437D78" trl="Y">
+    <value column="Name" isTrl="Y" original="Draft">Borrador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E5636EAFA7684C97B8018373BE6A24BD" trl="Y">
+    <value column="Name" isTrl="Y" original="Commissioning of Machinery">Puesta en Marcha de Maquinaria</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F550F6BCE73B479091A336E3468E66AC" trl="Y">
+    <value column="Name" isTrl="Y" original="Maintenance Contract">Contrato de Mantenimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

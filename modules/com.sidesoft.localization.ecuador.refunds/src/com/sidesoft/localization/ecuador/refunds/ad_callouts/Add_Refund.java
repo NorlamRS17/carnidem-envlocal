@@ -30,28 +30,64 @@ import javax.servlet.http.HttpServletResponse;
 import org.openbravo.base.secureApp.HttpSecureAppServlet;
 import org.openbravo.base.secureApp.VariablesSecureApp;
 import org.openbravo.xmlEngine.XmlDocument;
+//import org.openbravo.erpCommon.businessUtility.BpartnerMiscData;
+//importar el xsql - en estecaso desde eldirectorio - pakete
 
-import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
+public class Add_Refund extends HttpSecureAppServlet {
+  private static final long serialVersionUID = 1L;
 
-public class Add_Refund extends SimpleCallout {
-	private static final long serialVersionUID = 1L;
-	
-	@Override
-	  protected void execute(CalloutInfo info) throws ServletException {
-		String strChanged = info.getStringParameter("inpemSsreRefundedId", null);
-	    String strCodelivelihood = info.getStringParameter("inpemSswhCodelivelihood", null);
-	    String strLivelihood = info.getStringParameter("inpemSswhLivelihood", null);
-	    
-	    AddRefundData[] data = AddRefundData.select(this, strChanged);
-	    
-	    if (data != null && data.length > 0) {
-	    	if (data[0].sswhCodelivelihoodtId != null) {
-	            info.addResult("inpemSswhCodelivelihood", data[0].sswhCodelivelihoodtId);
-	          }
-	    	
-	    	if (data[0].sswhLivelihoodtId != null) {
-	            info.addResult("inpemSswhLivelihood", data[0].sswhLivelihoodtId);
-	          }
-	    }
-	}
+  public void init(ServletConfig config) {
+    super.init(config);
+    boolHist = false;
+  }
+
+  // recibe la llamada al servlet
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException,
+      ServletException {
+    VariablesSecureApp vars = new VariablesSecureApp(request);
+    if (vars.commandIn("DEFAULT")) {
+      String strChanged = vars.getStringParameter("inpemSsreRefundedId"); // recupera el valor de la
+                                                                          // pgina web
+
+      if (log4j.isDebugEnabled())
+        log4j.debug("CHANGED: " + strChanged);
+      String strCodelivelihood = vars.getStringParameter("inpemSswhCodelivelihood");
+      String strLivelihood = vars.getStringParameter("inpemSswhLivelihood");
+
+      try {
+        printPage(response, vars, strChanged, strCodelivelihood, strLivelihood);
+      } catch (ServletException ex) {
+        pageErrorCallOut(response);
+      }
+    } else
+      pageError(response);
+  }
+
+  private void printPage(HttpServletResponse response, VariablesSecureApp vars, String strChanged,
+      String strCodelivelihood, String strLivelihood) throws IOException, ServletException {
+    if (log4j.isDebugEnabled())
+      log4j.debug("Output: dataSheet");
+    XmlDocument xmlDocument = xmlEngine.readXmlTemplate(
+        "org/openbravo/erpCommon/ad_callouts/CallOut").createXmlDocument();
+
+    AddRefundData[] data = AddRefundData.select(this, strChanged);
+    StringBuffer resultado = new StringBuffer();
+
+    resultado.append("var calloutName=\"Add_Refund\";\n\n");
+    resultado.append("var respuesta = new Array(");
+    if (data != null && data.length > 0) {
+      resultado.append("new Array(\"inpemSswhCodelivelihood\", \"" + data[0].sswhCodelivelihoodtId
+          + "\"),\n");
+      resultado.append("new Array(\"inpemSswhLivelihood\", \"" + data[0].sswhLivelihoodtId
+          + "\")\n");
+
+    }
+    resultado.append(");\n");
+    xmlDocument.setParameter("array", resultado.toString());
+    xmlDocument.setParameter("frameName", "appFrame");
+    response.setContentType("text/html; charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    out.println(xmlDocument.print());
+    out.close();
+  }
 }

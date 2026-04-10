@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SSWOS_SO_TRANSFER">
+    <table name="SSWOS_SO_TRANSFER" primaryKey="SSWOS_SO_TRANSFER_KEY">
+      <column name="EM_SPSMVAT_WHAREHOUSE_USER" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="AD_USER" name="EM_SPSMVAT_WHAREHOUSE_USER">
+        <reference local="EM_SPSMVAT_WHAREHOUSE_USER" foreign="AD_USER_ID"/>
+      </foreign-key>
+    </table>
+  </database>

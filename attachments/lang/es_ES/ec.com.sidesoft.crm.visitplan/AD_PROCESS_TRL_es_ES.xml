@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="8079F08464854BBEB4199DA1C0D7545C" trl="N">
+    <value column="Name" isTrl="N" original="Create Route">Create Route</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E3D9A0B57AAC49EA811961A4074F5D0F" trl="N">
+    <value column="Name" isTrl="N" original="Change Route Status">Change Route Status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="6323A6F7FA5343A382DD6D909D67D597" trl="N">
+    <value column="Name" isTrl="N" original="CSV Configuration record">CSV Configuration record</value>
+    <value column="PrintName" isTrl="N" original="CSV Configuration record">CSV Configuration record</value>
+    <value column="Description" isTrl="N" original="CSV Configuration record">CSV Configuration record</value>
+    <value column="Help" isTrl="N" original="Allows to configure the date format and decimal separator for a CSV importer">Allows to configure the date format and decimal separator for a CSV importer</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6DB63BEB966E4C8986142BA829FC31F3" trl="N">
+    <value column="Name" isTrl="N" original="Date Format">Date Format</value>
+    <value column="PrintName" isTrl="N" original="Date Format">Date Format</value>
+    <value column="Description" isTrl="N" original="Date Format for the CSV importer">Date Format for the CSV importer</value>
+    <value column="Help" isTrl="N" original="Define the date format for dates that is used in the CSV file. Common examples are: dd/MM/yyyy for days/month/year (31/12/2050) or MM/dd/yyyy for months/days/year (12/31/2050).&#10;For more information, visit http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html">Define the date format for dates that is used in the CSV file. Common examples are: dd/MM/yyyy for days/month/year (31/12/2050) or MM/dd/yyyy for months/days/year (12/31/2050).
+For more information, visit http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8C6F4919FAEA4FC09CA3053E1331A3D2" trl="N">
+    <value column="Name" isTrl="N" original="Decimal Separator">Decimal Separator</value>
+    <value column="PrintName" isTrl="N" original="Decimal Separator">Decimal Separator</value>
+    <value column="Description" isTrl="N" original="Decimal Separator for the CSV importer">Decimal Separator for the CSV importer</value>
+    <value column="Help" isTrl="N" original="Define the decimal separator for amounts that is used in the CSV file. Common values are . (dot) or , (comma).&#10;Example: the decimal separator for 123,45 is a comma (,)">Define the decimal separator for amounts that is used in the CSV file. Common values are . (dot) or , (comma).
+Example: the decimal separator for 123,45 is a comma (,)</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F090F624E7A849C2BAD0D85A0386DA0C" trl="N">
+    <value column="Name" isTrl="N" original="Field Delimiter">Field Delimiter</value>
+    <value column="PrintName" isTrl="N" original="Fielddelimiter">Fielddelimiter</value>
+    <value column="Description" isTrl="N" original="A delimiter is a sequence of one character used to specify the boundary between separate, independent regions in plain text or other data streams.">A delimiter is a sequence of one character used to specify the boundary between separate, independent regions in plain text or other data streams.</value>
+    <value column="Help" isTrl="N" original="An example of a delimiter is the comma character, which acts as a field delimiter in a sequence of comma-separated values. The most common delimiters are the comma, tab, and colon.">An example of a delimiter is the comma character, which acts as a field delimiter in a sequence of comma-separated values. The most common delimiters are the comma, tab, and colon.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

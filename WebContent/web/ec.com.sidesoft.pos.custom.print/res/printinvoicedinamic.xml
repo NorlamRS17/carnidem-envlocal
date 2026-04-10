@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ************************************************************************************
+ * Copyright (C) 2012 Openbravo S.L.U.
+ * Licensed under the Openbravo Commercial License version 1.0
+ * You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html
+ * or in the legal folder of this module distribution.
+ ************************************************************************************
+-->
+
+<output>
+  <ticket>
+    <!--MM 20160103 N
+    Verificamos la longitud del Cliente 1 o 2 lineas (40 caracteres max x linea)
+    Definimos el numero de lineas disponibles para impresion 22, writtenLines especifica el numero de lineas utilizadas
+    -->
+    <%
+    // Obtener información de la organización contable desde el terminal
+    // Estas propiedades vienen del backend a través de TerminalProperties
+    var orgName = '';
+    var orgTaxId = '';
+    var orgAddress = '';
+    var orgPhone = '';
+    
+    if (OB.POS && OB.POS.modelterminal && OB.POS.modelterminal.get('terminal')) {
+        var terminal = OB.POS.modelterminal.get('terminal');
+        
+        // Nombre de organización contable
+        if (terminal.legalOrgName) {
+            orgName = terminal.legalOrgName;
+        } else {
+            // Fallback: usar nombre de organización del terminal
+            orgName = terminal.organization$_identifier || '------';
+        }
+        
+        // RUC de organización contable
+        orgTaxId = terminal.legalOrgTaxId || '------';
+        
+        // Dirección del punto de venta
+        orgAddress = terminal.posAddress || '------';
+        
+        // Teléfono del contacto
+        orgPhone = terminal.orgContactPhone || '------';
+    } else {
+        // Fallback si el terminal no está disponible
+        orgName = '------';
+        orgTaxId = '------';
+        orgAddress = '------';
+        orgPhone = '------';
+    }
+    %>
+    <line>
+        <text align ="center" length="40"><%= OB.UTIL.encodeXMLComponent(orgName) %></text>
+    </line>
+    <line>
+        <text align ="center" length="40"><%= OB.UTIL.encodeXMLComponent(orgTaxId) %></text>
+    </line>
+    <line>
+        <text align ="center" length="40">Teléfono: <%= OB.UTIL.encodeXMLComponent(orgPhone) %></text>
+    </line>
+    <%
+    // Dividir la dirección en dos líneas si es muy larga (máximo 40 caracteres por línea)
+    var addressLength = orgAddress.length;
+    if(addressLength > 40) {
+        var addressLine1 = orgAddress.substr(0, 40);
+        var addressLine2 = orgAddress.substr(40, orgAddress.length);
+    %>
+    <line>
+        <text align="center" length="40"><%= OB.UTIL.encodeXMLComponent(addressLine1) %></text>
+    </line>
+    <line>
+        <text align="center" length="40"><%= OB.UTIL.encodeXMLComponent(addressLine2) %></text>
+    </line>
+    <%
+    } else {
+    %>
+    <line>
+        <text align="center" length="40"><%= OB.UTIL.encodeXMLComponent(orgAddress) %></text>
+    </line>
+    <%
+    }
+    %>
+    <line>
+        <text align ="center" length="40">Comprobante sin valor tributario</text>
+    </line>
+    <%
+    var availableLines = 500;
+    
+    var clientName = order.get('bp').get('_identifier');
+    var clientLength = clientName.length;
+    var maxLengthPerLine = 25; // Espacio disponible después del label (15) = 25 caracteres
+    
+    if(clientLength > maxLengthPerLine)
+    {
+        // Buscar el último espacio antes del límite para no cortar palabras
+        var firstLine = clientName.substring(0, maxLengthPerLine);
+        var lastSpaceIndex = firstLine.lastIndexOf(' ');
+        
+        // Si hay un espacio, cortar ahí; si no, cortar en el límite
+        var cutIndex = (lastSpaceIndex > 0) ? lastSpaceIndex : maxLengthPerLine;
+        var line1 = clientName.substring(0, cutIndex).trim();
+        var line2 = clientName.substring(cutIndex).trim();
+    %>
+        <line>
+            <text align="left" length="15"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_Name')) %></text>
+            <text align ="left" length="25"><%= OB.UTIL.encodeXMLComponent(line1) %></text>
+        </line>
+    
+        <line>
+            <text align="left" length="15"></text>
+            <text align ="left" length="25"><%= OB.UTIL.encodeXMLComponent(line2) %></text>
+        </line>
+    <%
+    
+    }
+    else
+    { %>
+        <line>
+                <text align="left" length="15"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_Name')) %></text>
+                <text align="left" length="25"><%= OB.UTIL.encodeXMLComponent(clientName) %></text>
+            </line>
+    <% } %>
+        
+    <!-- Fin MM 20160103 N-->       
+    <line><!---->
+      <text align="left" length="15"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_TaxID')) %></text>
+      <text align="left" length="27"><%= OB.UTIL.encodeXMLComponent(order.get('bp').get('taxID')) %></text>
+    </line>
+    <line><!---->
+    <text align="left" length="15"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_Address')) %></text>
+    <%
+    var secStreet='';
+    if(!_.isUndefined(order.get('bp').get('locName2'))){
+        secStreet =order.get('bp').get('locName2');
+    }
+    %>
+    <text align="left" length="27"><%= OB.UTIL.encodeXMLComponent(order.get('bp').get('locName')+','+secStreet) %></text>
+    </line>
+    <%
+    // Obtener el email del Business Partner
+    // El hook addBpEmailPrePrintHook.js ya lo puso en order.get('bpEmail')
+    var bpEmail = order.get('bpEmail') || 
+                  (order.get('bp') && order.get('bp').get('eEIEmail')) || 
+                  '';
+    %>
+    <%
+    var emailLength = (bpEmail || '').length;
+    var emailMaxLength = 25; // Mismo espacio que otros campos después del label
+    if(emailLength > emailMaxLength) {
+        // Para emails, intentar dividir en @ o punto si es posible
+        var emailPart1 = bpEmail.substring(0, emailMaxLength);
+        var lastAt = emailPart1.lastIndexOf('@');
+        var lastDot = emailPart1.lastIndexOf('.');
+        var cutIndex = emailMaxLength;
+        
+        // Si hay un @ antes del límite, preferir cortar después del @
+        if(lastAt > 0 && lastAt < emailMaxLength - 5) {
+            cutIndex = lastAt + 1;
+        } else if(lastDot > 0 && lastDot < emailMaxLength - 3) {
+            // Si no hay @, intentar cortar después de un punto
+            cutIndex = lastDot + 1;
+        }
+        
+        var emailLine1 = bpEmail.substring(0, cutIndex);
+        var emailLine2 = bpEmail.substring(cutIndex);
+    %>
+    <line>
+      <text align="left" length="15">E-mail:</text>
+      <text align="left" length="25"><%= OB.UTIL.encodeXMLComponent(emailLine1) %></text>
+    </line>
+    <line>
+      <text align="left" length="15"></text>
+      <text align="left" length="25"><%= OB.UTIL.encodeXMLComponent(emailLine2) %></text>
+    </line>
+    <%
+    } else {
+    %>
+    <line>
+      <text align="left" length="15">E-mail:</text>
+      <text align="left" length="25"><%= OB.UTIL.encodeXMLComponent(bpEmail || '') %></text>
+    </line>
+    <%
+    }
+    %>
+    <line>
+      <text align="left" length="15"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_Date')) %></text>
+      <text align="left" length="27"><%= OB.I18N.formatDate(order.get('orderDate')) + ', ' + OB.I18N.formatHour(order.get('orderDate')) %></text>
+    </line>
+    <line>
+    <text align="left" length="15"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_Reciept')) %></text>
+    <text align="left" length="27"><%= OB.UTIL.encodeXMLComponent(order.get('documentNo')) %></text>
+    </line>
+    <line>
+    <text align="left" length="15"><%= 'Factura No: ' %></text>
+    <text align="left" length="27"><%= OB.UTIL.encodeXMLComponent(order.get('invoiceDocumentNo') || '') %></text>
+    </line>
+    <!--MM 20160103 N-->
+    <line>
+            <text align ="left" length="40">----------------------------------------</text>
+    </line>
+    <!--MM 20160103 N-->        
+    <line><!---->
+
+    <text align="left" length="7"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_Qty'))%></text>
+    <text align="left" length="4"></text>
+    <text align="center" length="12"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_Description'))%></text>
+    <text align="right" length="7"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_PVP'))%></text>
+    <text align ="right" length="1"></text> 
+    <text align="right" length="9"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_Total'))%></text>
+    </line>
+    <line>
+            <text align ="left" length="40">----------------------------------------</text>
+    </line>
+    <!--MM 20160103 N-->
+    <% 
+    var lines = order.get('lines');
+    var totaltax = 0;
+    var totalnotax = 0;
+    var totalpvp = 0;
+    var qtyprod=0;
+    for (var i = 0; i < lines.length; i++) 
+    {
+        line = lines.at(i);
+        var listp=line.get('product').get('listPrice');
+    
+        var qty = line.get('qty');
+        qtyprod += qty;
+        var totalpvpaux = listp * qty;
+    %>
+        <!--MM 20160103 M
+        Verificamos la longitud de la descripcion del producto 1 o 2 lineas (42 caracteres max x linea, max 22 lineas)
+        Se reemplaza el simbolo " ya que presenta inconvenientes en la impresion
+        -->
+        
+        <%
+        var descLength = line.get('product').get('_identifier').length;
+        if(descLength  >= 12)
+        { %>
+
+            <line>
+                <text align ="left" length="7"><%=  line.printQty() %></text>
+                <text align ="left" length="3"><%= line.get('product').get('uOMsymbol') %></text>
+                <text align ="left" length="1"></text>
+                <text align ="left" length="12"><%= OB.UTIL.encodeXMLComponent(line.get('product').get('_identifier').replace(/"/g, '')).substr(0, 12) %></text>
+
+            <%
+            if(!_.isUndefined(line.get('linerate')))
+            {
+                if(line.get('linerate')==1)
+                {
+            %>
+                        <%
+                        if(order.get('priceIncludesTax')) 
+                        {
+                            totalpvp += totalpvpaux;
+                        %>
+                        <text align ="right" length="7"><%= (line.printPrice()/line.get('linerate')).toFixed(2) %></text>
+                        <text align ="right" length="1"></text>
+                        <text align ="right" length="9"><%= line.printNet() %></text>
+                        <%
+                        } else 
+                        {
+                            var ltax = 1;
+                            var tax = totalpvpaux * ltax;
+                            totalpvp += tax;        
+                        %>  
+                        <text align ="right" length="7"><%= (line.printPrice()*1).toFixed(2) %></text>
+                        <text align ="right" length="1"></text>
+                        <text align ="right" length="9"><%= line.printNet() %></text>
+                        <%}%>
+                <% } else 
+                { %>
+                    
+                    <%if(order.get('priceIncludesTax'))
+                    {
+                        totalpvp += totalpvpaux;%>
+                        <text align ="right" length="7"><%= (line.printPrice()/line.get('linerate')).toFixed(2)%></text>
+                        <text align ="right" length="1"></text>
+                        <text align ="right" length="9"><%= line.printNet() %></text>
+                        <text align ="right" length="1"><%= OB.UTIL.encodeXMLComponent('*')%></text> 
+                    <%} else
+                    {
+                        var ltax = 1;
+                        var tax = totalpvpaux * ltax;
+                        totalpvp += tax;
+                    %>
+                        <text align ="right" length="7"><%= (line.printPrice()*1).toFixed(2) %></text>
+                        <text align ="right" length="1"></text>
+                        <text align ="right" length="9"><%= line.printNet() %></text>
+                    <%}%>
+                <%}
+            } else 
+            { %>
+                <text align ="right" length="7"><%= (line.printPrice()*1).toFixed(2) %></text>
+                <text align ="right" length="1"></text>
+                <%if(order.get('priceIncludesTax'))
+                {
+                    totalpvp += totalpvpaux;%>
+                        <text align ="right" length="9"><%= (line.printPrice()/line.get('linerate')).toFixed(2) %></text>
+                        <text align ="right" length="1"><%= OB.UTIL.encodeXMLComponent('&')%></text>  
+                <% } else
+                {
+                    var ltax = 1;
+                    var tax = totalpvpaux * ltax;
+                    totalpvp += tax;
+                    %>
+                    <text align ="right" length="9"><%= line.printNet() %></text>
+                <%}
+            } %>
+
+            </line>
+            
+            <line>
+                    <text align ="left" length="11"><%= OB.UTIL.encodeXMLComponent('')%></text>
+                    <text align ="left" length="17"><%= OB.UTIL.encodeXMLComponent(line.get('product').get('_identifier').replace(/"/g, '')).substr(12, line.get('product').get('_identifier').length )  %></text>
+                    <text align ="left" length="12"><%= OB.UTIL.encodeXMLComponent('')%></text>                 
+
+            </line>
+            
+            <%
+                if (descLength>24){
+            %>
+            
+                        
+            <line>
+                    <text align ="left" length="11"><%= OB.UTIL.encodeXMLComponent('')%></text>
+                    <text align ="left" length="17"><%= OB.UTIL.encodeXMLComponent(line.get('product').get('_identifier').replace(/"/g, '')).substr(24, line.get('product').get('_identifier').length )  %></text>
+                    <text align ="left" length="12"><%= OB.UTIL.encodeXMLComponent('')%></text>                 
+
+            </line>
+            
+            <%
+            }
+            %>
+            
+        <% 
+        
+        }
+        else
+        { %>
+
+        <line>
+        
+            <text align ="left" length="7"><%= line.printQty()  %></text>
+            <text align ="left" length="3"><%= line.get('product').get('uOMsymbol') %></text>
+            <text align ="left" length="1"></text>
+            <text align ="left" length="12"><%= OB.UTIL.encodeXMLComponent(line.get('product').get('_identifier').replace(/"/g, '')) %></text>
+            
+            <%
+            if(!_.isUndefined(line.get('linerate')))
+            {
+                if(line.get('linerate')==1)
+                {
+            %>
+                        <%
+                        if(order.get('priceIncludesTax')) 
+                        {
+                            totalpvp += totalpvpaux;
+                        %>
+                        <text align ="right" length="7"><%= (line.printPrice()/line.get('linerate')).toFixed(2) %></text>
+                        <text align ="right" length="1"></text>
+                        <text align ="right" length="9"><%= line.printNet() %></text>
+                        <%
+                        } else 
+                        {
+                            var ltax = 1;
+                            var tax = totalpvpaux * ltax;
+                            totalpvp += tax;        
+                        %>  
+                        <text align ="right" length="7"><%= (line.printPrice()*1).toFixed(2) %></text>
+                        <text align ="right" length="1"></text>
+                        <text align ="right" length="9"><%= line.printNet() %></text>
+                        <%}%>
+                <% } else 
+                { %>
+                    
+                    <%if(order.get('priceIncludesTax'))
+                    {
+                        totalpvp += totalpvpaux;%>
+                        <text align ="right" length="7"><%= (line.printPrice()/line.get('linerate')).toFixed(2)%></text>
+                        <text align ="right" length="1"></text>
+                        <text align ="right" length="9"><%= line.printNet() %></text>
+                        <text align ="right" length="1"><%= OB.UTIL.encodeXMLComponent('*')%></text> 
+                    <%} else
+                    {
+                        var ltax = 1;
+                        var tax = totalpvpaux * ltax;
+                        totalpvp += tax;
+                    %>
+                        <text align ="right" length="7"><%= (line.printPrice()*1).toFixed(2) %></text>
+                        <text align ="right" length="1"></text>
+                        <text align ="right" length="9"><%= line.printNet() %></text>
+                    <%}%>
+                <%}
+            } else 
+            { %>
+                <text align ="right" length="7"><%= (line.printPrice()*1).toFixed(4) %></text>
+                <text align ="right" length="1"></text>
+                <%if(order.get('priceIncludesTax'))
+                {
+                    totalpvp += totalpvpaux;%>
+                        <text align ="right" length="9"><%= (line.printPrice()/line.get('linerate')).toFixed(2) %></text>
+                        <text align ="right" length="1"><%= OB.UTIL.encodeXMLComponent('&')%></text>  
+                <% } else
+                {
+                    var ltax = 1;
+                    var tax = totalpvpaux * ltax;
+                    totalpvp += tax;
+                    %>
+                    <text align ="right" length="9"><%= line.printNet() %></text>
+                <%}
+            } %>
+        </line>
+        <% 
+        
+        }
+        %>
+        
+        <!-- Fin MM 20160103 M-->
+    <%
+    
+    }
+    
+    var totAmount = 0;
+    var totNet = 0;
+    var totNoTax = 0;
+    var totSub=0;
+      var taxes = order.get('taxes');
+      for (var t in taxes) {
+    if(taxes[t].amount == 0){
+    totNet += taxes[t].net;
+    }else{
+    totNoTax += taxes[t].net;
+    }
+        totAmount += taxes[t].amount;
+      } 
+    totSub=totNet+totNoTax;
+    %>
+    <!--MM 20151229-->
+    <line>
+            <text align ="left" length="40">----------------------------------------</text>
+    </line>
+    <!--MM 20151229-->
+
+      <line>
+        <!-- <text align ="right" length="28"><%= OB.I18N.getLabel('SSPOS_SubtotalTax') %></text> -->
+        <text align ="right" length="28">Subtotal 15%</text>
+        <text align ="right" length="2"></text>
+        <text align ="right" length="8"><%= OB.I18N.formatCurrency(totNoTax) %></text>  
+      </line>
+      <line>
+        <text align ="right" length="28"><%= OB.I18N.getLabel('SSPOS_SubtotalNoTax') %></text>
+        <text align ="right" length="2"></text>
+        <text align ="right" length="8"><%= OB.I18N.formatCurrency(totNet) %></text>  
+      </line>
+      <line>
+        <text align ="right" length="28"><%= OB.I18N.getLabel('SSPOS_Subtotal') %></text>
+        <text align ="right" length="2"></text>
+        <text align ="right" length="8"><%= OB.I18N.formatCurrency(totSub) %></text>  
+      </line>
+      <line>
+        <!-- <text align ="right" length="28"><%= OB.I18N.getLabel('SSPOS_Tax') %></text> -->
+        <text align ="right" length="28">IVA 15%</text>
+        <text align ="right" length="2"></text>
+        <text align ="right" length="8"><%= OB.I18N.formatCurrency(totAmount) %></text>
+      </line>
+    <line>
+      <text align ="left" length="23"><%=OB.I18N.getLabel('OBPOS_ReceiptTotal') + ' ' + order.get('currency' + OB.Constants.FIELDSEPARATOR + OB.Constants.IDENTIFIER) %></text>
+      <text align ="right" length="15"><%= order.printGross() %></text>
+    </line>
+      <%
+        var payments = order.get('payments');
+        for (var i = 0; i < payments.length; i++) {
+      if(payments.at(i).get('rate') && payments.at(i).get('rate')!=='1'){
+      %>
+        <line>
+          <text align="left" length="13"><%= payments.at(i).get('name') %></text>
+          <text align="right" length="12"><%= '('+OB.I18N.formatCurrency(payments.at(i).get('amount'))+' '+payments.at(i).get('isocode')+')' %></text>
+          <text align="right" length="13"><%= OB.I18N.formatCurrency(payments.at(i).get('origAmount')) %></text>
+        </line>
+     <%
+         }else {
+     %>
+        <line>
+          <text align="left" length="18"><%= payments.at(i).get('name') %></text>
+          <text align="right" length="20"><%= OB.I18N.formatCurrency(payments.at(i).get('amount')) %></text>
+        </line>
+      <%
+        }}
+    var rateaux = totalpvp-order.get('net');
+    var rate = (rateaux/order.get('net'))*100;
+    %>   
+    <line>
+      <text align="left" length="18"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_ticketChange')) %></text>
+      <text align="right" length="20"><%= OB.I18N.formatCurrency(order.get('change'))%></text>
+    </line>
+    <line>
+            <text align ="left" length="40">----------------------------------------</text>
+    </line>
+    <line>
+      <text align="left" length="25"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_AtendBy')) %></text>
+      <text align="left" length="15"><%= OB.POS.modelterminal.get('context').user._identifier %></text>
+    </line>
+    <%
+     var validationCode = order.get('validationCode') || '';
+    %>
+    <% if (validationCode) { %>
+    <%
+      var codeLength = validationCode.length;
+      // Si la clave cabe en una línea (40 caracteres), usar solo una línea
+      // Si no, dividir en máximo 2 líneas
+      if(codeLength <= 40) {
+    %>
+    <line>
+      <text align="left" length="18">Clave de acceso:</text>
+      <text align="left" length="22"><%= OB.UTIL.encodeXMLComponent(validationCode) %></text>
+    </line>
+    <%
+      } else {
+        // Dividir en 2 líneas máximo
+        var midPoint = Math.ceil(codeLength / 2);
+        var codeLine1 = validationCode.substring(0, midPoint);
+        var codeLine2 = validationCode.substring(midPoint);
+    %>
+    <line>
+      <text align="left" length="18">Clave de acceso:</text>
+      <text align="left" length="22"><%= OB.UTIL.encodeXMLComponent(codeLine1) %></text>
+    </line>
+    <line>
+      <text align="left" length="40"><%= OB.UTIL.encodeXMLComponent(codeLine2) %></text>
+    </line>
+    <%
+      }
+    %>
+    <% } %>
+    <line>
+      <text align="center" length="40">Estimado cliente, su factura</text>
+    </line>
+    <line>
+      <text align="center" length="40">le llegará al correo registrado.</text>
+    </line>
+    <line>
+      <text align="center" length="40">Revísela en:</text>
+    </line>
+    <line>
+      <text align="center" length="40">https://portalfe.sidesoft.com.ec</text>
+    </line>
+    <line>
+      <text align="center" length="40">/carnidem/</text>
+    </line>
+    <line>
+      <text align="center" length="40">Usuario y clave de acceso son</text>
+    </line>
+    <line>
+      <text align="center" length="40">su RUC o CI</text>
+    </line>
+
+    
+  </ticket>
+
+  <display>
+      <line>
+        <text align="left" length="10"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('OBPOS_display_total'))%></text>
+        <text align="right" length="10"><%= order.printGross() %></text>
+      </line>
+      <line>
+        <text align="center" length="20"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('OBPOS_thankyou'))%></text>
+      </line>
+  </display>
+
+</output>

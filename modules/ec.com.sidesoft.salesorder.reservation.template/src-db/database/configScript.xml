@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_MODEL_OBJECT" columnname="CLASSNAME" pkRow="581">
+      <oldValue><![CDATA[org.openbravo.erpCommon.ad_callouts.SE_Order_BPartner]]></oldValue>
+      <newValue><![CDATA[ec.com.sidesoft.salesorder.reservation.ad_callouts.SE_Order_BPartner]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_MODEL_OBJECT" columnname="CLASSNAME" pkRow="615">
+      <oldValue><![CDATA[org.openbravo.erpCommon.ad_callouts.SL_Order_DocType]]></oldValue>
+      <newValue><![CDATA[ec.com.sidesoft.salesorder.reservation.ad_callouts.SL_Order_DocType]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="EM_OBUIAPP_VALIDATOR" pkRow="CE88342CC7D328E3E040007F01002B8B">
+      <oldValue><![CDATA[OB.Reservation.PrereservationQuantityValidate]]></oldValue>
+      <newValue><![CDATA[OB.ManagerReservation.PrereservationQuantityValidate]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBUIAPP_PROCESS" columnname="CLASSNAME" pkRow="70E42AD47E5F4698A9ACCCAF3EB72B9E">
+      <oldValue><![CDATA[org.openbravo.common.actionhandler.ManagePrereservationActionHandler]]></oldValue>
+      <newValue><![CDATA[ec.com.sidesoft.salesorder.reservation.actionhandler.ManagePrereservationActionHandler]]></newValue>
+    </columnDataChange>
+  </vector>

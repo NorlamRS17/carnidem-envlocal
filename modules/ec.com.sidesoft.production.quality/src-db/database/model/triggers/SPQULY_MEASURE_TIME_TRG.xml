@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SPQULY_MEASURE_TIME_TRG">
+    <trigger name="SPQULY_MEASURE_TIME_TRG" table="MA_MEASURE_TIME" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[  v_Take_Number NUMBER ;
+  v_Max_Take_Number NUMBER ;
+ 
+ BEGIN
+ 
+   IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+   IF INSERTING OR UPDATING THEN
+   IF (:NEW.MA_MEASURE_GROUP_ID IS NOT NULL) THEN
+      SELECT coalesce(mms.em_spquly_takes,0) INTO v_Take_Number FROM MA_MEASURE_SHIFT mms INNER JOIN MA_MEASURE_GROUP mmg ON mmg.MA_MEASURE_SHIFT_ID=mms.MA_MEASURE_SHIFT_ID
+      WHERE mmg.MA_MEASURE_GROUP_ID=:NEW.MA_MEASURE_GROUP_ID;
+      IF v_Take_Number <> 0 AND :NEW.EM_SPQULY_TAKENUMBER IS NULL THEN
+         SELECT MAX(em_spquly_takenumber) INTO v_Max_Take_Number FROM MA_Measure_Time WHERE MA_Measure_Group_ID=:NEW.MA_MEASURE_GROUP_ID;
+		 IF v_Max_Take_Number IS NOT NULL OR v_Max_Take_Number<>0 THEN 
+		    :NEW.EM_SPQULY_TAKENUMBER := v_Max_Take_Number+1;
+	     ELSE
+		    :NEW.em_spquly_takenumber := v_Take_Number;
+		 END IF;
+      END IF;
+   END IF;
+   END IF;
+ 
+     END SPQULY_MEASURE_TIME_TRG
+]]></body>
+    </trigger>
+  </database>

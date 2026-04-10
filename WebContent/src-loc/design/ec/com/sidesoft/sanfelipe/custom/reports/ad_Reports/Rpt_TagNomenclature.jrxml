@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_TagNomenclature" printOrder="Horizontal" pageWidth="280" pageHeight="145" orientation="Landscape" columnWidth="280" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="aef4e77e-9248-4fc6-984a-4660188a9495">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.html.remove.emtpy.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.auto.fit.column" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+	<property name="net.sf.jasperreports.exports.xls.font.size.fix.enabled" value="false"/>
+	<parameter name="AD_ORG_ID" class="java.lang.String"/>
+	<parameter name="M_Production_id" class="java.lang.String"/>
+	<parameter name="MA_WorkRequirement_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="M_Product_AUM_id" class="java.lang.String"/>
+	<parameter name="number_labels" class="java.lang.String"/>
+	<parameter name="C_Uom_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT org,ad_org_id , ean_14, conversionrate,  numero_lote,
+		fecha_caducidad, dias_mas, codigo_ean, tagcode_ean, orden_trabajo, C_uom_id
+		,productId ,
+CASE
+WHEN $P{C_Uom_ID} is null THEN producto || ' ' || COALESCE( (select uomtrl.name from m_product pp
+											left join c_uom tumo on tumo.c_uom_id = pp.c_uom_id
+											left join c_uom_trl uomtrl on uomtrl.c_uom_id =  tumo.c_uom_id
+											where pp.m_product_id = productId) , '' )
+ELSE
+producto
+END as producto
+, M_ProductionLine_id
+FROM (
+SELECT
+(SELECT name from ad_org WHERE isperiodcontrolallowed = 'Y') as org,
+(SELECT ad_org_id from ad_org WHERE ad_orgtype_id = '1') as ad_org_id,
+mp.name ||' - ' || COALESCE( uom.name , ' UND' ) as producto ,
+mp.UPC as ean_14 ,
+COALESCE(mpu.Conversionrate , 0) as Conversionrate ,
+(select description from M_attributesetinstance where M_attributesetinstance_id = mpl.M_attributesetinstance_id ) as numero_lote ,
+to_char(wp.Enddate + COALESCE(mat.GuaranteeDays, 0) , 'YY/MM/dd') as fecha_caducidad ,
+mat.GuaranteeDays as dias_mas ,
+COALESCE(mp.UPC, '') || ' '
+|| REPLACE(to_char(wp.Enddate + COALESCE(mat.GuaranteeDays, 0) , 'YY/MM/dd')
+, '/', '')  || ' ' || COALESCE((select description from M_attributesetinstance where M_attributesetinstance_id = mpl.M_attributesetinstance_id ), '')  as codigo_ean ,
+'(01)' || COALESCE(mp.UPC, '') ||'(17)' || REPLACE(to_char(wp.Enddate + COALESCE(mat.GuaranteeDays, 0) , 'YY/MM/dd')
+, '/', '')  ||'(10)' || COALESCE((select description from M_attributesetinstance where M_attributesetinstance_id = mpl.M_attributesetinstance_id ), '')
+as  tagcode_ean ,
+wr.DocumentNo as orden_trabajo,
+	COALESCE(uom.C_uom_id , '--' ) as C_uom_id,
+	mp.M_Product_id as productId,
+    mpl.M_ProductionLine_id as M_ProductionLine_id
+FROM MA_WRPhaseProduct wrp
+LEFT JOIN MA_WRPhase wp on wp.MA_WRPhase_id = wrp.MA_WRPhase_id
+LEFT JOIN MA_WorkRequirement wr on wr.MA_WorkRequirement_id = wp.MA_WorkRequirement_id
+LEFT JOIN M_Product mp on mp.M_Product_id = wrp.M_Product_id
+LEFT JOIN M_Product_AUM mpu on mpu.M_Product_id = mp.M_Product_id
+LEFT JOIN M_ProductionPlan mppl on mppl.MA_WRPhase_id = wp.MA_WRPhase_id
+LEFT JOIN M_ProductionLine mpl on mpl.M_ProductionPlan_ID = mpl.M_ProductionPlan_ID
+LEFT JOIN M_Production mpr on mpr.M_Production_id = mppl.M_Production_id
+LEFT JOIN M_AttributeSet mat on mat.M_AttributeSet_ID = mp.M_AttributeSet_ID
+LEFT JOIN C_uom uom on uom.C_uom_id = mpu.C_uom_id
+CROSS JOIN generate_series(1,  (SELECT CASE WHEN $P{number_labels} is null THEN '1'
+								WHEN $P{number_labels} is not null THEN CAST($P{number_labels}   AS numeric) END) )
+WHERE mpr.M_Production_id = $P{M_Production_id}
+AND wr.MA_WorkRequirement_id = $P{MA_WorkRequirement_id}
+AND wrp.Productiontype = '+'
+AND mpl.M_ProductionLine_id = (
+SELECT pppl.M_ProductionLine_ID
+from M_ProductionLine pppl
+Left Join M_ProductionPlan mpppl on mpppl.M_ProductionPlan_ID = pppl.M_ProductionPlan_ID
+lEFT JOIN M_Production mppp on mppp.M_Production_id = mpppl.M_Production_ID
+WHERE mppp.M_Production_id = $P{M_Production_id}
+AND pppl.Productiontype = '+'
+AND mpppl.MA_Wrphase_ID = wp.MA_WRPhase_id
+)
+
+union all
+
+		SELECT org,ad_org_id ,producto , ean_14, conversionrate,  numero_lote,
+		fecha_caducidad, dias_mas, codigo_ean, tagcode_ean, orden_trabajo, C_uom_id
+		,productId , M_ProductionLine_id
+		FROM (
+		SELECT
+		(SELECT name from ad_org WHERE isperiodcontrolallowed = 'Y') as org,
+		(SELECT ad_org_id from ad_org WHERE ad_orgtype_id = '1') as ad_org_id,
+		mp.name ||' - ' || COALESCE( 'UNIDAD' , ' UND' ) as producto ,
+		mp.UPC as ean_14 ,
+		0 as Conversionrate ,
+		(select description from M_attributesetinstance where M_attributesetinstance_id = mpl.M_attributesetinstance_id ) as numero_lote ,
+		to_char(wp.Enddate + COALESCE(mat.GuaranteeDays, 0) , 'YY/MM/dd') as fecha_caducidad ,
+		mat.GuaranteeDays as dias_mas ,
+		COALESCE(mp.UPC, '') || ' '
+		|| REPLACE(to_char(wp.Enddate + COALESCE(mat.GuaranteeDays, 0) , 'YY/MM/dd')
+		, '/', '')  || ' ' || COALESCE((select description from M_attributesetinstance where M_attributesetinstance_id = mpl.M_attributesetinstance_id ), '')  as codigo_ean ,
+		'(01)' || COALESCE(mp.UPC, '') ||'(17)' || REPLACE(to_char(wp.Enddate + COALESCE(mat.GuaranteeDays, 0) , 'YY/MM/dd')
+		, '/', '')  ||'(10)' || COALESCE((select description from M_attributesetinstance where M_attributesetinstance_id = mpl.M_attributesetinstance_id ), '')
+		as  tagcode_ean ,
+		wr.DocumentNo as orden_trabajo ,
+		null as C_uom_id ,
+			mp.M_Product_id as productId
+            , mpl.M_ProductionLine_id as M_ProductionLine_id
+		FROM MA_WRPhaseProduct wrp
+		LEFT JOIN MA_WRPhase wp on wp.MA_WRPhase_id = wrp.MA_WRPhase_id
+		LEFT JOIN MA_WorkRequirement wr on wr.MA_WorkRequirement_id = wp.MA_WorkRequirement_id
+		LEFT JOIN M_Product mp on mp.M_Product_id = wrp.M_Product_id
+		LEFT JOIN M_Product_AUM mpu on mpu.M_Product_id = mp.M_Product_id
+		LEFT JOIN M_ProductionPlan mppl on mppl.MA_WRPhase_id = wp.MA_WRPhase_id
+		LEFT JOIN M_ProductionLine mpl on mpl.M_ProductionPlan_ID = mpl.M_ProductionPlan_ID
+		LEFT JOIN M_Production mpr on mpr.M_Production_id = mppl.M_Production_id
+		LEFT JOIN M_AttributeSet mat on mat.M_AttributeSet_ID = mp.M_AttributeSet_ID
+	WHERE mpr.M_Production_id = $P{M_Production_id}
+		AND wr.MA_WorkRequirement_id = $P{MA_WorkRequirement_id}
+		AND wrp.Productiontype = '+'
+        AND mpl.M_ProductionLine_id = (
+SELECT pppl.M_ProductionLine_ID
+from M_ProductionLine pppl
+Left Join M_ProductionPlan mpppl on mpppl.M_ProductionPlan_ID = pppl.M_ProductionPlan_ID
+lEFT JOIN M_Production mppp on mppp.M_Production_id = mpppl.M_Production_ID
+WHERE mppp.M_Production_id = $P{M_Production_id}
+AND pppl.Productiontype = '+'
+AND mpppl.MA_Wrphase_ID = wp.MA_WRPhase_id
+)
+		GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13, 14
+			) tmp
+		CROSS JOIN generate_series(1,  (SELECT CASE WHEN $P{number_labels} is null THEN '1'
+										WHEN $P{number_labels} is not null THEN CAST($P{number_labels}   AS numeric) END) )
+) tmp
+WHERE
+
+CASE WHEN $P{C_Uom_ID} is null THEN c_uom_id is null
+	WHEN $P{C_Uom_ID} is not null THEN c_uom_id = $P{C_Uom_ID}
+END]]>
+	</queryString>
+	<field name="org" class="java.lang.String"/>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="conversionrate" class="java.math.BigDecimal"/>
+	<field name="numero_lote" class="java.lang.String"/>
+	<field name="fecha_caducidad" class="java.lang.String"/>
+	<field name="dias_mas" class="java.math.BigDecimal"/>
+	<field name="codigo_ean" class="java.lang.String"/>
+	<field name="orden_trabajo" class="java.lang.String"/>
+	<field name="tagcode_ean" class="java.lang.String"/>
+	<field name="ean_14" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="137" splitType="Stretch">
+			<staticText>
+				<reportElement x="86" y="41" width="77" height="10" uuid="140ebaa3-d839-4268-9104-ace5a4de8585"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F.CADUCIDAD]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="86" y="51" width="77" height="10" uuid="d970956b-522e-4f0f-8bf0-967f8bb00a4f"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_caducidad}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="42" y="86" width="214" height="34" uuid="2ecc0805-17a7-4d9c-84c1-ab14eebc7acb"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128" drawText="false" checksumRequired="false" barWidth="0" barHeight="0">
+					<jr:codeExpression><![CDATA[$F{codigo_ean}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="51" width="86" height="10" uuid="9480d935-aba3-446c-8c99-eac36cad73e3"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ean_14}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="120" width="280" height="16" uuid="25fee458-f310-4158-a039-c111eac59c24"/>
+				<textElement textAlignment="Center">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tagcode_ean}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="76" y="0" width="204" height="41" uuid="30e98270-89a9-4053-b711-d9eeadb5a511"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Left" vAlign="Top">
+				<reportElement x="0" y="0" width="76" height="41" uuid="3fb7f0a9-2d25-4dc8-a938-8cc59fff0c7c"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal",$F{ad_org_id})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="41" width="86" height="10" uuid="778cf8ae-c14d-4c56-9ff4-12ed8d1ae0c9"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(# EAN 14)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="163" y="51" width="117" height="10" uuid="e2490eb5-52c1-482a-8bd3-cfa11eae8dce"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numero_lote}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="63" width="280" height="23" uuid="d5219974-b322-4cd2-a2d7-06f47e3deaeb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="163" y="41" width="117" height="10" uuid="47564e1c-09b3-48ec-a46f-e221d1fd8361"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NUMERO DE LOTE]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="1A6B577ED03648978F7837045265EC8D" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm_C_Projectphase_inoutln">Sproctm_C_Projectphase_inoutln</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="30214368F4534640821A09A18FDB7A52" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_Ma_Costcenter_ID">sproctm_Ma_Costcenter_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="340510DCF88E4657ADF5277613EDC5BD" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_TaskCIF_R">sproctm_TaskCIF_R</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="498927578A3942C48739E0ED15B034FC" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm_requisition_Project">Sproctm_requisition_Project</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4BD9A1A72664406F97E2E508D718C7CA" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_c_elementvalue">sproctm_c_elementvalue</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="63152ED7B0884039BA0FF007D903ABE0" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm_ElementValue_Acc">Sproctm_ElementValue_Acc</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7572B8B4A48D42D2A76BAD8F03F30F97" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_liquidate_proj_sett_list">sproctm_liquidate_proj_sett_list</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="78C68F2E1F21451F8E548A1427FA3257" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_MA_Indirect_Cost">sproctm_MA_Indirect_Cost</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7CDC1B3A97B24DF7BB3AB2FDC2630785" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_settCostProjStatus_list">sproctm_settCostProjStatus_list</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="80E482D8BD9943019A68991050236BA4" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_detail_cost_r">sproctm_detail_cost_r</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="83EDB6AEF7B04068B2CCF009A119F439" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_complete_list">sproctm_complete_list</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="85D542E4F68B486A8BBAE95DB43C2DD6" trl="N">
+    <value column="Name" isTrl="Y" original="postedStatusDetProject">postedStatusDetWfProject</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8B4DF1D1234E414685AFBA2F5C78CD29" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_Machine_Det_r">sproctm_Machine_Det_r</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="93D01A124103429EBA509D32C6067F76" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_C_Elementvalue_r">sproctm_C_Elementvalue_r</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="94D90914DE9D4B9EBFD9A169EC19E5A0" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_Doctype">sproctm_Doctype</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9D42049EC5F2483F87FA708422C72289" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm_requisition_Phase">Sproctm_requisition_Phase</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A4BDBE75F42B48CF80A12B4E44B9C27B" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm_requisition_Task">Sproctm_requisition_Task</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A9698047F0844B09807BE1B265807E68" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm_Projecttask_inoutln">Sproctm_Projecttask_inoutln</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AEC4B07EC6D540B3B625FF39141BFE4E" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm_Prhasetype_list">Sproctm_Prhasetype_list</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C06224FB0AE54388BE190E524F976FC6" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_MA_Machine">sproctm_MA_Machine</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C7AC0A3447494823ACBFA356C4667193" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_task_prod_r">sproctm_task_prod_r</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DA41482FF5214033B0B4C3BCFE13B3AA" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_C_Acctschema">sproctm_C_Acctschema</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E1FC7B3E1D4B498E9B658C2C3F884B3D" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_TaskMachine_R">sproctm_TaskMachine_R</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E254C77928264BD8834A87E99AE29159" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_C_Element_r">sproctm_C_Element_r</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E39E13571CFB4EB7A3E24EF6CCC58602" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_Taskworkforce_R">sproctm_Taskworkforce_R</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E3E9363C25F246A28542C20948C73899" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_status_list">sproctm_status_list</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="EC495848661A40CE8B392E81AD00DE25" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm_Prhase_Order">Sproctm_Prhase_Order</value>
+    <value column="Description" isTrl="N" original="Sproctm_Prhase_Order">Sproctm_Prhase_Order</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F07C338D18F94D8DA88471589AB025C4" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm_C_Salary_Category">Sproctm_C_Salary_Category</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F554221700734D9594BEC607E6904B56" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm_Detail_Cost_sett_r">Sproctm_Detail_Cost_sett_r</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

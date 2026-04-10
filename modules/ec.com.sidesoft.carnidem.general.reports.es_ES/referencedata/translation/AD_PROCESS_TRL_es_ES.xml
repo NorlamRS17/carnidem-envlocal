@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="40579E85800C467F934C1C2D5FD20876" trl="Y">
+    <value column="Name" isTrl="Y" original="supplier delivery note label">Nomenclatura de etiqueta albarán proveedor</value>
+    <value column="Description" isTrl="N" original="">Nomenclatura de etiqueta albarán proveedor</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
   <row id="71A081C91AA04103B5238A2036CEECDD" trl="Y">
     <value column="Name" isTrl="Y" original="MP Inventories">Reporte existencias de materias primas por código de compra</value>
     <value column="Description" isTrl="Y" original="MP Inventories">Reporte existencias de materias primas por código de compra</value>
     <value column="Help" isTrl="N" original=""/>
   </row>
-  <row id="A9D5AA3324D24D189B9332FFC1A9E7FE" trl="Y">
-    <value column="Name" isTrl="Y" original="Summary Accounts Receivable">Estado CxC - Detallado</value>
+  <row id="F72B7285562E48B3A24D60E07D5240FB" trl="Y">
+    <value column="Name" isTrl="Y" original="Safety and quality monitoring label nomenclature">Nomenclatura de etiqueta monitoreo seguridad y calidad</value>
     <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
   </row>

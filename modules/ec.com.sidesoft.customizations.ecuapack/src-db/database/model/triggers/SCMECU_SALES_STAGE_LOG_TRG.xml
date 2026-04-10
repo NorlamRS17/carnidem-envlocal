@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCMECU_SALES_STAGE_LOG_TRG">
+    <trigger name="SCMECU_SALES_STAGE_LOG_TRG" table="OPCRM_OPPORTUNITIES" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[    vCheck NUMBER;
+    vPreviusSalesStage VARCHAR(60) := '';
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+    
+    IF TG_OP IN ('INSERT', 'UPDATE') THEN
+        IF UPDATING THEN
+            vPreviusSalesStage := :OLD.sales_stage;
+        END IF;
+        
+        IF vPreviusSalesStage != :NEW.sales_stage THEN
+            INSERT INTO scmecu_oppor_email_log (
+                scmecu_oppor_email_log_id, ad_client_id, ad_org_id, createdby, updatedby,
+                opcrm_opportunities_id, previus_sales_stage, current_sales_stage
+            ) VALUES (
+                get_uuid(), :NEW.ad_client_id, :NEW.ad_org_id, :NEW.createdby, :NEW.updatedby,
+                :NEW.opcrm_opportunities_id, vPreviusSalesStage, :NEW.sales_stage
+            );
+        END IF;
+    END IF;
+    
+    END SCMECU_SALES_STAGE_LOG_TRG
+]]></body>
+    </trigger>
+  </database>

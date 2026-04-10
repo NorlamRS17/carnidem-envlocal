@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCRVRO_PROVINCE_TRG">
+    <trigger name="SCRVRO_PROVINCE_TRG" table="SCRVRO_PROVINCE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	vCheck NUMBER;
+BEGIN
+
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+	
+	IF TG_OP IN ('INSERT','UPDATE') THEN
+		SELECT COUNT(*) INTO vCheck FROM scrvro_province WHERE scrvro_vendor_route_line_id=:NEW.scrvro_vendor_route_line_id
+			AND scrvro_province_id!=:NEW.scrvro_province_id AND c_region_id=:NEW.c_region_id;
+		IF vCheck>0 THEN
+			RAISE_APPLICATION_ERROR(-20000, '@Scrvro_Region@') ;
+		END IF;
+	END IF;
+	
+	END SCRVRO_PROVINCE_TRG
+]]></body>
+    </trigger>
+  </database>

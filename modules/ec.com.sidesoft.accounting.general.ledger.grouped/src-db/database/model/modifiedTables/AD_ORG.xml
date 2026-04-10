@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-  <database name="MODIFIED TABLE AD_ORG">
-    <table name="AD_ORG" primaryKey="AD_ORG_KEY">
-      <index name="EM_SACGLD_ORG" unique="false">
-        <index-column name="AD_ORG_ID"/>
-      </index>
-    </table>
-  </database>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="290B90F0DFDF40D09DC672891CDD4F6E" trl="Y">
+    <value column="Name" isTrl="Y" original="On Hold">En Espera</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="5AD83DF9E8A548208D17B81736B20B5C" trl="Y">
+    <value column="Name" isTrl="Y" original="Job Ready">Trabajo Listo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="9ECE92CB3753434481F25CD07F1D066A" trl="Y">
+    <value column="Name" isTrl="Y" original="In Process">En Proceso</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="AE13F9DC666743BEB9901A8B431D8755" trl="Y">
+    <value column="Name" isTrl="Y" original="Delivered">Entregada</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="FAEF6C1A8BA64C87A1ECAA2A9A30582D" trl="N">
+    <value column="Name" isTrl="N" original="PDF">PDF</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

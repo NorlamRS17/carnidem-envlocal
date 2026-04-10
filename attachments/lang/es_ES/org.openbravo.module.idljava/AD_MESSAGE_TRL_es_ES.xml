@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="407E663F15FE479AB142B5CD349FDBA7" trl="N">
+    <value column="MsgText" isTrl="N" original="There is a line in the import file that does not have enough fields.">There is a line in the import file that does not have enough fields.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="73CCBD64269D45148C9F17F720ED7898" trl="N">
+    <value column="MsgText" isTrl="N" original="The file to import is empty.">The file to import is empty.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

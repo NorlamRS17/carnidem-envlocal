@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SATMAC_LOAD_MACHINES">
+    <function name="SATMAC_LOAD_MACHINES" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult				VARCHAR2(2000);
+	vMessage			VARCHAR2(2000);
+	
+	cPar				RECORD;
+	vRecord				RECORD;
+	vRecordID			VARCHAR2(32);
+	vClientID			VARCHAR2(32);
+	vOrgID				VARCHAR2(32);
+	vUserID				VARCHAR2(32);
+    cMachine            RECORD;
+    vLine               NUMBER;
+    vParentOrg        RECORD;
+	
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID) ;
+	vResult := 'PInstanceNotFound';
+ AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+	BEGIN
+
+		vResult := 'ReadingParameters';
+		FOR cPar IN (
+			SELECT i.Record_ID,
+				i.AD_User_ID,
+				i.AD_Client_ID,
+				i.AD_Org_ID
+			FROM AD_PInstance i
+			WHERE i.AD_PInstance_ID = PInstance_ID
+		) LOOP
+			vRecordID := cPar.Record_ID;
+			vClientID := cPar.AD_Client_ID;
+			vOrgID := cPar.AD_Org_ID;
+			vUserID := cPar.AD_User_ID;
+		END LOOP;
+		
+		SELECT * INTO vRecord FROM satmac_contract WHERE satmac_contract_id = vRecordID;
+		IF vRecord.processing = 'Y' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@DocBeingProcessed@');
+		END IF;
+        
+        UPDATE satmac_contract SET processing = 'Y' WHERE satmac_contract_id = vRecordID;
+        
+        SELECT ad_client_id, ad_org_id INTO vParentOrg FROM ad_org WHERE issummary = 'Y' AND ad_orgtype_id = '1';
+		
+        FOR cMachine IN (
+            SELECT v.sswos_vehicle_id, v.em_satmac_name, v.chassis_number
+            FROM sswos_vehicle v
+                JOIN satmac_contract co ON co.c_project_id = v.em_satmac_project_id
+                    AND co.satmac_contract_id = vRecordID
+                LEFT JOIN satmac_machine ma ON ma.satmac_contract_id = co.satmac_contract_id
+                    AND ma.attribute = v.chassis_number
+            WHERE ma.satmac_machine_id IS NULL AND v.isactive = 'Y'
+            ORDER BY v.em_satmac_name
+        ) LOOP
+            SELECT COALESCE(MAX(line),0)+10 INTO vLine FROM satmac_machine WHERE satmac_contract_id = vRecordID;
+            INSERT INTO satmac_machine (
+                satmac_machine_id, ad_client_id, ad_org_id, createdby, updatedby,
+                satmac_contract_id, line, sswos_vehicle_id, machine_name, attribute,
+                qty
+            ) VALUES (
+                get_uuid(), vParentOrg.ad_client_id, vParentOrg.ad_org_id, vUserID, vUserID,
+                vRecordID, vLine, cMachine.sswos_vehicle_id, cMachine.em_satmac_name, cMachine.chassis_number,
+                1
+            );
+        END LOOP;
+
+        UPDATE satmac_contract SET processing = 'N' WHERE satmac_contract_id = vRecordID;
+        
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage) ;
+        AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, vMessage);
+		RETURN;
+		
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+    vResult := '@ERROR='||SQLERRM;
+    DBMS_OUTPUT.PUT_LINE( vResult) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, vResult) ;
+
+    RETURN;
+END SATMAC_LOAD_MACHINES
+]]></body>
+    </function>
+  </database>

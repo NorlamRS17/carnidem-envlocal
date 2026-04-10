@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="08C75DB9B13C4FC9B6873F8381AD6CFD" trl="N">
+    <value column="Name" isTrl="N" original="Document No Temp">Document No Temp</value>
+    <value column="PrintName" isTrl="N" original="EM_Ecsds_Documentno">EM_Ecsds_Documentno</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1FF30514008A453CBEDC5A5EE7880C28" trl="N">
+    <value column="Name" isTrl="N" original="Is in Development">Is in Development</value>
+    <value column="PrintName" isTrl="N" original="Is in Development">Is in Development</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2509D03657A04E4BA4B0EBE23BC1FAB9" trl="N">
+    <value column="Name" isTrl="N" original="Invoice Sequence">Invoice Sequence</value>
+    <value column="PrintName" isTrl="N" original="Invoice Sequence">Invoice Sequence</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2898EBF2D6E4436F98D59D5EF79540F7" trl="N">
+    <value column="Name" isTrl="N" original="Store">Store</value>
+    <value column="PrintName" isTrl="N" original="Store">Store</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="295AAA8439BF490693E4836E0347CE7A" trl="N">
+    <value column="Name" isTrl="N" original="Receipt Type">Receipt Type</value>
+    <value column="PrintName" isTrl="N" original="Receipt Type">Receipt Type</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3357DB5F871F4BFB8C6146452EC72B95" trl="N">
+    <value column="Name" isTrl="N" original="Ecsds_Psale_Seq_Line_ID">Ecsds_Psale_Seq_Line_ID</value>
+    <value column="PrintName" isTrl="N" original="Ecsds_Psale_Seq_Line_ID">Ecsds_Psale_Seq_Line_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4350805DBF2040AEA7756F022142EEEB" trl="N">
+    <value column="Name" isTrl="N" original="Identifier">Identifier</value>
+    <value column="PrintName" isTrl="N" original="Identifier">Identifier</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5C418391BB5F4894970F31D8E75EA572" trl="N">
+    <value column="Name" isTrl="N" original="Sequence starts from">Sequence starts from</value>
+    <value column="PrintName" isTrl="N" original="Sequence starts from">Sequence starts from</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original="Sequence starts from">Sequence starts from</value>
+    <value column="PO_PrintName" isTrl="N" original="Sequence starts from">Sequence starts from</value>
+  </row>
+  <row id="636BC0E4A770446FA1C83D4903E183A8" trl="N">
+    <value column="Name" isTrl="N" original="Used">Used</value>
+    <value column="PrintName" isTrl="N" original="Used">Used</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original="Used">Used</value>
+    <value column="PO_PrintName" isTrl="N" original="Used">Used</value>
+  </row>
+  <row id="79F1486390164F71BFE25064B5D8A09F" trl="N">
+    <value column="Name" isTrl="N" original="Sequence goes to">Sequence goes to</value>
+    <value column="PrintName" isTrl="N" original="Sequence goes to">Sequence goes to</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original="Sequence goes to">Sequence goes to</value>
+    <value column="PO_PrintName" isTrl="N" original="Sequence goes to">Sequence goes to</value>
+  </row>
+  <row id="84DDB7667F794E3BAA7BD6DF58D0116C" trl="N">
+    <value column="Name" isTrl="N" original="Ecsds_Psale_Seq_ID">Ecsds_Psale_Seq_ID</value>
+    <value column="PrintName" isTrl="N" original="Ecsds_Psale_Seq_ID">Ecsds_Psale_Seq_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B618A8E688124AD1A1E436FFF76A8CFA" trl="N">
+    <value column="Name" isTrl="N" original="Code">Code</value>
+    <value column="PrintName" isTrl="N" original="EM_Ecsds_Codigo">EM_Ecsds_Codigo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F9E74A66B8844A5BACB13D977E0AA5AD" trl="N">
+    <value column="Name" isTrl="N" original="Generate">Generate</value>
+    <value column="PrintName" isTrl="N" original="Generate">Generate</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FEAFDBC96C3746AEA7DB59087DC03470" trl="N">
+    <value column="Name" isTrl="N" original="Sequence">Sequence</value>
+    <value column="PrintName" isTrl="N" original="Sequence">Sequence</value>
+    <value column="Description" isTrl="N" original="Sequence">Sequence</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original="Sequence">Sequence</value>
+    <value column="PO_PrintName" isTrl="N" original="Sequence">Sequence</value>
+  </row>
+</compiereTrl>

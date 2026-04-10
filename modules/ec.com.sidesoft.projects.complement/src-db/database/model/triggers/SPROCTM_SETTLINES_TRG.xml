@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SPROCTM_SETTLINES_TRG">
+    <trigger name="SPROCTM_SETTLINES_TRG" table="SPROCTM_SETTL_COST_LN" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[
+v_sproctm_settlement_cost varchar(32);
+v_sproctm_settl_cost_ln  varchar(32);
+v_processed char(1);
+v_total_cost NUMBER;
+        
+BEGIN
+    
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+
+  
+  IF INSERTING OR UPDATING THEN
+  
+    -- If inserting or updating add new values
+    v_sproctm_settlement_cost:=:NEW.sproctm_settlement_cost_id;
+    v_sproctm_settl_cost_ln:= :NEW.sproctm_settl_cost_ln_ID;
+    --raise exception '%',  new.ad_tab_id;
+    SELECT liquidate
+    INTO v_processed
+    FROM sproctm_settlement_cost
+    WHERE sproctm_settlement_cost_id = v_sproctm_settlement_cost;
+    
+    IF v_processed = 'Y' THEN
+      RAISE_APPLICATION_ERROR(-20000, '@20501@');
+    END IF;
+    
+    select coalesce((select sum(coalesce(total_cost,0)) 
+    from sproctm_settl_cost_ln 
+    where sproctm_settl_cost_ln_ID <>v_sproctm_settl_cost_ln
+    and sproctm_settlement_cost_id = v_sproctm_settlement_cost
+    and ad_tab_id = :new.ad_tab_id),0)
+    into v_total_cost
+    from dual;
+
+  --  RAISE_APPLICATION_ERROR(-20000, '@20501@');
+ 
+    if (:new.ad_tab_id= '159A349996134E10911CDC8384217A61') then 
+      UPDATE sproctm_settlement_cost 
+      SET total_mo = round(v_total_cost + :new.total_cost,2)
+      WHERE sproctm_settlement_cost_id = v_sproctm_settlement_cost;
+    end if;
+
+    if (:new.ad_tab_id= '48141C6F643C419AA539E035A658A22D') then 
+      UPDATE sproctm_settlement_cost 
+      SET total_cif = round(v_total_cost + :new.total_cost,2)
+      WHERE sproctm_settlement_cost_id = v_sproctm_settlement_cost;
+    end if;
+
+    
+    if (:new.ad_tab_id= '072C2C18626D4BB5AE2E8BAC2770618E') then 
+      UPDATE sproctm_settlement_cost 
+      SET total_maq = round(v_total_cost + :new.total_cost,2)
+      WHERE sproctm_settlement_cost_id = v_sproctm_settlement_cost;
+    end if;
+    
+  END IF;
+  
+  IF DELETING THEN
+    
+    -- If updating or deleting substract old values
+    v_sproctm_settlement_cost:=:OLD.sproctm_settlement_cost_id;
+
+
+    SELECT liquidate
+    INTO v_processed
+    FROM sproctm_settlement_cost
+    WHERE sproctm_settlement_cost_id = v_sproctm_settlement_cost;
+    
+    IF v_processed = 'Y' THEN
+      RAISE_APPLICATION_ERROR(-20000, '@20501@');
+    END IF;
+    
+    
+
+    if (:old.ad_tab_id= '159A349996134E10911CDC8384217A61') then 
+      UPDATE sproctm_settlement_cost 
+      SET total_mo = round(total_mo - :old.total_cost,2)
+      WHERE sproctm_settlement_cost_id = v_sproctm_settlement_cost;
+    end if;
+
+    if (:old.ad_tab_id= '48141C6F643C419AA539E035A658A22D') then 
+      UPDATE sproctm_settlement_cost 
+      SET total_cif = round(total_cif - :old.total_cost,2)
+      WHERE sproctm_settlement_cost_id = v_sproctm_settlement_cost;
+    end if;
+
+    
+    if (:old.ad_tab_id= '072C2C18626D4BB5AE2E8BAC2770618E') then 
+      UPDATE sproctm_settlement_cost 
+      SET total_maq = round(total_maq - :old.total_cost,2)
+      --, , 
+      WHERE sproctm_settlement_cost_id = v_sproctm_settlement_cost;
+    end if;
+
+    
+  END IF;
+
+END SPROCTM_SETTLINES_TRG
+]]></body>
+    </trigger>
+  </database>

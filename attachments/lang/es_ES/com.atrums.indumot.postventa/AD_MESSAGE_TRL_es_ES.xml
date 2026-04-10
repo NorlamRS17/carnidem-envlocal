@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="1639B11250A140E1AEBCBD787FCD90A3" trl="N">
+    <value column="MsgText" isTrl="N" original="Se realizó el despacho ">Se realizó el despacho </value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="25077883F7E24B718DE5B857ED43AF4B" trl="N">
+    <value column="MsgText" isTrl="N" original="Ingresar productos ">Ingresar productos </value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="362E58CBF0B14502BE25A86D89965D97" trl="N">
+    <value column="MsgText" isTrl="N" original="Error Eliminado Registros&#10;">Error Eliminado Registros
+</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="6A43739C05A3425C94F6192D9A0E7B9A" trl="N">
+    <value column="MsgText" isTrl="N" original="ENTRO">ENTRO</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="817A1E9D2E7A4974B818F93147A65178" trl="N">
+    <value column="MsgText" isTrl="N" original="No tiene registros de reemplazo a eliminar ">No tiene registros de reemplazo a eliminar </value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="A57281BEA90248EC9101746628D7DE51" trl="N">
+    <value column="MsgText" isTrl="N" original="Registros Eliminados">Registros Eliminados</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="B26F4037EE5447D78387980A30AB1C6F" trl="N">
+    <value column="MsgText" isTrl="N" original="Error al momento de ingresar el detalle del despacho">Error al momento de ingresar el detalle del despacho</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="E73486B565514AF9AA030FBDABF53229" trl="N">
+    <value column="MsgText" isTrl="N" original="Guía de despacho">Guía de despacho</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="F34130D2E6434C33BC9591BBFFF688A5" trl="N">
+    <value column="MsgText" isTrl="N" original="No se tiene Productos para despachar ">No se tiene Productos para despachar </value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

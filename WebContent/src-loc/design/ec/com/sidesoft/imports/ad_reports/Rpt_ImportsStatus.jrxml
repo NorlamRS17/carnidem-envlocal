@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_ImportsDetail" pageWidth="2088" pageHeight="595" orientation="Landscape" columnWidth="2048" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e4ad59bc-e1a3-40ab-98ff-be7a156b2fad">
+	<property name="ireport.zoom" value="1.6105100000000054"/>
+	<property name="ireport.x" value="1434"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="Datefrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Dateto" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Ad_Org_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_BPartner_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_Campaign_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="M_Product_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Posted" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Ad_User_Id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT cc.name,co.documentno,bp.name as "tercero",co.dateordered,sum(ol.em_ssip_costorigin) as "costoorigen", sum(ol.em_ssip_realcost) as "costreal", CASE WHEN co.em_ssip_importstatus='NL' THEN 'NO LIQUIDADO'
+WHEN co.em_ssip_importstatus='PL' THEN 'PRE LIQUIDADO' WHEN co.em_ssip_importstatus='LL' THEN 'LIQUIDADO' END AS em_ssip_importstatus,
+sq.docfactura,sq.terfactura,sq.dateinvoiced,sq.totallines,sq.iva,sq.grandtotal,mi.documentno as "docalbaran",mi.movementdate, sqq.documentno as "docum", COALESCE(sqq.debe,0) AS "debe", COALESCE(sqq.haber,0) as "haber",
+(select
+coalesce(cbu.name,adu.name) as usuario
+from ad_user adu
+left join c_bpartner cbu on cbu.c_bpartner_id = adu.c_bpartner_id
+where adu.ad_user_id = $P{Ad_User_Id}) as "usuario",
+now() as "fechaimpresion",
+co.ad_org_id
+FROM c_campaign cc
+LEFT JOIN c_order co ON cc.c_campaign_id = co.c_campaign_id and co.em_ssip_isimports ='Y'
+LEFT JOIN c_bpartner bp ON co.c_bpartner_id = bp.c_bpartner_id
+LEFT JOIN c_orderline ol ON co.c_order_id = ol.c_order_id
+LEFT JOIN m_inout mi ON mi.c_order_id = co.c_order_id
+LEFT JOIN
+(SELECT
+ci.documentno as "docfactura",bpa.name as "terfactura",ci.dateinvoiced,
+CASE WHEN (ci.grandtotal-ci.totallines <0) THEN ci.grandtotal ELSE ci.totallines END AS totallines,
+CASE WHEN (ci.grandtotal-ci.totallines <0) THEN 0 ELSE ci.grandtotal-ci.totallines END AS iva,
+ci.grandtotal,
+ci.c_campaign_id, il.em_ssip_campaign_id
+FROM c_invoice ci
+LEFT JOIN c_invoiceline il ON il.c_invoice_id = ci.c_invoice_id
+LEFT JOIN c_bpartner bpa ON ci.c_bpartner_id = bpa.c_bpartner_id
+WHERE ci.issotrx='N' AND ci.docstatus='CO'
+	AND (il.em_ssip_importtype ='Y' or ci.c_campaign_id IS NOT NULL)
+AND (ci.posted = $P{Posted} OR $P{Posted} IS NULL)
+GROUP BY ci.documentno,bpa.name,ci.dateinvoiced,ci.totallines,ci.grandtotal,
+ci.c_campaign_id, il.em_ssip_campaign_id
+order by 1
+) sq ON cc.c_campaign_id = sq.em_ssip_campaign_id or cc.c_campaign_id = sq.c_campaign_id
+LEFT JOIN
+(SELECT  gb.gl_journalbatch_id, gb.documentno, gl.c_campaign_id, sum(amtsourcedr) as debe, sum(amtsourcecr) as haber
+FROM gl_journalbatch gb
+INNER JOIN gl_journal gj ON gb.gl_journalbatch_id = gj.gl_journalbatch_id
+INNER JOIN gl_journalline gl ON gj.gl_journal_id = gl.gl_journal_id
+WHERE  gl.c_campaign_id IS NOT NULL AND gl.EM_Ssip_Importcosts = 'Y' AND gj.posted='Y' and gj.processed='Y'
+GROUP BY gb.gl_journalbatch_id, gb.documentno, gl.c_campaign_id
+) sqq ON sqq.c_campaign_id = cc.c_campaign_id
+WHERE co.issotrx='N' AND co.docstatus='CO'
+AND co.dateordered BETWEEN $P{Datefrom} AND $P{Dateto}
+AND (co.ad_org_id = $P{Ad_Org_ID} OR $P{Ad_Org_ID} IS NULL)
+AND (co.c_bpartner_id = $P{C_BPartner_ID} OR $P{C_BPartner_ID} IS NULL)
+AND (cc.c_campaign_id = $P{C_Campaign_ID} OR $P{C_Campaign_ID} IS NULL)
+AND (ol.m_product_id = $P{M_Product_ID} OR $P{M_Product_ID} IS NULL)
+
+GROUP BY cc.name,co.documentno,bp.name,co.dateordered,co.em_ssip_importstatus,
+sq.docfactura,sq.terfactura,sq.dateinvoiced,sq.totallines,sq.iva,sq.grandtotal,mi.documentno,mi.movementdate,co.ad_org_id,sqq.documentno, sqq.debe, sqq.haber
+order by co.dateordered,cc.name]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="tercero" class="java.lang.String"/>
+	<field name="dateordered" class="java.sql.Timestamp"/>
+	<field name="costoorigen" class="java.math.BigDecimal"/>
+	<field name="costreal" class="java.math.BigDecimal"/>
+	<field name="em_ssip_importstatus" class="java.lang.String"/>
+	<field name="docfactura" class="java.lang.String"/>
+	<field name="terfactura" class="java.lang.String"/>
+	<field name="dateinvoiced" class="java.sql.Timestamp"/>
+	<field name="totallines" class="java.math.BigDecimal"/>
+	<field name="iva" class="java.math.BigDecimal"/>
+	<field name="grandtotal" class="java.math.BigDecimal"/>
+	<field name="docalbaran" class="java.lang.String"/>
+	<field name="movementdate" class="java.sql.Timestamp"/>
+	<field name="docum" class="java.lang.String"/>
+	<field name="debe" class="java.math.BigDecimal"/>
+	<field name="haber" class="java.math.BigDecimal"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="fechaimpresion" class="java.sql.Timestamp"/>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<variable name="TOTAL_BASE_IMPONIBLE" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{totallines}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_IVA" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{iva}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_IMPORTE" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{grandtotal}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_DEBE" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{debe}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_HABER" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{haber}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="2048" height="20" uuid="15930ccb-e92e-426c-9db6-66870f756bd9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de importaciones]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="20" width="2048" height="20" uuid="1aa8eeac-8f39-42f4-a46f-286e665a0a4a"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Desde: "+ (new SimpleDateFormat("dd/MM/yyyy")).format($P{Datefrom})+" - Hasta: "+(new SimpleDateFormat("dd/MM/yyyy")).format($P{Dateto})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="222" y="40" width="382" height="20" uuid="862215e9-a637-45cd-a07a-bbb4a307082a"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="222" y="60" width="382" height="20" uuid="99970d6a-6a50-493a-8232-f4a1a42c3898"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fechaimpresion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="111" y="40" width="111" height="20" uuid="0992402e-95a6-47be-a774-6533ac098a21"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="60" width="111" height="20" uuid="81d8ec2f-7ed1-40e3-8533-a5842aebd00b"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Impresión:]]></text>
+			</staticText>
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="111" height="80" uuid="9238b002-7ea2-4f2f-b4e3-d3637793aeb1"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal",$F{ad_org_id})]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="20" width="111" height="20" uuid="d908a114-4d3b-46d5-b0f7-9ac91c0ccf62"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1680" y="20" width="80" height="20" uuid="8e0f08f9-9d8d-4570-9547-6309c02e4a81"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="20" width="80" height="20" uuid="b17cd0de-45e2-4784-bbe3-882c2e08b134"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo original]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="936" y="20" width="222" height="20" uuid="2847b78d-f017-48ca-853e-a980b158a543"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tercero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1448" y="20" width="105" height="20" uuid="80023d99-a508-44c2-87a7-0f1770380dbd"/>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Imp. total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="604" y="20" width="80" height="20" uuid="f17933da-370d-45e4-a198-1a5cc7e889d4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo real]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1158" y="20" width="80" height="20" uuid="0da0b8bf-e2cc-4a98-846d-7015b8329b97"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="20" width="80" height="20" uuid="4c748ec4-2e14-4726-a9ab-f64538de8a50"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1553" y="20" width="127" height="20" uuid="c33136b2-7631-475c-b1b1-c4f592e44d30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº Albarán]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="20" width="111" height="20" uuid="e01bae4c-8844-4767-9b3e-fbe402bed1db"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº pedido]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1343" y="20" width="105" height="20" uuid="1fedd15e-7f2c-4c75-af07-391e9f96a703"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="771" y="20" width="165" height="20" uuid="3428a7a7-9d22-4a51-8ce3-ab79cb19877e"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nº Factura]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="222" y="20" width="222" height="20" uuid="c2bc774f-0748-46e0-948e-46b9b5da63c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tercero]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="684" y="20" width="87" height="20" uuid="0ae50bdf-adf6-45cc-95f9-079f86c038a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1238" y="20" width="105" height="20" uuid="69f327c1-de60-426a-9a7d-deb6cdc4e5a8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Base imponible]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="771" height="20" uuid="51aa551c-b2aa-42a0-8cc9-15994b2f08bf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pedidos de importación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="771" y="0" width="782" height="20" uuid="efee696f-2cd0-4377-807a-f808868e0024"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Facturas de importación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1553" y="0" width="207" height="20" uuid="9110e5fd-e4c8-4302-ad36-04d02452922a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Inventario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1760" y="20" width="117" height="20" uuid="1fe462cc-37e4-4eb0-a590-bc49bc530bb7"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1877" y="20" width="85" height="20" uuid="8a889d07-afab-4c24-8d3f-7ec7b1ae60af"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Debe]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1760" y="0" width="288" height="20" uuid="e67346d5-2161-401a-ba43-d65bed11b237"/>
+				<box>
+					<leftPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Asiento manual]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1962" y="20" width="86" height="20" uuid="a838ab4a-0cb7-4293-97c8-b4e0fdcc3ca2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Haber]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="111" height="20" uuid="fb3a677d-5eba-4837-9217-28a2caca135b"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1680" y="0" width="80" height="20" uuid="ab1baf62-3f7a-4901-b177-4d38d1185702"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{movementdate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="524" y="0" width="80" height="20" uuid="e6dbd3e4-05db-428d-8108-5f8d4487462d"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{costoorigen}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="936" y="0" width="222" height="20" uuid="4534fedf-2939-4e2a-99a7-419dffdd7489"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{terfactura}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1448" y="0" width="105" height="20" uuid="0b072283-2a19-4af8-a2ca-920b83d4c895"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{grandtotal}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="604" y="0" width="80" height="20" uuid="7664d161-d9d7-4c03-9064-e7ecb5a6c051"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{costreal}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1158" y="0" width="80" height="20" uuid="298b81f2-a73b-4dd0-a577-26b9eb95ff63"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{dateinvoiced}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="444" y="0" width="80" height="20" uuid="abc851ca-d5d9-4ac5-94bc-de0761b06464"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{dateordered}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1553" y="0" width="127" height="20" uuid="41103fab-23ba-4e1a-9fa8-32aeb197d972"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{docalbaran}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="111" y="0" width="111" height="20" uuid="59b9b018-ad2b-459a-9366-c7f7574d485c"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1343" y="0" width="105" height="20" uuid="84d0cb3a-8d1b-4eb7-940c-d953c5208436"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="771" y="0" width="165" height="20" uuid="f63feaf0-4723-4c50-942f-aaa34139e080"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{docfactura}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1238" y="0" width="105" height="20" uuid="bbbdf9b6-3f07-457d-981a-bee407f348cb"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{totallines}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="222" y="0" width="222" height="20" uuid="900c05ea-07cd-4e2b-b5d2-4560e8e3a561"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tercero}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="684" y="0" width="87" height="20" uuid="103f0e4d-43b1-4ea4-8353-d359d4eb3506"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{em_ssip_importstatus}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="1760" y="0" width="117" height="20" uuid="40abc89b-7dc0-4ab5-84c0-de5eda98899f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{docum}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1877" y="0" width="85" height="20" uuid="397605ca-1ebd-4874-a5df-c59f4f077ec1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{debe}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1962" y="0" width="86" height="20" uuid="81cfa658-aa98-404a-964b-10726392c5c8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{haber}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1760" y="0" width="202" height="20" uuid="fc842c4b-373a-4800-8d45-27f2798ba4ea"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1962" y="0" width="86" height="20" uuid="43831ffe-d2e1-49c3-b224-06ae88ae900f"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1238" y="0" width="105" height="20" uuid="236ed10e-9e0c-4b7d-8445-7205f65cc058"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_BASE_IMPONIBLE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1343" y="0" width="105" height="20" uuid="dd3ea7e3-6617-46d9-8307-4c632177a89e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_IVA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1448" y="0" width="105" height="20" uuid="8e063900-c4a4-47d4-8651-3b2c37867129"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_IMPORTE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1158" y="0" width="80" height="20" uuid="285098ba-ce1f-4bca-aed3-40b4705d0be1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1877" y="0" width="85" height="20" uuid="cb98f7e3-cf56-441d-b87e-3e556e08b567"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_DEBE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="1962" y="0" width="86" height="20" uuid="71aaa8de-2ab3-46bd-bcde-5b6557f1c194"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL_HABER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

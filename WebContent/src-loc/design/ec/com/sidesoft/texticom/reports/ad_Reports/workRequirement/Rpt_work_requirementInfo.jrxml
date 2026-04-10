@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_work_requirement" pageWidth="535" pageHeight="842" whenNoDataType="BlankPage" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isIgnorePagination="true" uuid="0a9e7a3a-4591-40f3-950f-4bb40099ac9f">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.sheet.names.all" value="Orden de Fabricación"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="document_id" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+ROW_NUMBER () OVER (ORDER BY mp.ma_processplan_id) as row,
+w.ad_org_id,
+w.documentno,
+mp.value as code,
+mp.name as product,
+pr.name as area,
+to_char(w.launchdate,'dd/MM/yyyy') as launchdate,
+to_char(w.startdate,'dd/MM/yyyy') as startdate,
+to_char(w.enddate,'dd/MM/yyyy') as enddate,
+w.quantity,
+w.estimatedtime,
+p.value as code_p,
+p.name as name_p,
+u.x12de355 as unit,
+ml.movementqty as qty,
+m.documentno as m_documentno,
+mt.description as lote
+FROM ma_workrequirement w
+LEFT JOIN ma_processplan mp on mp.ma_processplan_id=w.ma_processplan_id
+LEFT JOIN ma_wrphase mw on mw.ma_workrequirement_id=w.ma_workrequirement_id
+LEFT JOIN ma_process pr on pr.ma_process_id=mw.ma_process_id
+LEFT JOIN ma_wrphaseproduct wp on wp.ma_wrphase_id=mw.ma_wrphase_id
+LEFT JOIN m_product p on p.m_product_id=wp.m_product_id
+LEFT JOIN c_uom u on u.c_uom_id=wp.c_uom_id
+LEFT JOIN m_movement m on m.m_movement_id=w.em_ssprodp_movement_id
+LEFT JOIN m_movementline ml on ml.m_movement_id=m.m_movement_id
+LEFT JOIN m_attributesetinstance mt on mt.m_attributesetinstance_id=ml.m_attributesetinstance_id
+WHERE
+w.ma_workrequirement_id=$P{document_id}
+AND wp.Productiontype='-' limit 1]]>
+	</queryString>
+	<field name="row" class="java.lang.Long"/>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="code" class="java.lang.String"/>
+	<field name="product" class="java.lang.String"/>
+	<field name="area" class="java.lang.String"/>
+	<field name="launchdate" class="java.lang.String"/>
+	<field name="startdate" class="java.lang.String"/>
+	<field name="enddate" class="java.lang.String"/>
+	<field name="quantity" class="java.math.BigDecimal"/>
+	<field name="estimatedtime" class="java.math.BigDecimal"/>
+	<field name="code_p" class="java.lang.String"/>
+	<field name="name_p" class="java.lang.String"/>
+	<field name="unit" class="java.lang.String"/>
+	<field name="qty" class="java.math.BigDecimal"/>
+	<field name="m_documentno" class="java.lang.String"/>
+	<field name="lote" class="java.lang.String"/>
+	<variable name="REPORT_PAGE" class="java.lang.Integer" resetType="None" incrementType="Page">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<detail>
+		<band height="20">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="20" isPrintWhenDetailOverflows="true" uuid="8b4f94c4-12f9-4652-9c07-eb88ad840a7b"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Código:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="90" y="0" width="114" height="20" isPrintWhenDetailOverflows="true" uuid="9c0c5a9e-c728-4126-92a0-45eb1e2115fd"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="204" y="0" width="121" height="20" isPrintWhenDetailOverflows="true" uuid="516ffee8-dcc0-422f-ac40-4947a307faa4"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Producto:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="325" y="0" width="94" height="20" isPrintWhenDetailOverflows="true" uuid="104203dc-35ef-4f62-80cf-04675ece7745"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="419" y="0" width="66" height="20" isPrintWhenDetailOverflows="true" uuid="b2c3b355-da2e-47ff-bd83-41e40a4ca8b3"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cantidad solicitada:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="485" y="0" width="50" height="20" isPrintWhenDetailOverflows="true" uuid="a312152e-9e53-4f6d-bc7e-7848baabfaaf"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="20">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="20" isPrintWhenDetailOverflows="true" uuid="2fa21f5f-d07f-454b-8127-ca5c4dd04d79"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Área:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="204" y="0" width="121" height="20" isPrintWhenDetailOverflows="true" uuid="c88bf8f6-6358-461f-a919-73e2bc32d3e5"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha emisión:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="419" y="0" width="66" height="20" isPrintWhenDetailOverflows="true" uuid="83704cb6-974e-40c3-be4a-e60635cffbcb"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Inicio prevista:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="90" y="0" width="114" height="20" isPrintWhenDetailOverflows="true" uuid="6d99c08a-465e-44e3-86fa-14915f4bdbd0"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{area}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="325" y="0" width="94" height="20" isPrintWhenDetailOverflows="true" uuid="05e9e8d4-c5b3-4064-8307-89cc3f76b380"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{launchdate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="485" y="0" width="50" height="20" isPrintWhenDetailOverflows="true" uuid="97a940d8-abe8-428a-b43a-4af5b3e90397"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{startdate}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="20">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="0" y="0" width="90" height="20" isPrintWhenDetailOverflows="true" uuid="6a3b7c26-7ee5-4063-8f4d-c81430c5e80d"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Lote:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="204" y="0" width="121" height="20" isPrintWhenDetailOverflows="true" uuid="b0257bd1-37d6-4268-9e3d-85cba8ff2346"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tiempo estandar de ejecución:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="419" y="0" width="66" height="20" isPrintWhenDetailOverflows="true" uuid="547187a1-db96-43a6-9a1d-34937a6b455c"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha fin prevista:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="90" y="0" width="114" height="20" isPrintWhenDetailOverflows="true" uuid="8c8fb6c5-f080-43c6-b6a6-8918f47a4ba9"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="325" y="0" width="94" height="20" isPrintWhenDetailOverflows="true" uuid="1aee9bb3-2ce2-4272-a299-b1af65d54b57"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estimatedtime}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="staticText-6" stretchType="RelativeToBandHeight" x="485" y="0" width="50" height="20" isPrintWhenDetailOverflows="true" uuid="d8c3d95b-5f32-4149-8b94-5f271b36b042"/>
+				<textElement verticalAlignment="Middle" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{enddate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="01CEE7526E5A457E9EAAE06A472F5768" trl="N">
+    <value column="Text" isTrl="N" original="Total Impuestos:">Total Impuestos:</value>
+  </row>
+  <row id="02DEE606C23545EBADF90F30D1EC005B" trl="N">
+    <value column="Text" isTrl="N" original="Organization">Organization</value>
+  </row>
+  <row id="038C96FE2F844AD7A681910F924466F3" trl="N">
+    <value column="Text" isTrl="N" original="Placa :">Placa :</value>
+  </row>
+  <row id="0941226B939440D0A4FCADA7F8B43365" trl="N">
+    <value column="Text" isTrl="N" original="Modelo :">Modelo :</value>
+  </row>
+  <row id="0A5DE5A5A1F44121AC4B006261E1C5B5" trl="N">
+    <value column="Text" isTrl="N" original="OK">OK</value>
+  </row>
+  <row id="0AF6B4F8CC784A92A2F6884E0DD7F1BB" trl="N">
+    <value column="Text" isTrl="N" original="Beginning Balance">Beginning Balance</value>
+  </row>
+  <row id="0D92D3BA94E84B28AA5DFB20701DADD3" trl="N">
+    <value column="Text" isTrl="N" original="CI/RUC/Pas :">CI/RUC/Pas :</value>
+  </row>
+  <row id="0EC2D388A5A14191A6A23B6973D80F30" trl="N">
+    <value column="Text" isTrl="N" original="Código">Código</value>
+  </row>
+  <row id="109AA002712E47B8AF639C540AFC9382" trl="N">
+    <value column="Text" isTrl="N" original="Placa :">Placa :</value>
+  </row>
+  <row id="116A7BF648144248B22457F32E48A379" trl="N">
+    <value column="Text" isTrl="N" original="Marca :">Marca :</value>
+  </row>
+  <row id="125EBB94EEC94215852B01DD78924BE4" trl="N">
+    <value column="Text" isTrl="N" original="Cliente :">Cliente :</value>
+  </row>
+  <row id="128FAF514FBD4C489DCA9999D3F411A2" trl="N">
+    <value column="Text" isTrl="N" original="Impuestos:">Impuestos:</value>
+  </row>
+  <row id="196731A0F2C549789CFF0F643439525F" trl="N">
+    <value column="Text" isTrl="N" original="Total (S/D)">Total (S/D)</value>
+  </row>
+  <row id="1F4730984AFC420BBAEF69829E5F3979" trl="N">
+    <value column="Text" isTrl="N" original="Neto">Neto</value>
+  </row>
+  <row id="1F514ADF639F49729564DB9717332FDB" trl="N">
+    <value column="Text" isTrl="N" original="Calculator">Calculator</value>
+  </row>
+  <row id="265517C472FA4A44BE77E25AAAAC003E" trl="N">
+    <value column="Text" isTrl="N" original="Date">Date</value>
+  </row>
+  <row id="294B16C99BD04250B7268CF9E8F017DF" trl="N">
+    <value column="Text" isTrl="N" original="Estantería">Estantería</value>
+  </row>
+  <row id="2DF4CFF124E44A2887D729BB87120045" trl="N">
+    <value column="Text" isTrl="N" original="Difference">Difference</value>
+  </row>
+  <row id="30E7193E31B74EC1ADEF6EDFEC5374B9" trl="N">
+    <value column="Text" isTrl="N" original="Deposito">Deposito</value>
+  </row>
+  <row id="3FBA74C0B959451491FC595D7A826282" trl="N">
+    <value column="Text" isTrl="N" original="Cancel">Cancel</value>
+  </row>
+  <row id="475F099282F14ADCB91D3D73EEF1523B" trl="N">
+    <value column="Text" isTrl="N" original="Difference to clear">Difference to clear</value>
+  </row>
+  <row id="48F0F244E0554EEB8D29C7E99164061A" trl="N">
+    <value column="Text" isTrl="N" original="Clear all">Clear all</value>
+  </row>
+  <row id="4C42D67B151F46FCA436BFD1C536D258" trl="N">
+    <value column="Text" isTrl="N" original="Name">Name</value>
+  </row>
+  <row id="4EB66BCDB8DD41B7BE139537FB7A407B" trl="N">
+    <value column="Text" isTrl="N" original="Fecha:">Fecha:</value>
+  </row>
+  <row id="54A30C51529B490DA0217ECF8F927523" trl="N">
+    <value column="Text" isTrl="N" original="Cancel">Cancel</value>
+  </row>
+  <row id="54BBC793DEE54600BECCB30711CAB37A" trl="N">
+    <value column="Text" isTrl="N" original="Tipo :">Tipo :</value>
+  </row>
+  <row id="56CC0401511C4B17A9B99EFC74CB7C05" trl="N">
+    <value column="Text" isTrl="N" original="Total(Sin Impuestos):">Total(Sin Impuestos):</value>
+  </row>
+  <row id="57BE6F16F08F4CC7B2473DAC8F69C1C7" trl="N">
+    <value column="Text" isTrl="N" original="Amount">Amount</value>
+  </row>
+  <row id="5A47C6D2CD944782BF8B9ACEF1FB3C99" trl="N">
+    <value column="Text" isTrl="N" original="Paid out">Paid out</value>
+  </row>
+  <row id="5A8C14C34EBD49C0A6F1D15AE78DCE1D" trl="N">
+    <value column="Text" isTrl="N" original="Hide Transactions after statement date">Hide Transactions after statement date</value>
+  </row>
+  <row id="5C68B5D62F1D4BFC8BD7D030B7AAC8F9" trl="N">
+    <value column="Text" isTrl="N" original="Calendar">Calendar</value>
+  </row>
+  <row id="5DACD04539F04960980DF4D8DDD2D2CE" trl="N">
+    <value column="Text" isTrl="N" original="Color :">Color :</value>
+  </row>
+  <row id="60FBFCE53B484A21BBC18A3C811628F6" trl="N">
+    <value column="Text" isTrl="N" original="No Orden de Servicio :">No Orden de Servicio :</value>
+  </row>
+  <row id="636238F9736D4111AB7920CB15CBA623" trl="N">
+    <value column="Text" isTrl="N" original="Fecha :">Fecha :</value>
+  </row>
+  <row id="65144EEADCB94A958DA0AE59D1366C0A" trl="N">
+    <value column="Text" isTrl="N" original="Cliente :">Cliente :</value>
+  </row>
+  <row id="65AB0D83BCF44E1DB25A3CE0A0669580" trl="N">
+    <value column="Text" isTrl="N" original="Año :">Año :</value>
+  </row>
+  <row id="68BBCCCCEAE1491CB9ABBDBD3BE823FD" trl="N">
+    <value column="Text" isTrl="N" original="Reconcile">Reconcile</value>
+  </row>
+  <row id="6AEBD6B1942B40FA870BE27D9FEE4A29" trl="N">
+    <value column="Text" isTrl="N" original="CI/RUC/Pas :">CI/RUC/Pas :</value>
+  </row>
+  <row id="6EFCA999F4E24D56823E98D980681023" trl="N">
+    <value column="Text" isTrl="N" original="No Motor :">No Motor :</value>
+  </row>
+  <row id="6F84359D5BBC4AD4B4378C0000C8E194" trl="N">
+    <value column="Text" isTrl="N" original="Description">Description</value>
+  </row>
+  <row id="6FCBEFEBC7894E47A1DCBB3F2CD2C5F4" trl="N">
+    <value column="Text" isTrl="N" original="V. Dscto">V. Dscto</value>
+  </row>
+  <row id="718B7533C8E34D60A9178D7D6B2893AD" trl="N">
+    <value column="Text" isTrl="N" original="Marca :">Marca :</value>
+  </row>
+  <row id="726B887C50C9469A97C2B52B602D06E3" trl="N">
+    <value column="Text" isTrl="N" original="Pre-Factura">Pre-Factura</value>
+  </row>
+  <row id="75C1ECD20FD34ED1A4317CE47E21AFBF" trl="N">
+    <value column="Text" isTrl="N" original="Statement Date">Statement Date</value>
+  </row>
+  <row id="76C8CC979CB74360A0A8BC54E79A9D8E" trl="N">
+    <value column="Text" isTrl="N" original="Descuento:">Descuento:</value>
+  </row>
+  <row id="77FD3368222E439BA0A5D428A5CBEF9E" trl="N">
+    <value column="Text" isTrl="N" original="Descripcion">Descripcion</value>
+  </row>
+  <row id="78992C41E7B342BBB2F6D5D922E79724" trl="N">
+    <value column="Text" isTrl="N" original="Stock De Productos y Sustitutos">Stock De Productos y Sustitutos</value>
+  </row>
+  <row id="78C189E0DE2247AC9C790FC37B5D1187" trl="N">
+    <value column="Text" isTrl="N" original="Sub-total:">Sub-total:</value>
+  </row>
+  <row id="7CE8A09BD1424613862F5CA552832DD4" trl="N">
+    <value column="Text" isTrl="N" original="Cleared">Cleared</value>
+  </row>
+  <row id="7F99112613DB4D24B14D623082932796" trl="N">
+    <value column="Text" isTrl="N" original="No Motor :">No Motor :</value>
+  </row>
+  <row id="7FB085422DD64D288A0331F43E304803" trl="N">
+    <value column="Text" isTrl="N" original="Teléfono :">Teléfono :</value>
+  </row>
+  <row id="8D9C74C9B42A46D7AB86B77E0A99689D" trl="N">
+    <value column="Text" isTrl="N" original="Generar desde Orden de Servico">Generar desde Orden de Servico</value>
+  </row>
+  <row id="8E293F628C354B069C96CA0B97CF7BB8" trl="N">
+    <value column="Text" isTrl="N" original="Process">Process</value>
+  </row>
+  <row id="8E53827F8E4A40C49DD5A4BE886B299A" trl="N">
+    <value column="Text" isTrl="N" original="Reemplazo">Reemplazo</value>
+  </row>
+  <row id="927EAE09F63A4B87B3118BB5AE26432A" trl="N">
+    <value column="Text" isTrl="N" original="Teléfono :">Teléfono :</value>
+  </row>
+  <row id="95E87A664F0248A2A44147FFE018EE14" trl="N">
+    <value column="Text" isTrl="N" original="Total Descuento:">Total Descuento:</value>
+  </row>
+  <row id="95FCC30E0C99447385886E57E1BECC7D" trl="N">
+    <value column="Text" isTrl="N" original="zz">zz</value>
+  </row>
+  <row id="9D9083F55B4B4B7F97CC2F4A5D7FC899" trl="N">
+    <value column="Text" isTrl="N" original="Call out response page">Call out response page</value>
+  </row>
+  <row id="A3AC6262E77849EEB62A3B7267052171" trl="N">
+    <value column="Text" isTrl="N" original="Accept">Accept</value>
+  </row>
+  <row id="A6239AB6739A4989875D3E690C5F8D68" trl="N">
+    <value column="Text" isTrl="N" original="Tipo :">Tipo :</value>
+  </row>
+  <row id="A9FE19DF4B2044249C69380081C1BF2C" trl="N">
+    <value column="Text" isTrl="N" original="Item you have marked as cleared">Item you have marked as cleared</value>
+  </row>
+  <row id="AF6D83F3F10541699188EB2CDBBAB1AF" trl="N">
+    <value column="Text" isTrl="N" original="Fecha :">Fecha :</value>
+  </row>
+  <row id="AF6DA763E33C446DB4AA43FF0C21600A" trl="N">
+    <value column="Text" isTrl="N" original="No Orden de Servicio :">No Orden de Servicio :</value>
+  </row>
+  <row id="B01B6357EDCD40358BACA44B5ED3DAF0" trl="N">
+    <value column="Text" isTrl="N" original="V. iva">V. iva</value>
+  </row>
+  <row id="B1F5CDE87B5E419D828641A7AB39D624" trl="N">
+    <value column="Text" isTrl="N" original="Account">Account</value>
+  </row>
+  <row id="B45677C96C924990AD2F1385AC93E09B" trl="N">
+    <value column="Text" isTrl="N" original="Copy lines from order">Copy lines from order</value>
+  </row>
+  <row id="B8A592BF14C54BB586BA8A7E54116383" trl="N">
+    <value column="Text" isTrl="N" original="Color :">Color :</value>
+  </row>
+  <row id="B96355FF67DA44C8B631C45F51C40C33" trl="N">
+    <value column="Text" isTrl="N" original="Hide cleared">Hide cleared</value>
+  </row>
+  <row id="B9FDD8ED15D94416BB6563D5BEDD1078" trl="N">
+    <value column="Text" isTrl="N" original="% Dscto">% Dscto</value>
+  </row>
+  <row id="BD6817E16DC94DC5A935302B514B0CE7" trl="N">
+    <value column="Text" isTrl="N" original="Business Partner">Business Partner</value>
+  </row>
+  <row id="C063DEA73B5E447488C9D937E08336D6" trl="N">
+    <value column="Text" isTrl="N" original="(this is the result of the last reconciliation)">(this is the result of the last reconciliation)</value>
+  </row>
+  <row id="C116474CE93D4DAE8B901DB9C72B2C1A" trl="N">
+    <value column="Text" isTrl="N" original="Año :">Año :</value>
+  </row>
+  <row id="C12EB9AA7EA24543801D14FBEB551415" trl="N">
+    <value column="Text" isTrl="N" original="Subtotal">Subtotal</value>
+  </row>
+  <row id="C2DF59F4AC1C4C5996A274663A409E21" trl="N">
+    <value column="Text" isTrl="N" original="Dirección :">Dirección :</value>
+  </row>
+  <row id="C8AAEAC9B8454415AA2009949EE54BDB" trl="N">
+    <value column="Text" isTrl="N" original="Precio Unitario">Precio Unitario</value>
+  </row>
+  <row id="CB8DDB97E0A2479DB8165C55143A008C" trl="N">
+    <value column="Text" isTrl="N" original="Details">Details</value>
+  </row>
+  <row id="CBB59FFC9DCF495AB5B7E16CFA407050" trl="N">
+    <value column="Text" isTrl="N" original="No Chasis :">No Chasis :</value>
+  </row>
+  <row id="CD3F4E15363C4B26A01625B37FE0A0EE" trl="N">
+    <value column="Text" isTrl="N" original="Dirección :">Dirección :</value>
+  </row>
+  <row id="D36F37478D1A44F98949B313E848B601" trl="N">
+    <value column="Text" isTrl="N" original="Categoría de Producto:">Categoría de Producto:</value>
+  </row>
+  <row id="D76E41DB7F4A4CE09F89377EB2A06C29" trl="N">
+    <value column="Text" isTrl="N" original="No Chasis :">No Chasis :</value>
+  </row>
+  <row id="D94BC8448E174AF099A9ED38B21B5FF9" trl="N">
+    <value column="Text" isTrl="N" original="Modelo :">Modelo :</value>
+  </row>
+  <row id="DF476E1872B64EB3948B6A4309E2E3A2" trl="N">
+    <value column="Text" isTrl="N" original="Impuestos">Impuestos</value>
+  </row>
+  <row id="E267EF98488741AD93366189977DE558" trl="N">
+    <value column="Text" isTrl="N" original="Currently cleared">Currently cleared</value>
+  </row>
+  <row id="E3189B3ED9824F03AA23FA78685CD2FB" trl="N">
+    <value column="Text" isTrl="N" original="Ending Balance">Ending Balance</value>
+  </row>
+  <row id="E66BC5D050B94CBC901392EAE4E59EE6" trl="N">
+    <value column="Text" isTrl="N" original="Productos de Orden de Servico Pendientes">Productos de Orden de Servico Pendientes</value>
+  </row>
+  <row id="E9CDF75FAE974D95AC236A63FBAD04A3" trl="N">
+    <value column="Text" isTrl="N" original="Received in">Received in</value>
+  </row>
+  <row id="EAD787FBDCCB4EC9BA24C3433A85338C" trl="N">
+    <value column="Text" isTrl="N" original="* The value entered is not valid.">* The value entered is not valid.</value>
+  </row>
+  <row id="F335B608B2AE4A9E8DA0910AD290A456" trl="N">
+    <value column="Text" isTrl="N" original="Mecanico:">Mecanico:</value>
+  </row>
+  <row id="F79418201EB84198A2B08F50050E6AC9" trl="N">
+    <value column="Text" isTrl="N" original="(this is what the statement says)">(this is what the statement says)</value>
+  </row>
+  <row id="FF815638C1F04FE7A8B3E1C495D777CE" trl="N">
+    <value column="Text" isTrl="N" original="Save">Save</value>
+  </row>
+  <row id="FFB985852EF44C38A52C3B1541347E9C" trl="N">
+    <value column="Text" isTrl="N" original="Reconciliation">Reconciliation</value>
+  </row>
+</compiereTrl>

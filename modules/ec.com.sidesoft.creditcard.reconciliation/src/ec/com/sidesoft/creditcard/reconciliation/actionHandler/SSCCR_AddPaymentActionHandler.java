@@ -98,12 +98,12 @@ public class SSCCR_AddPaymentActionHandler extends AddPaymentActionHandler {
   @Override
   protected JSONObject doExecute(Map<String, Object> parameters, String content) {
     // super.execute(info);
-
     JSONObject jsonResponse = new JSONObject();
-    OBContext.setAdminMode(true);
+    
     boolean openedFromMenu = false;
     String comingFrom = null;
     try {
+      OBContext.setAdminMode(true);
       VariablesSecureApp vars = RequestContext.get().getVariablesSecureApp();
       // Get Params
       JSONObject jsonRequest = new JSONObject(content);
@@ -355,11 +355,9 @@ public class SSCCR_AddPaymentActionHandler extends AddPaymentActionHandler {
                   financialAccount.setSsccrRecapno(jsonparams.getString("reference_no"));
                 }
                 try {
-                  OBContext.setAdminMode(true);
                   OBDal.getInstance().save(financialAccount);
                   OBDal.getInstance().flush();
                 } finally {
-                  OBContext.restorePreviousMode();
                 }
               }
             }
@@ -449,10 +447,12 @@ public class SSCCR_AddPaymentActionHandler extends AddPaymentActionHandler {
     }
 
     DocumentType documentType = FIN_Utility.getDocumentType(org, isReceipt ? "ARR" : "APP");
-    if (strPaymentDocumentType != null
-    	    && !strPaymentDocumentType.trim().isEmpty()
-    	    && !"null".equalsIgnoreCase(strPaymentDocumentType.trim()))  {
+    if (strPaymentDocumentType != null && !strPaymentDocumentType.trim().equals("") && !strPaymentDocumentType.trim().equals("null") ) {
       documentType = OBDal.getInstance().get(DocumentType.class, strPaymentDocumentType.trim());
+    }
+    if (documentType == null) {
+	String messag = "Tipo de Documento no encontrado para esta operacion.";
+	throw new OBException(messag, false);
     }
     String strDocBaseType = documentType.getDocumentCategory();
 
@@ -475,7 +475,6 @@ public class SSCCR_AddPaymentActionHandler extends AddPaymentActionHandler {
       strPaymentDocumentNo = FIN_Utility.getDocumentNo(documentType, "FIN_Payment");
     }
 
-    OBContext.setAdminMode(false);
     try {
       FIN_Payment payment = (new AdvPaymentMngtDao()).getNewPayment(isReceipt, org, documentType,
           strPaymentDocumentNo, bPartner, paymentMethod, finAccount, strPaymentAmount, paymentDate,
@@ -483,7 +482,6 @@ public class SSCCR_AddPaymentActionHandler extends AddPaymentActionHandler {
       OBDal.getInstance().getConnection(true).commit();
       return payment;
     } finally {
-      OBContext.restorePreviousMode();
     }
   }
 
@@ -859,7 +857,6 @@ public class SSCCR_AddPaymentActionHandler extends AddPaymentActionHandler {
       boolean isPayment) {
     // Checks if this step is configured to generate accounting for the selected financial account
     boolean confirmation = false;
-    OBContext.setAdminMode(true);
     try {
       OBCriteria<FinAccPaymentMethod> obCriteria = OBDal.getInstance()
           .createCriteria(FinAccPaymentMethod.class);
@@ -915,7 +912,6 @@ public class SSCCR_AddPaymentActionHandler extends AddPaymentActionHandler {
     } catch (Exception e) {
       return confirmation;
     } finally {
-      OBContext.restorePreviousMode();
     }
     return confirmation;
   }

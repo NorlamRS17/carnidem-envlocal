@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SCPLAG_GENERATE_LOT">
+    <function name="SCPLAG_GENERATE_LOT" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[pRecordId VARCHAR(60);
+    pDocAction VARCHAR(60);
+    pUserID VARCHAR(60);
+    vResultStr VARCHAR2(2000):='';
+    vAttributeSetInstanceID VARCHAR2(32):='';
+    vClientID VARCHAR(32);
+    vAttributeValueID VARCHAR(32);
+    vDate VARCHAR(120):='';
+    vLot VARCHAR(120):='';
+    vValue VARCHAR(120):='';
+    vCountAttributes NUMBER;
+
+    TYPE RECORD IS REF CURSOR;
+    cParams RECORD;
+    cClient RECORD;
+    cProduct RECORD;
+    cAttributes RECORD;
+    cAttributeValue RECORD;
+BEGIN
+
+    FOR cParams IN (
+        SELECT *
+        FROM ad_ep_instance_para
+        WHERE ad_ep_instance_id = p_ep_instance
+    ) LOOP
+        IF cParams.parametername = 'DocAction' THEN
+            pDocAction := cParams.p_string;
+        ELSIF cParams.parametername = 'Record_ID' THEN
+            pRecordId := cParams.p_string;
+        ELSIF cParams.parametername = 'User' THEN
+            pUserID := cParams.p_string;
+        END IF;
+    END LOOP;
+
+    --Get Client
+    FOR cClient IN (
+        SELECT ad_client_id 
+        FROM ad_client 
+        WHERE ad_client_id not in ('0')
+    ) LOOP
+        vClientID := cClient.ad_client_id;
+        EXIT;
+    END LOOP;
+
+    FOR cProduct IN (
+        SELECT p.m_attributeset_id,prl.line,movementqty,prl.m_product_id,endtime
+        ,m_productionline_id,COALESCE(p.EM_Eei_Alternativeidentifier,'-') as alternativecode
+        ,em_slplag_package as package
+        FROM m_productionline prl
+        JOIN m_productionplan pp ON pp.m_productionplan_id=prl.m_productionplan_id
+        JOIN m_product p ON p.m_product_id=prl.m_product_id
+        WHERE /*prl.m_attributesetinstance_id IS NULL AND */productiontype='+'
+        AND prl.m_productionplan_id = pRecordId
+        AND p.m_attributeset_id IS NOT NULL
+        ORDER BY prl.line
+    ) LOOP
+        SELECT COUNT(*) 
+        INTO vCountAttributes
+        FROM m_attributeset s 
+        LEFT JOIN m_attributeuse u ON u.m_attributeset_id=s.m_attributeset_id
+        LEFT JOIN m_attribute a ON a.m_attribute_id=u.m_attribute_id
+        WHERE s.m_attributeset_id = cProduct.m_attributeset_id
+        AND u.isactive='Y';
+
+        -- RAISE NOTICE '%', cProduct.line ||' '||cProduct.movementqty||' '||cProduct.m_product_id||' '||vCountAttributes; --OBTG:-20200--
+        --Generate Format date
+        vDate := concat(TO_CHAR(cProduct.endtime,'dd') ,scplag_monthtoletters(to_number(TO_CHAR(cProduct.endtime,'MM'))) ,TO_CHAR(cProduct.endtime,'YY'));
+
+        IF vCountAttributes = 1 THEN 
+            vLot := concat(vDate);
+        END IF;
+        IF vCountAttributes > 1 THEN 
+            vLot := concat('L','_','V','_',cProduct.alternativecode,'_',vDate);
+        END IF;
+
+        --Generate attribute General
+        vAttributeSetInstanceID := get_uuid();
+
+        INSERT INTO m_attributesetinstance
+        (m_attributesetinstance_id, ad_client_id, ad_org_id,createdby, updatedby, m_attributeset_id,description)  
+        VALUES (vAttributeSetInstanceID, vClientID,'0','100','100',cProduct.m_attributeset_id,vLot);
+        FOR cAttributes IN (
+            SELECT a.m_attribute_id,a.name, 
+            CASE WHEN a.name ilike '%fecha%' THEN 'F' 
+            WHEN a.name ilike '%envase%' THEN 'E'
+            WHEN a.name ilike '%numero%' THEN 'N'
+            WHEN a.name ilike '%prefijo%' THEN 'P'
+            ELSE 'N' END as typeatt
+            FROM m_attributeset s 
+            LEFT JOIN m_attributeuse u ON u.m_attributeset_id=s.m_attributeset_id
+            LEFT JOIN m_attribute a ON a.m_attribute_id=u.m_attribute_id
+            WHERE s.m_attributeset_id = cProduct.m_attributeset_id
+            AND u.isactive='Y'
+            ORDER BY u.seqno
+        ) LOOP
+            -- RAISE NOTICE '%', cAttributes.name; --OBTG:-20200--
+            IF cAttributes.typeatt = 'F' THEN 
+                vValue := vDate; 
+            elsif cAttributes.typeatt = 'E' then
+                FOR cAttributeValue IN (
+                    SELECT name,m_attributevalue_id 
+                    FROM m_attributevalue
+                    WHERE m_attribute_id = cAttributes.m_attribute_id
+                    AND name = cProduct.package
+                ) LOOP
+                    vAttributeValueID := cAttributeValue.m_attributevalue_id;
+                    vValue := cAttributeValue.name;
+                    EXIT;
+                END LOOP;
+            elsif cAttributes.typeatt = 'N' then
+                vValue := cProduct.alternativecode;
+            elsif cAttributes.typeatt = 'P' then
+                FOR cAttributeValue IN (
+                    SELECT name,m_attributevalue_id 
+                    FROM m_attributevalue
+                    WHERE m_attribute_id = cAttributes.m_attribute_id
+                ) LOOP
+                    vAttributeValueID := cAttributeValue.m_attributevalue_id;
+                    vValue := cAttributeValue.name;
+                    EXIT;
+                END LOOP; 
+            END IF;
+            --Generate attribute value
+            INSERT INTO m_attributeinstance
+            (m_attributeinstance_id, m_attributesetinstance_id, m_attribute_id, ad_client_id, 
+            ad_org_id, createdby,updatedby,m_attributevalue_id,value) 
+            VALUES (get_uuid(),vAttributeSetInstanceID,cAttributes.m_attribute_id,vClientID,'0','100','100',vAttributeValueID,vValue);
+            vAttributeValueID := null;
+        END LOOP; 
+        
+        IF vCountAttributes > 1 THEN 
+            UPDATE m_attributesetinstance SET description = two.value
+            FROM (
+                SELECT STRING_AGG(i.value,'_' ORDER BY u.seqno) as value,si.m_attributesetinstance_id
+                FROM m_attributesetinstance si
+                JOIN m_attributeinstance i ON i.m_attributesetinstance_id=si.m_attributesetinstance_id
+                LEFT JOIN m_attributeset s ON s.m_attributeset_id=si.m_attributeset_id
+                LEFT JOIN m_attributeuse u ON u.m_attributeset_id=s.m_attributeset_id AND i.m_attribute_id=u.m_attribute_id
+                WHERE si.m_attributesetinstance_id = vAttributeSetInstanceID
+                GROUP BY si.m_attributesetinstance_id
+            ) two
+            WHERE m_attributesetinstance.m_attributesetinstance_id=two.m_attributesetinstance_id;
+        END IF;
+        --Update Line
+        UPDATE m_productionline SET m_attributesetinstance_id = vAttributeSetInstanceID 
+        WHERE m_productionline_id=cProduct.m_productionline_id;
+
+    END LOOP; 
+    
+    EXCEPTION WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('scplag_generate_lot exception: '|| vResultStr);
+    RAISE;
+END SCPLAG_GENERATE_LOT
+]]></body>
+    </function>
+  </database>

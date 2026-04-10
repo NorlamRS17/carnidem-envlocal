@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="53FAED4999F840178E57D56427D9855E" trl="N">
+    <value column="Name" isTrl="N" original="Form_Type">Form_Type</value>
+    <value column="PrintName" isTrl="N" original="Form_Type">Form_Type</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7C0F2180AA9B46A0A99D87249B27510F" trl="Y">
+    <value column="Name" isTrl="N" original="Popular">Popular</value>
+    <value column="PrintName" isTrl="N" original="Popular">Popular</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7F89A8BB093743D0BA285D87EA150BD0" trl="N">
+    <value column="Name" isTrl="N" original="Scritps Formulary">Scritps Formulary</value>
+    <value column="PrintName" isTrl="N" original="Scritps Formulary">Scritps Formulary</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

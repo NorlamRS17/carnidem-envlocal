@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCOMST_UNPAID_COMMISSION_TRG">
+    <trigger name="SCOMST_UNPAID_COMMISSION_TRG" table="SCOMST_UNPAID_COMMISSION" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[ 
+	v_C_Currency_ID		VARCHAR2(32);
+	v_ConvDate		 DATE;
+
+	v_AmtSubtract	 NUMBER;
+	v_AmtMultiplier	 NUMBER;
+	v_QtySubtract	 NUMBER;
+	v_QtyMultiplier	 NUMBER;
+	v_IsPositiveOnly	CHAR(1);
+	v_Result		 NUMBER;
+	
+	vCommissionID		VARCHAR2(32);
+    vBasisStatus		VARCHAR2(60);
+	vPercentage		 NUMBER;
+    
+BEGIN
+    
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;
+	END IF;
+
+	IF INSERTING OR UPDATING THEN
+		-- Get Info From CommissionRun
+		SELECT cr.StartDate,
+			c.C_Currency_ID,
+			c.C_Commission_ID,
+			cr.EM_SCOMST_BasisStatus
+			INTO
+			v_ConvDate,
+			v_C_Currency_ID,
+			vCommissionID,
+			vBasisStatus
+		FROM C_CommissionAmt ca
+			JOIN C_CommissionRun cr ON cr.C_CommissionRun_ID = ca.C_CommissionRun_ID
+			JOIN C_Commission c ON c.C_Commission_ID = cr.C_Commission_ID
+		WHERE ca.C_CommissionAmt_ID = :NEW.C_CommissionAmt_ID;
+		
+		-- Convert
+		:NEW.ConvertedAmt := C_Currency_Convert(:NEW.ActualAmt, :NEW.C_Currency_ID, v_C_Currency_ID, v_ConvDate, 'S', :NEW.AD_Client_ID, :NEW.AD_Org_ID);
+
+		-- Get Info From CommissionLine
+		SELECT cl.AmtSubtract, cl.AmtMultiplier, cl.QtySubtract, cl.QtyMultiplier, cl.IsPositiveOnly
+			INTO v_AmtSubtract, v_AmtMultiplier, v_QtySubtract, v_QtyMultiplier, v_IsPositiveOnly
+		FROM C_CommissionLine cl
+			JOIN C_CommissionAmt ca ON ca.C_CommissionLine_ID = cl.C_CommissionLine_ID
+		WHERE ca.C_CommissionAmt_ID = :NEW.C_CommissionAmt_ID;
+		
+		IF vBasisStatus = 'SCOMST_CBCSMP' THEN
+			SELECT COALESCE(sale_percentage_paid,0)/100 INTO vPercentage
+			FROM scomst_sales_budget sb
+				JOIN C_CommissionRun cr ON cr.C_CommissionRun_ID = sb.C_CommissionRun_ID AND cr.C_Commission_ID = vCommissionID
+			WHERE CASE
+				WHEN (TO_CHAR(:NEW.DateInvoiced,'YYYY-MM')||'-01')::DATE <= (TO_CHAR(v_ConvDate,'YYYY-MM')||'-01')::DATE
+					THEN TO_CHAR(cr.StartDate,'YYYY-MM') = TO_CHAR(:NEW.DateInvoiced,'YYYY-MM')
+				ELSE TO_CHAR(cr.StartDate,'YYYY-MM') = TO_CHAR(v_ConvDate,'YYYY-MM')
+			END;
+			:NEW.commission_amount := :NEW.ConvertedAmt * COALESCE(vPercentage,0);
+		ELSE
+			:NEW.commission_amount := :NEW.ConvertedAmt * v_AmtMultiplier;
+		END IF;
+		
+	END IF;
+	
+	END SCOMST_UNPAID_COMMISSION_TRG
+]]></body>
+    </trigger>
+  </database>

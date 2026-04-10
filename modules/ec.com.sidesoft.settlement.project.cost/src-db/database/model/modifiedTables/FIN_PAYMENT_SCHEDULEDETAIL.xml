@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_PAYMENT_SCHEDULEDETAIL">
+    <table name="FIN_PAYMENT_SCHEDULEDETAIL" primaryKey="FIN_PAYMENT_SCHEDULEDETAIL_KEY">
+      <column name="EM_SSTPC_ISLIQUIDATED" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <check name="EM_SSTPC_FP_ISLIQUIDATED_CHK"><![CDATA[EM_SSTPC_ISLIQUIDATED IN ('Y', 'N')]]></check>
+    </table>
+  </database>

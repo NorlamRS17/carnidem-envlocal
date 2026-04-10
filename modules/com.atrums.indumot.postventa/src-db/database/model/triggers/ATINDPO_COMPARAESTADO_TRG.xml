@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ATINDPO_COMPARAESTADO_TRG">
+    <trigger name="ATINDPO_COMPARAESTADO_TRG" table="ATINDPO_POSTVENTALINEA" fires="before" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[v_mensaje VARCHAR;
+
+BEGIN
+select docstatus into v_mensaje from atindpo_postventa where atindpo_postventa_id = :new.atindpo_postventa_id;
+
+		IF(INSERTING)THEN
+             if (v_mensaje<>'EP' and v_mensaje<>'EE')then
+		raise exception '%', 'La orden de servicio debe estar estado “En proceso”';
+             end if;
+
+		RETURN NEW;
+			
+		END IF;
+END ATINDPO_COMPARAESTADO_TRG
+]]></body>
+    </trigger>
+  </database>

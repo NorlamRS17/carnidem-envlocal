@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="23755BE5FDA9449EB6A6F46F3AC2D510" trl="N">
+    <value column="Text" isTrl="N" original="LIBRO MAYOR DETALLADO">LIBRO MAYOR DETALLADO</value>
+  </row>
+  <row id="39EDA1536AF74BCB8F444072C132F8F3" trl="N">
+    <value column="Text" isTrl="N" original="Producto">Producto</value>
+  </row>
+  <row id="40B17C311D7341B3A39B0D54C0D37CF1" trl="N">
+    <value column="Text" isTrl="N" original="Cta. No.">Cta. No.</value>
+  </row>
+  <row id="4AA7FDD364B94519A3DA2AB7D71C22AF" trl="N">
+    <value column="Text" isTrl="N" original="FECHA:">FECHA:</value>
+  </row>
+  <row id="53C36188B7D24B3D90A3C5C10DA90248" trl="N">
+    <value column="Text" isTrl="N" original="Saldo">Saldo</value>
+  </row>
+  <row id="55B13506F1C747089C9BD8EFCE0ED184" trl="N">
+    <value column="Text" isTrl="N" original="Acct. No.">Acct. No.</value>
+  </row>
+  <row id="629100206E2748E3B310B3A429EFD333" trl="N">
+    <value column="Text" isTrl="N" original="Fecha hasta:">Fecha hasta:</value>
+  </row>
+  <row id="6CAA63332FD94D3A822C33E5170D835B" trl="N">
+    <value column="Text" isTrl="N" original="Descripción Transacción">Descripción Transacción</value>
+  </row>
+  <row id="6CD13FE7FFA94ABF9D775CFF8CA5D247" trl="N">
+    <value column="Text" isTrl="N" original="Descripción">Descripción</value>
+  </row>
+  <row id="6E0442E682384A6193A1694C01B35A84" trl="N">
+    <value column="Text" isTrl="N" original="Subtotal">Subtotal</value>
+  </row>
+  <row id="718F05498D7749D5BAA60C2E2FA137A5" trl="N">
+    <value column="Text" isTrl="N" original="Fecha desde:">Fecha desde:</value>
+  </row>
+  <row id="886E64283DE640F1B6C62D9CF5984582" trl="N">
+    <value column="Text" isTrl="N" original="Cuenta hasta:">Cuenta hasta:</value>
+  </row>
+  <row id="9C084EB30E4040F3A6EF2B208401D5CD" trl="N">
+    <value column="Text" isTrl="N" original="Fecha">Fecha</value>
+  </row>
+  <row id="9EB86F69A4A44DA79EA03482FC0F90F4" trl="N">
+    <value column="Text" isTrl="N" original="Tercero">Tercero</value>
+  </row>
+  <row id="A5E9FBECECB54FFF9625635DDD10EB60" trl="N">
+    <value column="Text" isTrl="N" original="Haber">Haber</value>
+  </row>
+  <row id="A6E389C31ADD47B88C88EED7FA94BD26" trl="N">
+    <value column="Text" isTrl="N" original="No. Documento">No. Documento</value>
+  </row>
+  <row id="AEA15470FE8D4424AB3AA1F5CBC59265" trl="N">
+    <value column="Text" isTrl="N" original="Nombre de cuenta">Nombre de cuenta</value>
+  </row>
+  <row id="B2A98546EF694137942A6182A70F0EC1" trl="N">
+    <value column="Text" isTrl="N" original="Cuenta desde:">Cuenta desde:</value>
+  </row>
+  <row id="C66F7A295AD94421B04479307F950050" trl="N">
+    <value column="Text" isTrl="N" original="Autorizado por">Autorizado por</value>
+  </row>
+  <row id="D9A3FB004DD9462BB3806486337C0789" trl="N">
+    <value column="Text" isTrl="N" original="PÁGINA:">PÁGINA:</value>
+  </row>
+  <row id="D9D5866F753941218AC9AE3677E11439" trl="N">
+    <value column="Text" isTrl="N" original="USUARIO:">USUARIO:</value>
+  </row>
+  <row id="DE98E92902A24233A32AC7FCE6C4E7C7" trl="N">
+    <value column="Text" isTrl="N" original="Elaborado por">Elaborado por</value>
+  </row>
+  <row id="E676E4F7959B4A98BA2255C88C424D34" trl="N">
+    <value column="Text" isTrl="N" original="/ec/com/sidesoft/accounting/general/ledger/ad_Reports/ReportGeneralLedgerDetailed.jrxml">/ec/com/sidesoft/accounting/general/ledger/ad_Reports/ReportGeneralLedgerDetailed.jrxml</value>
+  </row>
+  <row id="E6F31CC73D404E2E91E7729BAC97C4D4" trl="N">
+    <value column="Text" isTrl="N" original="Projecto">Projecto</value>
+  </row>
+  <row id="EA01ECCFA7914D8095962B64BCCE09F7" trl="N">
+    <value column="Text" isTrl="N" original="Debe">Debe</value>
+  </row>
+  <row id="EABF9ADF618D4A1E8748E3C85A3ED9BE" trl="N">
+    <value column="Text" isTrl="N" original="Revisado por">Revisado por</value>
+  </row>
+  <row id="EC642731DF9F49BD8D6A0926B25C3EA8" trl="N">
+    <value column="Text" isTrl="N" original="Aprobado por">Aprobado por</value>
+  </row>
+</compiereTrl>

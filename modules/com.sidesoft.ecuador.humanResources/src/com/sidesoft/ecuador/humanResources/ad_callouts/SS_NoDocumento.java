@@ -19,31 +19,91 @@
 //package org.openbravo.erpCommon.ad_callouts;
 package com.sidesoft.ecuador.humanResources.ad_callouts;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.math.BigDecimal;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
+import org.hibernate.criterion.Expression;
+import org.openbravo.base.secureApp.HttpSecureAppServlet;
+import org.openbravo.base.secureApp.VariablesSecureApp;
+import org.openbravo.dal.core.OBContext;
+import org.openbravo.dal.service.OBCriteria;
+import org.openbravo.dal.service.OBDal;
+import org.openbravo.data.FieldProvider;
+//import org.openbravo.erpCommon.businessUtility.BpartnerMiscData;
+//importar el xsql - en estecaso desde eldirectorio - pakete
 
-public class SS_NoDocumento extends SimpleCallout {
+import org.openbravo.erpCommon.businessUtility.Preferences;
+import org.openbravo.erpCommon.utility.ComboTableData;
+import org.openbravo.erpCommon.utility.PropertyException;
+import org.openbravo.erpCommon.utility.PropertyNotFoundException;
+import org.openbravo.erpCommon.utility.Utility;
+import org.openbravo.model.common.businesspartner.BusinessPartner;
+import org.openbravo.model.financialmgmt.payment.FIN_FinancialAccount;
+import org.openbravo.model.financialmgmt.payment.FIN_PaymentMethod;
+import org.openbravo.model.financialmgmt.payment.FinAccPaymentMethod;
+import org.openbravo.utils.FormatUtilities;
+import org.openbravo.xmlEngine.XmlDocument;
 
+public class SS_NoDocumento extends HttpSecureAppServlet 
+{
   private static final long serialVersionUID = 1L;
 
-  @Override
-  protected void execute(CalloutInfo info) throws ServletException {
+  public void init(ServletConfig config) {
+    super.init(config);
+    boolHist = false;
+  }
+  
+//recibe la llamada al servelet
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException,ServletException 
+  {
+    VariablesSecureApp vars = new VariablesSecureApp(request);
+    if (vars.commandIn("DEFAULT")) 
+    {
+      String strChanged = vars.getStringParameter("inpLastFieldChanged"); //recupera el valor de la pgina web
+	  
+      if (log4j.isDebugEnabled())
+        log4j.debug("CHANGED: " + strChanged);
+      String strReason = vars.getStringParameter("inpsshrPartnerId");
+      
+	   try {
+	        printPage(response, vars, strReason);
+	       } 
+	   catch (ServletException ex) 
+	       {
+	        pageErrorCallOut(response);
+	       }
+    } 
+    else
+    	  pageError(response);
+  }
 
-    // Obtiene el valor del campo que dispara el callout
-    String strPartnerId = info.getStringParameter("inpsshrPartnerId", null);
+  private void printPage(HttpServletResponse response, VariablesSecureApp vars, String strReason) throws IOException, ServletException 
+  {
+    if (log4j.isDebugEnabled())
+      log4j.debug("Output: dataSheet");
+    XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_callouts/CallOut").createXmlDocument();
 
-    if (strPartnerId == null || strPartnerId.trim().isEmpty()) {
-      return;
+    SSNoDocumentoData[] data = SSNoDocumentoData.select(this, strReason);
+    StringBuffer resultado = new StringBuffer();
+    
+    resultado.append("var calloutName='SS_NoDocumento';\n\n");
+    resultado.append("var respuesta = new Array(");
+    if (data != null && data.length > 0) 
+    {
+		resultado.append("new Array(\"inpemSsprDocumentno\", \"" + data[0].ci + "\")\n");
     }
-
-    // Ejecuta la misma consulta que en el callout legacy
-    SSNoDocumentoData[] data = SSNoDocumentoData.select(this, strPartnerId);
-
-    if (data != null && data.length > 0 && data[0].ci != null) {
-      // Asigna el valor al campo destino
-      info.addResult("inpemSsprDocumentno", data[0].ci);
-    }
+    resultado.append(");\n");
+    xmlDocument.setParameter("array", resultado.toString());
+    xmlDocument.setParameter("frameName", "appFrame");
+    response.setContentType("text/html; charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    out.println(xmlDocument.print());
+    out.close();
   }
 }
-

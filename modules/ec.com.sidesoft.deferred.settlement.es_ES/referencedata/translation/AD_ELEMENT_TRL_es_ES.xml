@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="3382DAF1D2354CF2A5C9C1B15F354CEE" trl="Y">
+    <value column="Name" isTrl="Y" original="G/L Category">Categoría Libro Mayor</value>
+    <value column="PrintName" isTrl="Y" original="G/L Category">Categoría Libro Mayor</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6F685204DDE74C218A0522D283D4A35D" trl="Y">
+    <value column="Name" isTrl="Y" original="Deferred Settlement">Liquidación de Diferidos</value>
+    <value column="PrintName" isTrl="Y" original="Deferred Settlement">Liquidación de Diferidos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7F153570FC7F4C80A96EB7F79ADDD382" trl="Y">
+    <value column="Name" isTrl="Y" original="Deferred Cross">Diferido Cruzado</value>
+    <value column="PrintName" isTrl="Y" original="Deferred Cross">Diferido Cruzado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="AC2D4C44DBB1404CBAA109BBE84EF054" trl="Y">
+    <value column="Name" isTrl="Y" original="Document Type">Tipo de Documento</value>
+    <value column="PrintName" isTrl="Y" original="Document Type">Tipo de Documento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B7DCE89771064726B05CFAE7532365AC" trl="Y">
+    <value column="Name" isTrl="Y" original="Crossing Date">Fecha de Cruce</value>
+    <value column="PrintName" isTrl="Y" original="Crossing Date">Fecha de Cruce</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C9DA042F9DF345D7B07E8AB526CEA6A2" trl="Y">
+    <value column="Name" isTrl="Y" original="Accounting Scheme">Esquema contable</value>
+    <value column="PrintName" isTrl="Y" original="Accounting Scheme">Esquema contable</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

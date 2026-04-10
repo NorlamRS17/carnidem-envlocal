@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="9C8229F08786432D8EDF97596E879E89" trl="N">
+    <value column="Name" isTrl="N" original="Recurring Rule">Recurring Rule</value>
+    <value column="Description" isTrl="N" original="Maintain recurring rule">Maintain recurring rule</value>
+  </row>
+  <row id="DA492D4434A94A3FBCDAFECD3B870D42" trl="N">
+    <value column="Name" isTrl="N" original="Recurring Template Type">Recurring Template Type</value>
+    <value column="Description" isTrl="N" original="Define and maintain template types for recurring transactions">Define and maintain template types for recurring transactions</value>
+  </row>
+</compiereTrl>

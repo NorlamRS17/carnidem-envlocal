@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="010E4034BCDA4904A8DF52708722F041" trl="N">
+    <value column="Name" isTrl="Y" original="Import Tax">Aplicar Impuesto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="1284537672494355ADB600498D10B9C1" trl="N">
+    <value column="Name" isTrl="Y" original="Liquidate">Liquidar</value>
+    <value column="Description" isTrl="Y" original="Liquidate">Liquidar</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="364900DC81134D3FBF819F85AFF5E7EA" trl="Y">
+    <value column="Name" isTrl="Y" original="Update FOB">Actualizar FOB</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4E8E7B1290BD4B5798ACD75A83DCC65D" trl="N">
+    <value column="Name" isTrl="Y" original="Load Cost">Cargar Costos</value>
+    <value column="Description" isTrl="Y" original="Load Cost">Cargar Costos</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5665A8727B414C6AA48A68AF66ACF13C" trl="N">
+    <value column="Name" isTrl="N" original="Enserar">Enserar</value>
+    <value column="Description" isTrl="N" original="Enserar">Enserar</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="766A25C81416441EA8E50D5FEDAA3762" trl="N">
+    <value column="Name" isTrl="Y" original="Previous Settlement">Pre Liquidar</value>
+    <value column="Description" isTrl="Y" original="Previous Settlement">Pre Liquidar</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AC45A642F34449B0BFBD043C058F886C" trl="N">
+    <value column="Name" isTrl="N" original="Imports of Summary">Imports of Summary</value>
+    <value column="Description" isTrl="N" original="Imports of Summary">Imports of Summary</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B55BCEA485164065A78FA7B504DED744" trl="Y">
+    <value column="Name" isTrl="Y" original="Imports status">Estado de importaciones</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CBE8BB3D166B424DBA39E83398786CD8" trl="N">
+    <value column="Name" isTrl="Y" original="Import Report">Reporte  de Importacion</value>
+    <value column="Description" isTrl="N" original="">Reporte  de Importacion</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E5DBC347EA364C2F901CC283C1CA39A7" trl="Y">
+    <value column="Name" isTrl="Y" original="Import detail">Detalle de importaciones</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FE6104A46D1D4CCCBD2845F5FBAC573A" trl="N">
+    <value column="Name" isTrl="N" original="Print Import Report">Print Import Report</value>
+    <value column="Description" isTrl="N" original="Print Import Report">Print Import Report</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

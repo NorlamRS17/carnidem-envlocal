@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SIMPSIM_BLOCK_ISL_TRG">
+    <trigger name="SIMPSIM_BLOCK_ISL_TRG" table="SIMPSIM_IMP_SIM_LINE" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[
+	vCheck NUMBER;
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF DELETING THEN
+
+		SELECT COUNT(*) INTO vCheck
+		FROM simpsim_import_simulation
+		WHERE docstatus = 'CO' AND simpsim_import_simulation_id = :OLD.simpsim_import_simulation_id;
+		IF vCheck > 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, '@CannotDeleteTrx@');
+		END IF;
+
+	END IF;
+
+	END SIMPSIM_BLOCK_ISL_TRG
+]]></body>
+    </trigger>
+  </database>

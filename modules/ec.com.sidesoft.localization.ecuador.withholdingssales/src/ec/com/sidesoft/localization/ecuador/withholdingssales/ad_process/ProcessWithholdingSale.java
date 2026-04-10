@@ -100,7 +100,7 @@ public class ProcessWithholdingSale extends DalBaseProcess {
       OBCriteria<SSWSWithholdingSale> obcWS = OBDal.getInstance()
           .createCriteria(SSWSWithholdingSale.class);
       obcWS.add(Restrictions.eq(SSWSWithholdingSale.PROPERTY_INVOICE, record.getInvoice()));
-      obcWS.add(Restrictions.in(SSWSWithholdingSale.PROPERTY_DOCUMENTSTATUS, (Object[]) docstatus));
+      obcWS.add(Restrictions.in(SSWSWithholdingSale.PROPERTY_DOCUMENTSTATUS, docstatus));
       obcWS.add(Restrictions.not(Restrictions.eq(SSWSWithholdingSale.PROPERTY_ID, record.getId())));
       obcWS.setMaxResults(1);
       SSWSWithholdingSale sswsWitholdingOther = (SSWSWithholdingSale) obcWS.uniqueResult();

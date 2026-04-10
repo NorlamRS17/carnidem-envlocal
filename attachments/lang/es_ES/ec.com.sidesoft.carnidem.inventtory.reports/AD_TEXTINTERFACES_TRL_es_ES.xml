@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="0BC12630DD374FFDB54E273D5BF425F9" trl="N">
+    <value column="Text" isTrl="N" original="com.sidesoft.hrm.payroll/src/com/sidesoft/hrm/payroll/ad_Reports/Rpt_FinalSettlement.jrxml">com.sidesoft.hrm.payroll/src/com/sidesoft/hrm/payroll/ad_Reports/Rpt_FinalSettlement.jrxml</value>
+  </row>
+  <row id="51E6AA8BAA6A4B7080131003F3328547" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de Impresión:">Fecha de Impresión:</value>
+  </row>
+  <row id="872F48A380454B62B31FFD2B23851407" trl="N">
+    <value column="Text" isTrl="N" original="PAG.">PAG.</value>
+  </row>
+  <row id="8C3FD91F1BFB4C46A43E650B6C480F43" trl="N">
+    <value column="Text" isTrl="N" original="# FACTURA"># FACTURA</value>
+  </row>
+  <row id="AAF7A909517E493EAB94F66FBA0B5A46" trl="N">
+    <value column="Text" isTrl="N" original="Usuario:">Usuario:</value>
+  </row>
+  <row id="B47FEE0D4C724FF3BE6D06BDEEB9B1D9" trl="N">
+    <value column="Text" isTrl="N" original="FECHA">FECHA</value>
+  </row>
+  <row id="CC3FC73ECA334E6FA5332E02CD6E0EB4" trl="N">
+    <value column="Text" isTrl="N" original="TOTAL FACTURA">TOTAL FACTURA</value>
+  </row>
+  <row id="D03FD394BC1D4EA095589EC455DE7B97" trl="N">
+    <value column="Text" isTrl="N" original="CLIENTE">CLIENTE</value>
+  </row>
+  <row id="DF024E24442F44BA9455E122C7849504" trl="N">
+    <value column="Text" isTrl="N" original="TOTAL PENDIENTE">TOTAL PENDIENTE</value>
+  </row>
+  <row id="E67FD62E26AD457CB4B661CA82077E96" trl="N">
+    <value column="Text" isTrl="N" original="REPORT NAME">REPORT NAME</value>
+  </row>
+</compiereTrl>

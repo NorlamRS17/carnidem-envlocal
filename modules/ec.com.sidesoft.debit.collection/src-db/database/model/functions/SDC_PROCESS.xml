@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SDC_PROCESS">
+    <function name="SDC_PROCESS" type="NULL">
+      <parameter name="p_instance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+    v_ResultStr VARCHAR2(2000):='';
+    v_Message VARCHAR2(2000):='';
+    v_Result NUMBER:=1; -- 0=failure
+    v_count NUMBER:=0; -- 0=failure
+    v_Record_ID VARCHAR2(32);
+    v_User_ID VARCHAR2(32):='0';
+    
+    TYPE RECORD IS REF CURSOR;
+    Cur_Parameter RECORD;
+
+BEGIN
+
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || P_Instance_ID);
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(P_Instance_ID, NULL, 'Y', NULL, NULL);
+    
+    BEGIN --BODY
+        -- Get Parameters
+        v_ResultStr:='ReadingParameters';
+        FOR Cur_Parameter IN (
+            SELECT i.Record_ID, i.AD_User_ID, p.ParameterName, p.P_String, p.P_Number, p.P_Date
+            FROM AD_PInstance i
+                LEFT JOIN AD_PInstance_Para p ON i.AD_PInstance_ID = p.AD_PInstance_ID
+            WHERE i.AD_PInstance_ID = P_Instance_ID
+            ORDER BY p.SeqNo
+        ) LOOP
+            v_Record_ID := Cur_Parameter.Record_ID;
+            v_User_ID := Cur_Parameter.AD_User_ID;
+        END LOOP; -- Get Parameter
+
+        --sdc_process - Validation Extension Point
+        SELECT count(*) INTO v_count
+        FROM DUAL
+        where exists (select 1 from ad_ep_procedures where ad_extension_points_id = '5EF55AE4C3F34AE08815416B9C47CE5B');
+        IF (v_count=1) THEN
+            DECLARE
+                v_ep_instance VARCHAR2(32);
+                v_extension_point_id VARCHAR2(32) := '5EF55AE4C3F34AE08815416B9C47CE5B';
+            BEGIN
+                v_ep_instance := get_uuid();
+                AD_EP_INSTANCE_PARA_INSERT(v_ep_instance, v_extension_point_id, 'Record_ID',
+                v_record_id, NULL, NULL, NULL, NULL, NULL, NULL);
+                AD_EP_INSTANCE_PARA_INSERT(v_ep_instance, v_extension_point_id, 'User',
+                v_User_ID, NULL, NULL, NULL, NULL, NULL, NULL);
+                AD_EP_INSTANCE_PARA_INSERT(v_ep_instance, v_extension_point_id, 'Message',
+                NULL, NULL, NULL, NULL, NULL, NULL, v_Message);
+                AD_EP_INSTANCE_PARA_INSERT(v_ep_instance, v_extension_point_id, 'Result',
+                NULL, NULL, v_result, NULL, NULL, NULL, NULL);
+                AD_EXTENSION_POINT_HANDLER(v_ep_instance, v_extension_point_id);
+                SELECT p_number INTO v_Result
+                FROM ad_ep_instance_para
+                WHERE ad_ep_instance_id = v_ep_instance
+                AND parametername LIKE 'Result';
+                SELECT p_text INTO v_Message
+                FROM ad_ep_instance_para
+                WHERE ad_ep_instance_id = v_ep_instance
+                AND parametername LIKE 'Message';
+
+                DELETE FROM ad_ep_instance_para
+                WHERE ad_ep_instance_id = v_ep_instance;
+            END;
+        END IF;
+        
+        UPDATE sdc_debitcollect SET status='CO' WHERE sdc_debitcollect_id = v_Record_ID;
+
+        DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message);
+        AD_UPDATE_PINSTANCE(P_Instance_ID, NULL, 'N', v_Result, v_Message);
+
+        RETURN;
+    END; --BODY
+    
+    EXCEPTION WHEN OTHERS THEN
+        v_ResultStr:= '@ERROR=' || SQLERRM;
+        DBMS_OUTPUT.PUT_LINE( v_ResultStr) ;
+        ROLLBACK;
+        AD_UPDATE_PINSTANCE(P_Instance_ID, NULL, 'N', 0, v_ResultStr);
+END SDC_PROCESS
+]]></body>
+    </function>
+  </database>

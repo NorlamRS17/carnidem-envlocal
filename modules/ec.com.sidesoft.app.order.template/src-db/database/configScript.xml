@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.33196"/>
+    <columnDataChange tablename="AD_COLUMN" columnname="POSITION" pkRow="129935413F694BC181F0EB5C19E926FB">
+      <oldValue><![CDATA[12]]></oldValue>
+      <newValue><![CDATA[13]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISIDENTIFIER" pkRow="4738918848B3491492E829AEDE488D2D">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISIDENTIFIER" pkRow="64BBA8C414054436B66DBFB0E293F2B1">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="POSITION" pkRow="8E83BB1C83C146B6B4F2D9195EDE48AE">
+      <oldValue><![CDATA[13]]></oldValue>
+      <newValue><![CDATA[14]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="POSITION" pkRow="B26AC4102BC04F39AE4ECC3C029C6AC4">
+      <oldValue><![CDATA[14]]></oldValue>
+      <newValue><![CDATA[15]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="NAME" pkRow="2393DECB39474A9EA69DD8BF73F808E9">
+      <oldValue><![CDATA[sspitra_coll_unlink]]></oldValue>
+      <newValue><![CDATA[Unlink payment]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TABLE" columnname="AD_WINDOW_ID" pkRow="3632923A4F51427E970B411CB15FC9A5">
+      <oldValue/>
+      <newValue><![CDATA[0E6EE63BF58B4FACBFCA56E41C6164D8]]></newValue>
+    </columnDataChange>
+  </vector>

@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0BBAC88C2F5C41A38CBDEA5441FE3FDB" trl="Y">
+    <value column="Name" isTrl="Y" original="Latitude">Latitud</value>
+    <value column="PrintName" isTrl="Y" original="Latitude">Latitud</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="0F74CE9B2E2A4CC3A8A1266128A9ADFC" trl="Y">
+    <value column="Name" isTrl="Y" original="Route">Ruta</value>
+    <value column="PrintName" isTrl="Y" original="Route">Ruta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1D0DAA79E02A40CB8B95A49E768D80FA" trl="Y">
+    <value column="Name" isTrl="Y" original="Distance">Distancia</value>
+    <value column="PrintName" isTrl="Y" original="Distance">Distancia</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2775A17A9FD4497CB47DF82BA861BF7B" trl="Y">
+    <value column="Name" isTrl="Y" original="Date_From">Fecha desde</value>
+    <value column="PrintName" isTrl="Y" original="Date_From">Fecha desde</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="28880D7F93254E40A6286A7A165C729E" trl="Y">
+    <value column="Name" isTrl="Y" original="Longitude">Longitud</value>
+    <value column="PrintName" isTrl="Y" original="Longitude">Longitud</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2BED367BF53C4806BF73CED17BEB69B5" trl="N">
+    <value column="Name" isTrl="N" original="Scrvro_Vendor_Route_Config_ID">Scrvro_Vendor_Route_Config_ID</value>
+    <value column="PrintName" isTrl="N" original="Scrvro_Vendor_Route_Config_ID">Scrvro_Vendor_Route_Config_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2FE4F779D4E147B59A23A9EC0FC3BA40" trl="N">
+    <value column="Name" isTrl="N" original="Endpoint">Endpoint</value>
+    <value column="PrintName" isTrl="N" original="Endpoint">Endpoint</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="30B9A3CF9B6E4577B09794B60A9D02C2" trl="Y">
+    <value column="Name" isTrl="Y" original="Create Route JS">Crear Ruta JS</value>
+    <value column="PrintName" isTrl="Y" original="Create Route JS">Crear Ruta JS</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3BDA66E108324688B3AAB0920FCFCEF4" trl="Y">
+    <value column="Name" isTrl="Y" original="Week">Semana</value>
+    <value column="PrintName" isTrl="Y" original="Week">Semana</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3E18F6D3F2E84672993028D84871FB6C" trl="Y">
+    <value column="Name" isTrl="Y" original="Observations">Observaciones</value>
+    <value column="PrintName" isTrl="Y" original="Observations">Observaciones</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="496F7886A29342D6AABFC03F817F209E" trl="N">
+    <value column="Name" isTrl="N" original="Destination_Addresses">Destination_Addresses</value>
+    <value column="PrintName" isTrl="N" original="Destination_Addresses">Destination_Addresses</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="50279FDE81DB41EF9C78688DD9F6FCB2" trl="Y">
+    <value column="Name" isTrl="Y" original="Longitude">Longitud</value>
+    <value column="PrintName" isTrl="Y" original="Longitude">Longitud</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="50B0AED94F1D467FAF540AFE9838A733" trl="Y">
+    <value column="Name" isTrl="Y" original="Debt">Deuda</value>
+    <value column="PrintName" isTrl="Y" original="Debt">Deuda</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5BAB92978DDF418B9A8767E2AB40B1A2" trl="N">
+    <value column="Name" isTrl="N" original="Duration">Duration</value>
+    <value column="PrintName" isTrl="N" original="Duration">Duration</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="79CCE97E112C4A2B9B24D3E979A2D799" trl="N">
+    <value column="Name" isTrl="N" original="Scrvro_Optimized_Route_ID">Scrvro_Optimized_Route_ID</value>
+    <value column="PrintName" isTrl="N" original="Scrvro_Optimized_Route_ID">Scrvro_Optimized_Route_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7E3C2A50ADCC4C18AFDAFAFC34258482" trl="Y">
+    <value column="Name" isTrl="Y" original="Route_Time">Tiempo de ruta</value>
+    <value column="PrintName" isTrl="Y" original="Route_Time">Tiempo de ruta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="846BE9AD4C204266B1A3F2730814F042" trl="N">
+    <value column="Name" isTrl="N" original="Scrvro_Route_Day_ID">Scrvro_Route_Day_ID</value>
+    <value column="PrintName" isTrl="N" original="Scrvro_Route_Day_ID">Scrvro_Route_Day_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="85BA935C9EC643EEBCAC474606FB531A" trl="N">
+    <value column="Name" isTrl="N" original="Scrvro_Province_ID">Scrvro_Province_ID</value>
+    <value column="PrintName" isTrl="N" original="Scrvro_Province_ID">Scrvro_Province_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8609B64EE11C41348ED521EC86D1D03B" trl="N">
+    <value column="Name" isTrl="N" original="Scrvro_Distance_Matrix_ID">Scrvro_Distance_Matrix_ID</value>
+    <value column="PrintName" isTrl="N" original="Scrvro_Distance_Matrix_ID">Scrvro_Distance_Matrix_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8AE09B254460472AACF9BD7E7A7A19C8" trl="Y">
+    <value column="Name" isTrl="Y" original="Location_Link">Enlace de localización</value>
+    <value column="PrintName" isTrl="Y" original="Location_Link">Enlace de localización</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8BF596142698427AA09DA692FC2492DC" trl="N">
+    <value column="Name" isTrl="N" original="Scrvro_Route_ID">Scrvro_Route_ID</value>
+    <value column="PrintName" isTrl="N" original="Scrvro_Route_ID">Scrvro_Route_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="92C4815A48044BF3BB8E60CFBF2BF5D0" trl="Y">
+    <value column="Name" isTrl="Y" original="Date_To">Fecha hasta</value>
+    <value column="PrintName" isTrl="Y" original="Date_To">Fecha hasta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9EA88FC51A6543F5896257933EB3B2FF" trl="Y">
+    <value column="Name" isTrl="Y" original="Week_Detail">Detalle de semana</value>
+    <value column="PrintName" isTrl="Y" original="Week_Detail">Detalle de semana</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9ECAF4C94894485BBDAE97943695EFBE" trl="Y">
+    <value column="Name" isTrl="Y" original="Visiting Time">Tiempo entre visita</value>
+    <value column="PrintName" isTrl="Y" original="Visiting Time">Tiempo entre visita</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A0A6F59563D14B5ABCB059B7D2B9782B" trl="N">
+    <value column="Name" isTrl="N" original="Google Map API Key">Google Map API Key</value>
+    <value column="PrintName" isTrl="N" original="Google Map API Key">Google Map API Key</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A20283E84F234BA3BAD3F501BC8AAAEC" trl="N">
+    <value column="Name" isTrl="N" original="Scrvro_Route_Period_ID">Scrvro_Route_Period_ID</value>
+    <value column="PrintName" isTrl="N" original="Scrvro_Route_Period_ID">Scrvro_Route_Period_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A339C68553B94594AA818C1197A80559" trl="Y">
+    <value column="Name" isTrl="Y" original="Type">Tipo</value>
+    <value column="PrintName" isTrl="Y" original="Type">Tipo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A6B6032CD70C4F50BADBC7A97B49344D" trl="N">
+    <value column="Name" isTrl="N" original="Scrvro_Visit_ID">Scrvro_Visit_ID</value>
+    <value column="PrintName" isTrl="N" original="Scrvro_Visit_ID">Scrvro_Visit_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BD1C4816C539446CBE1EC7FC9F898CB6" trl="Y">
+    <value column="Name" isTrl="Y" original="Day">Día</value>
+    <value column="PrintName" isTrl="Y" original="Day">Día</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BF0DCBA27D674D4A97144789F7F9C49A" trl="Y">
+    <value column="Name" isTrl="Y" original="Pay Day">Día de Cobro</value>
+    <value column="PrintName" isTrl="Y" original="Pay Day">Día de Cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C740FEBC79FD4C9FACDA47F3918BFD4D" trl="N">
+    <value column="Name" isTrl="N" original="Scrvro_Vendor_Route_ID">Scrvro_Vendor_Route_ID</value>
+    <value column="PrintName" isTrl="N" original="Scrvro_Vendor_Route_ID">Scrvro_Vendor_Route_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C806440BBC6A44639EBD86A0587B3646" trl="Y">
+    <value column="Name" isTrl="Y" original="Business Agent">Agente Comercial</value>
+    <value column="PrintName" isTrl="Y" original="Business Agent">Agente Comercial</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CE3901761C0C4D928D266EDA0F934D3D" trl="N">
+    <value column="Name" isTrl="N" original="Scrvro_Vendor_Route_Line_ID">Scrvro_Vendor_Route_Line_ID</value>
+    <value column="PrintName" isTrl="N" original="Scrvro_Vendor_Route_Line_ID">Scrvro_Vendor_Route_Line_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CF259759B412468B925B441F126E1B9D" trl="Y">
+    <value column="Name" isTrl="Y" original="Visit Order">Orden de visita</value>
+    <value column="PrintName" isTrl="Y" original="Visit Order">Orden de visita</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DC7071E83BB44ED48C061BA4FE29A553" trl="N">
+    <value column="Name" isTrl="N" original="Scrvro_Route_Week_ID">Scrvro_Route_Week_ID</value>
+    <value column="PrintName" isTrl="N" original="Scrvro_Route_Week_ID">Scrvro_Route_Week_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E0819C83DA0048E28FB252C7CA677F4F" trl="N">
+    <value column="Name" isTrl="N" original="Bpartner_To">Bpartner_To</value>
+    <value column="PrintName" isTrl="N" original="Bpartner_To">Bpartner_To</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E2D54F70715D4D69B2D3986C68682244" trl="Y">
+    <value column="Name" isTrl="Y" original="# Weeks">N° Semanas</value>
+    <value column="PrintName" isTrl="Y" original="# Weeks">N° Semanas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E6E3D35A22B54E958F1D29C46E6CFE58" trl="N">
+    <value column="Name" isTrl="N" original="Create_Route">Create_Route</value>
+    <value column="PrintName" isTrl="N" original="Create_Route">Create_Route</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F3592CC2569A487E881C0276D071AAEA" trl="Y">
+    <value column="Name" isTrl="Y" original="Latitude">Latitud</value>
+    <value column="PrintName" isTrl="Y" original="Latitude">Latitud</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F575A65DEDC84F94875F9B629A444F10" trl="N">
+    <value column="Name" isTrl="N" original="Bpartner_From">Bpartner_From</value>
+    <value column="PrintName" isTrl="N" original="Bpartner_From">Bpartner_From</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="24EDA834063643B3B41B9985A695C12D" trl="N">
+    <value column="Name" isTrl="N" original="Material Consumption in Projects">Material Consumption in Projects</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4CDE774BC4F04C01BF40B1F1C2468C81" trl="N">
+    <value column="Name" isTrl="Y" original="Liquidation Projects">Liquidación de Proyectos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="66DB2790375B4E519D8F0C2D3CA4E9E8" trl="N">
+    <value column="Name" isTrl="Y" original="Consumptions">Consumos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6EBC97E4D6B448DE83BC020835BF1289" trl="N">
+    <value column="Name" isTrl="Y" original="Payments">Pagos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7C108D9983FA4C5FBB73AB162C53BC89" trl="N">
+    <value column="Name" isTrl="Y" original="Movements Product">Movimientos de Productos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A52D6AD1EEE14284A29CF012BF1C4F75" trl="N">
+    <value column="Name" isTrl="Y" original="Invoice">Facturas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="099E80FCC4B14599A203902B0B3D7196" trl="Y">
+    <value column="Name" isTrl="Y" original="Type Breakdown">Tipo Despiece</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="17D6CF491A0F4634BAA5BC87102C7B52" trl="Y">
+    <value column="Name" isTrl="Y" original="Breakdown">Despiece</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="6D5BB5082A4243A89132154F786574E4" trl="Y">
+    <value column="Name" isTrl="Y" original="Process code">Código de proceso</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

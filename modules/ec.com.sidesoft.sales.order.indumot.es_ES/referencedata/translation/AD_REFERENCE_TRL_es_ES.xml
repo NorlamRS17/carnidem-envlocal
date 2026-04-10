@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="106BBE65B5564AC985B44AB498F66E6D" trl="N">
+    <value column="Name" isTrl="Y" original="General Status">Sssoin_status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="893E23E075714795B67F540F4DCF40EC" trl="N">
+    <value column="Name" isTrl="N" original="Action Approbe List">Action Approbe List</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AA49FF91CBE54EA6928E6179E1116ECF" trl="N">
+    <value column="Name" isTrl="N" original="sssoin_reasoncancellation">sssoin_reasoncancellation</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SIMPSIM_PROCESS_SIMULATION">
+    <function name="SIMPSIM_PROCESS_SIMULATION" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult				VARCHAR2(2000);
+	vMessage			VARCHAR2(2000);
+	
+	vCheck			 NUMBER;
+	cPar				RECORD;
+	vRecord				RECORD;
+	vRecordID			VARCHAR2(32);
+	vClientID			VARCHAR2(32);
+	vOrgID				VARCHAR2(32);
+	vUserID				VARCHAR2(32);
+	
+	cCur				RECORD;
+	
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID) ;
+	vResult := 'PInstanceNotFound';
+	AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+	BEGIN
+
+		vResult := 'ReadingParameters';
+		FOR cPar IN (
+			SELECT i.Record_ID,
+				i.AD_User_ID,
+				i.AD_Client_ID,
+				i.AD_Org_ID
+			FROM AD_PInstance i
+			WHERE i.AD_PInstance_ID = PInstance_ID
+		) LOOP
+			vRecordID := cPar.Record_ID;
+			vClientID := cPar.AD_Client_ID;
+			vOrgID := cPar.AD_Org_ID;
+			vUserID := cPar.AD_User_ID;
+		END LOOP;
+		
+		SELECT * INTO vRecord FROM simpsim_import_simulation WHERE simpsim_import_simulation_id = vRecordID;
+		IF vRecord.processing = 'Y' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@DocBeingProcessed@');
+		END IF;
+		
+		SELECT COUNT(*) INTO vCheck FROM simpsim_imp_sim_line WHERE simpsim_import_simulation_id = vRecordID;
+		IF vCheck = 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, 'No existen líneas');
+		END IF;
+
+		UPDATE simpsim_import_simulation SET docstatus = 'CO' WHERE simpsim_import_simulation_id = vRecordID;
+
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage) ;
+		AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, vMessage);
+		RETURN;
+		
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+    vResult := '@ERROR='||SQLERRM;
+    DBMS_OUTPUT.PUT_LINE( vResult) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, vResult) ;
+
+    RETURN;
+END SIMPSIM_PROCESS_SIMULATION
+]]></body>
+    </function>
+  </database>

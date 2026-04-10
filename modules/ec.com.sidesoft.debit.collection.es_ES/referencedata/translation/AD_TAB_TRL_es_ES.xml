@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="1CF87B3354DD41D5B56F3986EBE4581D" trl="Y">
+    <value column="Name" isTrl="Y" original="Detail">Detalle</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6EB246850AFD444C9C4961E0BFE97907" trl="Y">
+    <value column="Name" isTrl="Y" original="Collection Proposal">Propuesta de cobros</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="Y" original="collection proposal">Propuesta de cobros</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7A9791B46170413492C2333FA6BBB1D7" trl="Y">
+    <value column="Name" isTrl="Y" original="Header">Cobros Débitos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="83B4035B5D1743F0AD59DA4650EE97F5" trl="Y">
+    <value column="Name" isTrl="Y" original="Confirmations">Confirmaciones</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="Y" original="Confirmations">Confirmaciones</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9A3A90861BE1444B860016A5A966BC54" trl="Y">
+    <value column="Name" isTrl="Y" original="Conciliated">Conciliados</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

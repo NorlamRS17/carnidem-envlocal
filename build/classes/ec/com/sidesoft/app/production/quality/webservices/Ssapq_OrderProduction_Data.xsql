@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="SsapqOrderProductionData" package="ec.com.sidesoft.app.production.quality.webservices" accessModifier="public">
+  <SqlClassComment></SqlClassComment>
+
+  <SqlMethod name="allOrganization" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	SELECT
+	    wp.ma_wrphase_id,
+	    wr.documentno || '-' || TO_CHAR(wr.launchdate, 'DD/MM/YYYY') || '-' || wp.seqno || '-' || ms.name AS name_ord,
+	    wp.ad_org_id,
+	    org.name AS org_name,
+	    wr.Secondaryunit,
+	    wp.Quantity-wp.Donequantity AS Quantity,
+	    wr.Conversionrate,
+		wr.closed,
+	    mcv.documentno || '-' || mc.name || '-' || TO_CHAR(mcv.ValidFrom, 'DD/MM/YYYY') AS version_cc,
+	    mcv.MA_Costcenter_Version_id AS version_cc_id
+	FROM
+	    ma_workrequirement wr
+	    JOIN ma_wrphase wp ON wr.ma_workrequirement_id = wp.ma_workrequirement_id
+	    JOIN MA_Sequence ms ON ms.MA_Sequence_ID = wp.MA_Sequence_ID
+	    JOIN ad_org org ON org.ad_org_id = wp.ad_org_id
+	    JOIN MA_Process mp ON mp.MA_Process_ID = wp.MA_Process_ID
+	    JOIN MA_Costcenter mc ON mc.MA_Costcenter_ID = mp.MA_Costcenter_ID
+	    JOIN MA_Costcenter_Version mcv ON mcv.MA_Costcenter_ID = mc.MA_Costcenter_ID
+	WHERE
+	    wp.closed = 'N' AND
+		wr.closed = 'N' AND
+	    wp.ad_org_id = ?
+	ORDER BY
+	    wr.documentno
+      ]]>
+    </Sql>
+  <Parameter name="orgid"/>
+  </SqlMethod>
+</SqlClass>

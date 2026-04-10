@@ -66,6 +66,12 @@ public class Header extends HttpSecureAppServlet {
         SessionInfo.setModuleId("8204FEBE1A0B4C36B45C4F662A44CB1B");
       }
      
+      if (command.contains("FE7E37DEB4DF42F5853377E45E31A159")) {
+        SessionInfo.setProcessType("P");
+        SessionInfo.setProcessId("FE7E37DEB4DF42F5853377E45E31A159");
+        SessionInfo.setModuleId("85691ADA8FF9477DB6E1B8D40B2CE9F1");
+      }
+     
       try {
         securedProcess = "Y".equals(org.openbravo.erpCommon.businessUtility.Preferences
             .getPreferenceValue("SecuredProcess", true, vars.getClient(), vars.getOrg(), vars
@@ -103,6 +109,11 @@ public class Header extends HttpSecureAppServlet {
       if (explicitAccess.contains("72380902AAEC47B4A493717B4D504E9E") || (securedProcess && command.contains("72380902AAEC47B4A493717B4D504E9E"))) {
         classInfo.type = "P";
         classInfo.id = "72380902AAEC47B4A493717B4D504E9E";
+      }
+     
+      if (explicitAccess.contains("FE7E37DEB4DF42F5853377E45E31A159") || (securedProcess && command.contains("FE7E37DEB4DF42F5853377E45E31A159"))) {
+        classInfo.type = "P";
+        classInfo.id = "FE7E37DEB4DF42F5853377E45E31A159";
       }
      
     }
@@ -244,6 +255,34 @@ String stradTableId = "318";
         }else{       
           printPageButtonEM_Eei_Generate_Offline72380902AAEC47B4A493717B4D504E9E(response, vars, strC_Invoice_ID, stremEeiGenerateOffline, strProcessing);
         }
+    } else if (vars.commandIn("BUTTONEM_Scnsa_GeneratencFE7E37DEB4DF42F5853377E45E31A159")) {
+        vars.setSessionValue("buttonFE7E37DEB4DF42F5853377E45E31A159.stremScnsaGeneratenc", vars.getStringParameter("inpemScnsaGeneratenc"));
+        vars.setSessionValue("buttonFE7E37DEB4DF42F5853377E45E31A159.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
+        vars.setSessionValue("buttonFE7E37DEB4DF42F5853377E45E31A159.strOrg", vars.getStringParameter("inpadOrgId"));
+        vars.setSessionValue("buttonFE7E37DEB4DF42F5853377E45E31A159.strClient", vars.getStringParameter("inpadClientId"));
+        
+        
+        HashMap<String, String> p = new HashMap<String, String>();
+        
+        
+        //Save in session needed params for combos if needed
+        vars.setSessionObject("buttonFE7E37DEB4DF42F5853377E45E31A159.originalParams", FieldProviderFactory.getFieldProvider(p));
+        printPageButtonFS(response, vars, "FE7E37DEB4DF42F5853377E45E31A159", request.getServletPath());
+      } else if (vars.commandIn("BUTTONFE7E37DEB4DF42F5853377E45E31A159")) {
+        String strC_Invoice_ID = vars.getGlobalVariable("inpcInvoiceId", windowId + "|C_Invoice_ID", "");
+        String stremScnsaGeneratenc = vars.getSessionValue("buttonFE7E37DEB4DF42F5853377E45E31A159.stremScnsaGeneratenc");
+        String strProcessing = vars.getSessionValue("buttonFE7E37DEB4DF42F5853377E45E31A159.strProcessing");
+        String strOrg = vars.getSessionValue("buttonFE7E37DEB4DF42F5853377E45E31A159.strOrg");
+        String strClient = vars.getSessionValue("buttonFE7E37DEB4DF42F5853377E45E31A159.strClient");
+
+        
+        if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
+          OBError myError = Utility.translateError(this, vars, vars.getLanguage(), Utility.messageBD(this, "NoWriteAccess", vars.getLanguage()));
+          vars.setMessage(tabId, myError);
+          printPageClosePopUp(response, vars);
+        }else{       
+          printPageButtonEM_Scnsa_GeneratencFE7E37DEB4DF42F5853377E45E31A159(response, vars, strC_Invoice_ID, stremScnsaGeneratenc, strProcessing);
+        }
 
     } else if (vars.commandIn("SAVE_BUTTONEM_Slospcu_Unlock_PostedF421CF041D204101B910E2AC664A0090")) {
         String strC_Invoice_ID = vars.getGlobalVariable("inpKey", windowId + "|C_Invoice_ID", "");
@@ -341,6 +380,40 @@ String stradTableId = "318";
         String strC_Invoice_ID = vars.getGlobalVariable("inpKey", windowId + "|C_Invoice_ID", "");
         
         ProcessBundle pb = new ProcessBundle("72380902AAEC47B4A493717B4D504E9E", vars).init(this);
+        HashMap<String, Object> params= new HashMap<String, Object>();
+       
+        params.put("C_Invoice_ID", strC_Invoice_ID);
+        params.put("adOrgId", vars.getStringParameter("inpadOrgId"));
+        params.put("adClientId", vars.getStringParameter("inpadClientId"));
+        params.put("tabId", tabId);
+        
+        
+        
+        pb.setParams(params);
+        OBError myMessage = null;
+        try {
+          new ProcessRunner(pb).execute(this);
+          myMessage = (OBError) pb.getResult();
+          myMessage.setMessage(Utility.parseTranslation(this, vars, vars.getLanguage(), myMessage.getMessage()));
+          myMessage.setTitle(Utility.parseTranslation(this, vars, vars.getLanguage(), myMessage.getTitle()));
+        } catch (Exception ex) {
+          myMessage = Utility.translateError(this, vars, vars.getLanguage(), ex.getMessage());
+          log4j.error(ex);
+          if (!myMessage.isConnectionAvailable()) {
+            bdErrorConnection(response);
+            return;
+          } else vars.setMessage(tabId, myMessage);
+        }
+        //close popup
+        if (myMessage!=null) {
+          if (log4j.isDebugEnabled()) log4j.debug(myMessage.getMessage());
+          vars.setMessage(tabId, myMessage);
+        }
+        printPageClosePopUp(response, vars);
+    } else if (vars.commandIn("SAVE_BUTTONEM_Scnsa_GeneratencFE7E37DEB4DF42F5853377E45E31A159")) {
+        String strC_Invoice_ID = vars.getGlobalVariable("inpKey", windowId + "|C_Invoice_ID", "");
+        
+        ProcessBundle pb = new ProcessBundle("FE7E37DEB4DF42F5853377E45E31A159", vars).init(this);
         HashMap<String, Object> params= new HashMap<String, Object>();
        
         params.put("C_Invoice_ID", strC_Invoice_ID);
@@ -604,6 +677,43 @@ xmlDocument.setParameter("array", dact.toString());
       {
         OBError myMessage = vars.getMessage("72380902AAEC47B4A493717B4D504E9E");
         vars.removeMessage("72380902AAEC47B4A493717B4D504E9E");
+        if (myMessage!=null) {
+          xmlDocument.setParameter("messageType", myMessage.getType());
+          xmlDocument.setParameter("messageTitle", myMessage.getTitle());
+          xmlDocument.setParameter("messageMessage", myMessage.getMessage());
+        }
+      }
+
+          try {
+    } catch (Exception ex) {
+      throw new ServletException(ex);
+    }
+
+      
+      out.println(xmlDocument.print());
+      out.close();
+    }
+    void printPageButtonEM_Scnsa_GeneratencFE7E37DEB4DF42F5853377E45E31A159(HttpServletResponse response, VariablesSecureApp vars, String strC_Invoice_ID, String stremScnsaGeneratenc, String strProcessing)
+    throws IOException, ServletException {
+      log4j.debug("Output: Button process FE7E37DEB4DF42F5853377E45E31A159");
+      String[] discard = {"newDiscard"};
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/EM_Scnsa_GeneratencFE7E37DEB4DF42F5853377E45E31A159", discard).createXmlDocument();
+      xmlDocument.setParameter("key", strC_Invoice_ID);
+      xmlDocument.setParameter("processing", strProcessing);
+      xmlDocument.setParameter("form", "Header_Edition.html");
+      xmlDocument.setParameter("window", windowId);
+      xmlDocument.setParameter("css", vars.getTheme());
+      xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
+      xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
+      xmlDocument.setParameter("processId", "FE7E37DEB4DF42F5853377E45E31A159");
+      xmlDocument.setParameter("cancel", Utility.messageBD(this, "Cancel", vars.getLanguage()));
+      xmlDocument.setParameter("ok", Utility.messageBD(this, "OK", vars.getLanguage()));
+      
+      {
+        OBError myMessage = vars.getMessage("FE7E37DEB4DF42F5853377E45E31A159");
+        vars.removeMessage("FE7E37DEB4DF42F5853377E45E31A159");
         if (myMessage!=null) {
           xmlDocument.setParameter("messageType", myMessage.getType());
           xmlDocument.setParameter("messageTitle", myMessage.getTitle());

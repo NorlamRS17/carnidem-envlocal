@@ -19,37 +19,98 @@
 //package org.openbravo.erpCommon.ad_callouts;
 package com.sidesoft.localization.ecuador.withholdings.ad_callouts;
 
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.math.BigDecimal;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
+import org.hibernate.criterion.Expression;
+import org.openbravo.base.secureApp.HttpSecureAppServlet;
+import org.openbravo.base.secureApp.VariablesSecureApp;
+import org.openbravo.dal.core.OBContext;
+import org.openbravo.dal.service.OBCriteria;
+import org.openbravo.dal.service.OBDal;
+import org.openbravo.data.FieldProvider;
+//import org.openbravo.erpCommon.businessUtility.BpartnerMiscData;
+//importar el xsql - en estecaso desde eldirectorio - pakete
 
+import org.openbravo.erpCommon.businessUtility.Preferences;
+import org.openbravo.erpCommon.utility.ComboTableData;
+import org.openbravo.erpCommon.utility.PropertyException;
+import org.openbravo.erpCommon.utility.PropertyNotFoundException;
+import org.openbravo.erpCommon.utility.Utility;
+import org.openbravo.model.common.businesspartner.BusinessPartner;
+import org.openbravo.model.financialmgmt.payment.FIN_FinancialAccount;
+import org.openbravo.model.financialmgmt.payment.FIN_PaymentMethod;
+import org.openbravo.model.financialmgmt.payment.FinAccPaymentMethod;
+import org.openbravo.utils.FormatUtilities;
+import org.openbravo.xmlEngine.XmlDocument;
 
-public class SS_InvoiceReference extends SimpleCallout {
-
+public class SS_InvoiceReference extends HttpSecureAppServlet 
+{
   private static final long serialVersionUID = 1L;
 
-  @Override
-  protected void execute(CalloutInfo info) throws ServletException {
-    try {
+  public void init(ServletConfig config) {
+    super.init(config);
+    boolHist = false;
+  }
+  
+//recibe la llamada al servelet
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException,ServletException 
+  {
+    VariablesSecureApp vars = new VariablesSecureApp(request);
+    if (vars.commandIn("DEFAULT")) 
+    {
+      String strChanged = vars.getStringParameter("inpLastFieldChanged"); //recupera el valor de la pgina web
+	  
+      if (log4j.isDebugEnabled())
+        log4j.debug("CHANGED: " + strChanged);
+        String strDateEnd = vars.getStringParameter("inpemSswhDateendinvoice");//fecha inicio
+		//String strDateStart = vars.getStringParameter("inpdateinvoiced");//fecha fin
+		String strPartner = vars.getStringParameter("inpcBpartnerId");//Tercero
+       	//System.out.println("fecha" +strDateEnd);
+	   try {
+	        printPage(response, vars, strDateEnd, strPartner);
+	       } 
+	   catch (ServletException ex) 
+	       {
+	        pageErrorCallOut(response);
+	       }
+    } 
+    else
+    	  pageError(response);
+  }
 
-      String strDateEnd = info.getStringParameter("inpemSswhDateendinvoice", null);
-      String strPartner = info.getStringParameter("inpcBpartnerId", null);
+  private void printPage(HttpServletResponse response, VariablesSecureApp vars, String strDateEnd, String strPartner) throws IOException, ServletException 
+  {
+    if (log4j.isDebugEnabled())
+      log4j.debug("Output: dataSheet");
+    XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_callouts/CallOut").createXmlDocument();
+    
+	SSInvoiceReferenceData data[] = SSInvoiceReferenceData.select(this,strDateEnd, strPartner );
+    StringBuffer resultado = new StringBuffer();
+            
+    resultado.append("var calloutName='SS_InvoiceReference';\n\n");
+	resultado.append("var respuesta = new Array(");
+			
+	if (data != null && data.length > 0) 
+		{
 
+			//resultado.append("new Array(\"inpDescription\", \"" + data[0].fecha + "\"),\n");
+			resultado.append("new Array(\"inpemSswhInvoiceRef\", \"" + data[0].noreferencia + "\")\n");
+        }
+	resultado.append(");");
 
-      if (strDateEnd == null || strPartner == null) {
-        return;
-      }
-
-      SSInvoiceReferenceData[] data = SSInvoiceReferenceData.select(null, strDateEnd, strPartner);
-
-
-      if (data != null && data.length > 0) {
-        info.addResult("inpemSswhInvoiceRef", data[0].noreferencia);
-      }
-
-    } catch (Exception e) {
-      log4j.error("Error en SS_InvoiceReference SimpleCallout", e);
-      throw new ServletException(e);
-    }
+	xmlDocument.setParameter("array", resultado.toString());
+    xmlDocument.setParameter("frameName", "appFrame");
+    response.setContentType("text/html; charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    out.println(xmlDocument.print());
+    out.close();
   }
 }

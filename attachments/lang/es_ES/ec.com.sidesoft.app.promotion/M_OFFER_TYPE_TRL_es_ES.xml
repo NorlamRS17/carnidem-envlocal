@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="M_OFFER_TYPE" version="">
+  <row id="0954CF6EF25F4F75A07B62A1BF8ABA0B" trl="Y">
+    <value column="Name" isTrl="Y" original="Fixed Discount per Total Amount">Descuento fijo por monto total</value>
+    <value column="Description" isTrl="Y" original="Fixed Discount per Total Amount">Descuento fijo por monto total</value>
+  </row>
+  <row id="35FAE3ECD27349398B8C827B1264F485" trl="Y">
+    <value column="Name" isTrl="Y" original="Free Products per Total Amount">Producto gratis por monto total</value>
+    <value column="Description" isTrl="Y" original="Free Products per Total Amount">Producto gratis por monto total</value>
+  </row>
+  <row id="76DB3914DAAA4336BBCB3801C7281BA0" trl="Y">
+    <value column="Name" isTrl="Y" original="Discount per Total Amount">Descuento por monto total</value>
+    <value column="Description" isTrl="Y" original="Discount per Total Amount">Descuento por monto total</value>
+  </row>
+  <row id="82768E7DD74745E295971255FD51D0C2" trl="Y">
+    <value column="Name" isTrl="Y" original="Fixed Percentage per Total Amount">Porcentaje fijo por monto total</value>
+    <value column="Description" isTrl="Y" original="Fixed Percentage per Total Amount">Porcentaje fijo por monto total</value>
+  </row>
+</compiereTrl>

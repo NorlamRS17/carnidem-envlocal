@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="00073B48D89545CFA943CF0F19664AAB" trl="Y">
+    <value column="Name" isTrl="Y" original="ACTIVATIONS">ACTIVACIONES</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="041D042340164392B2312DB372AE23F1" trl="Y">
+    <value column="Name" isTrl="Y" original="E COMMERCE- WEBSITE">E COMMERCE- PAGINA WEB</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="0DEBA964568C47D5BFD69DF15B0F99EB" trl="Y">
+    <value column="Name" isTrl="Y" original="SOCIAL NETWORKS">REDES SOCIALES</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="4706ABE7D8E143F8B2DFD95BA8A9DC2B" trl="Y">
+    <value column="Name" isTrl="N" original="RECI APP">RECI APP</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="CE6E04AB8663428780C99249294E3D09" trl="Y">
+    <value column="Name" isTrl="Y" original="DONATIONS">DONACIONES</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D213651E0A8C4E188D4B21500F1557C0" trl="Y">
+    <value column="Name" isTrl="Y" original="STRATEGIC ALLIANCE">ALIANZA ESTATÉGICA</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E82800C3908942219909BB85C91C4C50" trl="Y">
+    <value column="Name" isTrl="Y" original="AUTOSALE ">AUTOVENTA</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

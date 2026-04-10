@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="53BE18D9CC6847E1806BD88E186CE9E0" trl="Y">
+    <value column="Name" isTrl="Y" original="WS Log Payments / Collections">Log WS Pagos / Cobros</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5786846DBC9F4B48938F81525F7DF2F6" trl="Y">
+    <value column="Name" isTrl="Y" original="Transactions WS Payments">Transacciones WS Pagos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="82F6F8E2259D426999CA27878706DD6A" trl="Y">
+    <value column="Name" isTrl="Y" original="WS Creation Payments / Collections">Creacion WS Pagos / Cobros</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

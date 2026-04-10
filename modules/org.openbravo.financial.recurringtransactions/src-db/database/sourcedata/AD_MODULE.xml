@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+<!--93599A50EE2341AEABBEF71691F8BC76--><AD_MODULE>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <AD_MODULE_ID><![CDATA[93599A50EE2341AEABBEF71691F8BC76]]></AD_MODULE_ID>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <AD_CLIENT_ID><![CDATA[0]]></AD_CLIENT_ID>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <AD_ORG_ID><![CDATA[0]]></AD_ORG_ID>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <NAME><![CDATA[Recurring Transactions]]></NAME>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <VERSION><![CDATA[0.4.0]]></VERSION>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <DESCRIPTION><![CDATA[Define recurring or repeating transactions, such as recurring G/L journal entries, recurring invoices, recurring financial account transactions, etc.]]></DESCRIPTION>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <HELP><![CDATA[This module allows to automate the creation of recurring or repeating transactions.
+
+For example a monthly payment into a professional insurance requires the same transaction to be entered, without variation, month after month. This module automates the creation of these transactions.]]></HELP>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <URL><![CDATA[https://sites.google.com/site/obrectrx]]></URL>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <TYPE><![CDATA[M]]></TYPE>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <LICENSE><![CDATA[For a copy of the license, please visit http://www.openbravo.com/license]]></LICENSE>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <JAVAPACKAGE><![CDATA[org.openbravo.financial.recurringtransactions]]></JAVAPACKAGE>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <LICENSETYPE><![CDATA[OBPL]]></LICENSETYPE>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <AUTHOR><![CDATA[Openbravo S.L.U.]]></AUTHOR>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <ISTRANSLATIONREQUIRED><![CDATA[Y]]></ISTRANSLATIONREQUIRED>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <AD_LANGUAGE><![CDATA[en_US]]></AD_LANGUAGE>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <HASCHARTOFACCOUNTS><![CDATA[N]]></HASCHARTOFACCOUNTS>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <ISTRANSLATIONMODULE><![CDATA[N]]></ISTRANSLATIONMODULE>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <HASREFERENCEDATA><![CDATA[Y]]></HASREFERENCEDATA>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <UPDATEINFO><![CDATA[== 0.4.0 ==
+Release candidate version with limited functionality. Suitable for production usage.
+This version supports recurring transactions for G/L Journal only.
+Refactored code to handle transaction consistency across commits and eliminate errors in the process.
+Fixed issues:
+005: For a rule with more than one template, if one fails all are skipped
+006: Rules fail when complete is checked
+== 0.3.1 ==
+Fixed issue 004: When multiple templates are in use and the first one is skipped, all are skipped
+== 0.3.0 ==
+Release candidate version with limited functionality. Suitable for production usage.
+This version supports recurring transactions for G/L Journal only.
+Recurring transactions can now be completed automatically.
+== 0.2.3 ==
+Fixed issues:
+2.  When a completed template is cloned and the rule does not complete, the recurring clone should not be completed
+3.   Total dr and total cr are doubled for cloned GL Journal header
+== 0.2.2 ==
+Fixed issues:
+1   Transactions are not getting cloned 
+== 0.2.0: RC1 ==
+Release candidate version with limited functionality. Suitable for production usage.
+This version supports recurring transactions for G/L Journal only.
+Recurring transactions do not complete.
+Daily, Monthly, Quarterly and Yearly recurrence is supported.
+== 0.1.1: Development release ==]]></UPDATEINFO>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <REFERENCEDATAINFO><![CDATA[Recurring template types: system level definition of the logic to clone recurring transactions]]></REFERENCEDATAINFO>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <VERSION_LABEL><![CDATA[RC3]]></VERSION_LABEL>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <ISCOMMERCIAL><![CDATA[N]]></ISCOMMERCIAL>
+<!--93599A50EE2341AEABBEF71691F8BC76-->  <ISTRIALALLOWED><![CDATA[N]]></ISTRIALALLOWED>
+<!--93599A50EE2341AEABBEF71691F8BC76--></AD_MODULE>
+
+</data>

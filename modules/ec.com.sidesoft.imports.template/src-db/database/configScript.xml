@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="292">
+      <oldValue><![CDATA[Sales Campaign]]></oldValue>
+      <newValue><![CDATA[Imports]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="DESCRIPTION" pkRow="292">
+      <oldValue><![CDATA[An advertising effort aimed at increasing sales.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="HELP" pkRow="292">
+      <oldValue><![CDATA[The Campaign defines a unique marketing program.  Projects can be associated with a pre defined Marketing Campaign.  You can then report based on a specific Campaign.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="9728F9CADE45497E9F583A76B7DE3BE6">
+      <oldValue><![CDATA[Sales Campaign]]></oldValue>
+      <newValue><![CDATA[Imports]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="DESCRIPTION" pkRow="9728F9CADE45497E9F583A76B7DE3BE6">
+      <oldValue><![CDATA[An advertising effort aimed at increasing sales.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="HELP" pkRow="9728F9CADE45497E9F583A76B7DE3BE6">
+      <oldValue><![CDATA[The Campaign defines a unique marketing program.  Projects can be associated with a pre defined Marketing Campaign.  You can then report based on a specific Campaign.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_VAL_RULE_ID" pkRow="2454">
+      <oldValue/>
+      <newValue><![CDATA[7DF709579A9348908F31F96052E38D0F]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_ELEMENT_ID" pkRow="2454">
+      <oldValue><![CDATA[550]]></oldValue>
+      <newValue><![CDATA[49D4DBAD61554B098434336CE4823F8A]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="A7E134B04D5DD632E040007F010037B3">
+      <oldValue><![CDATA[FF808181312D569C01312D8C837E003C]]></oldValue>
+      <newValue><![CDATA[8918ABAF5BF2428FAC1F7B170EC7A933]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_ELEMENT_ID" pkRow="A7E134B04D5DD632E040007F010037B3">
+      <oldValue><![CDATA[550]]></oldValue>
+      <newValue><![CDATA[49D4DBAD61554B098434336CE4823F8A]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="3327">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="NAME" pkRow="3446">
+      <oldValue><![CDATA[Sales Campaign]]></oldValue>
+      <newValue><![CDATA[Imports]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="AD_FIELDGROUP_ID" pkRow="3446">
+      <oldValue/>
+      <newValue><![CDATA[8D0C10882D3046CAB4CC97E3E2D9EB5E]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="3446">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="3446">
+      <oldValue><![CDATA[@$Element_MC@='Y']]></oldValue>
+      <newValue><![CDATA[@EM_Ssip_Isimports@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SHOWINRELATION" pkRow="3446">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="6235E45B2B854C1BA1A3235A8A1BA783">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="NAME" pkRow="A7E134B04D67D632E040007F010037B3">
+      <oldValue><![CDATA[Sales Campaign]]></oldValue>
+      <newValue><![CDATA[Imports]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="AD_FIELDGROUP_ID" pkRow="A7E134B04D67D632E040007F010037B3">
+      <oldValue><![CDATA[800000]]></oldValue>
+      <newValue><![CDATA[8D0C10882D3046CAB4CC97E3E2D9EB5E]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="A7E134B04D67D632E040007F010037B3">
+      <oldValue><![CDATA[@$Element_MC@='Y']]></oldValue>
+      <newValue><![CDATA[@$Element_MC@='Y' & @EM_Ssip_Importcosts@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="A7E134B04D67D632E040007F010037B3">
+      <oldValue><![CDATA[2040]]></oldValue>
+      <newValue><![CDATA[105]]></newValue>
+    </columnDataChange>
+  </vector>

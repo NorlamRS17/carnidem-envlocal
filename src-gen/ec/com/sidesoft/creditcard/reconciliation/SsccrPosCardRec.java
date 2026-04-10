@@ -1,0 +1,307 @@
+/*
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License.
+ * The Original Code is Openbravo ERP.
+ * The Initial Developer of the Original Code is Openbravo SLU
+ * All portions are Copyright (C) 2008-2014 Openbravo SLU
+ * All Rights Reserved.
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+*/
+package ec.com.sidesoft.creditcard.reconciliation;
+
+import ec.com.sidesoft.creditcard.reconciliation.transaction.SccrtCardLoadLine;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.openbravo.base.structure.ActiveEnabled;
+import org.openbravo.base.structure.BaseOBObject;
+import org.openbravo.base.structure.ClientEnabled;
+import org.openbravo.base.structure.OrganizationEnabled;
+import org.openbravo.base.structure.Traceable;
+import org.openbravo.model.ad.access.User;
+import org.openbravo.model.ad.system.Client;
+import org.openbravo.model.common.enterprise.DocumentType;
+import org.openbravo.model.common.enterprise.Organization;
+import org.openbravo.model.financialmgmt.payment.FIN_FinaccTransaction;
+import org.openbravo.model.financialmgmt.payment.FIN_FinancialAccount;
+/**
+ * Entity class for entity Ssccr_Pos_Card_Rec (stored in table Ssccr_Pos_Card_Rec).
+ *
+ * NOTE: This class should not be instantiated directly. To instantiate this
+ * class the {@link org.openbravo.base.provider.OBProvider} should be used.
+ */
+public class SsccrPosCardRec extends BaseOBObject implements Traceable, ClientEnabled, OrganizationEnabled, ActiveEnabled {
+    private static final long serialVersionUID = 1L;
+    public static final String TABLE_NAME = "Ssccr_Pos_Card_Rec";
+    public static final String ENTITY_NAME = "Ssccr_Pos_Card_Rec";
+    public static final String PROPERTY_ID = "id";
+    public static final String PROPERTY_CLIENT = "client";
+    public static final String PROPERTY_ORGANIZATION = "organization";
+    public static final String PROPERTY_ACTIVE = "active";
+    public static final String PROPERTY_CREATIONDATE = "creationDate";
+    public static final String PROPERTY_CREATEDBY = "createdBy";
+    public static final String PROPERTY_UPDATED = "updated";
+    public static final String PROPERTY_UPDATEDBY = "updatedBy";
+    public static final String PROPERTY_DOCUMENTTYPE = "documentType";
+    public static final String PROPERTY_DOCUMENTNO = "documentNo";
+    public static final String PROPERTY_FINFINANCIALACCOUNTFROM = "fINFinancialAccountFrom";
+    public static final String PROPERTY_FINFINANCIALACCOUNTTO = "fINFinancialAccountTo";
+    public static final String PROPERTY_STARTDATE = "startDate";
+    public static final String PROPERTY_ENDDATE = "eNDDate";
+    public static final String PROPERTY_DESCRIPTION = "description";
+    public static final String PROPERTY_ALERTSTATUS = "alertStatus";
+    public static final String PROPERTY_LOADLINES = "loadLines";
+    public static final String PROPERTY_PROCESS = "process";
+    public static final String PROPERTY_SUMMARYLEVEL = "summaryLevel";
+    public static final String PROPERTY_DATEPAYMENT = "datePayment";
+    public static final String PROPERTY_SCCRTGENERATESPECIAL = "sccrtGenerateSpecial";
+    public static final String PROPERTY_FINFINACCTRANSACTIONEMSSCCRPOSCARDRECIDLIST = "fINFinaccTransactionEMSsccrPosCardRecIDList";
+    public static final String PROPERTY_SSCCRPOSCARDRECLINELIST = "ssccrPosCardRecLineList";
+    public static final String PROPERTY_SSCCRPOSCARDRECSUMLIST = "ssccrPosCardRecSumList";
+    public static final String PROPERTY_SCCRTCARDLOADLINELIST = "sccrtCardLoadLineList";
+    public static final String PROPERTY_SSCCRCARDRECDETAILVLIST = "ssccrCardRecDetailVList";
+
+    public SsccrPosCardRec() {
+        setDefaultValue(PROPERTY_ACTIVE, true);
+        setDefaultValue(PROPERTY_ALERTSTATUS, "DR");
+        setDefaultValue(PROPERTY_LOADLINES, false);
+        setDefaultValue(PROPERTY_PROCESS, false);
+        setDefaultValue(PROPERTY_SUMMARYLEVEL, false);
+        setDefaultValue(PROPERTY_SCCRTGENERATESPECIAL, true);
+        setDefaultValue(PROPERTY_FINFINACCTRANSACTIONEMSSCCRPOSCARDRECIDLIST, new ArrayList<Object>());
+        setDefaultValue(PROPERTY_SSCCRPOSCARDRECLINELIST, new ArrayList<Object>());
+        setDefaultValue(PROPERTY_SSCCRPOSCARDRECSUMLIST, new ArrayList<Object>());
+        setDefaultValue(PROPERTY_SCCRTCARDLOADLINELIST, new ArrayList<Object>());
+        setDefaultValue(PROPERTY_SSCCRCARDRECDETAILVLIST, new ArrayList<Object>());
+    }
+
+    @Override
+    public String getEntityName() {
+        return ENTITY_NAME;
+    }
+
+    public String getId() {
+        return (String) get(PROPERTY_ID);
+    }
+
+    public void setId(String id) {
+        set(PROPERTY_ID, id);
+    }
+
+    public Client getClient() {
+        return (Client) get(PROPERTY_CLIENT);
+    }
+
+    public void setClient(Client client) {
+        set(PROPERTY_CLIENT, client);
+    }
+
+    public Organization getOrganization() {
+        return (Organization) get(PROPERTY_ORGANIZATION);
+    }
+
+    public void setOrganization(Organization organization) {
+        set(PROPERTY_ORGANIZATION, organization);
+    }
+
+    public Boolean isActive() {
+        return (Boolean) get(PROPERTY_ACTIVE);
+    }
+
+    public void setActive(Boolean active) {
+        set(PROPERTY_ACTIVE, active);
+    }
+
+    public Date getCreationDate() {
+        return (Date) get(PROPERTY_CREATIONDATE);
+    }
+
+    public void setCreationDate(Date creationDate) {
+        set(PROPERTY_CREATIONDATE, creationDate);
+    }
+
+    public User getCreatedBy() {
+        return (User) get(PROPERTY_CREATEDBY);
+    }
+
+    public void setCreatedBy(User createdBy) {
+        set(PROPERTY_CREATEDBY, createdBy);
+    }
+
+    public Date getUpdated() {
+        return (Date) get(PROPERTY_UPDATED);
+    }
+
+    public void setUpdated(Date updated) {
+        set(PROPERTY_UPDATED, updated);
+    }
+
+    public User getUpdatedBy() {
+        return (User) get(PROPERTY_UPDATEDBY);
+    }
+
+    public void setUpdatedBy(User updatedBy) {
+        set(PROPERTY_UPDATEDBY, updatedBy);
+    }
+
+    public DocumentType getDocumentType() {
+        return (DocumentType) get(PROPERTY_DOCUMENTTYPE);
+    }
+
+    public void setDocumentType(DocumentType documentType) {
+        set(PROPERTY_DOCUMENTTYPE, documentType);
+    }
+
+    public String getDocumentNo() {
+        return (String) get(PROPERTY_DOCUMENTNO);
+    }
+
+    public void setDocumentNo(String documentNo) {
+        set(PROPERTY_DOCUMENTNO, documentNo);
+    }
+
+    public FIN_FinancialAccount getFINFinancialAccountFrom() {
+        return (FIN_FinancialAccount) get(PROPERTY_FINFINANCIALACCOUNTFROM);
+    }
+
+    public void setFINFinancialAccountFrom(FIN_FinancialAccount fINFinancialAccountFrom) {
+        set(PROPERTY_FINFINANCIALACCOUNTFROM, fINFinancialAccountFrom);
+    }
+
+    public FIN_FinancialAccount getFINFinancialAccountTo() {
+        return (FIN_FinancialAccount) get(PROPERTY_FINFINANCIALACCOUNTTO);
+    }
+
+    public void setFINFinancialAccountTo(FIN_FinancialAccount fINFinancialAccountTo) {
+        set(PROPERTY_FINFINANCIALACCOUNTTO, fINFinancialAccountTo);
+    }
+
+    public Date getStartDate() {
+        return (Date) get(PROPERTY_STARTDATE);
+    }
+
+    public void setStartDate(Date startDate) {
+        set(PROPERTY_STARTDATE, startDate);
+    }
+
+    public Date getENDDate() {
+        return (Date) get(PROPERTY_ENDDATE);
+    }
+
+    public void setENDDate(Date eNDDate) {
+        set(PROPERTY_ENDDATE, eNDDate);
+    }
+
+    public String getDescription() {
+        return (String) get(PROPERTY_DESCRIPTION);
+    }
+
+    public void setDescription(String description) {
+        set(PROPERTY_DESCRIPTION, description);
+    }
+
+    public String getAlertStatus() {
+        return (String) get(PROPERTY_ALERTSTATUS);
+    }
+
+    public void setAlertStatus(String alertStatus) {
+        set(PROPERTY_ALERTSTATUS, alertStatus);
+    }
+
+    public Boolean isLoadLines() {
+        return (Boolean) get(PROPERTY_LOADLINES);
+    }
+
+    public void setLoadLines(Boolean loadLines) {
+        set(PROPERTY_LOADLINES, loadLines);
+    }
+
+    public Boolean isProcess() {
+        return (Boolean) get(PROPERTY_PROCESS);
+    }
+
+    public void setProcess(Boolean process) {
+        set(PROPERTY_PROCESS, process);
+    }
+
+    public Boolean isSummaryLevel() {
+        return (Boolean) get(PROPERTY_SUMMARYLEVEL);
+    }
+
+    public void setSummaryLevel(Boolean summaryLevel) {
+        set(PROPERTY_SUMMARYLEVEL, summaryLevel);
+    }
+
+    public Date getDatePayment() {
+        return (Date) get(PROPERTY_DATEPAYMENT);
+    }
+
+    public void setDatePayment(Date datePayment) {
+        set(PROPERTY_DATEPAYMENT, datePayment);
+    }
+
+    public Boolean isSccrtGenerateSpecial() {
+        return (Boolean) get(PROPERTY_SCCRTGENERATESPECIAL);
+    }
+
+    public void setSccrtGenerateSpecial(Boolean sccrtGenerateSpecial) {
+        set(PROPERTY_SCCRTGENERATESPECIAL, sccrtGenerateSpecial);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<FIN_FinaccTransaction> getFINFinaccTransactionEMSsccrPosCardRecIDList() {
+      return (List<FIN_FinaccTransaction>) get(PROPERTY_FINFINACCTRANSACTIONEMSSCCRPOSCARDRECIDLIST);
+    }
+
+    public void setFINFinaccTransactionEMSsccrPosCardRecIDList(List<FIN_FinaccTransaction> fINFinaccTransactionEMSsccrPosCardRecIDList) {
+        set(PROPERTY_FINFINACCTRANSACTIONEMSSCCRPOSCARDRECIDLIST, fINFinaccTransactionEMSsccrPosCardRecIDList);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<SsccrPosCardRecLine> getSsccrPosCardRecLineList() {
+      return (List<SsccrPosCardRecLine>) get(PROPERTY_SSCCRPOSCARDRECLINELIST);
+    }
+
+    public void setSsccrPosCardRecLineList(List<SsccrPosCardRecLine> ssccrPosCardRecLineList) {
+        set(PROPERTY_SSCCRPOSCARDRECLINELIST, ssccrPosCardRecLineList);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<SsccrPosCardRecSum> getSsccrPosCardRecSumList() {
+      return (List<SsccrPosCardRecSum>) get(PROPERTY_SSCCRPOSCARDRECSUMLIST);
+    }
+
+    public void setSsccrPosCardRecSumList(List<SsccrPosCardRecSum> ssccrPosCardRecSumList) {
+        set(PROPERTY_SSCCRPOSCARDRECSUMLIST, ssccrPosCardRecSumList);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<SccrtCardLoadLine> getSccrtCardLoadLineList() {
+      return (List<SccrtCardLoadLine>) get(PROPERTY_SCCRTCARDLOADLINELIST);
+    }
+
+    public void setSccrtCardLoadLineList(List<SccrtCardLoadLine> sccrtCardLoadLineList) {
+        set(PROPERTY_SCCRTCARDLOADLINELIST, sccrtCardLoadLineList);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Ssccr_CardRecDetailV> getSsccrCardRecDetailVList() {
+      return (List<Ssccr_CardRecDetailV>) get(PROPERTY_SSCCRCARDRECDETAILVLIST);
+    }
+
+    public void setSsccrCardRecDetailVList(List<Ssccr_CardRecDetailV> ssccrCardRecDetailVList) {
+        set(PROPERTY_SSCCRCARDRECDETAILVLIST, ssccrCardRecDetailVList);
+    }
+
+}

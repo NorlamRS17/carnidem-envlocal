@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="02A69513446B43888FC9BBD4385EB0EE" trl="N">
+    <value column="Name" isTrl="N" original="Setup Push Notificacions Mobile">Setup Push Notificacions Mobile</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D05D4AFF877F4CFB90F7DD98D2E6E707" trl="N">
+    <value column="Name" isTrl="Y" original="Create Notifications Mobile">Crear notificaciones móvil</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DE0D07B8E00B4CD6B1509F16E4B1497F" trl="N">
+    <value column="Name" isTrl="N" original="Record of Devices Mobile">Record of Devices Mobile</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E05DE5CAFF524481A9E66DC6B1C06234" trl="N">
+    <value column="Name" isTrl="Y" original="Notification Type">Tipo de notificaciones</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="22BD84A32131406D8EBED19A6796351F" trl="N">
+    <value column="Name" isTrl="Y" original="Delete Lines">Eliminar Lineas</value>
+    <value column="PrintName" isTrl="Y" original="Delete Lines">Eliminar Lineas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="74FCC3FA85F54E27A68DB7E059E163E9" trl="Y">
+    <value column="Name" isTrl="Y" original="Provider">Proveedor</value>
+    <value column="PrintName" isTrl="Y" original="Provider">Proveedor</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8CC658CDA85142EB9E710EAB38EE5179" trl="Y">
+    <value column="Name" isTrl="Y" original="Delete Lines">Borrar Lineas</value>
+    <value column="PrintName" isTrl="Y" original="Delete Lines">Borrar Lineas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C8F49F382DDD49EE811515BBB7ED0BA9" trl="Y">
+    <value column="Name" isTrl="Y" original="Delete Forecast Relation">Borrar Relación Forecast</value>
+    <value column="PrintName" isTrl="Y" original="Delete Forecast Relation">Borrar Relación Forecast</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSTTDEF_SETTLE_DEFERRED">
+    <function name="SSTTDEF_SETTLE_DEFERRED" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult				VARCHAR2(2000);
+	vMessage			VARCHAR2(2000);
+	
+	cPar				RECORD;
+	vRecord				RECORD;
+	vRecordID			VARCHAR2(32);
+	vClientID			VARCHAR2(32);
+	vOrgID				VARCHAR2(32);
+	vUserID				VARCHAR2(32);
+    pAcctSchemaID       VARCHAR2(32);
+    pDocTypeID          VARCHAR2(32);
+    pCategoryID         VARCHAR2(32);
+	
+    cUser2              RECORD;
+    vDocumentNo         VARCHAR2(30);
+    vJournal            RECORD;
+    cAcct               RECORD;
+    vLineNo             NUMBER;
+    vValidCombID        VARCHAR2(32);
+    vTotal              NUMBER;
+    
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID) ;
+	vResult := 'PInstanceNotFound';
+ AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+	BEGIN
+
+		vResult := 'ReadingParameters';
+		FOR cPar IN (
+			SELECT i.Record_ID,
+				i.AD_User_ID,
+				i.AD_Client_ID,
+				i.AD_Org_ID,
+				pa.ParameterName,
+				pa.P_String,
+				pa.P_Number,
+				pa.P_Date
+			FROM AD_PInstance i
+				LEFT JOIN AD_PInstance_Para AS pa ON pa.AD_PInstance_ID = i.AD_PInstance_ID
+			WHERE i.AD_PInstance_ID = PInstance_ID
+		) LOOP
+			vRecordID := cPar.Record_ID;
+			vClientID := cPar.AD_Client_ID;
+			vOrgID := cPar.AD_Org_ID;
+			vUserID := cPar.AD_User_ID;
+			IF cPar.ParameterName = 'C_AcctSchema_ID' THEN
+				pAcctSchemaID := cPar.P_String;
+            ELSEIF cPar.ParameterName = 'C_DocType_ID' THEN
+                pDocTypeID := cPar.P_String;
+            ELSEIF cPar.ParameterName = 'GL_Category_ID' THEN
+                pCategoryID := cPar.P_String;
+			END IF;
+		END LOOP;
+		
+		SELECT ad_client_id, ad_org_id, processing, c_currency_id, datedoc, dateacct, c_period_id INTO vRecord
+        FROM gl_journalbatch
+        WHERE gl_journalbatch_id = vRecordID;
+		IF vRecord.processing = 'Y' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@DocBeingProcessed@');
+		END IF;
+		
+		UPDATE gl_journalbatch SET processing = 'Y' WHERE gl_journalbatch_id = vRecordID;
+		
+		FOR cUser2 IN (
+            SELECT DISTINCT io.c_costcenter_id, io.user1_id, io.user2_id
+            FROM m_inout io
+                JOIN m_inoutline iol ON iol.m_inout_id = io.m_inout_id
+                JOIN c_orderline ol ON ol.c_orderline_id = iol.c_orderline_id
+                JOIN c_order o ON o.c_order_id = ol.c_order_id AND o.InvoiceRule = 'N'
+                JOIN c_invoice i ON i.user2_id = io.user2_id
+                    AND i.issotrx = 'Y' AND i.docstatus = 'CO'
+                    AND i.em_ssttdef_deferred_cross = 'N'
+                    AND i.posted = 'Y'
+            WHERE io.issotrx = 'Y' AND io.docstatus = 'CO' AND io.user2_id IS NOT NULL
+        ) LOOP
+        
+            SELECT * INTO vJournal FROM gl_journal WHERE gl_journalbatch_id = vRecordID AND user2_id = cUser2.user2_id;
+            
+            IF vJournal.gl_journal_id IS NULL THEN
+                ad_sequence_doctype(pDocTypeID, vRecord.ad_client_id, 'Y', vDocumentNo);
+                INSERT INTO gl_journal (
+                    gl_journal_id, ad_client_id, ad_org_id, createdby, updatedby,
+                    gl_journalbatch_id, c_acctschema_id, c_doctype_id, documentno, description,
+                    datedoc, dateacct, c_period_id, c_currency_id, c_costcenter_id,
+                    docstatus, docaction, postingtype, gl_category_id, currencyratetype,
+                    user1_id, user2_id
+                ) VALUES (
+                    get_uuid(), vRecord.ad_client_id, vRecord.ad_org_id, vUserID, vUserID,
+                    vRecordID, pAcctSchemaID, pDocTypeID, vDocumentNo, vDocumentNo,
+                    vRecord.datedoc, vRecord.dateacct, vRecord.c_period_id, vRecord.c_currency_id, cUser2.c_costcenter_id,
+                    'DR', 'CO', 'A', pCategoryID, 'S',
+                    cUser2.user1_id, cUser2.user2_id
+                ) RETURNING * INTO vJournal;
+            END IF;
+            
+            vTotal := 0;
+            FOR cAcct IN (
+                SELECT fa.account_id, SUM(il.TaxBaseAmt) total
+                FROM c_invoiceline il
+                    JOIN c_invoice i ON i.c_invoice_id = il.c_invoice_id
+                        AND i.issotrx = 'Y' AND i.docstatus = 'CO'
+                        AND i.em_ssttdef_deferred_cross = 'N'
+                    JOIN fact_acct fa ON fa.record_id = i.c_invoice_id
+                        AND fa.line_id = il.c_invoiceline_id
+                WHERE i.user2_id = cUser2.user2_id
+                GROUP BY fa.account_id
+            ) LOOP
+                
+                SELECT COALESCE(MAX(line),0)+10 INTO vLineNo FROM gl_journalline WHERE gl_journal_id = vJournal.gl_journal_id;
+                SELECT c_validcombination_id INTO vValidCombID FROM c_validcombination WHERE account_id = cAcct.account_id;
+                INSERT INTO gl_journalline (
+                    gl_journalline_id, ad_client_id, ad_org_id, createdby, updatedby,
+                    gl_journal_id, line, amtsourcedr, c_currency_id, currencyratetype,
+                    dateacct, amtacctdr, c_validcombination_id, user1_id, c_costcenter_id,
+                    user2_id
+                ) VALUES (
+                    get_uuid(), vJournal.ad_client_id, vJournal.ad_org_id, vUserID, vUserID,
+                    vJournal.gl_journal_id, vLineNo, cAcct.total, vJournal.c_currency_id, vJournal.currencyratetype,
+                    vJournal.dateacct, cAcct.total, vValidCombID, vJournal.user1_id, vJournal.c_costcenter_id,
+                    cUser2.user2_id
+                );
+                
+                vTotal := vTotal + cAcct.total;
+            END LOOP;
+            
+            FOR cAcct IN (
+                SELECT DISTINCT pa.p_revenue_acct c_validcombination_id
+                FROM m_inout io
+                    JOIN m_inoutline iol ON iol.m_inout_id = io.m_inout_id
+                    JOIN m_product pr ON pr.m_product_id = iol.m_product_id
+                    JOIN m_product_acct pa ON pa.m_product_id = pr.m_product_id
+                    JOIN c_orderline ol ON ol.c_orderline_id = iol.c_orderline_id
+                    JOIN c_order o ON o.c_order_id = ol.c_order_id AND o.InvoiceRule = 'N'
+                WHERE io.issotrx = 'Y' AND io.docstatus = 'CO'
+                    AND io.user2_id = cUser2.user2_id
+            ) LOOP
+            
+                SELECT COALESCE(MAX(line),0)+10 INTO vLineNo FROM gl_journalline WHERE gl_journal_id = vJournal.gl_journal_id;
+                INSERT INTO gl_journalline (
+                    gl_journalline_id, ad_client_id, ad_org_id, createdby, updatedby,
+                    gl_journal_id, line, amtsourcecr, c_currency_id, currencyratetype,
+                    dateacct, amtacctcr, c_validcombination_id, user1_id, c_costcenter_id,
+                    user2_id
+                ) VALUES (
+                    get_uuid(), vJournal.ad_client_id, vJournal.ad_org_id, vUserID, vUserID,
+                    vJournal.gl_journal_id, vLineNo, vTotal, vJournal.c_currency_id, vJournal.currencyratetype,
+                    vJournal.dateacct, vTotal, cAcct.c_validcombination_id, vJournal.user1_id, vJournal.c_costcenter_id,
+                    cUser2.user2_id
+                );
+            
+            END LOOP;
+            
+        END LOOP;
+		
+		UPDATE gl_journalbatch SET processing = 'N' WHERE gl_journalbatch_id = vRecordID;
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage) ;
+	 AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, vMessage);
+		RETURN;
+		
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+    vResult := '@ERROR='||SQLERRM;
+    DBMS_OUTPUT.PUT_LINE( vResult) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, vResult) ;
+
+    RETURN;
+END SSTTDEF_SETTLE_DEFERRED
+]]></body>
+    </function>
+  </database>

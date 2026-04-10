@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Atindpo_Prefactura" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="25e714c0-3d3f-4b5f-b279-e4dad8fd407e">
+	<property name="ireport.zoom" value="0.9090909090909105"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/DesarrolloLuis/OpenbravoERPindumot/modules/com.atrums.indumot.postventa/src"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="SOURCE_PATH" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select coalesce(ap.documentno,null) as DOCUMENTNO
+	, NOW() as FECHA
+	, coalesce(cb.name,null) as NAME
+	, coalesce(cb.taxid,' ') as TAXID
+	, coalesce(cl.phone,' ') as PHONE
+	, coalesce(c.address1,' ') as ADDRESS1
+	, coalesce(b.name,' ') as MARCA
+	, coalesce(mp.name,' ') as MODELO
+	, y.name as ANIO
+	, coalesce(ap.numeromotor,' ') as NUMEROMOTOR
+	, coalesce(ap.numerochasis,' ') as NUMEROCHASIS
+	, coalesce(ap.placa,' ') as PLACA
+	, coalesce(col.name,' ') as LSCOLOR
+	, coalesce(ap.atindpo_postventa_id,' ') as ATINDPO_POSTVENTA_ID
+	, (case when ap.lstipovehiculo = 'MT' then 'MOTO' else ' ' end) as TIPO
+	, coalesce(ap.descripcioncliente,' ') as DESCRIPCION
+	, (select coalesce(cbp.name,' ') from c_bpartner cbp where cbp.c_bpartner_id = ap.c_bpartner_emp_id) as MECANICO
+	, coalesce((ap.nombre || ' ' || ap.apellido || ' / ' || coalesce('CI: '||ap.cedula,'')),'') as CONDUCTOR
+	, coalesce(ap.orden_trabajo,'') as orden_trabajo
+	, 'Pre-Factura No. '||ap.documentno as pre
+,Kmhoras as "Kmhoras"
+from atindpo_postventa ap
+	Join c_bpartner cb on ap.c_bpartner_id = cb.c_bpartner_id
+	Join c_bpartner_location cl on cl.c_bpartner_location_id = ap.c_bpartner_location_id
+	Join c_location c on c.c_location_id=cl.c_location_id
+	Left Join ssfi_model_prod mp on mp.ssfi_model_prod_id = ap.em_sswos_ssfi_model_prod_id
+	Left Join m_brand b on b.m_brand_id = ap.em_sswos_m_brand_id
+	Left Join sswos_color col on col.sswos_color_id = ap.em_sswos_color_id
+	Left Join sswos_year y on y.sswos_year_id = ap.em_sswos_year_id
+where ap.atindpo_postventa_id=$P{DOCUMENT_ID}]]>
+	</queryString>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="taxid" class="java.lang.String"/>
+	<field name="phone" class="java.lang.String"/>
+	<field name="address1" class="java.lang.String"/>
+	<field name="marca" class="java.lang.String"/>
+	<field name="modelo" class="java.lang.String"/>
+	<field name="anio" class="java.lang.String"/>
+	<field name="numeromotor" class="java.lang.String"/>
+	<field name="numerochasis" class="java.lang.String"/>
+	<field name="placa" class="java.lang.String"/>
+	<field name="lscolor" class="java.lang.String"/>
+	<field name="atindpo_postventa_id" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="mecanico" class="java.lang.String"/>
+	<field name="conductor" class="java.lang.String"/>
+	<field name="orden_trabajo" class="java.lang.String"/>
+	<field name="pre" class="java.lang.String"/>
+	<field name="Kmhoras" class="java.math.BigDecimal"/>
+	<title>
+		<band height="61" splitType="Stretch">
+			<textField>
+				<reportElement x="284" y="17" width="265" height="15" uuid="9770c4b2-fa5a-4f95-860a-ded5548fc08d"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pre}]]></textFieldExpression>
+			</textField>
+			<image vAlign="Middle">
+				<reportElement x="10" y="4" width="45" height="43" uuid="e9817b01-dae0-4f3e-bb2c-76588d866476"/>
+				<imageExpression><![CDATA[$P{SOURCE_PATH}.replace("attachments","modules") +  "/com.atrums.indumot.postventa/src/com/atrums/indumot/postventa/erpCommon/ad_reports/logo_ala.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="60" y="9" width="286" height="13" uuid="700a8cda-c237-478a-9baf-f92d1cb0c625"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INDUSTRIAS MOTORIZADAS INDUMOT S.A.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="22" width="192" height="13" uuid="96509c06-2377-4c4d-8f94-ff2896760753"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Indumot Honda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="35" width="133" height="13" uuid="4edaf775-c5d2-42fe-9d3c-0c1d86eb9569"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUC 0990304211001]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="225" y="35" width="324" height="13" uuid="c2f503ec-a00a-446e-9abd-332734671dc9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTRIBUYENTE ESPECIAL Resolución No. NAC-PCTRSGE11-00287 Del 29/07/2011]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="160" splitType="Stretch">
+			<staticText>
+				<reportElement x="32" y="138" width="62" height="15" uuid="cc3ba589-d80a-4f83-b16b-c2346a1ad0f5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No Motor ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="11" width="81" height="15" uuid="b4ec0e2d-ad32-402d-ae98-645ba9903213"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+					<font isBold="true" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="39" width="410" height="15" uuid="cd6ae4b7-d4ae-432a-82f1-4817c89ddb0c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="26" width="188" height="13" uuid="e3d76925-db22-4f9c-9d6d-97162ee145d0"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{taxid}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="69" width="118" height="15" uuid="ce90ac02-e4d6-4e63-9314-c431473e2339"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="54" width="410" height="15" uuid="c1de9d63-a6d1-480d-8e33-e8e69d7c1e7f"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{address1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="39" width="84" height="15" uuid="4698a826-2bad-4918-81f3-142376f52e65"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="26" width="84" height="13" uuid="2941123d-4ce6-4489-a7b0-1ae9b18947a5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CI/RUC/Pas ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="54" width="68" height="15" uuid="52c730f9-5704-40cf-900c-41a254d0b3b3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="69" width="79" height="15" uuid="93acb7f6-56c6-4661-880f-55fae8fbffd9"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Teléfono]]></text>
+			</staticText>
+			<line>
+				<reportElement x="9" y="101" width="540" height="1" uuid="e56f1239-9f5e-4271-bc63-67955868a02d"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="276" y="108" width="100" height="15" uuid="d5517b76-3a77-40d8-a287-c55065deb697"/>
+				<textFieldExpression><![CDATA[$F{marca}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="123" width="118" height="15" uuid="ba3b4e05-17d3-4333-b034-967bea0543ff"/>
+				<textFieldExpression><![CDATA[$F{modelo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="276" y="123" width="100" height="15" uuid="7ab6fb13-59cd-4110-b7de-71087769a1cd"/>
+				<textFieldExpression><![CDATA[$F{anio}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="276" y="138" width="123" height="15" uuid="611ff07e-6115-4261-945f-908deee14b70"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numerochasis}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="450" y="123" width="99" height="15" uuid="54f4711e-534d-4877-9516-678f08dc19ca"/>
+				<textFieldExpression><![CDATA[$F{placa}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="450" y="108" width="100" height="15" uuid="40fb612f-15e2-4ee2-b4af-2dd489e2bd1e"/>
+				<textFieldExpression><![CDATA[$F{lscolor}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="108" width="118" height="15" uuid="fa3d8673-cd2f-4535-965b-36349f2246da"/>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="32" y="108" width="26" height="15" uuid="165f0308-0c56-48a7-9dbf-1d50183438c7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="228" y="108" width="46" height="15" uuid="e1bd6f35-b57c-4d8f-a5a8-f97539341884"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Marca :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="123" width="40" height="15" uuid="0566039a-9000-4d0f-a6d1-399f5a326a3f"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Año :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="123" width="46" height="15" uuid="f55b8e6c-5866-4ff6-ba43-eb344056640c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modelo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="108" width="49" height="15" uuid="b34f0eaa-c27a-4d5e-92ea-179786476192"/>
+				<textElement textAlignment="Right" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Color :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="399" y="123" width="49" height="15" uuid="6a1fabb0-d39c-4e6c-b93c-546c8471cac3"/>
+				<textElement textAlignment="Right" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Placa :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="207" y="138" width="67" height="15" uuid="5fa59605-38be-4e75-9951-7435aeb10655"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No Chasis :]]></text>
+			</staticText>
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="104" y="11" width="188" height="15" uuid="edd409ed-270f-4d99-ac83-af9901528705"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="84" width="84" height="15" uuid="9645d7be-a38d-4de7-8f34-d027a20dd19f"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. O/Trabajo]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="84" width="190" height="15" uuid="2b9d53ea-d3b5-4a87-9629-710b19b0f714"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{orden_trabajo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="446" y="11" width="102" height="15" uuid="66683cc5-6b50-44e2-b496-63ca6fab4fd6"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="292" y="11" width="154" height="15" uuid="98ecaf05-0601-45e5-b52f-ee71bd7c9da8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. O/Servicio : ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="8" y="5" width="540" height="1" uuid="70d0e0ff-316f-4a1b-a188-5e54faafaa63"/>
+			</line>
+			<staticText>
+				<reportElement x="97" y="108" width="4" height="15" uuid="90d88d19-c8ca-4722-b166-94ffedca8a86"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="123" width="4" height="15" uuid="7e36e6e7-ecba-4575-bbc4-f9d13f45491f"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="84" width="7" height="15" uuid="010fcbd9-601f-49b7-90e4-650f26a189fc"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="26" width="7" height="13" uuid="9b8d78b6-431d-4d91-b925-f0793a717a24"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="39" width="7" height="15" uuid="a482df23-d8e1-40cb-a3e2-fd83c8af000e"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="54" width="7" height="15" uuid="72e30de3-ef9d-4844-853b-81c39b25c597"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="69" width="7" height="15" uuid="9996fc92-650f-46ae-941f-11f9f1e8b93f"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[: ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="104" y="138" width="101" height="15" uuid="c48e88a6-d8b3-432b-bf68-b860ff483719"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{numeromotor}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="9" y="154" width="540" height="1" uuid="6a3b346a-2421-45b0-82e2-108a7e117532"/>
+			</line>
+			<staticText>
+				<reportElement x="97" y="11" width="7" height="15" uuid="48d682bc-d37c-4ba7-b946-a222981b8c06"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[: ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="450" y="138" width="102" height="15" uuid="fc1452d0-aa52-44a5-b050-b430c20477a5"/>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{Kmhoras}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="399" y="138" width="49" height="15" uuid="adc93c16-a6b9-4b69-947c-c37c6c83c886"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Km/Hr :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="138" width="4" height="15" uuid="55de0804-8969-4ba1-bb42-ae1bd4bf0060"/>
+				<textElement textAlignment="Left">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="61" splitType="Stretch">
+			<subreport>
+				<reportElement x="6" y="0" width="555" height="61" uuid="e0946c55-441d-4923-8c46-79538831025a"/>
+				<subreportParameter name="DOCUMENT_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN} + "/com/atrums/indumot/postventa/erpCommon/ad_reports/Rpt_atindpo_Prefactura_lineas.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="99">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="3" width="552" height="41" uuid="b8f59c05-b7b3-49a8-86fc-936b3575c738"/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="81" width="51" height="16" uuid="7c332dd4-78dc-409d-ae63-9f57c2565600"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mecanico:  ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="55" y="81" width="201" height="16" uuid="ed66547c-cf00-4490-baef-050796c0fc39"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mecanico}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="256" y="81" width="64" height="16" uuid="4d024a5e-fb96-4eb4-bcdb-fc709cf128c0"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Conductor:  ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="324" y="81" width="231" height="16" uuid="b4c9891d-5149-4a96-a0b3-8d25ba9fdd2f"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{conductor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="58">
+			<staticText>
+				<reportElement x="0" y="36" width="555" height="10" uuid="b79d0453-7a54-4e6f-9f9d-68cb311db534"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Matriz: Primera Transversal y Octavio Chacón Parque Industrial. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="46" width="555" height="10" uuid="d0c1be2f-9827-4913-ba17-417645b86e74"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Frente a Graiman - Telf: 072862698 - 072806503 / Cuenca - Ecuador]]></text>
+			</staticText>
+			<line>
+				<reportElement x="6" y="34" width="540" height="1" uuid="6cbc4aff-f528-4c49-b86e-d6bc06b86432"/>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="284" y="18" width="261" height="11" uuid="dbe51ce6-29bf-4126-b3da-8c149504ef28"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[* Este documento no tiene valor comercial]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="117D6E505F7345C286F72759F207882B" trl="Y">
+    <value column="MsgText" isTrl="Y" original="There can only be one active record per period">Sólo puede existir un registro activo por periodo</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="32A79EEB075B4453A493F82B48C98648" trl="Y">
+    <value column="MsgText" isTrl="Y" original="There can only be one active record">Sólo puede existir un registro activo</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="351B8D2EAD864BAF8CA379BD75FC4E5C" trl="Y">
+    <value column="MsgText" isTrl="Y" original="There is already a record with this province for the route">Ya existe un registro con esta provincia para la ruta</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="7F8148BBEDE443B895D6A574041AF56D" trl="Y">
+    <value column="MsgText" isTrl="Y" original="There can only be one active record per commercial agent">Sólo puede existir un registro activo por agente comercial</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="E1282B5C26734FE094D9EA27E3A71738" trl="Y">
+    <value column="MsgText" isTrl="Y" original="The sum of active weeks cannot exceed 4 weeks">La sumatoria de semanas activas no puede exceder 4 semanas</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

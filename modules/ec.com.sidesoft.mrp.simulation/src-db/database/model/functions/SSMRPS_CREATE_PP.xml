@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSMRPS_CREATE_PP">
+    <function name="SSMRPS_CREATE_PP" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[/*************************************************************************
+* The contents of this file are subject to the Openbravo  Public  License
+* Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+* Version 1.1  with a permitted attribution clause; you may not  use this
+* file except in compliance with the License. You  may  obtain  a copy of
+* the License at http://www.openbravo.com/legal/license.html
+* Software distributed under the License  is  distributed  on  an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+* License for the specific  language  governing  rights  and  limitations
+* under the License.
+* The Original Code is Openbravo ERP.
+* The Initial Developer of the Original Code is Openbravo SLU
+* All portions are Copyright (C) 2001-2006 Openbravo SLU
+* All Rights Reserved.
+* Contributor(s):  __Carlos Chiza____________________________________.
+************************************************************************/
+  -- Logistice
+  v_ResultStr VARCHAR2(2000):='';
+  v_Message VARCHAR2(2000):='';
+  v_Result NUMBER:=1; -- 0=failure
+  v_Record_ID VARCHAR2(32);
+  v_User_ID VARCHAR2(32):='0';
+  v_Org_ID VARCHAR2(32);
+  v_Client_ID VARCHAR2(32);
+  v_Planner_ID VARCHAR2(32);
+  v_Product_ID VARCHAR2(32);
+  v_Product_Category_ID VARCHAR2(32);
+  v_BPartner_ID VARCHAR2(32);
+  v_BP_Group_ID VARCHAR2(32);
+  v_Vendor_ID   varchar2(32);
+  v_TimeHorizon NUMBER;
+  v_PlanningDate DATE;
+  v_SecurityMargin NUMBER;
+
+  v_StockSecurity  NUMBER;
+  v_month_avg80 NUMBER;
+  v_month_avg20 NUMBER;
+  v_MonthProjection NUMBER;
+  v_Status varchar2(60);
+  v_monthnotcons varchar2(1);
+  V_countLines  NUMBER;
+  v_Acum  NUMBER;
+  v_CountLinesAux  NUMBER;
+  V_TotalAvgSales  NUMBER;
+  v_Procentage20 NUMBER;
+
+  v_ProcessID  varchar2(32);
+  v_PeriodFrom  varchar2(32);
+  v_PeriodTo  varchar2(32);
+  v_periodProjection varchar2(32);
+  v_ProductCategory  varchar2(32);
+
+  v_DateFrom DATE;
+  v_DateTo DATE;
+  v_DateProjection DATE;
+
+
+  FINISH_PROCESS BOOLEAN DEFAULT FALSE;
+  --  Parameter
+  TYPE RECORD IS REF CURSOR;
+    Cur_Parameter RECORD;
+    Cur_Pareto RECORD;
+    Cur_OrderByPeriod RECORD;
+    
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_PInstance_ID) ;
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+  BEGIN --BODY
+    -- Get Parameters
+    v_ResultStr:='ReadingParameters';
+    FOR Cur_Parameter IN
+      (SELECT i.Record_ID, i.AD_User_ID, p.ParameterName, p.P_String, p.P_Number, p.P_Date
+      FROM AD_PInstance i
+      LEFT JOIN AD_PInstance_Para p
+        ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=p_PInstance_ID
+      ORDER BY p.SeqNo
+      )
+    LOOP
+      v_Record_ID:=Cur_Parameter.Record_ID;
+      v_User_ID:=Cur_Parameter.AD_User_ID;
+    END LOOP; -- Get Parameter
+
+	select ssmrps_asimulation_prod_id, 	c_periodfrom_id, 	c_periodto_id, 	c_periodprojection_id, 	m_product_category_id, 	monthnotcons,docstatus, ad_org_id, ad_client_id
+	INTO   v_ProcessID, 			v_PeriodFrom, 		v_PeriodTo,	v_periodProjection, 	v_ProductCategory, v_monthnotcons	,v_Status, v_Org_ID , v_Client_ID 
+	from ssmrps_asimulation_prod
+	where ssmrps_asimulation_prod_id = v_Record_ID;
+
+	SELECT COALESCE((
+	select count(*) from mrp_run_purchase  where mrp_run_purchase_id = v_Record_ID
+	),0) 
+	INTO v_CountLinesAux
+	FROM DUAL;
+	IF (v_CountLinesAux>0) THEN
+		RAISE_APPLICATION_ERROR(-20000, '@20501@') ;
+	END IF;
+
+
+	--v_Mrp_purchase_ID:= get_uuid();
+	
+	INSERT INTO mrp_run_purchase(
+		mrp_run_purchase_id, ad_client_id, ad_org_id, isactive, created, 
+		createdby, updated, updatedby, name, description, datedoc, mrp_planner_id, 
+		vendor_id, m_product_category_id, m_product_id, c_bp_group_id, 
+		c_bpartner_id, timehorizon, securitymargin, simulate, launchpo, 
+		create_reservations, em_scmf_historydays, em_cscm_deletelines)
+	VALUES (v_Record_ID, v_Client_ID, v_Org_ID, 'Y', now() , 
+		    v_User_ID, now(), v_User_ID, 'Simulacion MRP - ' || to_char(now(),'dd/MM/yyyy') , 'Simulacion MRP - ' || to_char(now(),'dd/MM/yyyy'), now(), NULL, 
+		    null, null, null, null, 
+		    null, 1, 4, 'N', 'N', 
+		    'N', 60, null);
+
+
+
+		INSERT INTO MRP_RUN_PURCHASELINE(
+		MRP_RUN_PURCHASELINE_ID, AD_CLIENT_ID, AD_ORG_ID, ISACTIVE, CREATED, CREATEDBY, UPDATED, UPDATEDBY
+		, MRP_RUN_PURCHASE_ID,M_PRODUCT_ID, QTY, NEEDEDQTY, PLANNEDDATE, INOUTTRXTYPE,ISFIXED, ISCOMPLETED,PLANNEDORDERDATE, C_BPARTNER_ID, CUMQTY
+		)
+		select 
+		get_uuid() as mrp_run_purchaseline_id
+		, sal.ad_client_id
+		, sal.ad_org_id
+		, sal.isactive
+		, sal.created
+		, now() as createdby
+		, sal.updated
+		, now() as updatedby
+		, v_Record_ID as mrp_run_purchase_id
+		, sal.productid as m_product_id
+		, sal.finalorder as  qty
+		, sal.finalorder as neededqty
+		, date(now()) as planneddate
+		, 'PP' as inouttrxtype
+		, 'N'  AS isfixed
+		, 'N' as iscompleted
+		, date(now()) as plannedorderdate
+		, provider.c_bpartner_id as c_bpartner_id
+		, sal.finalorder as  cumqty
+		from ssmrps_asim_lines sal
+		join (
+		select distinct
+		co.c_bpartner_id 
+		, col.m_product_id 
+		from c_order co
+		join c_orderline col on col.c_order_id = co.c_order_id
+		where issotrx= 'N'
+		) provider on provider.m_product_id = sal.productid
+		and sal.qtyordered_round >0
+		WHERE SAL.ssmrps_asimulation_prod_id = v_Record_ID;
+	
+   -- PERFORM MRP_PURCHASEPLAN(v_User_ID, v_Org_ID, v_Client_ID, v_Record_ID, v_Planner_ID, v_Vendor_ID, v_TimeHorizon,
+       ---             v_PlanningDate, v_SecurityMargin);
+
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', v_Result, v_Message) ;
+  END; --BODY
+EXCEPTION
+WHEN OTHERS THEN
+  DBMS_OUTPUT.PUT_LINE('MRP_PURCHASE_RUN exception: ' || v_ResultStr) ;
+  v_ResultStr:= '@ERROR=' || SQLERRM;
+  DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+  ROLLBACK;
+  AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+--  RETURN;
+END SSMRPS_CREATE_PP
+]]></body>
+    </function>
+  </database>

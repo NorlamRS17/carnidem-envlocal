@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="SproctmMOLinesData" package="ec.com.sidesoft.projects.complement.accounting">
+  <SqlClassComment></SqlClassComment>
+  <SqlMethod name="selectline" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+		select dc.AD_ORG_ID, dc.ad_client_id, dc.sproctm_detail_cost_id
+        , dc.record_id ,  dc.c_bpartner_id, dc.hours, dc.date , dc.cost, dc.total_cost
+        , dc.status, dc.posted, dc.settlement, dc.ad_tab_id 
+        , cca.RECORD_ID as SalaryCategoryId, sc.C_Salary_Category_ID
+        , '100' AS C_CURRENCY_ID
+        , cca.in_proces_c_elementvalue_id, cca.transfer_c_elementvalue_id, cca.setlement_c_elementvalue_id
+        , ssc.SSPR_CONCEPT_ID, b.EM_SSPR_CATEGORY_ACCT_ID
+        from sproctm_detail_cost dc
+        Inner join sproctm_task_workforce tw on tw.sproctm_task_workforce_id = record_id  
+        inner join C_Salary_Category sc on sc.C_Salary_Category_id = tw.C_Salary_Category_id
+        LEFT join sproctm_config_account cca on cca.RECORD_ID = sc.C_Salary_Category_id
+        LEFT join c_bpartner b on b.c_bpartner_ID = dc.c_bpartner_id
+        LEFT JOIN SSPR_CONCEPT SsC ON SsC.SSPR_CONCEPT_ID = B.em_sspr_concept_id
+        where sproctm_detail_cost_id = ?      
+      ]]>
+    </Sql>
+    <Parameter name="detailCostId"/>
+  </SqlMethod>
+</SqlClass>

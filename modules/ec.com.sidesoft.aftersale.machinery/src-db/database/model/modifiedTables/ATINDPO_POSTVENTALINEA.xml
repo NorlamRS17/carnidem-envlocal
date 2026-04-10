@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE ATINDPO_POSTVENTALINEA">
+    <table name="ATINDPO_POSTVENTALINEA" primaryKey="ATINDPO_POSTVENTALINEA_KEY">
+      <column name="EM_SATMAC_INVOICE" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[Y]]></default>
+        <onCreateDefault/>
+      </column>
+      <check name="EM_SATMAC_INVOICE"><![CDATA[EM_SATMAC_INVOICE IN ('Y', 'N')]]></check>
+    </table>
+  </database>

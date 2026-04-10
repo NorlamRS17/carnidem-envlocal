@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_ES" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="4F605E4B73E5437DA0F7E9FB95A3BA23" trl="N">
+    <value column="Name" isTrl="N" original="Table selector">Table selector</value>
+    <value column="Description" isTrl="N" original="Table selector">Table selector</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C36B2C25A0CA4FB8AECE9280C87AB92C" trl="N">
+    <value column="Name" isTrl="N" original="Document Type selector">Document Type selector</value>
+    <value column="Description" isTrl="N" original="Document Type Selector">Document Type Selector</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

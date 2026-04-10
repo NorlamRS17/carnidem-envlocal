@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSIP_VALIDATE_IMPORT_TRG">
+    <trigger name="SSIP_VALIDATE_IMPORT_TRG" table="M_INOUTLINE" fires="before" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[
+    rInOut      RECORD;
+	vCheck      NUMBER;
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF INSERTING THEN
+    
+        SELECT IsSoTrx INTO rInOut FROM m_inout WHERE m_inout_id = :NEW.m_inout_id;
+		
+        IF rInOut.IsSoTrx = 'N' THEN
+            SELECT COUNT(ol.c_orderline_id) INTO vCheck
+            FROM c_orderline ol
+                JOIN c_order o ON o.c_order_id = ol.c_order_id
+                JOIN c_doctype dt ON dt.c_doctype_id = o.c_doctypetarget_id
+                    AND dt.EM_Ssip_Isimports = 'Y'
+            WHERE ol.c_orderline_id = :NEW.c_orderline_id AND o.em_ssip_importstatus != 'LL';
+
+            IF vCheck > 0 THEN
+                RAISE_APPLICATION_ERROR(-20000, '@SSIP_ImportNotLiquidated@');
+            END IF;
+        END IF;
+		
+	END IF;
+
+	END SSIP_VALIDATE_IMPORT_TRG
+]]></body>
+    </trigger>
+  </database>

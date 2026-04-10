@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SPROCTM_CIF_TRG">
+    <trigger name="SPROCTM_CIF_TRG" table="SPROCTM_TASK_CIF" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[    
+    v_totalWithSimilarIndCost NUMBER;
+    v_indirecCostId VARCHAR2(32);
+
+BEGIN
+ 
+   IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+
+
+    IF  (INSERTING OR UPDATING) THEN
+
+       IF  (INSERTING ) THEN
+            v_indirecCostId = :NEW.MA_Indirect_Cost_ID;
+        END IF;
+
+
+        IF  (UPDATING ) THEN
+            IF(COALESCE(:OLD.MA_Indirect_Cost_ID, '')  != :NEW.MA_Indirect_Cost_ID ) THEN
+                v_indirecCostId = :NEW.MA_Indirect_Cost_ID;
+            END IF;
+        END IF;
+
+
+        IF(:NEW.MA_Indirect_Cost_ID is not null ) THEN
+
+            -- Validations 
+            -- Verificar si ya existe esa categoria salarial 
+            -- en las lineas de la Mano de Obra con respecto a esa tarea.
+            SELECT count(*) as totalWithSimilarIndCost 
+            INTO  v_totalWithSimilarIndCost
+            FROM sproctm_task_cif 
+            where c_projecttask_id =  :NEW.c_projecttask_id
+            AND MA_Indirect_Cost_ID = v_indirecCostId;
+            
+            IF (v_totalWithSimilarIndCost >= 1) THEN
+                RAISE_APPLICATION_ERROR(-20000, '@sproctm_CIF_OnlyIndirectCost@');
+            END IF;
+            
+        END IF;
+
+    END IF;
+
+    END SPROCTM_CIF_TRG
+]]></body>
+    </trigger>
+  </database>

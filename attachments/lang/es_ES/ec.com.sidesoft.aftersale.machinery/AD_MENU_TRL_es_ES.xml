@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="6A3B47A0CC41488DA84347E9AA6C057E" trl="Y">
+    <value column="Name" isTrl="Y" original="Machine Type">Tipo de Máquina</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="CF76C79F83CB4768A33B8B875B172911" trl="Y">
+    <value column="Name" isTrl="Y" original="Service Contracts">Contratos de Servicio</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

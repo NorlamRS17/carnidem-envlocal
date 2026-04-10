@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="6CC3D081B6CE44C38B910F895A2F9DE3" trl="Y">
+    <value column="Name" isTrl="Y" original="ShipmentInOut - Project Product">Albarán (Cliente) - Producto Proyecto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="71F0A68545304512930914FD23FB2813" trl="Y">
+    <value column="Name" isTrl="Y" original="Goods Movements - Project Product">Movimiento entre almacenes - Producto Proyecto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="94E0549AFC7E40D5A6C869A60FA9BC76" trl="N">
+    <value column="Name" isTrl="N" original="SSPRJ Storage Bin">SSPRJ Storage Bin</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B6F6EFA2A1BD43F3A0109CC02AEFA128" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_task_prod">sproctm_task_prod</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

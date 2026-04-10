@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="366172AF98654D6B890D93F3C7619DFA" trl="Y">
+    <value column="Name" isTrl="Y" original="Report inventory turns">Reporte de rotación de inventarios</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="48EB7FC213D54CE481214DEC8C4529BD" trl="Y">
+    <value column="Name" isTrl="Y" original="Report product traceability">Reporte de trazabilidad de productos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="637EE75E579148639D9D2F698EC0E58E" trl="Y">
+    <value column="Name" isTrl="Y" original="Report useful life product">Reporte de vida útil</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

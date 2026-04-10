@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_TAB" version="">
+  <row id="05BEA6D7B9AB495D9B402B3B2B64A650" trl="N">
+    <value column="Name" isTrl="N" original="Zona">Zona</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="36CAD066EE9D4BE096785381E3CD18FC" trl="N">
+    <value column="Name" isTrl="N" original="Marca">Marca</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F53D188801C5451A81D226B355B2A1D3" trl="N">
+    <value column="Name" isTrl="N" original="Zonas Mayoreo (Mantenimiento)">Zonas Mayoreo (Mantenimiento)</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FA917BA50E4E4DE0A76BEEC3A12631B3" trl="N">
+    <value column="Name" isTrl="N" original="Divisón">Divisón</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

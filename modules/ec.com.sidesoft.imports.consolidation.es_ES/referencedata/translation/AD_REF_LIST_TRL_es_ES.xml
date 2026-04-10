@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="97B6D6F6C5FA4DD19B4A47ED91486BAE" trl="Y">
+    <value column="Name" isTrl="Y" original="Direct">Directo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A0ACCCA3B5D943BF9D606B8F3BA7A7F4" trl="Y">
+    <value column="Name" isTrl="Y" original="Consolidated">Consolidado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

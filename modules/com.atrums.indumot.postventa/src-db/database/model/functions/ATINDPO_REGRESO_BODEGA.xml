@@ -1,0 +1,235 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION ATINDPO_REGRESO_BODEGA">
+    <function name="ATINDPO_REGRESO_BODEGA" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_ResultStr         VARCHAR(2000):='';
+    v_Message           VARCHAR(2000):='';
+	v_MessageReactivar  VARCHAR(2000):='';
+	v_MessageAnular     VARCHAR(2000):='';
+    v_Record_ID         VARCHAR(32);
+    v_Result NUMBER:=1;
+    v_messageError      VARCHAR(2000):='';
+
+    Cur_Parameter       RECORD;
+
+    v_atindpoPostventaId        VARCHAR(32);	    
+    v_Client_ID                 VARCHAR(32);
+    v_Org_ID                    VARCHAR(32);
+    v_User_ID                   VARCHAR(32);
+    v_estado                    VARCHAR(60);
+    v_docStatus                 VARCHAR(60);  
+    v_ParameterName             VARCHAR(32);
+    v_existeData NUMBER:=1;
+    v_existeLineasArticulo NUMBER:=0;
+    vs_productTypeArticulo      CHAR:='I';
+    v_existeLineasDespacho NUMBER:=0;
+    v_mensajeError              VARCHAR(4000); 
+    v_error                     CHAR;
+    v_mInout                    RECORD; 
+    v_mInoutline                RECORD; 
+    v_atindpoPostventalineaId   VARCHAR(32);    
+    c_lineas CURSOR (patindpoPostventaId  VARCHAR(32)
+                     ,pClient_ID VARCHAR(32)
+                     ,pOrg_ID VARCHAR(32)
+                     ,pproductTypeArticulo CHAR
+                    ) FOR
+                    SELECT 
+                        pvl.atindpo_postventalinea_id,pvl.atindpo_postventa_id,pvl.ad_client_id,pvl.ad_org_id
+                        ,pvl.isactive,pvl.m_product_id,pvl.cantidad,pvl.m_attributesetinstance_id
+                        ,pvl.entregado,mp.producttype,pvl.m_locator_id
+                        ,pv.createdby,pv.updatedby,pv.documentno,pv.docstatus,pv.docactionpv
+                        ,pv.c_doctype_id,pv.c_bpartner_id,pv.c_bpartner_location_id
+                        ,mp.c_uom_id
+                    FROM atindpo_postventa pv,atindpo_postventalinea pvl,m_product mp
+                   WHERE pv.atindpo_postventa_id = pvl.atindpo_postventa_id 
+                     AND pvl.m_product_id = mp.m_product_id
+                     AND pvl.atindpo_postventa_id = patindpoPostventaId
+                     AND pvl.ad_client_id= pClient_ID
+                     AND pvl.ad_org_id = pOrg_ID
+                     AND mp.producttype =pproductTypeArticulo
+                     AND pvl.entregado ='N'
+                     order by pvl.created;
+
+v_document_id varchar (32);
+v_documentno varchar (30);
+v_warehouse_id varchar (32);
+v_bpartner_id varchar (32);
+v_bpartner_location_id varchar(32);
+v_description varchar(255);
+v_inout_id varchar (32);
+
+
+v_locator_id varchar(32);
+v_inoutline_id varchar(32);
+v_line NUMBER;
+v_product_id varchar(32);
+v_uom_id varchar(32);
+v_movementqty NUMBER;
+v_attributesetinstance_id varchar(32);
+v_indsup_ord_desp_id varchar(32);
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_PInstance_ID);
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL);
+
+    BEGIN
+            
+        FOR Cur_Parameter IN
+          (SELECT i.Record_ID,
+                  i.AD_User_ID,
+                  p.ParameterName,
+                  p.P_String,
+                  p.P_Number,
+                  p.P_Date,
+                  i.AD_Org_ID,
+                  i.AD_Client_ID
+             FROM AD_PInstance i
+             LEFT JOIN AD_PInstance_Para p
+               ON i.AD_PInstance_ID=p.AD_PInstance_ID
+            WHERE i.AD_PInstance_ID=p_PInstance_ID
+            ORDER BY p.SeqNo)
+        LOOP
+
+            v_atindpoPostventaId:=Cur_Parameter.Record_ID;
+            v_User_ID:=Cur_Parameter.AD_User_ID;
+            v_Org_ID:=Cur_Parameter.AD_Org_ID;
+            v_Client_ID:=Cur_Parameter.AD_Client_ID;
+            v_ParameterName:=Cur_Parameter.ParameterName;
+            v_estado:=Cur_Parameter.P_String;
+        END LOOP;
+       
+        select ad_org_id, m_warehouse_id
+        into v_Org_ID, v_warehouse_id
+        from atindpo_postventa
+        where atindpo_postventa_id = v_atindpoPostventaId;
+
+        
+            SELECT COUNT(1)
+              INTO v_existeData
+              FROM atindpo_postventalinea
+             WHERE atindpo_postventa_id = v_atindpoPostventaId
+               AND ad_client_id= v_Client_ID
+               AND ad_org_id = v_Org_ID;
+        DBMS_OUTPUT.PUT_LINE('Datos ' || v_existeData);
+        
+        IF (v_existeData != 0) THEN 
+            
+                    SELECT COUNT(1)
+                    INTO v_existeLineasDespacho
+                    FROM atindpo_postventa pv,atindpo_postventalinea pvl,m_product mp
+                   WHERE pv.atindpo_postventa_id = pvl.atindpo_postventa_id 
+                     AND pvl.m_product_id = mp.m_product_id
+                     AND pvl.atindpo_postventa_id = v_atindpoPostventaId
+                     AND pvl.ad_client_id= v_Client_ID
+                     AND pvl.ad_org_id = v_Org_ID
+                     AND mp.producttype =vs_productTypeArticulo
+                     AND pvl.entregado ='N';
+           
+            IF (v_existeLineasDespacho != 0) THEN 
+                    
+                    SELECT dt.c_doctype_id INTO v_document_id 
+                                            FROM c_doctype dt 
+                                            WHERE dt.docbasetype = 'MMS' and dt.ad_org_id=v_Org_ID and dt.issotrx = 'Y'
+                                            and dt.isreturn = 'N' and dt.isactive = 'Y';
+					DBMS_OUTPUT.PUT_LINE('Doctype ' || v_document_id);
+                    
+                    v_documentno:= ad_sequence_doctype(v_document_id, v_Client_ID, 'Y');     
+                    
+                    SELECT pv.c_bpartner_id,pv.c_bpartner_location_id
+                    ,((SELECT name FROM c_bpartner cb WHERE cb.c_bpartner_id= pv.c_bpartner_id)||'-'||pv.documentno) nameDocumento
+                    INTO v_bpartner_id,v_bpartner_location_id,v_description
+                    FROM atindpo_postventa pv
+                    WHERE pv.atindpo_postventa_id =v_atindpoPostventaId;                                            
+                     
+                        
+					select get_uuid() into v_inout_id;
+                   
+                    
+                        INSERT INTO m_inout(
+                            m_inout_id				,ad_client_id			,ad_org_id			,isactive
+                            ,created				,createdby				,updated			,updatedby
+                            ,issotrx				,documentno				,docaction			,docstatus
+                            ,posted                 ,processing             ,processed			,c_doctype_id		,isprinted
+                            ,movementtype			,movementdate			,dateacct			,c_bpartner_id
+                            ,c_bpartner_location_id	,m_warehouse_id			,deliveryrule		,freightcostrule
+                            ,deliveryviarule		,priorityrule           ,description,       em_atindpo_postventa_id
+                        )
+                        VALUES (
+                             v_inout_id,                         v_Client_ID,                   v_Org_ID		,            'Y'
+                            ,now()                              ,v_User_ID                      ,now()                      ,v_User_ID
+                            ,'Y'                                ,v_documentno                   ,'CO'                       ,'DR'
+                            ,'N'                				,'N'                            ,'N'            			,v_document_id              ,'N'
+                            ,'C-'                               ,now()              			,now()          			,v_bpartner_id
+                            ,v_bpartner_location_id         	,v_warehouse_id         		,'A'                		,'I'
+                            ,'P'                                ,'5'                            ,v_description, v_atindpoPostventaId);
+                    
+                  
+                        FOR cr_lineas IN c_lineas(v_atindpoPostventaId,v_Client_ID,v_Org_ID,vs_productTypeArticulo)  LOOP
+                            SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue INTO v_line FROM M_InOutLine WHERE M_InOut_ID=v_inout_id;
+
+                                     
+                            select get_uuid() into v_inoutline_id;                            
+                            v_product_id:=cr_lineas.m_product_id;                                           
+                            v_uom_id:=cr_lineas.c_uom_id;		    
+                            v_movementqty:=((cr_lineas.cantidad)*(-1));	
+                            v_attributesetinstance_id:=cr_lineas.m_attributesetinstance_id;    				    	
+                            v_locator_id:=cr_lineas.m_locator_id;
+                          
+                                INSERT INTO m_inoutline(
+                                            m_inoutline_id				,ad_client_id				,ad_org_id				,isactive
+                                            ,created					,createdby					,updated				,updatedby
+                                            ,line						,m_inout_id					,c_orderline_id			,m_locator_id
+                                            ,m_product_id				,c_uom_id					,movementqty			,isinvoiced 
+                                            ,m_attributesetinstance_id	,isdescription				,explode					
+                                            )
+                                VALUES(
+                                            v_inoutline_id          				,v_Client_ID                            ,v_Org_ID                           ,'Y'
+                                            ,now()                                  ,v_User_ID                              ,now()                              ,v_User_ID
+                                            ,v_line                                 ,v_inout_id                             ,NULL                               ,v_locator_id
+                                            ,v_product_id                           ,v_uom_id                               ,v_movementqty                      ,'N'
+                                            ,v_attributesetinstance_id              ,'N'                                    ,'N');  
+
+                                
+                                            
+                                v_atindpoPostventalineaId:=cr_lineas.atindpo_postventalinea_id;
+                                
+                                UPDATE atindpo_postventalinea
+                                SET entregado = 'Y'
+                                WHERE atindpo_postventalinea_id = v_atindpoPostventalineaId;
+                                
+                               
+                        END LOOP;                               
+                        M_INOUT_POST(null,v_inout_id);
+                END IF;
+         
+        END IF;
+        v_Message:='Ejecucion Exitosa - Guia de Despacho No. ' || v_documentno;
+
+select get_uuid() into v_indsup_ord_desp_id;
+                       insert into indsup_ord_desp (
+                            indsup_ord_desp_id      ,ad_client_id       ,ad_org_id      ,isactive                   ,created
+                            ,createdby              ,updated            ,updatedby      ,atindpo_postventa_id       ,m_inout_id     ,descripcion
+                        )
+                        VALUES (
+                            v_indsup_ord_desp_id    ,v_Client_ID        ,v_Org_ID       ,'Y'                        ,now()
+                            ,v_User_ID              ,now()     ,v_User_ID      ,v_atindpoPostventaId       ,v_inout_id     ,v_Message);
+
+
+
+        DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished - ' || v_Message);
+        AD_UPDATE_PINSTANCE(p_PInstance_ID, v_User_ID, 'Y', v_Result, v_Message);
+        RETURN;
+
+    END;    
+    EXCEPTION WHEN OTHERS THEN
+        v_ResultStr:= '@ERROR=' || SQLERRM;
+        DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+                AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr);
+        RETURN;
+END ATINDPO_REGRESO_BODEGA
+]]></body>
+    </function>
+  </database>

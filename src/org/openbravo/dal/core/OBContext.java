@@ -84,7 +84,7 @@ public class OBContext implements OBNotSingleton {
   private static final String ORG = "#AD_Org_ID";
 
   // set this to a higher value to enable admin mode tracing
-  private static int ADMIN_TRACE_SIZE = 0;
+  private static int ADMIN_TRACE_SIZE = 10;
 
   private static ThreadLocal<OBContext> instance = new ThreadLocal<OBContext>();
 

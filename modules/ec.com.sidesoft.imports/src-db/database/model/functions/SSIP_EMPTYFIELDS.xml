@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSIP_EMPTYFIELDS">
+    <function name="SSIP_EMPTYFIELDS" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[DECLARE
+
+TYPE RECORD IS REF CURSOR;
+
+  Cur_Parameter  RECORD;
+  Cur_Invoice RECORD;
+  
+  v_Record_ID  VARCHAR2(32);
+  V_MESSAGE VARCHAR2(2000):='';
+  V_Processing Varchar2(60);
+  v_ResultStr VARCHAR2(2000) := '';  
+
+
+BEGIN
+
+  --  Update AD_PInstance
+  DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || PInstance_ID) ;
+  v_ResultStr := 'PInstanceNotFound';
+  AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+  BEGIN --BODY
+
+    -- Get Parameters
+    v_ResultStr := 'ReadingParameters';
+    FOR Cur_Parameter IN (
+      SELECT i.Record_ID
+      FROM AD_PInstance i
+      WHERE i.AD_PInstance_ID = PInstance_ID
+	)
+  
+  LOOP
+
+      v_Record_ID := Cur_Parameter.Record_ID;
+
+  END LOOP; -- End Get Parameter
+
+  -- Set priceactual = 0
+  Update c_orderline c Set priceactual = 0 Where c.c_order_id = V_Record_Id;
+  
+  DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message) ;
+  AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, v_Message) ;
+  RETURN;
+
+  END; --BODY
+  EXCEPTION
+  WHEN OTHERS THEN
+
+    RETURN;
+END SSIP_EMPTYFIELDS
+]]></body>
+    </function>
+  </database>

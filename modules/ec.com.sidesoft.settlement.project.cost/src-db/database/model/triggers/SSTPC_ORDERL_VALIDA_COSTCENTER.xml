@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSTPC_ORDERL_VALIDA_COSTCENTER">
+    <trigger name="SSTPC_ORDERL_VALIDA_COSTCENTER" table="C_ORDERLINE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[  v_costcenter_co          varchar2(32);
+  v_costcenter_mi          varchar2(32);
+  v_costcenter_comi        VARCHAR2(32);
+  v_IsSOTrx 		   CHAR(1);
+  v_isreturn		   CHAR(1);
+  v_C_DocType_ID	   VARCHAR2(32);
+  v_name_costcenter	   VARCHAR2(60);
+  v_docstatus    	   VARCHAR2(60);
+  v_docaction		   VARCHAR2(60);
+  
+     
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+    ---OBTENGO EL CENTRO DE COSTO DE LA CABECERA DE LA DEVOLUCION EL CLIENTE
+    select a.c_costcenter_id,IsSOTrx,C_DocTypeTarget_ID,docstatus,docaction
+    into v_costcenter_co,v_IsSOTrx,v_C_DocType_ID,v_docstatus,v_docaction
+    from c_order a
+    where a.c_order_id = :new.c_order_id;
+    
+     ---OBTENGO EL TIPO DE DOCUMENTO
+    select isreturn 
+    into v_isreturn
+    from C_DocType where C_DocType_ID = v_C_DocType_ID;
+
+    ---OBTENGO EL CENTRO DE COSTO DE LA CABECERA DEL ALBARAN CLIENTE
+    select a.c_costcenter_id,c.name
+    into v_costcenter_mi,v_name_costcenter
+    from m_inout a 
+    left join m_inoutline b on a.m_inout_id = b.m_inout_id
+    left join c_costcenter c on a.c_costcenter_id = c.c_costcenter_id
+    where b.m_inoutline_id = :new.m_inoutline_id;
+    
+    IF (INSERTING) THEN
+        IF(v_docstatus = 'DR' and v_docaction = 'CO') THEN 
+            IF(v_IsSOTrx = 'Y' and v_isreturn='Y') THEN 
+                IF (coalesce(v_costcenter_co,'ND') <> coalesce(v_costcenter_mi,'ND')) THEN
+                    RAISE_APPLICATION_ERROR(-20000, '@El Centro de Costos de la Devolución de Cliente es diferente al del Albarán Cliente que es: @'||v_name_costcenter);
+                END IF;
+            END IF;
+        END IF;
+    END IF;
+
+    IF (UPDATING) THEN
+        IF(v_docstatus = 'DR' and v_docaction = 'CO') THEN 
+            IF(v_IsSOTrx = 'Y' and v_isreturn='Y') THEN 
+                IF (coalesce(v_costcenter_co,'ND') <> coalesce(v_costcenter_mi,'ND')) THEN
+                    RAISE_APPLICATION_ERROR(-20000, '@El Centro de Costos de la Devolución de Cliente es diferente al del Albarán Cliente que es: @'||v_name_costcenter);
+                END IF;
+            END IF;
+        END IF;
+    END IF;
+ 
+END SSTPC_ORDERL_VALIDA_COSTCENTER
+]]></body>
+    </trigger>
+  </database>

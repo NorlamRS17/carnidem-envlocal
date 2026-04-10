@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.21083"/>
+    <columnDataChange tablename="AD_FIELD" columnname="NAME" pkRow="B69B23AA55CD46F0B7CF8CB6B60EF7F8">
+      <oldValue><![CDATA[Borrar]]></oldValue>
+      <newValue><![CDATA[DP_Borrar]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="ISACTIVE" pkRow="FD885CC386AF483A9700F57A845A08CB">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+  </vector>

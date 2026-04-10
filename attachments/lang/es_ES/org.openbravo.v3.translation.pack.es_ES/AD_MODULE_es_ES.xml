@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_ES" language="es_ES" table="AD_MODULE" version="">
+  <row id="2F164E3D364A403394E4290F6E500F78" trl="N">
+    <value column="Description" isTrl="N" original="Contiene la traducción al español (España) de todos los módulos que forman parte de la distribución de Openbravo 3.0">Contiene la traducción al español (España) de todos los módulos que forman parte de la distribución de Openbravo 3.0</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="License" isTrl="N" original="Licensed under the Openbravo Public License version 1.1.&#10;You may obtain a copy of the License at http://www.openbravo.com/legal/license.html or in the legal folder of the Openbravo ERP core distribution.">Licensed under the Openbravo Public License version 1.1.
+You may obtain a copy of the License at http://www.openbravo.com/legal/license.html or in the legal folder of the Openbravo ERP core distribution.</value>
+    <value column="Updateinfo" isTrl="N" original="Merged two translation modules:&#10;* Aging Balance report Spanish Translation.&#10;* Report: Cash Flow Forecast - Spanish (Spain) Translation&#10;">Merged two translation modules:
+* Aging Balance report Spanish Translation.
+* Report: Cash Flow Forecast - Spanish (Spain) Translation
+</value>
+  </row>
+</compiereTrl>

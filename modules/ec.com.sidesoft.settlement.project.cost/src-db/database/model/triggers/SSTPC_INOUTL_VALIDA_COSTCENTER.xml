@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSTPC_INOUTL_VALIDA_COSTCENTER">
+    <trigger name="SSTPC_INOUTL_VALIDA_COSTCENTER" table="M_INOUTLINE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[  v_costcenter_co          varchar2(32);
+  v_costcenter_mi          varchar2(32);
+  v_costcenter_comi          VARCHAR2(32);
+  v_isreturn 		CHAR(1);
+  v_MovementType 	VARCHAR2(32);
+  v_isLogistic 		CHAR(1);
+  v_C_DocType_ID	VARCHAR2(32);
+  v_name_costcenter	VARCHAR2(60);
+  v_docstatus    	VARCHAR2(60);
+  v_docaction 		VARCHAR2(60);
+  v_description     VARCHAR2(60);
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+    
+    ---OBTENGO EL CENTRO DE COSTO DE LA CABECERA DEL RECIBO DE DEVOLUCION
+    select c_costcenter_id,MovementType,isLogistic,C_DocType_ID,docstatus,docaction,case when description like  '%(*R*:%' then 'D' else 'R' end as description
+    into v_costcenter_mi,v_MovementType,v_isLogistic,v_C_DocType_ID,v_docstatus,v_docaction,v_description
+    from m_inout a 
+    where m_inout_id = :new.m_inout_id;
+
+     ---OBTENGO EL TIPO DE DOCUMENTO
+    select isreturn 
+    into v_isreturn
+    from C_DocType where C_DocType_ID = v_C_DocType_ID;
+
+    ---OBTENGO EL CENTRO DE COSTO DE LA CABECERA DE LA DEVOLUCION EL CLIENTE
+    select a.c_costcenter_id,c.name 
+    into v_costcenter_co,v_name_costcenter
+    from c_order a
+    left join c_orderline b on a.c_order_id = b.c_order_id
+    left join c_costcenter c on a.c_costcenter_id = c.c_costcenter_id
+    where b.c_orderline_id = :new.c_orderline_id;
+
+    IF (INSERTING) THEN
+        IF(v_docstatus = 'DR' and v_docaction = 'CO' and v_description = 'R') THEN 
+            IF((v_MovementType = 'C-' or v_MovementType = 'C+') and v_isLogistic = 'N' and v_isreturn='Y') THEN 
+                IF (coalesce(v_costcenter_co,'ND') <> coalesce(v_costcenter_mi,'ND')) THEN
+                    RAISE_APPLICATION_ERROR(-20000, '@El Centro de Costos del Recibo de Devolución de Material es diferente al de la Devolución de Cliente que es: @'||v_name_costcenter);
+                END IF;
+            END IF;
+        END IF;
+    END IF;
+
+    IF (UPDATING) THEN
+        IF(v_docstatus = 'DR' and v_docaction = 'CO') THEN 
+            IF((v_MovementType = 'C-' or v_MovementType = 'C+') and v_isLogistic = 'N' and v_isreturn='Y') THEN 
+                IF (coalesce(v_costcenter_co,'ND') <> coalesce(v_costcenter_mi,'ND')) THEN
+                    RAISE_APPLICATION_ERROR(-20000, '@El Centro de Costos del Recibo de Devolución de Material es diferente al de la Devolución de Cliente que es: @'||v_name_costcenter);
+                END IF;
+            END IF;
+        END IF;
+    END IF;
+ 
+END SSTPC_INOUTL_VALIDA_COSTCENTER
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,401 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SPROCTM_PRELIQ_PROJECT">
+    <function name="SPROCTM_PRELIQ_PROJECT" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_ResultStr VARCHAR2(2000):='';
+  v_Message VARCHAR2(2000):='';
+  v_Record_ID VARCHAR2(32);
+  v_Result NUMBER:=0; -- OBTG:NUMBER
+  v_AD_User_ID VARCHAR2(32);
+  v_AD_Org_ID VARCHAR2(32);
+  v_AD_Client_ID VARCHAR2(32);
+  -- Parameter
+  TYPE RECORD IS REF CURSOR;
+    Cur_Parameter RECORD;
+    Cur_Consumption RECORD;
+    Cur_Payment RECORD;
+    Cur_Relt_Rev RECORD;
+    Cur_Relt_Cost RECORD;
+    
+    -- Parameter Variables
+	v_EM_Sproctm_C_Project_ID VARCHAR2(32);
+	v_C_Costcenter_ID VARCHAR2(32);
+    v_Total NUMBER; -- OBTG:NUMBER
+    v_Line NUMBER:=0; -- OBTG:NUMBER
+    v_CountConsumption NUMBER:=0; -- OBTG:NUMBER
+    v_CountPayment NUMBER:=0; -- OBTG:NUMBER
+    v_NoInserted NUMBER:=0; -- OBTG:NUMBER
+
+    v_NoInserted2 NUMBER:=0; -- OBTG:NUMBER
+
+    v_TotalCost NUMBER(12,5):=0; -- OBTG:NUMBER
+    v_TotalPay NUMBER(12,5):=0; -- OBTG:NUMBER
+    v_TotalIng NUMBER(12,5):=0; -- OBTG:NUMBER
+    v_count NUMBER; -- OBTG:NUMBER
+    p_result VARCHAR2(2000):='';
+    p_message VARCHAR2(2000):='';
+
+  BEGIN
+    --  Update AD_PInstance
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_PInstance_ID) ;
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+   BEGIN --BODY
+    -- Get Parameters
+    v_ResultStr:='ReadingParameters';
+    FOR Cur_Parameter IN
+      (SELECT i.Record_ID,
+        i.AD_USER_ID,
+        i.AD_ORG_ID,
+        i.AD_CLIENT_ID,
+        p.ParameterName,
+        p.P_String,
+        p.P_Number,
+        p.P_Date
+      FROM AD_PInstance i
+      LEFT JOIN AD_PInstance_Para p
+        ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=p_PInstance_ID
+      ORDER BY p.SeqNo
+      )
+    LOOP
+      v_Record_ID:=Cur_Parameter.Record_ID;
+      v_AD_User_ID:=Cur_Parameter.AD_User_ID;
+      v_AD_Org_ID:=Cur_Parameter.AD_Org_ID;
+      v_AD_Client_ID:=Cur_Parameter.AD_Client_ID;
+     END LOOP; -- Get Parameter
+    DBMS_OUTPUT.PUT_LINE('  Record_ID=' || v_Record_ID) ;
+    v_ResultStr:='CheckRestriction';
+
+	SELECT EM_Sproctm_C_Project_ID, C_Costcenter_ID 
+	INTO v_EM_Sproctm_C_Project_ID , v_C_Costcenter_ID
+	FROM  sstpc_liquidation_projects 
+	WHERE sstpc_liquidation_projects_id = v_Record_ID;
+	
+	IF (v_EM_Sproctm_C_Project_ID is null) THEN 
+		-- Toma en cuenta el campo Pojecto (Centro de Costos)
+	 SSTPC_PRELIQUIDATION(p_PInstance_ID);
+	ELSE
+        -- Inicio Preliquidacion con respecto al Proyecto Multifase
+        -- Eliminar Consumos
+        DELETE FROM  sstpc_consumption_line WHERE  sstpc_liquidation_projects_id = v_Record_ID;
+
+        -- Eliminar Pagos
+        DELETE FROM sstpc_payment WHERE sstpc_liquidation_projects_id = v_Record_ID;
+
+        -- Eliminar Ingresos relacionados
+        DELETE FROM sstpc_related_revenue WHERE sstpc_liquidation_projects_id = v_Record_ID;
+
+        -- Eliminar Costos relacionados
+        DELETE FROM sstpc_related_costs WHERE sstpc_liquidation_projects_id = v_Record_ID;
+
+		-- Toma en cuenta el campo Pojecto (Multifase)
+		-- RAISE_APPLICATION_ERROR(-20000, v_EM_Sproctm_C_Project_ID);
+        FOR Cur_Consumption IN(
+            select
+            mil.m_inoutline_id
+            ,mi.documentno as albaran
+            ,mil.line as linea_albaran
+            ,uom.name as unidad_medida
+            ,mil.movementqty as cantidad
+            ,mi.c_project_id 
+            ,coalesce(to_number(mt.transactioncost),to_number(0)) as costo
+            ,mil.m_product_id
+            from m_inout mi
+            left join m_inoutline mil on mil.m_inout_id = mi.m_inout_id
+            left join m_product mp on mp.m_product_id = mil.m_product_id
+            left join c_uom uom on uom.c_uom_id = mp.c_uom_id
+            left join m_transaction mt on mt.m_inoutline_id =  mil.m_inoutline_id
+            left join c_doctype cd on cd.c_doctype_id = mi.c_doctype_id
+            where (mi.em_sstpc_isconsworkp = 'Y' or mil.em_sstpc_isconsworkp = 'Y')
+            and mil.em_sstpc_isliquidated='N'
+            and mi.docstatus = 'CO'
+            and mi.posted='Y'
+            AND mi.issotrx = 'Y'
+            and cd.isreturn='N'
+            and mi.c_project_id in (SELECT 	EM_Sproctm_C_Project_ID 
+                            FROM SSTPC_LIQUIDATION_PROJECTS 
+                            WHERE SSTPC_LIQUIDATION_PROJECTS_ID = v_Record_ID)
+                            
+            union all
+            
+            select
+            mil.m_inoutline_id
+            ,mi.documentno as albaran
+            ,mil.line as linea_albaran
+            ,uom.name as unidad_medida
+            ,abs(mil.movementqty) *-1 as cantidad
+            ,mi.c_project_id
+            ,abs(coalesce(to_number(mt.transactioncost),to_number(0))) *-1 as costo
+            ,mil.m_product_id
+            from m_inout mi
+            left join m_inoutline mil on mil.m_inout_id = mi.m_inout_id
+            left join c_doctype cd on cd.c_doctype_id = mi.c_doctype_id
+            left join m_product mp on mp.m_product_id = mil.m_product_id
+            left join c_uom uom on uom.c_uom_id = mp.c_uom_id
+            left join m_transaction mt on mt.m_inoutline_id =  mil.m_inoutline_id
+            where (mi.em_sstpc_isconsworkp = 'Y' or mil.em_sstpc_isconsworkp = 'Y')
+            and mil.em_sstpc_isliquidated='N'
+            and mi.docstatus = 'CO'
+            and cd.isreturn='Y'
+            and mi.issotrx='Y'
+            and mi.posted='Y'
+            and mi.c_project_id is not null
+            and mi.c_project_id in (SELECT 	EM_Sproctm_C_Project_ID 
+                            FROM SSTPC_LIQUIDATION_PROJECTS 
+                            WHERE SSTPC_LIQUIDATION_PROJECTS_ID = v_Record_ID)
+            
+        ) LOOP
+        		v_Line:= v_Line +10;
+		    insert into sstpc_consumption_line(sstpc_consumption_line_id, ad_client_id, ad_org_id, isactive
+					       , created, createdby, updated, updatedby
+					       , line, m_product_id, uom, qtyconsumption, costconsumption
+					       , liquidate, sstpc_liquidation_projects_id
+					       , m_inoutline_id)
+                    VALUES(GET_UUID(), v_AD_Client_ID, v_AD_Org_ID, 'Y'
+                        , now(), v_AD_User_ID, now(), v_AD_User_ID
+                        , v_Line, Cur_Consumption.m_product_id, Cur_Consumption.unidad_medida, Cur_Consumption.cantidad, Cur_Consumption.costo
+                        , 'Y', v_Record_ID
+                        , Cur_Consumption.m_inoutline_id);
+
+            v_NoInserted2:= v_NoInserted2 +1;
+            v_TotalCost:= v_TotalCost + Cur_Consumption.costo;
+
+
+        END LOOP;
+		v_Line:=0; 
+
+        FOR Cur_Payment IN(
+
+          	select
+            psd.fin_payment_scheduledetail_id
+            ,p.documentno  as no_pago
+            ,cd.name as tipo_documento
+            ,coalesce(to_char(i.documentno),to_char('--')) as no_factura
+            ,pd.c_glitem_id as concepto_contable
+            ,case when p.status = 'RDNC'  then psd.amount else 0 end as anticipo
+            ,case when p.status = 'RPR'  then psd.amount else 0 end as monto  
+            ,to_char('Y')  as liquidado  
+            FROM fin_payment p
+            left join c_doctype cd on cd.c_doctype_id = p.c_doctype_id
+            LEFT JOIN fin_financial_account fa ON p.fin_financial_account_id = fa.fin_financial_account_id, fin_payment_detail pd
+            JOIN fin_payment_scheduledetail psd ON pd.fin_payment_detail_id = psd.fin_payment_detail_id
+            LEFT JOIN fin_payment_schedule psi ON psd.fin_payment_schedule_invoice = psi.fin_payment_schedule_id
+            LEFT JOIN c_invoice i ON psi.c_invoice_id = i.c_invoice_id
+            LEFT JOIN fin_payment_schedule pso ON psd.fin_payment_schedule_order = pso.fin_payment_schedule_id
+            LEFT JOIN c_order o ON pso.c_order_id = o.c_order_id
+            LEFT JOIN c_glitem gli ON pd.c_glitem_id = gli.c_glitem_id
+            WHERE p.fin_payment_id = pd.fin_payment_id
+            and psd.em_sstpc_isliquidated = 'N'
+            and p.isreceipt='Y'
+            and p.posted='Y'
+            and i.c_project_id is not null
+            and i.c_project_id  IN (SELECT EM_Sproctm_C_Project_ID 
+					FROM SSTPC_LIQUIDATION_PROJECTS 
+					WHERE SSTPC_LIQUIDATION_PROJECTS_ID = v_Record_ID)
+
+        )
+        LOOP
+
+            v_Line:= v_Line +10;
+
+            insert into  sstpc_payment(sstpc_payment_id, ad_client_id, ad_org_id, isactive
+                            , created, createdby, updated, updatedby
+                            , sstpc_liquidation_projects_id, fin_payment_scheduledetail_id
+                            , paymentdocumentno, paymenttype, invoicedocumentno
+                            , isadvanced, amount, isliquidate,line)
+                        VALUES(GET_UUID(), v_AD_Client_ID, v_AD_Org_ID, 'Y'
+                            , now(), v_AD_User_ID, now(), v_AD_User_ID
+                            , v_Record_ID, Cur_Payment.fin_payment_scheduledetail_id
+                            , Cur_Payment.no_pago, Cur_Payment.tipo_documento, Cur_Payment.no_factura
+                            , Cur_Payment.anticipo, Cur_Payment.monto, Cur_Payment.liquidado,v_Line);
+
+            v_NoInserted:= v_NoInserted +1;
+
+            v_TotalPay:= coalesce(v_TotalPay,0) + coalesce(Cur_Payment.monto,0) + coalesce(Cur_Payment.anticipo,0); 
+
+        END LOOP;  
+        -- Cargar Ingresos Relacionados
+        
+        v_Line:=0;
+
+        FOR Cur_Relt_Rev IN(
+
+            select
+            ci.c_invoice_id
+            ,ci.poreference as num_referencia
+            , ci.c_doctype_id as tipo_factura
+            ,cd.name as tipo_documento
+            ,ci.documentno as no_factura
+            ,ci.dateinvoiced as fecha_factura
+            ,coalesce(to_char(ci.description),to_char('')) as descripcion
+            ,imp.importe_imponible as valor_sin_iva
+            from c_invoice ci
+            left join (
+
+            SELECT impuesto.c_invoice_id, sum(impuesto.importe_bruto) AS importe_bruto, sum(impuesto.importe_imponible) AS importe_imponible, sum(impuesto.impuesto) AS impuesto, sum(impuesto.basecero) AS basecero, sum(impuesto.base12) AS base12, sum(impuesto.iva) AS iva12
+            FROM ( SELECT ci.c_invoice_id, sum(
+                    CASE
+                        WHEN ct.istaxdeductable = 'Y'::bpchar AND ct.rate = 0::numeric THEN cilt.taxbaseamt
+                        WHEN ct.istaxdeductable = 'Y'::bpchar AND ct.rate <> 0::numeric THEN cilt.taxbaseamt
+                        ELSE NULL::numeric
+                    END) + sum(
+                    CASE
+                        WHEN ct.istaxdeductable = 'Y'::bpchar AND ct.rate <> 0::numeric THEN cilt.taxamt
+                        ELSE 0::numeric
+                    END) AS importe_bruto, sum(
+                    CASE
+                        WHEN ct.istaxdeductable = 'Y'::bpchar AND ct.rate = 0::numeric THEN cilt.taxbaseamt
+                        ELSE 0::numeric
+                    END + 
+                    CASE
+                        WHEN ct.istaxdeductable = 'Y'::bpchar AND ct.rate <> 0::numeric THEN cilt.taxbaseamt
+                        ELSE 0::numeric
+                    END + 
+                    CASE
+                        WHEN ct.istaxdeductable = 'Y'::bpchar AND ct.rate = 0::numeric THEN cilt.taxamt
+                        ELSE 0::numeric
+                    END) AS importe_imponible, sum(
+                    CASE
+                        WHEN ct.istaxdeductable = 'Y'::bpchar AND ct.rate <> 0::numeric THEN cilt.taxamt
+                        ELSE 0::numeric
+                    END) AS impuesto, sum(
+                    CASE
+                        WHEN ct.istaxdeductable = 'Y'::bpchar AND ct.rate = 0::numeric THEN cilt.taxbaseamt
+                        ELSE 0::numeric
+                    END) AS basecero, sum(
+                    CASE
+                        WHEN ct.istaxdeductable = 'Y'::bpchar AND ct.rate <> 0::numeric THEN cilt.taxbaseamt
+                        ELSE 0::numeric
+                    END) AS base12, sum(
+                    CASE
+                        WHEN ct.istaxdeductable = 'Y'::bpchar AND ct.rate <> 0::numeric THEN cilt.taxamt
+                        ELSE 0::numeric
+                    END) AS iva,
+                    to_char('N') as liquida
+                FROM c_invoice ci
+            JOIN c_invoicetax cilt ON cilt.c_invoice_id::text = ci.c_invoice_id::text
+            JOIN c_tax ct ON ct.c_tax_id::text = cilt.c_tax_id::text
+            GROUP BY ci.c_invoice_id) impuesto
+            GROUP BY impuesto.c_invoice_id
+            ) imp on imp.c_invoice_id = ci.c_invoice_id
+            left join c_doctype cd on cd.c_doctype_id = ci.c_doctype_id
+            where ci.issotrx='Y'
+            and ci.docstatus ='CO'
+            AND ci.posted ='Y'
+            and cd.docbasetype ='ARI'
+            AND ci.em_sstpc_liquidate='N'
+            and ci.c_project_id is not null
+            and ci.c_project_id  IN (SELECT EM_Sproctm_C_Project_ID 
+                        FROM SSTPC_LIQUIDATION_PROJECTS 
+                        WHERE SSTPC_LIQUIDATION_PROJECTS_ID = v_Record_ID)
+        )
+        LOOP
+
+            v_Line:= v_Line +10;
+
+            insert into  sstpc_related_revenue(sstpc_related_revenue_id, ad_client_id, ad_org_id, isactive
+                        , created, createdby, updated, updatedby
+                        , sstpc_liquidation_projects_id, c_invoice_id
+                        , poreference, c_doctype_id , documentno
+                        , dateinvoiced, description, amount
+                        , isliquidate,line)
+                    VALUES(GET_UUID(), v_AD_Client_ID, v_AD_Org_ID, 'Y'
+                        , now(), v_AD_User_ID, now(), v_AD_User_ID
+                        , v_Record_ID, Cur_Relt_Rev.c_invoice_id
+                        , Cur_Relt_Rev.num_referencia, Cur_Relt_Rev.tipo_factura, Cur_Relt_Rev.no_factura
+                        , Cur_Relt_Rev.fecha_factura, Cur_Relt_Rev.descripcion, Cur_Relt_Rev.valor_sin_iva
+                        , 'N',v_Line);
+            v_TotalIng:= v_TotalIng + coalesce(Cur_Relt_Rev.valor_sin_iva,0); 
+            --v_NoInserted:= v_NoInserted +1;
+
+        END LOOP;  
+        -- FIN Cargar Ingresos Relacionados	
+
+        -- Cargar Costos Relacionados
+
+        v_Line:=0;
+
+        FOR Cur_Relt_Cost IN(
+             select
+            cil.line
+            ,cil.c_invoiceline_id
+            ,ci.poreference as num_referencia
+            ,ci.c_doctype_id as tipo_factura
+            ,ci.documentno as no_factura
+            ,ci.dateinvoiced as fecha_factura
+            ,mp.m_product_id as producto_id
+            ,mp.name as producto
+            ,cil.linenetamt as total_linea
+            ,to_char('N') as liquidar
+            from c_invoice ci
+            join c_invoiceline cil on cil.c_invoice_id = ci.c_invoice_id
+            join m_product mp on mp.m_product_id = cil.m_product_id
+            left join c_doctype cd on cd.c_doctype_id = ci.c_doctype_id
+            where ci.issotrx='N' and ci.docstatus ='CO'
+            and cd.docbasetype ='API'
+            AND ci.posted ='Y'
+            AND cil.em_sstpc_liquidate='N'
+            and ci.c_project_id is not null
+            and ci.c_project_id in (SELECT 	EM_Sproctm_C_Project_ID 
+						FROM SSTPC_LIQUIDATION_PROJECTS 
+						WHERE SSTPC_LIQUIDATION_PROJECTS_ID = v_Record_ID)
+
+        )
+        LOOP
+
+            v_Line:= v_Line +10;
+            
+            insert into  sstpc_related_costs(sstpc_related_costs_id, ad_client_id, ad_org_id, isactive
+                        , created, createdby, updated, updatedby
+                        , sstpc_liquidation_projects_id, c_invoiceline_id
+                        , poreference, c_doctype_id , documentno
+                        , dateinvoiced, m_product_id, amount
+                        , isliquidate,line)
+                    VALUES(GET_UUID(), v_AD_Client_ID, v_AD_Org_ID, 'Y'
+                        , now(), v_AD_User_ID, now(), v_AD_User_ID
+                        , v_Record_ID, Cur_Relt_Cost.c_invoiceline_id
+                        , Cur_Relt_Cost.num_referencia, Cur_Relt_Cost.tipo_factura, Cur_Relt_Cost.no_factura
+                        , Cur_Relt_Cost.fecha_factura, Cur_Relt_Cost.producto_id, Cur_Relt_Cost.total_linea
+                        , 'N',v_Line);
+
+            --v_NoInserted:= v_NoInserted +1;
+
+	    END LOOP;  
+	
+        -- FIN Cargar Costos Relacionados.
+
+        -- Actualizar cabecera de Liquidación de Proyectos
+        UPDATE SSTPC_LIQUIDATION_PROJECTS SET TOTAL_COST=v_TotalCost,TOTAL_PAY=v_TotalPay, Total_Paymentin=v_TotalIng, docstatus = 'LQ',desprocessed='N' WHERE SSTPC_LIQUIDATION_PROJECTS_ID = v_Record_ID;
+
+        IF (v_NoInserted2>0) THEN
+        v_Message:= v_NoInserted2 || ' ' || '@RowsInserted@' || '- Consumo' || '</br>' || v_NoInserted || ' ' || '@RowsInserted@' || '- Pagos'; --'@Inserted@=' || v_NoInserted ;--|| ', @Updated@=' || v_NoUpdated;
+        --v_Result:=1; --    success
+        ELSE
+            v_Message:='@No se encontraron lineas de Consumos@';
+            UPDATE SSTPC_LIQUIDATION_PROJECTS SET TOTAL_COST=0,TOTAL_PAY=0, Total_Paymentin=0, docstatus = 'PL',type_liquidation= 'PR',desprocessed='N' WHERE SSTPC_LIQUIDATION_PROJECTS_ID = v_Record_ID;
+            AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1,v_Message) ;
+            RETURN;
+        END IF;
+             --  Update AD_PInstance
+        DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message) ;
+        AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, v_Message) ;
+        RETURN;
+
+	END IF;
+
+
+  END; --BODY
+EXCEPTION
+WHEN OTHERS THEN
+  v_ResultStr:= '@ERROR=' || SQLERRM;
+  DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+   ROLLBACK;
+  AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+  RETURN;
+END SPROCTM_PRELIQ_PROJECT
+]]></body>
+    </function>
+  </database>

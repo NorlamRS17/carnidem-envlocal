@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="0B2EE66A98CF4414A57AE564B791732A" trl="Y">
+    <value column="Name" isTrl="Y" original="Injection loss relative to raw material">Merma de inyección respecto a la materia prima</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
   <row id="9C4187630C0A44B3829B2A9120B3EBC8" trl="Y">
     <value column="Name" isTrl="Y" original="Change To Complete">Completar</value>
     <value column="Description" isTrl="N" original=""/>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="18C9E9BFF9364A5ABA0106DAC4F2A10E" trl="Y">
+    <value column="Name" isTrl="Y" original="OutPutType">Formato de Salida</value>
+    <value column="PrintName" isTrl="Y" original="OutPutType">Formato de Salida</value>
+    <value column="Description" isTrl="N" original="">Formato de Salida</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original="OutPutType">OutPutType</value>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="48579A2F8FAD475D992A36B8020870F8" trl="Y">
+    <value column="Name" isTrl="Y" original="Product">Producto</value>
+    <value column="PrintName" isTrl="Y" original="Product">Producto</value>
+    <value column="Description" isTrl="Y" original="Product">Producto</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B101DDB8312E4080B3FAE2DF2D8DD411" trl="Y">
+    <value column="Name" isTrl="Y" original="Attribute Set Value">Código de compra</value>
+    <value column="PrintName" isTrl="Y" original="M_AttributeInstance_ID">Código de compra</value>
+    <value column="Description" isTrl="N" original="">Código de compra</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D53ED0E33CD84CC29900DC4879F82BB7" trl="Y">
+    <value column="Name" isTrl="Y" original="Date From">Fecha desde</value>
+    <value column="PrintName" isTrl="Y" original="SscgrDateFrom">Fecha desde</value>
+    <value column="Description" isTrl="N" original="">Fecha desde</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EF9A323FF5614FC2B97F34943EE7539B" trl="Y">
+    <value column="Name" isTrl="Y" original="Date To">Fecha hasta</value>
+    <value column="PrintName" isTrl="Y" original="Date To">Fecha hasta</value>
+    <value column="Description" isTrl="N" original="">Fecha hasta</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F3E4D26269F34D5791A337A466D5C1C7" trl="Y">
+    <value column="Name" isTrl="Y" original="Product Category">Categoría de producto</value>
+    <value column="PrintName" isTrl="Y" original="Product Category">Categoría de producto</value>
+    <value column="Description" isTrl="Y" original="Product Category">Categoría de producto</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

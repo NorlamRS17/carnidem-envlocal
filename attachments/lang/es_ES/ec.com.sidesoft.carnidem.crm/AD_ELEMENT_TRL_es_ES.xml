@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="04DEEBE2B9CA423981FC53DA85563C2A" trl="Y">
+    <value column="Name" isTrl="Y" original="Standard clause">Cláusula de la norma</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Standardclause">Cláusula de la norma</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="07CBDD179D694B9DB19B3FE0E1F9BAEE" trl="Y">
+    <value column="Name" isTrl="Y" original="Customer Complaint">Queja de Cliente</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Customer_Complaint">Queja de Cliente</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2442F915C0EF4581A43104B1FCB9A3E8" trl="Y">
+    <value column="Name" isTrl="Y" original="Deviation PRPO">Desviación de PRPO</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Deviation_Prpo">Desviación de PRPO</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2E463543D4BD46E18A80AC2B38E48321" trl="Y">
+    <value column="Name" isTrl="Y" original="Root cause analysis">Análisis de la causa raíz</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Rootcauseanalysis">Análisis de la causa raíz</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="33FE625F89C34764A8229E00CD449B6F" trl="Y">
+    <value column="Name" isTrl="Y" original="Audit Type">En caso de Auditoría Interna o Externa: No conformidad</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Audit_Nc_Type">En caso de Auditoría Interna o Externa: No conformidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="720106B344B54C2CB02A5B02B5C1D8DC" trl="Y">
+    <value column="Name" isTrl="Y" original="Deviation Indicators">Desviación indicadores proceso</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Deviation_Indicators">Desviación indicadores proceso</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7E2760231AD346A388965064C4DFC6B7" trl="Y">
+    <value column="Name" isTrl="Y" original="Deviation PCC">Desviación de PCC</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Deviation_Pcc">Desviación de PCC</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9C60C08AF7B842DC9DDA21FFE62ACA07" trl="Y">
+    <value column="Name" isTrl="Y" original="Non conforming">Producto no Conforme</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Nonconforming">Producto no Conforme</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="AB67EE5BCA364912AEF694563CF8AB57" trl="Y">
+    <value column="Name" isTrl="Y" original="Sscces Other">Otro</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Other">Otro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BFCE3E8FF0BE451B8E63EE86B821F1F0" trl="Y">
+    <value column="Name" isTrl="Y" original="Correction verific">Verificación de la Acción Correctiva</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Correctionverific">Verificación de la Acción Correctiva</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C1AAD50FCC704ECE90F308AF0D1457F0" trl="Y">
+    <value column="Name" isTrl="Y" original="Assigend To">Auditado (Asignado)</value>
+    <value column="PrintName" isTrl="Y" original="Assigend To">Auditado (Asignado)</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C8CD41330CF14E16AD4848D9A14A9DDD" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Sscces_Isstartupstate">Estado de inicio</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Isstartupstate">Estado de inicio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C8FE6581667C467AAAB3334AA71D27D0" trl="Y">
+    <value column="Name" isTrl="Y" original="Internal Audit">Auditoría Interna</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Internal_Audit">Auditoría Interna</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EC27BCCA408540C4B53096463919BF29" trl="Y">
+    <value column="Name" isTrl="Y" original="Nonconformity Closed">No conformidad Cerrada</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Nonconformity_Closed">No conformidad Cerrada</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EF0A24C3C75443088BB7424D1D87A8F6" trl="Y">
+    <value column="Name" isTrl="Y" original="Proposed Correction">Acción Correctiva Propuesta</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Proposedcorrection">Acción Correctiva Propuesta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EFEB95F1DA8B4F36AB143E9902475688" trl="Y">
+    <value column="Name" isTrl="Y" original="External_Audit">Auditoría Externa</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_External_Audit">Auditoría Externa</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F140EC14FE41490FA4AFFE68EB7547D0" trl="Y">
+    <value column="Name" isTrl="Y" original="Document Type">Documento transacción</value>
+    <value column="PrintName" isTrl="Y" original="Document Type">Documento transacción</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FF53DCB2883D42D98825CA6096897487" trl="Y">
+    <value column="Name" isTrl="Y" original="Document No.">Nº documento</value>
+    <value column="PrintName" isTrl="Y" original="Document No.">Nº documento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FFD2F3EB1880475199442D5025040DCE" trl="Y">
+    <value column="Name" isTrl="Y" original="Due Date">Fecha de Cumplimiento</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscces_Due_Date">Fecha de Cumplimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSVS_BPREPOSITION">
+    <function name="SSVS_BPREPOSITION" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[TYPE RECORD IS REF CURSOR;
+  Cur_Parameter RECORD;
+  Cur_mainproduct  RECORD;
+  Cur_producstock RECORD;
+
+  v_User_ID VARCHAR2(32) ;
+  v_Record_ID VARCHAR2(32) ;
+  v_ResultStr VARCHAR2(2000) := '';  
+  v_Message VARCHAR2(2000) := '';  
+  v_productcategory_id VARCHAR2(32);
+  v_reposition_per NUMBER:=0; --OBTG:NUMBER--
+
+    -- Parameter Variables
+   v_cantidad NUMBER:=0; --OBTG:NUMBER--
+   v_ad_client_id VARCHAR2(32);
+   v_organization VARCHAR2(32);
+   v_line NUMBER:=0; --OBTG:NUMBER--
+   v_qtytemp NUMBER:=0; --OBTG:NUMBER--
+   v_NewProcessFlag VARCHAR2(10)='';
+   v_ProductNew_id VARCHAR2(32);
+   
+BEGIN
+  --  Update AD_PInstance
+  DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_pinstance_id) ;
+  v_ResultStr := 'PInstanceNotFound';
+  AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+  BEGIN --BODY
+		
+	    FOR Cur_Parameter IN
+		(SELECT i.Record_ID, i.AD_User_ID, p.ParameterName, p.P_String, p.P_Number, p.P_Date, i.ad_user_id
+		FROM AD_PInstance i
+		LEFT JOIN AD_PInstance_Para p
+		ON i.AD_PInstance_ID=p.AD_PInstance_ID
+		WHERE i.AD_PInstance_ID=p_PInstance_ID
+		ORDER BY p.SeqNo
+		)
+	    LOOP
+		v_RECORD_ID:= Cur_Parameter.Record_ID;
+		v_User_ID:= Cur_Parameter.ad_user_id;
+		IF Cur_Parameter.ParameterName = 'M_Product_Category_ID' THEN
+			v_productcategory_id:=Cur_Parameter.P_String;
+		END IF;
+		IF Cur_Parameter.ParameterName = 'ssvs_reposition' THEN
+			v_reposition_per:=Cur_Parameter.P_Number;
+		END IF;
+	    END LOOP; -- Get Parameter
+
+	--cargar campos necesarios para guardar la linea
+	select ad_client_id, ad_org_id 
+	into v_ad_client_id, v_organization 
+	from m_movement where m_movement_id=v_RECORD_ID;
+
+	--recorrer los elementos que pertenecen a la categoria, tienen stock y estan en almacenes marcados como principal
+	for Cur_mainproduct in (
+		select sd.m_product_id as product, COALESCE(sd.qtyonhand,0)*100/ml.EM_Ssvs_Capacity as porcentaje,
+			COALESCE(ml.EM_Ssvs_Capacity,0) - COALESCE(sd.qtyonhand,0) as cantidad, 
+			ml.m_locator_id as locator, mp.c_uom_id as uom
+			from m_storage_detail sd 
+			inner join m_locator ml on sd.m_locator_id = ml.m_locator_id 
+			inner join m_warehouse mw on ml.m_warehouse_id = mw.m_warehouse_id
+			inner join m_product mp on sd.m_product_id = mp.m_product_id
+			inner join swhp_wh_product sp on sd.m_product_id = sp.m_product_id and ml.m_locator_id = sp.m_locator_id
+		     where mw.em_ssvs_ismain='Y' 
+			and COALESCE(ml.EM_Ssvs_Capacity,0) - COALESCE(sd.qtyonhand,0) > 0 and COALESCE(ml.EM_Ssvs_Capacity,0) > 0
+			and (mp.m_product_category_id=v_productcategory_id or v_productcategory_id is NULL)
+	) loop
+
+
+		if (Cur_mainproduct.porcentaje)<=v_reposition_per then
+			v_cantidad := Cur_mainproduct.cantidad;
+			--se busca el producto en otros almacenes que no sean virtuales ni principales
+	
+			for Cur_producstock in (
+				select ml.m_locator_id, sd.qtyonhand as cantidad, ml.value,max(mt.movementdate) as fecha
+				from m_storage_detail sd 
+				inner join m_locator ml on sd.m_locator_id = ml.m_locator_id 
+				inner join m_warehouse mw on ml.m_warehouse_id = mw.m_warehouse_id
+				left join m_transaction mt on mt.m_locator_id = ml.m_locator_id and 
+					mt.m_product_id = sd.m_product_id and mt.movementtype in ('M+','V+','C+')
+				where sd.qtyonhand>0 and mw.em_ssvs_ismain='N'
+				and mw.em_ssvs_virtualstorage='N'
+				and sd.m_product_id = Cur_mainproduct.product
+				group by ml.m_locator_id,sd.qtyonhand,ml.value
+				order by fecha, sd.qtyonhand
+			) loop
+				v_qtytemp := Cur_producstock.cantidad;
+				if v_qtytemp<v_cantidad then
+					v_cantidad := v_cantidad-v_qtytemp;
+				else
+					v_qtytemp := v_cantidad;
+					v_cantidad := 0;
+				end if;
+				v_line := v_line + 10;
+				insert into M_MovementLine
+					(M_MovementLine_ID, ad_client_id, ad_org_id, createdby, updatedby, m_movement_id, m_locator_id, m_locatorto_id,
+					m_product_id, line, movementqty, description, c_uom_id)
+					values(get_uuid(), v_ad_client_id, v_organization, v_User_ID, v_User_ID, v_Record_ID, Cur_producstock.m_locator_id,
+					Cur_mainproduct.locator, Cur_mainproduct.product, v_line, v_qtytemp, '', Cur_mainproduct.uom);
+
+				v_NewProcessFlag:='INSERT';
+				EXIT WHEN v_cantidad=0;
+			end loop;
+		end if;
+	end loop;
+ AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, '@Success@') ;
+  END; --BODY
+  EXCEPTION
+    WHEN OTHERS THEN
+      v_ResultStr:= '@ERROR=' || SQLERRM;
+      DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+      IF(p_PInstance_ID IS NOT NULL) THEN
+        AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+      END IF;
+      RETURN;
+END SSVS_BPREPOSITION
+]]></body>
+    </function>
+  </database>

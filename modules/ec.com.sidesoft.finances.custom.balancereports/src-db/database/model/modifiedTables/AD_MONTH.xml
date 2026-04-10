@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-  <database name="MODIFIED TABLE AD_MONTH">
-    <table name="AD_MONTH" primaryKey="AD_MONTH_KEY">
-      <index name="EM_SFCBR_VALUE_IDX" unique="false">
-        <index-column name="VALUE"/>
-      </index>
-    </table>
-  </database>

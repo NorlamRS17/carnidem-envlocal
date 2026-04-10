@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_ES" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="82FAC100B5494226B7E27313993A1F63" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_C_Project">sproctm_C_Project</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="969646D8EFA748EEB41628467B47E61F" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm CostCenter">Sproctm CostCenter</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BFD84D7895FC4853B30B76046D9EF426" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_C_Projectphase">sproctm_C_Projectphase</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CC7F489299424569A838AF82245C6F9F" trl="N">
+    <value column="Name" isTrl="N" original="sproctm_C_Projecttask">sproctm_C_Projecttask</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="ECC95B7AA6BA44FEA773F9764D54E7E0" trl="N">
+    <value column="Name" isTrl="N" original="Process Type Standar">Process Type Standar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F9596E63901A42C58B5EE4BCB1FE0743" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm_Task_Order_Quotation">Sproctm_Task_Order_Quotation</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

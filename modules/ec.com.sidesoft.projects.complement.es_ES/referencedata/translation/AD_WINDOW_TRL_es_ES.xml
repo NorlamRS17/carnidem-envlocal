@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="0B6016E3F9C54E6DA19F8E2EFF251FA4" trl="N">
+    <value column="Name" isTrl="Y" original="Import Workforce - Task">Importar Mano de obra - Tarea</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BCE36036A2514E22817111C6B6C31E60" trl="Y">
+    <value column="Name" isTrl="Y" original="Settlements Projects Cost">Liquidación de costos proyectos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="Liquidación de costos proyectos">Liquidación de costos proyectos</value>
+  </row>
+  <row id="D41306FE2E35441C86282D419BE9212A" trl="N">
+    <value column="Name" isTrl="Y" original="Import Details (MO - CIF -MAQ)">Importar Detalles (MO - CIF -MAQ)</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="Y" original="Import details in project tab Mano Obra - Costos INdirectos - Maquinaria">Import details in project tab Mano Obra - Costos Indirectos - Maquinaria</value>
+  </row>
+  <row id="E8F75B13FAA047299555277BC62A8167" trl="N">
+    <value column="Name" isTrl="Y" original="Import Products - Task">Importar Productos - Tarea</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="046C3EED1111410B9C14AC3B4527BEE9" trl="N">
+    <value column="Text" isTrl="N" original="Subtipo de Bien:">Subtipo de Bien:</value>
+  </row>
+  <row id="0A70D5259B904229B7A7080EE3916B0A" trl="N">
+    <value column="Text" isTrl="N" original="Vida Útil:">Vida Útil:</value>
+  </row>
+  <row id="0ADA9565A5B14173BAA367E391E2C894" trl="N">
+    <value column="Text" isTrl="N" original="Color:">Color:</value>
+  </row>
+  <row id="0B11281EB0F24000BE622DD9248FF5F6" trl="N">
+    <value column="Text" isTrl="N" original="Valor en Libros:">Valor en Libros:</value>
+  </row>
+  <row id="1C41EE44451D481FB3BC5B7D2161AFE0" trl="N">
+    <value column="Text" isTrl="N" original="REVALORIZACIÓN DE BIENES">REVALORIZACIÓN DE BIENES</value>
+  </row>
+  <row id="2D4925E32D2044688C0151C992B6D3B6" trl="N">
+    <value column="Text" isTrl="N" original="% Depreciación:">% Depreciación:</value>
+  </row>
+  <row id="3B2E5657032C4EC992182E0DF0EDFE42" trl="N">
+    <value column="Text" isTrl="N" original="Valor Residual:">Valor Residual:</value>
+  </row>
+  <row id="4200224715A145D4AEA163F56DD6A35C" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de Adquisición:">Fecha de Adquisición:</value>
+  </row>
+  <row id="47CE3ED551BE4D868F4AB2989EBC43EB" trl="N">
+    <value column="Text" isTrl="N" original="ec.com.sidesoft.asset.revaluation/src/ec/com/sidesoft/asset/revaluation/ad_reports/AssetRevaluationReport.jrxml">ec.com.sidesoft.asset.revaluation/src/ec/com/sidesoft/asset/revaluation/ad_reports/AssetRevaluationReport.jrxml</value>
+  </row>
+  <row id="48D71965DF7243DABBF29A3981BFC801" trl="N">
+    <value column="Text" isTrl="N" original="PAG.">PAG.</value>
+  </row>
+  <row id="4C528B526B484023A9C6536525B0DFB5" trl="N">
+    <value column="Text" isTrl="N" original="Código:">Código:</value>
+  </row>
+  <row id="52E96E3F872D44658BC5C775018E45D3" trl="N">
+    <value column="Text" isTrl="N" original="Medidas:">Medidas:</value>
+  </row>
+  <row id="5471E9EF60C044A9A7C65FFBF6DCE33B" trl="N">
+    <value column="Text" isTrl="N" original="REVALORIZACIÓN">REVALORIZACIÓN</value>
+  </row>
+  <row id="5B195D4897024DF495D869B0F919D5DA" trl="N">
+    <value column="Text" isTrl="N" original="VALORACIÓN DE ORIGEN">VALORACIÓN DE ORIGEN</value>
+  </row>
+  <row id="654BC65B8FE2467DA2D678532220EA4C" trl="N">
+    <value column="Text" isTrl="N" original="Marca:">Marca:</value>
+  </row>
+  <row id="65CF80E02CF7469CBB1856D5A183AF9B" trl="N">
+    <value column="Text" isTrl="N" original="Saldo a Depreciar:">Saldo a Depreciar:</value>
+  </row>
+  <row id="710406A4DA8344A7A7984AF39EC684BB" trl="N">
+    <value column="Text" isTrl="N" original="Observaciones:">Observaciones:</value>
+  </row>
+  <row id="78822B65132E402B851845C10A3ACE89" trl="N">
+    <value column="Text" isTrl="N" original="CARACTERÍSTICAS DEL BIEN">CARACTERÍSTICAS DEL BIEN</value>
+  </row>
+  <row id="813EB7E5979649A09E9C3737A959C632" trl="N">
+    <value column="Text" isTrl="N" original="Serie:">Serie:</value>
+  </row>
+  <row id="85C966FF9DF8491D8EFC02C08EEBB09F" trl="N">
+    <value column="Text" isTrl="N" original="Tipo de Bien:">Tipo de Bien:</value>
+  </row>
+  <row id="8854F28F463D4529A3BC1E0F1A6514E4" trl="N">
+    <value column="Text" isTrl="N" original="Dep. Mensual:">Dep. Mensual:</value>
+  </row>
+  <row id="8D680D07226C4F2D815B19E12CD4E1A2" trl="N">
+    <value column="Text" isTrl="N" original="Estado de Conservación:">Estado de Conservación:</value>
+  </row>
+  <row id="8E0C7D68F1014A4DA9281A2A397B6527" trl="N">
+    <value column="Text" isTrl="N" original="Tipo">Tipo</value>
+  </row>
+  <row id="90A445B215274BECBDD8419C31705077" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de Aplicación:">Fecha de Aplicación:</value>
+  </row>
+  <row id="9EF05AC511AF4E59BE403E90A52FFFAA" trl="N">
+    <value column="Text" isTrl="N" original="Nombre">Nombre</value>
+  </row>
+  <row id="ABEE207A1D914078B9C6B633E6F0C606" trl="N">
+    <value column="Text" isTrl="N" original="Descripción:">Descripción:</value>
+  </row>
+  <row id="B14B001896164E0DB091A31456F52E0D" trl="N">
+    <value column="Text" isTrl="N" original="Modelo:">Modelo:</value>
+  </row>
+  <row id="B52F2B0D726F4EBC80A64CE2A7C045EB" trl="N">
+    <value column="Text" isTrl="N" original="Otros Atributos:">Otros Atributos:</value>
+  </row>
+  <row id="B7711E0C37234535A76CFE914EE183A5" trl="N">
+    <value column="Text" isTrl="N" original="Dep. Acumulada:">Dep. Acumulada:</value>
+  </row>
+  <row id="D443CFF0A5424F029F30E7ADA08FC476" trl="N">
+    <value column="Text" isTrl="N" original="CUSTODIO">CUSTODIO</value>
+  </row>
+  <row id="DFE7AAFC0A7343869B710F3B282B42C8" trl="N">
+    <value column="Text" isTrl="N" original="Costo del Bien:">Costo del Bien:</value>
+  </row>
+  <row id="E43C1314348E42EEA04627A7FD803E4F" trl="N">
+    <value column="Text" isTrl="N" original="EMPLEADO">EMPLEADO</value>
+  </row>
+  <row id="EFBB6048C5594E85ADF0BC1DDEABFF16" trl="N">
+    <value column="Text" isTrl="N" original="Costo Actual del Bien:">Costo Actual del Bien:</value>
+  </row>
+</compiereTrl>

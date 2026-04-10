@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR_FIELD" version="">
+  <row id="3C726104751946B39E8E915CBC7D88AC" trl="N">
+    <value column="Name" isTrl="N" original="On Hand Quantity order">On Hand Quantity order</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="636A9ECD531B4FBBB6CC749E11C6380E" trl="N">
+    <value column="Name" isTrl="N" original="Locator out">Locator out</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6459047E46A543A38262DF5BD7738DB0" trl="N">
+    <value column="Name" isTrl="N" original="Order UOM">Order UOM</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8DDE97A6454A4002A3320B3F4C176CF1" trl="N">
+    <value column="Name" isTrl="N" original="Attribute out">Attribute out</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8E4571FEC0A445AD8635B302D4AF6A18" trl="N">
+    <value column="Name" isTrl="N" original="Quantity order out">Quantity order out</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A88F208CA9AF49D5B90311C615F6BFF1" trl="N">
+    <value column="Name" isTrl="N" original="Quantity Order in draft transactions">Quantity Order in draft transactions</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C5482F49502547C5A0898F5C684E52AF" trl="N">
+    <value column="Name" isTrl="N" original="UOM out">UOM out</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DA1E7C75DDF5456C9F2BF39D7AB4DB5B" trl="N">
+    <value column="Name" isTrl="N" original="Product id">Product id</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

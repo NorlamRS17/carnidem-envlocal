@@ -15,9 +15,6 @@ package org.openbravo.authentication.basic;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,12 +36,9 @@ import org.openbravo.dal.service.OBDal;
 import org.openbravo.database.ConnectionProvider;
 import org.openbravo.erpCommon.utility.OBError;
 import org.openbravo.erpCommon.utility.Utility;
-import org.openbravo.erpCommon.utility.poc.EmailManager;
 import org.openbravo.model.ad.access.User;
 import org.openbravo.service.db.DalConnectionProvider;
 import org.openbravo.service.web.BaseWebServiceServlet;
-import org.openbravo.utils.FormatUtilities;
-import org.openbravo.model.common.enterprise.EmailServerConfiguration;
 
 /**
  * 
@@ -54,10 +48,7 @@ import org.openbravo.model.common.enterprise.EmailServerConfiguration;
 public class DefaultAuthenticationManager extends AuthenticationManager {
 
   private static final Logger log4j = Logger.getLogger(DefaultAuthenticationManager.class);
-  boolean isInstalled = isModuleInstalled("ec.com.sidesoft.user.advanced.security");
-  Long attempts = 0L;
-  String emails = "";
-  
+
   public DefaultAuthenticationManager() {
   }
 
@@ -133,67 +124,25 @@ public class DefaultAuthenticationManager extends AuthenticationManager {
     }
     final String sessionId = createDBSession(request, user, userId);
     ConnectionProvider cp = new DalConnectionProvider(false);
-String userHql = "from ADUser u where u.username = :username";
-		User userObj = (User) OBDal.getInstance().getSession().createQuery(userHql).setParameter("username", user)
-				.setMaxResults(1).uniqueResult();
-		if (userObj != null && userObj.isLocked()) {
-			OBError errorMsg = new OBError();
-			errorMsg.setType("Error");
-			log4j.debug(user + " is locked. Cannot activate session ID " + sessionId);
-			errorMsg.setTitle("LOCKED_USER_TITLE");
-			errorMsg.setMessage("LOCKED_USER_MSG");
-			throw new AuthenticationException("LOCKED_USER_TITLE", errorMsg, false);
-		}
+    if (userId == null) {
+      OBError errorMsg = new OBError();
+      errorMsg.setType("Error");
 
-		if (userId == null) {
-			OBError errorMsg = new OBError();
-			errorMsg.setType("Error");
-			// LoginUtils.getValidUserId() called by default implementation of
-			// checkUserPassword() returns
-			// null when the user is locked and when the user password is wrong.
-			// LoginUtils.checkUserPassword() is called to check the real cause of null user
-			// id.
+      // LoginUtils.getValidUserId() called by default implementation of checkUserPassword() returns
+      // null when the user is locked and when the user password is wrong.
+      // LoginUtils.checkUserPassword() is called to check the real cause of null user id.
+      if (LoginUtils.checkUserPassword(cp, user, pass) == null) {
+        log4j.debug("Failed user/password. Username: " + user + " - Session ID:" + sessionId);
+        errorMsg.setTitle("IDENTIFICATION_FAILURE_TITLE");
+        errorMsg.setMessage("IDENTIFICATION_FAILURE_MSG");
+      } else {
+        log4j.debug(user + " is locked cannot activate session ID " + sessionId);
+        errorMsg.setTitle("LOCKED_USER_TITLE");
+        errorMsg.setMessage("LOCKED_USER_MSG");
+      }
 
-			if (!isInstalled) {
-				if (LoginUtils.checkUserPassword(cp, user, pass) == null) {
-					log4j.debug("Failed user/password. Username: " + user + " - Session ID:" + sessionId);
-					errorMsg.setTitle("IDENTIFICATION_FAILURE_TITLE");
-					errorMsg.setMessage("IDENTIFICATION_FAILURE_MSG");
-				} else {
-					log4j.debug(user + " is locked cannot activate session ID " + sessionId);
-					errorMsg.setTitle("LOCKED_USER_TITLE");
-					errorMsg.setMessage("LOCKED_USER_MSG");
-				}
-
-				throw new AuthenticationException("IDENTIFICATION_FAILURE_TITLE", errorMsg, false);
-
-			} else {
-				if (LoginUtils.checkUserPassword(cp, user, pass) == null) {
-					log4j.debug("Failed user/password. Username: " + user + " - Session ID:" + sessionId);
-					errorMsg.setTitle("IDENTIFICATION_FAILURE_TITLE");
-					errorMsg.setMessage("IDENTIFICATION_FAILURE_MSG");
-					int failedAttempts = failedAttemptsMap.getOrDefault(user, 0) + 1;
-					failedAttemptsMap.put(user, failedAttempts);
-
-					Long maxAttempts = (Long) OBDal.getInstance().getSession().createQuery(
-							"select s.attempts from SSUAS_security_config s where s.attempts > 0 and s.active = 'Y'")
-							.setMaxResults(1).uniqueResult();
-
-					if (maxAttempts != null && userObj != null) {
-						int remaining = (int) (maxAttempts - failedAttempts);
-						if (remaining < 0)
-							remaining = 0;
-						errorMsg.setTitle("IDENTIFICATION_FAILURE_TITLE");
-						errorMsg.setMessage("Please try again. " + remaining + " attempts remaining.");
-					validateLoginAttempts(user, failedAttempts);
-					}
-
-				} else {
-					failedAttemptsMap.put(user, 0);
-				}
-				throw new AuthenticationException("IDENTIFICATION_FAILURE_MSG", errorMsg, false);
-			}
-		}
+      throw new AuthenticationException("IDENTIFICATION_FAILURE_TITLE", errorMsg, false);
+    }
 
     vars.setSessionValue("#AD_User_ID", userId);
 
@@ -288,132 +237,4 @@ String userHql = "from ADUser u where u.username = :username";
     }
 
   }
-
-	// Metodos auxiliares modulo de seguridad avanzada
-	public static boolean isModuleInstalled(String moduleJavaPackage) {
-		try {
-			String hql = "select count(m) from ADModule m where m.javaPackage = :javaPackage";
-			Long count = (Long) OBDal.getInstance().getSession().createQuery(hql)
-					.setParameter("javaPackage", moduleJavaPackage).uniqueResult();
-
-			if (count == null || count == 0) {
-				return false;
-			}
-
-			String configHql = "select count(c) from SSUAS_security_config c where c.active = 'Y'";
-			Long configCount = (Long) OBDal.getInstance().getSession().createQuery(configHql).uniqueResult();
-
-			return configCount != null && configCount > 0;
-
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	private void sendLockNotification(String username, String configuredEmails) {
-		try {
-			OBCriteria<EmailServerConfiguration> emailConfigCriteria = OBDal.getInstance()
-					.createCriteria(EmailServerConfiguration.class);
-			emailConfigCriteria.add(Restrictions.eq(EmailServerConfiguration.PROPERTY_ACTIVE, true));
-			emailConfigCriteria.setMaxResults(1);
-
-			List<EmailServerConfiguration> emailConfigList = emailConfigCriteria.list();
-			EmailServerConfiguration mailConfig = emailConfigList.isEmpty() ? null : emailConfigList.get(0);
-
-			if (mailConfig == null) {
-				log4j.error("No se encontró una configuración de correo activa.");
-				return;
-			}
-
-			String userHql = "from ADUser u where u.username = :username";
-			User user = (User) OBDal.getInstance().getSession().createQuery(userHql)
-					.setParameter("username", username)
-					.setMaxResults(1)
-					.uniqueResult();
-
-			String userEmail = user != null ? user.getEmail() : null;
-
-			String allRecipients;
-			if (StringUtils.isNotEmpty(configuredEmails) && StringUtils.isNotEmpty(userEmail)) {
-				allRecipients = configuredEmails + "," + userEmail;
-			} else if (StringUtils.isNotEmpty(configuredEmails)) {
-				allRecipients = configuredEmails;
-			} else if (StringUtils.isNotEmpty(userEmail)) {
-				allRecipients = userEmail;
-			} else {
-				log4j.warn("No hay correos disponibles para enviar notificacion.");
-				return;
-			}
-
-			String host = mailConfig.getSmtpServer();
-			boolean auth = mailConfig.isSMTPAuthentification();
-			String smtpUser = mailConfig.getSmtpServerAccount();
-			String password = FormatUtilities.encryptDecrypt(mailConfig.getSmtpServerPassword(), false);
-			String connSecurity = mailConfig.getSmtpConnectionSecurity();
-			int port = mailConfig.getSmtpPort().intValue();
-			String senderAddress = smtpUser;
-			String subject = "ALERTA BLOQUEO POR INGRESO FALLIDO";
-			String body = "El usuario " + username
-						+ " ha sido inactivado del sistema Openbravo por sobrepasar el número de intentos de ingreso permitido " + "("+ attempts +")" + " solicitar la verificación del administrador al correo " + emails + ".";
-
-			EmailManager.sendEmail(host, auth, smtpUser, password, connSecurity, port, senderAddress, allRecipients,
-					null, null, null, subject, body, "text/plain; charset=utf-8", null, new Date(), null);
-
-			log4j.debug("Correo de notificación enviado a: " + allRecipients);
-		} catch (Exception e) {
-			log4j.error("Error al enviar el correo de notificación: ", e);
-		}
-	}
-
-	private static final Map<String, Integer> failedAttemptsMap = new HashMap<>();
-
-	private void validateLoginAttempts(String username, int numberOfFails) {
-		try {
-			log4j.info("Inicio validación de intentos con HQL");
-
-			String userHql = "from ADUser u where u.username = :username and u.active = 'Y'";
-			User user = (User) OBDal.getInstance().getSession().createQuery(userHql).setParameter("username", username)
-					.setMaxResults(1).uniqueResult();
-
-			if (user == null) {
-				log4j.warn("Usuario no encontrado: " + username);
-				return;
-			}
-
-			String attemptsHql = "select s.attempts from SSUAS_security_config s";
-			Long attempts = (Long) OBDal.getInstance().getSession().createQuery(attemptsHql).setMaxResults(1)
-					.uniqueResult();
-
-			String emailHql = "select s.notificationEmail from SSUAS_security_config s";
-			String emails = (String) OBDal.getInstance().getSession().createQuery(emailHql).setMaxResults(1)
-					.uniqueResult();
-
-			if (attempts == null) {
-				log4j.warn("No se encontró configuración de seguridad activa");
-				return;
-			}
-
-			if (numberOfFails >= attempts) {
-				log4j.error("El usuario " + username
-						+ " ha sido inactivado del sistema Openbravo por sobrepasar el número de intentos de ingreso permitido " + "("+ attempts +")" + " solicitar la verificación del administrador al correo " + emails + ".");
-
-
-				this.attempts = attempts;
-				this.emails = emails;
-				
-				user.setLocked(true);
-				OBDal.getInstance().save(user);
-				OBDal.getInstance().flush();
-
-				sendLockNotification(username, emails);
-
-				failedAttemptsMap.remove(username);
-
-			}
-
-		} catch (Exception e) {
-			log4j.error("Error al validar intentos de login: ", e);
-		}
-	}
-
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPITRA_CT_DETAIL_BEFORE_TRG">
+    <trigger name="SSPITRA_CT_DETAIL_BEFORE_TRG" table="SSPITRA_CT_DETAIL" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[    vStatus VARCHAR2(60);
+BEGIN
+	IF DELETING THEN
+        select Status into vStatus from sspitra_collectiontransit where sspitra_collectiontransit_id = :OLD.sspitra_collectiontransit_id;
+        IF vStatus = 'P' THEN
+    		RAISE_APPLICATION_ERROR(-20000, '@SSPITRA_ActionNotAllowed@');
+        END IF;
+	END IF;
+
+END SSPITRA_CT_DETAIL_BEFORE_TRG
+]]></body>
+    </trigger>
+  </database>

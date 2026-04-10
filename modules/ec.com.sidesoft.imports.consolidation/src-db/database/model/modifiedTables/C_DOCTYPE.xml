@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_DOCTYPE">
+    <table name="C_DOCTYPE" primaryKey="C_DOCTYPE_KEY">
+      <column name="EM_SSIMPCN_CONSOLIDATED_IMP" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <check name="EM_SSIMPCN_DT_CI"><![CDATA[EM_SSIMPCN_CONSOLIDATED_IMP IN ('Y', 'N')]]></check>
+    </table>
+  </database>

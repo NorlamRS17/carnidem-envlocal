@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="BBA6A0686F6D4A6CB5D999C4A10F7237" trl="Y">
+    <value column="MsgText" isTrl="Y" original="The sales order (#) is already invoiced, please check the errors window.">El pedido de venta (#) ya se encuentra facturado, por favor revisar en la ventana de errores.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="4D9A8F0A1B74479CB4F62A86131A99C2" trl="Y">
+    <value column="Text" isTrl="Y" original="Paid Out">Pagar</value>
+  </row>
+  <row id="578B10BB6B4B483EADCEB4913767EE58" trl="Y">
+    <value column="Text" isTrl="Y" original="businesspartner">Tercero</value>
+  </row>
+  <row id="579D3B70082249DD9009ED122893F174" trl="N">
+    <value column="Text" isTrl="N" original="DataGrid">DataGrid</value>
+  </row>
+  <row id="5EDE2BF63FF245F0B5AF6C6BF00E81D6" trl="Y">
+    <value column="Text" isTrl="Y" original="Received In">Cobrar</value>
+  </row>
+  <row id="64EBAD42EE5046EAB5DEFCE439399DE7" trl="Y">
+    <value column="Text" isTrl="Y" original="Payment Method">Metodo de pago</value>
+  </row>
+  <row id="6E3B9A6962F045D680A1BF60262326A9" trl="Y">
+    <value column="Text" isTrl="Y" original="documentno">Nº documento</value>
+  </row>
+  <row id="727042B1DE5B4AE7B0809AE70FC7E061" trl="Y">
+    <value column="Text" isTrl="Y" original="Deposit No.">N° Depósito </value>
+  </row>
+  <row id="7B423868F4344734B1F02B62B086A632" trl="Y">
+    <value column="Text" isTrl="Y" original="amount">Importe</value>
+  </row>
+  <row id="8FEFB456808C4CE0893DC5F9182B37D5" trl="Y">
+    <value column="Text" isTrl="Y" original="Execute Payments">Ejecución de Pagos/Cobros</value>
+  </row>
+  <row id="A97DB71BD6864DF8BE6BC99DD8717794" trl="Y">
+    <value column="Text" isTrl="Y" original="Date From">Desde Fecha</value>
+  </row>
+  <row id="B200C7BC4F2543F0B5A591DEE0D1B121" trl="Y">
+    <value column="Text" isTrl="Y" original="Payment Execution">Ejecución de Pagos/Cobros</value>
+  </row>
+  <row id="B9ABF8AAB48941D2AA243AFB7B4FE16F" trl="Y">
+    <value column="Text" isTrl="Y" original="Date To">Hasta Fecha</value>
+  </row>
+  <row id="C446EE275B724C4F831544118173B65F" trl="Y">
+    <value column="Text" isTrl="Y" original="description">Descripción</value>
+  </row>
+  <row id="DF8BA16C2C2D4E9AB4FDB26165481907" trl="Y">
+    <value column="Text" isTrl="Y" original="Total Value">Valor Total</value>
+  </row>
+  <row id="E40C2E0F1C484D4F92EEF38DA461AEEA" trl="Y">
+    <value column="Text" isTrl="Y" original="Execute">Ejecutar</value>
+  </row>
+  <row id="E89639ECEB704C6EB916E86744D41677" trl="Y">
+    <value column="Text" isTrl="Y" original="duedate">Fecha vencimiento</value>
+  </row>
+  <row id="F8A4E5CC421847BE980DB4CC728C5A88" trl="N">
+    <value column="Text" isTrl="N" original="Loading...">Loading...</value>
+  </row>
+  <row id="FECA0FB863164D158ED6CA4333F10D88" trl="Y">
+    <value column="Text" isTrl="Y" original="Financial Account">Cuenta Financiera</value>
+  </row>
+</compiereTrl>

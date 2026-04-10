@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="35FF58F595D845ADB3E95F22A4943140" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Settled document">Documento liquidado</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="41C0E0A37D39473FB1F16F14F4832D8B" trl="Y">
+    <value column="MsgText" isTrl="Y" original="Import not liquidated">Importación no liquidada</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="6C641DEBBA9B438B8FCB0846A81F7171" trl="N">
+    <value column="MsgText" isTrl="N" original="Restaurante">Restaurante</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

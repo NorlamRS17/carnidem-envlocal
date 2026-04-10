@@ -71,14 +71,14 @@ public class ActionButtonUtility {
           + " - actual status: " + strDocStatus);
     try {
       ComboTableData comboTableData = new ComboTableData(vars, conn, "LIST", "DocAction",
-          strReference, validationRule, Utility.getContext(conn, vars, "#AccessibleOrgTree",
-              "ActionButtonUtility"), Utility.getContext(conn, vars, "#User_Client",
-              "ActionButtonUtility"), 0);
+          strReference, validationRule,
+          Utility.getContext(conn, vars, "#AccessibleOrgTree", "ActionButtonUtility"),
+          Utility.getContext(conn, vars, "#User_Client", "ActionButtonUtility"), 0);
       Utility.fillSQLParameters(conn, vars, null, comboTableData, "ActionButtonUtility", "");
       ld = comboTableData.select(false);
       comboTableData = null;
-      isQuotation = "Y".equals(vars.getGlobalVariable("inpisQuotation", windowId + "|isQuotation",
-          "N"));
+      isQuotation = "Y"
+          .equals(vars.getGlobalVariable("inpisQuotation", windowId + "|isQuotation", "N"));
 
     } catch (Exception e) {
       return null;
@@ -195,9 +195,9 @@ public class ActionButtonUtility {
     FieldProvider[] ld = null;
     try {
       ComboTableData comboTableData = new ComboTableData(vars, conn, "LIST", "ProjectAction",
-          strReference, "", Utility.getContext(conn, vars, "#AccessibleOrgTree",
-              "ActionButtonUtility"), Utility.getContext(conn, vars, "#User_Client",
-              "ActionButtonUtility"), 0);
+          strReference, "",
+          Utility.getContext(conn, vars, "#AccessibleOrgTree", "ActionButtonUtility"),
+          Utility.getContext(conn, vars, "#User_Client", "ActionButtonUtility"), 0);
       Utility.fillSQLParameters(conn, vars, null, comboTableData, "ActionButtonUtility", "");
       ld = comboTableData.select(false);
       comboTableData = null;
@@ -214,9 +214,25 @@ public class ActionButtonUtility {
         data1 = new SQLReturnObject();
         data1.setData("ID", "OC");
         v.addElement(data1);
+
+        data1 = new SQLReturnObject();
+        data1.setData("ID", "SPROCTM_CO");
+        v.addElement(data1);
+        data1 = new SQLReturnObject();
+        data1.setData("ID", "SPROCTM_EX");
+        v.addElement(data1);
+
       } else if (strProjectStatus.equals("OR")) {
         data1.setData("ID", "OC");
         v.addElement(data1);
+
+        data1 = new SQLReturnObject();
+        data1.setData("ID", "SPROCTM_CO");
+        v.addElement(data1);
+        data1 = new SQLReturnObject();
+        data1.setData("ID", "SPROCTM_EX");
+        v.addElement(data1);
+
       }
 
       if (v.size() > 0) {

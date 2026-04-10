@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_FIELD" version="">
+  <row id="02A4AD5F2B834A2A86DBCC4D340E5658" trl="N">
+    <value column="Name" isTrl="N" original="Status">Status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="Status of the alert:&#10;New: The alert has been created and has not been reviewed yet.&#10;Read: The alert has been reviewed and user is waiting to be solved.&#10;Solved: The alert has been solved and is not an issue any more.&#10;Exception: The alert has been acknowledged but not action is going to be made to solve it.">Status of the alert:
+New: The alert has been created and has not been reviewed yet.
+Read: The alert has been reviewed and user is waiting to be solved.
+Solved: The alert has been solved and is not an issue any more.
+Exception: The alert has been acknowledged but not action is going to be made to solve it.</value>
+  </row>
+  <row id="07768C7D66A54764924B50049EDE689C" trl="N">
+    <value column="Name" isTrl="N" original="Payment Reconcile">Payment Reconcile</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="0D634DE4AFB84F29A664A68A09E2ECD5" trl="N">
+    <value column="Name" isTrl="N" original="Valor Pagado">Valor Pagado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AA25F2FFAA7545CDA5B7D049979272F2" trl="N">
+    <value column="Name" isTrl="N" original="Valor Depositado">Valor Depositado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D13BEE4927E6436FBA06330D76494359" trl="N">
+    <value column="Name" isTrl="N" original="Conciliación Bancaria">Conciliación Bancaria</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FB43FBE656F94B21AB0F22399EA925A4" trl="N">
+    <value column="Name" isTrl="N" original="Nro. Deposito">Nro. Deposito</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

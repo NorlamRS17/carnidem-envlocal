@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="0149A51AC27E445F984E8D2611B25944" trl="N">
+    <value column="Text" isTrl="N" original="Organizacion:">Organizacion:</value>
+  </row>
+  <row id="0C4C6F86ADB44C9486421B00CC9F8985" trl="N">
+    <value column="Text" isTrl="N" original="V. UNITARIO">V. UNITARIO</value>
+  </row>
+  <row id="167F7B2B8D8E404FA1B8A1517C3EC08D" trl="N">
+    <value column="Text" isTrl="N" original="CODIGO">CODIGO</value>
+  </row>
+  <row id="1C32C2AE383B436DAD52863FEA2DF604" trl="N">
+    <value column="Text" isTrl="N" original="ELABORADO POR">ELABORADO POR</value>
+  </row>
+  <row id="1F05F262BB9B4915B7B05E282BC98D46" trl="N">
+    <value column="Text" isTrl="N" original="RUC:">RUC:</value>
+  </row>
+  <row id="20B12A11888A487CA0B5F5894AD83226" trl="N">
+    <value column="Text" isTrl="N" original="de">de</value>
+  </row>
+  <row id="22A11C2DD82740C091AFDDD001CB9B32" trl="N">
+    <value column="Text" isTrl="N" original="IVA">IVA</value>
+  </row>
+  <row id="361DEEF4C67A4FF2B113F59DB5F4E23A" trl="N">
+    <value column="Text" isTrl="N" original="Categoria hasta:">Categoria hasta:</value>
+  </row>
+  <row id="3C84AF6FDADE4D74BD3D5D75242B4443" trl="N">
+    <value column="Text" isTrl="N" original="AUTORIZADO POR">AUTORIZADO POR</value>
+  </row>
+  <row id="4B1CF5EEE165465A92098D51379207F4" trl="N">
+    <value column="Text" isTrl="N" original="¿Por qué deberías confiar en Ecuapack?">¿Por qué deberías confiar en Ecuapack?</value>
+  </row>
+  <row id="4E94080EF1EC4B358CC604CB2111662B" trl="N">
+    <value column="Text" isTrl="N" original="/ec/com/sidesoft/stock/reports/ad_reports/StockReport.jrxml">/ec/com/sidesoft/stock/reports/ad_reports/StockReport.jrxml</value>
+  </row>
+  <row id="54F6693E33144BDD8A692CB944A1A771" trl="N">
+    <value column="Text" isTrl="N" original="Cotizado por:">Cotizado por:</value>
+  </row>
+  <row id="58C69AA2784840DBB1F66B5E2B69E045" trl="N">
+    <value column="Text" isTrl="N" original="Tenemos 15 años de experiencia en el mercado ecuatoriano, brindamos servicio técnico y respaldo total en toda nuestra maquinaria. Contamos con 5 puntos de venta a nivel nacional para estar más cerca de tí.">Tenemos 15 años de experiencia en el mercado ecuatoriano, brindamos servicio técnico y respaldo total en toda nuestra maquinaria. Contamos con 5 puntos de venta a nivel nacional para estar más cerca de tí.</value>
+  </row>
+  <row id="5ABC7C5ED26C49598575A83F0D783C61" trl="N">
+    <value column="Text" isTrl="N" original="IMAGEN">IMAGEN</value>
+  </row>
+  <row id="5F56D640F0AD4C1AABD1605B0C519323" trl="N">
+    <value column="Text" isTrl="N" original="COSTO UNITARIO">COSTO UNITARIO</value>
+  </row>
+  <row id="622D67EEBBF34720AB5CE2DE47924030" trl="N">
+    <value column="Text" isTrl="N" original="Categoria desde:">Categoria desde:</value>
+  </row>
+  <row id="65538DF84204402F9F58E0F44FF8FE0F" trl="N">
+    <value column="Text" isTrl="N" original="DESCRIPCIÓN">DESCRIPCIÓN</value>
+  </row>
+  <row id="66C246B37B354EA3AE283716E23B6D22" trl="N">
+    <value column="Text" isTrl="N" original="NOMBRE:">NOMBRE:</value>
+  </row>
+  <row id="689F7FF33A8146DBA7203EA6EA429219" trl="N">
+    <value column="Text" isTrl="N" original="COSTO TOTAL">COSTO TOTAL</value>
+  </row>
+  <row id="6B79CACEA1FB45B6AD558EC39C6B4E9E" trl="N">
+    <value column="Text" isTrl="N" original="Tiempo de entrega:">Tiempo de entrega:</value>
+  </row>
+  <row id="70D39129CBCA4216B1DF402DD8F98255" trl="N">
+    <value column="Text" isTrl="N" original="TELÉFONO:">TELÉFONO:</value>
+  </row>
+  <row id="79526DBF9F004AD1A70BB4A52C1EB20B" trl="N">
+    <value column="Text" isTrl="N" original="VALIDO HASTA">VALIDO HASTA</value>
+  </row>
+  <row id="8E74F1FB56874AD4AD146F4D7EF634EF" trl="N">
+    <value column="Text" isTrl="N" original="CANTIDAD">CANTIDAD</value>
+  </row>
+  <row id="9DBCA618C01E4E059552955143DA1AD3" trl="N">
+    <value column="Text" isTrl="N" original="Forma de pago:">Forma de pago:</value>
+  </row>
+  <row id="A3FE4F90DB0540E5BB8FA5DAA1EC6CB3" trl="N">
+    <value column="Text" isTrl="N" original="CANT.">CANT.</value>
+  </row>
+  <row id="A79F6C2B53BF422C8B58E416AF6F85D9" trl="N">
+    <value column="Text" isTrl="N" original="BODEGA">BODEGA</value>
+  </row>
+  <row id="AB733A6837D64C608F960529C19E358D" trl="N">
+    <value column="Text" isTrl="N" original="COTIZACIÓN">COTIZACIÓN</value>
+  </row>
+  <row id="B3372EB37E61405DB0FF377D7F5BBD63" trl="N">
+    <value column="Text" isTrl="N" original="ASESOR:">ASESOR:</value>
+  </row>
+  <row id="B8DBF9D0E8C74B6F98822DE6A11BAFE4" trl="N">
+    <value column="Text" isTrl="N" original="TODOS">TODOS</value>
+  </row>
+  <row id="BEF26CBDDE1842BEB02C3236F259945F" trl="N">
+    <value column="Text" isTrl="N" original="DESCUENTO">DESCUENTO</value>
+  </row>
+  <row id="C1A243FA6D8D4EDCA80F911CA0938063" trl="N">
+    <value column="Text" isTrl="N" original="Bodega:">Bodega:</value>
+  </row>
+  <row id="C5581A3A9F7E484F99AE9447BCEC5FD7" trl="N">
+    <value column="Text" isTrl="N" original="Producto:">Producto:</value>
+  </row>
+  <row id="C86663C20B604AD78D4573A846F3AA19" trl="N">
+    <value column="Text" isTrl="N" original="UM">UM</value>
+  </row>
+  <row id="CAC60EBA5FAB43978D011AF48DDAD5D0" trl="N">
+    <value column="Text" isTrl="N" original="TODAS">TODAS</value>
+  </row>
+  <row id="D3C4D96961E64A79AF8F1A47ADE91CBF" trl="N">
+    <value column="Text" isTrl="N" original="Sucursal:">Sucursal:</value>
+  </row>
+  <row id="D73648F58FED4219B756BE2D26DC1915" trl="N">
+    <value column="Text" isTrl="N" original="Página">Página</value>
+  </row>
+  <row id="D91334563EC24857A894310CB02914EC" trl="N">
+    <value column="Text" isTrl="N" original="Página">Página</value>
+  </row>
+  <row id="DB354213EB454A17AD76B002454C5591" trl="N">
+    <value column="Text" isTrl="N" original="STOCK A LA FECHA">STOCK A LA FECHA</value>
+  </row>
+  <row id="DEBD9F2D89CB4A66BFB8EEC74C318FA6" trl="N">
+    <value column="Text" isTrl="N" original="&lt;br&gt;">&lt;br&gt;</value>
+  </row>
+  <row id="E53C7C9E7F8941F6AAC6F724D8B13AC2" trl="N">
+    <value column="Text" isTrl="N" original="COTIZACIÓN #">COTIZACIÓN #</value>
+  </row>
+  <row id="E7C392B5355E4F72BFAB7FAA1E644C13" trl="N">
+    <value column="Text" isTrl="N" original="SUBTOTAL">SUBTOTAL</value>
+  </row>
+  <row id="EEBAE4459E9444B3AB8523D4AA4F3025" trl="N">
+    <value column="Text" isTrl="N" original="Tiempo de garantía:">Tiempo de garantía:</value>
+  </row>
+  <row id="EED6D16687554D05AC65A200DE553E15" trl="N">
+    <value column="Text" isTrl="N" original="DESCRIPCION">DESCRIPCION</value>
+  </row>
+  <row id="F5A1FCF1CA14402E94550E94420A0486" trl="N">
+    <value column="Text" isTrl="N" original="FECHA">FECHA</value>
+  </row>
+  <row id="FCCA82832E334707AF4B07E37DFABBFF" trl="N">
+    <value column="Text" isTrl="N" original="CLIENTE">CLIENTE</value>
+  </row>
+  <row id="FCF4C4657FE54354960173E210E6430C" trl="N">
+    <value column="Text" isTrl="N" original="Fecha hasta:">Fecha hasta:</value>
+  </row>
+</compiereTrl>

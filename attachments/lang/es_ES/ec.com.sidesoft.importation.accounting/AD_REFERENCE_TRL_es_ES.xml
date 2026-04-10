@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="A584E22918844D8F861BBC6F5D270302" trl="N">
+    <value column="Name" isTrl="N" original="Ssimacc_Org">Ssimacc_Org</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B7B80A1393C740F09B6D7D6E23F46153" trl="N">
+    <value column="Name" isTrl="N" original="Ssimacc_User">Ssimacc_User</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

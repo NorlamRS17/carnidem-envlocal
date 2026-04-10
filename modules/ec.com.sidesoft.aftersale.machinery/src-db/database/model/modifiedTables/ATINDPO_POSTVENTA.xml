@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE ATINDPO_POSTVENTA">
+    <table name="ATINDPO_POSTVENTA" primaryKey="ATINDPO_POSTVENTA_KEY">
+      <column name="EM_SATMAC_SALESREP_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_PROJECT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_MACHINE_TYPE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_CONTRACT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_INVENTORY_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SATMAC_NAME" primaryKey="false" required="false" type="VARCHAR" size="100" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="SATMAC_CONTRACT" name="EM_SATMAC_PV_CONTRACT">
+        <reference local="EM_SATMAC_CONTRACT_ID" foreign="SATMAC_CONTRACT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="M_INVENTORY" name="EM_SATMAC_PV_INVENTORY">
+        <reference local="EM_SATMAC_INVENTORY_ID" foreign="M_INVENTORY_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_PROJECT" name="EM_SATMAC_PV_PROJECT">
+        <reference local="EM_SATMAC_PROJECT_ID" foreign="C_PROJECT_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="AD_USER" name="EM_SATMAC_PV_SALESREP">
+        <reference local="EM_SATMAC_SALESREP_ID" foreign="AD_USER_ID"/>
+      </foreign-key>
+    </table>
+  </database>

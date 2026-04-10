@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_REQUISITIONLINE">
+    <table name="M_REQUISITIONLINE" primaryKey="M_REQUISITIONLINE_KEY">
+      <column name="EM_SSIP_MEANSTRANSPORT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="SSIP_MEANSTRANSPORT" name="EM_SSIP_MEANSTRANSPORT">
+        <reference local="EM_SSIP_MEANSTRANSPORT_ID" foreign="SSIP_MEANSTRANSPORT_ID"/>
+      </foreign-key>
+    </table>
+  </database>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="72C6F12C178D4E2BB4C409B53A95159A" trl="Y">
+    <value column="Name" isTrl="N" original="M_PRODUCT_SELECTOR">M_PRODUCT_SELECTOR</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DE32811B8BA647A6905111DDABBDB768" trl="Y">
+    <value column="Name" isTrl="N" original="ManufacturingProcessPlan">ManufacturingProcessPlan</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FF5B450C0E6240D588D56C43D5DC7144" trl="Y">
+    <value column="Name" isTrl="N" original="MA_Workrequirement">MA_Workrequirement</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

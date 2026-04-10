@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_FIELD" version="">
+  <row id="4171607C1834473E80F9742ADC8D0486" trl="N">
+    <value column="Name" isTrl="N" original="Cliente">Cliente</value>
+    <value column="Description" isTrl="N" original="Persona que participa en operaciones diarias de negocios, como cliente, empleado, etc.">Persona que participa en operaciones diarias de negocios, como cliente, empleado, etc.</value>
+    <value column="Help" isTrl="N" original="Un tercero es cualquier entidad, organización o particular con quien se realizan operaciones y transacciones. Esto incluye proveedores, clientes y empleados.">Un tercero es cualquier entidad, organización o particular con quien se realizan operaciones y transacciones. Esto incluye proveedores, clientes y empleados.</value>
+  </row>
+  <row id="4954D0451E7F49179C2AAF84CD28B799" trl="N">
+    <value column="Name" isTrl="N" original="Email (Facturación Electrónica)">Email (Facturación Electrónica)</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AD90172A1868490B90AB5E90404D883E" trl="N">
+    <value column="Name" isTrl="N" original="No. Orden de Trabajo">No. Orden de Trabajo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

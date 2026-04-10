@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="0B1D3FB622DE45D89AC4FC979150C3F2" trl="Y">
+    <value column="MsgText" isTrl="Y" original="It is only allowed to register in phase and task of execution type">Unicamente se permite registrar en fase y tarea de tipo ejecución </value>
+    <value column="MsgTip" isTrl="Y" original="It is only allowed to register in phase and task of execution type">Unicamente se permite registrar en fase y tarea de tipo ejecución </value>
+  </row>
+  <row id="2293423D89434166932051A5D164E500" trl="Y">
+    <value column="MsgText" isTrl="Y" original="A record with the same Salary Category already exists for this task.">Ya existe un registro con la misma Categoria Salarial para esta tarea.</value>
+    <value column="MsgTip" isTrl="Y" original="A record with the same Salary Category already exists for this task.">Ya existe un registro con la misma Categoria Salarial para esta tarea.</value>
+  </row>
+  <row id="46A42C514CA445BA8F047A9D823A21AF" trl="Y">
+    <value column="MsgText" isTrl="Y" original="There is already a record with the same machinery">Ya existe un registro con la misma maquinaria</value>
+    <value column="MsgTip" isTrl="Y" original="There is already a record with the same machinery">Ya existe un registro con la misma maquinaria</value>
+  </row>
+  <row id="97BC375A57014380AEE90453752BC70D" trl="Y">
+    <value column="MsgText" isTrl="Y" original="A record with the same indirect cost already exists for this task.">Ya existe un registro con el mismo costo indirecto para esta tarea.</value>
+    <value column="MsgTip" isTrl="Y" original="A record with the same indirect cost already exists for this task.">Ya existe un registro con el mismo costo indirecto para esta tarea.</value>
+  </row>
+</compiereTrl>

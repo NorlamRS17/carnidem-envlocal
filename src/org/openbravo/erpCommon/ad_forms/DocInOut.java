@@ -402,6 +402,15 @@ public class DocInOut extends AcctServer {
         // If there exists cost for the product, but it is equals to zero, then no line is added,
         // but no error is thrown. If this is the only line in the document, yes an error will be
         // thrown
+
+        Product productCost = OBDal.getInstance().get(Product.class, line.m_M_Product_ID);
+
+        boolean blProductControlAssets = productCost.isScrtlaControlAssets();
+        if (blProductControlAssets) {
+        	costs = "0";  
+        }
+        
+        
         if (!costs.equals("0")
             || DocInOutData.existsCost(conn, DateAcct, line.m_M_Product_ID).equals("0")) {
 

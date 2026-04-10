@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="0D4FCBEC77A946DD95D39AB7480D587C" trl="Y">
+    <value column="Name" isTrl="Y" original="Rpt Efficiency by standard time Carnidem">Reporte Eficiencia por tiempo estándar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
   <row id="2432F501E44847CCA8B993B983B320B2" trl="Y">
     <value column="Name" isTrl="Y" original="Security Assessment Report">Reporte de evaluación de seguridad y calidad</value>
     <value column="Description" isTrl="N" original=""/>
@@ -8,6 +13,11 @@
   <row id="265B32839A6D435F910EA1E9F3F498B2" trl="Y">
     <value column="Name" isTrl="Y" original="Approve Need New ">Generar necesidad</value>
     <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7BBFF31F12644BD29E749C9FBAAEEECA" trl="Y">
+    <value column="Name" isTrl="Y" original="Report Cost Production Carnidem">Reporte de Costos de producción</value>
+    <value column="Description" isTrl="Y" original="Report Cost Production Carnidem">Reporte de Costos de producción</value>
     <value column="Help" isTrl="N" original=""/>
   </row>
 </compiereTrl>

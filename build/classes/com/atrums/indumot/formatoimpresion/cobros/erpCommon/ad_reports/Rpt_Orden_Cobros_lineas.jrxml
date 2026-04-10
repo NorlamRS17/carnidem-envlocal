@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_Orden_Cobros_lineas" pageWidth="501" pageHeight="232" columnWidth="501" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.5026296018031553"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  d.documentno as "factura_nro",
+        d.grandtotal as "valor_factura",
+        a.amount as "Cuota",
+        a.paidamt as "Monto Pagado Cuota",
+        a.expecteddate as "Fecha Cuota",
+        a.outstandingamt as "Valor pendiente de Cuota",
+        c.amount as "Monto Pagado con comprobante"
+from fin_payment_schedule a, fin_payment_scheduledetail b, fin_payment_detail c ,c_invoice d
+where a.fin_payment_schedule_id=b.fin_payment_schedule_invoice
+and b.fin_payment_detail_id=c.fin_payment_detail_id
+and a.c_invoice_id=d.c_invoice_id
+and c.fin_payment_id=$P{DOCUMENT_ID}]]>
+	</queryString>
+	<field name="factura_nro" class="java.lang.String"/>
+	<field name="valor_factura" class="java.math.BigDecimal"/>
+	<field name="Cuota" class="java.math.BigDecimal"/>
+	<field name="Monto Pagado Cuota" class="java.math.BigDecimal"/>
+	<field name="Fecha Cuota" class="java.sql.Timestamp"/>
+	<field name="Valor pendiente de Cuota" class="java.math.BigDecimal"/>
+	<field name="Monto Pagado con comprobante" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="18">
+			<staticText>
+				<reportElement x="321" y="2" width="100" height="16">
+					<printWhenExpression><![CDATA[new Boolean( $F{Valor pendiente de Cuota}.intValue() == 0 ).booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[CUOTA PAGADA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="2" width="100" height="16">
+					<printWhenExpression><![CDATA[new Boolean( $F{Valor pendiente de Cuota}.intValue() > 0 ).booleanValue()]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ABONO CUOTA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="3" y="2" width="90" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{factura_nro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="2" width="77" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valor_factura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="174" y="2" width="65" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{Cuota}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="2" width="77" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{Monto Pagado con comprobante}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

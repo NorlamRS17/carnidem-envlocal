@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="040B7B531BF14FFAAA80AF45F9674CD8" trl="Y">
+    <value column="Name" isTrl="Y" original="Draft">Borrador</value>
+    <value column="Description" isTrl="Y" original="Draft">Borrador</value>
+  </row>
+  <row id="0B85191E8F684395BBA49EB2ED4DECAE" trl="Y">
+    <value column="Name" isTrl="Y" original="Debits PH">Débitos PH</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="0EAB50FF1BB34B53B05F5CED20FF0AAB" trl="Y">
+    <value column="Name" isTrl="N" original="Ventanilla">Ventanilla</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="17E1FBDE29254939B2C205B19A691032" trl="Y">
+    <value column="Name" isTrl="Y" original="Debits other PH">Débitos Otros</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="18A01A78079347E185BCA73C1CB95829" trl="Y">
+    <value column="Name" isTrl="Y" original="Most overdue">Mas vencido</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1904BA78804544E0A7A96241E53C8611" trl="Y">
+    <value column="Name" isTrl="Y" original="Accumulated">Acumulado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1B212AD57F564118B962D5ED38699EE5" trl="Y">
+    <value column="Name" isTrl="N" original="Banca web">Banca web</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="30242C8E08C14E7287B8232FEE82B83D" trl="Y">
+    <value column="Name" isTrl="N" original="Mi vecino">Mi vecino</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="783390FEA564471AA5A5D9FA0C56CA00" trl="Y">
+    <value column="Name" isTrl="Y" original="Paid">Pagado</value>
+    <value column="Description" isTrl="Y" original="Paid">Pagado</value>
+  </row>
+  <row id="85F1BFD6D5994A6EA4B11FB095185DE1" trl="Y">
+    <value column="Name" isTrl="Y" original="Collections PH">Recaudaciones PH</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="8C80E2F49845430387EEEF9EF5039A1A" trl="Y">
+    <value column="Name" isTrl="N" original="Débitos Interbancarios">Débitos Interbancarios</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D877C3C9E3D142BE8C3E0DE3F2F6F5B1" trl="Y">
+    <value column="Name" isTrl="N" original="Débito bancario Pichincha">Débito bancario Pichincha</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="DD4EDBB7478C400296EC3144C2F91FCA" trl="Y">
+    <value column="Name" isTrl="Y" original="Completed">Completado</value>
+    <value column="Description" isTrl="Y" original="Completed">Completado</value>
+  </row>
+  <row id="DE6DF841691B48DB851EC93B1F130BF6" trl="Y">
+    <value column="Name" isTrl="N" original="Banca móvil">Banca móvil</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E27E84515FDD4F8791146B8E08B0A332" trl="Y">
+    <value column="Name" isTrl="N" original="Western Unión">Western Unión</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F33A4D9500554E0593E19648BAEE275B" trl="Y">
+    <value column="Name" isTrl="Y" original="All detailed">Todo detallado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

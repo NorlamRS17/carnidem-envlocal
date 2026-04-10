@@ -1,2 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR_FIELD" version=""/>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR_FIELD" version="">
+  <row id="065287E1D67045F387BF863C5CB0C933" trl="Y">
+    <value column="Name" isTrl="Y" original="date">Fecha</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="30D2E1A665074B3E83984BE3610AA347" trl="Y">
+    <value column="Name" isTrl="Y" original="name">Albarán</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="566E1EBDD2BC4911B1684FCA0F7DA333" trl="N">
+    <value column="Name" isTrl="N" original="id">id</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6EA25835ED6B4F09971C1A2D1DCCAE91" trl="N">
+    <value column="Name" isTrl="N" original="id">id</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8689D91242AE45A996B4D9256E584963" trl="N">
+    <value column="Name" isTrl="N" original="name">name</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CC54A9507B8B4105ACA56BAC9EE51397" trl="N">
+    <value column="Name" isTrl="N" original="AttSetId">AttSetId</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

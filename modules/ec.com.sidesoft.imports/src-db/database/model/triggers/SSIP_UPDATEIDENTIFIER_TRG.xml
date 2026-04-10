@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSIP_UPDATEIDENTIFIER_TRG">
+    <trigger name="SSIP_UPDATEIDENTIFIER_TRG" table="C_ORDERLINE" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[ 
+   v_identifier VARCHAR(40);
+ 
+BEGIN
+ 
+   IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+
+    IF  (INSERTING) THEN
+
+      IF (COALESCE(:NEW.M_PRODUCT_ID, 'ND') <> 'ND' ) THEN
+
+        SELECT value 
+        INTO v_identifier
+        FROM M_PRODUCT  
+        WHERE M_PRODUCT_ID = :NEW.M_PRODUCT_ID;
+
+        :NEW.em_ssip_identifier := v_identifier;       
+        
+      END IF; 
+       
+    END IF;
+
+  
+    IF  (UPDATING ) THEN
+      
+      IF (COALESCE(:NEW.M_PRODUCT_ID, 'ND') <> 'ND' ) THEN
+
+        SELECT value 
+        INTO v_identifier
+        FROM M_PRODUCT  
+        WHERE M_PRODUCT_ID = :NEW.M_PRODUCT_ID;
+	
+        :NEW.em_ssip_identifier := v_identifier;
+        
+      END IF; 
+  
+    END IF;    
+
+    END SSIP_UPDATEIDENTIFIER_TRG
+]]></body>
+    </trigger>
+  </database>

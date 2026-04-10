@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_PRODUCT_ACCT">
+    <table name="M_PRODUCT_ACCT" primaryKey="M_PRODUCT_ACCT_KEY">
+      <column name="EM_SSTPC_COST_PROCESS_PROD" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSTPC_PROJECT_COSTS" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="C_VALIDCOMBINATION" name="EM_SSTPC_COSTPROCESS_ACCT">
+        <reference local="EM_SSTPC_COST_PROCESS_PROD" foreign="C_VALIDCOMBINATION_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_VALIDCOMBINATION" name="EM_SSTPC_PA_PROJECT_COSTS">
+        <reference local="EM_SSTPC_PROJECT_COSTS" foreign="C_VALIDCOMBINATION_ID"/>
+      </foreign-key>
+    </table>
+  </database>

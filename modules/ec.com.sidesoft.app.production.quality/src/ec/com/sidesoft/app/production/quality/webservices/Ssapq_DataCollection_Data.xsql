@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="SsapqDataCollectionData" package="ec.com.sidesoft.app.production.quality.webservices" accessModifier="public">
+  <SqlClassComment></SqlClassComment>
+
+  <SqlMethod name="dataCollection" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+		SELECT
+		    st.name AS status,
+		    tr.name AS turn,
+		    qc.name AS quality_control,
+		    cg.name AS type_control,
+		    CONCAT_WS(' - ', cbp.taxid, cbp.name) AS supplier,
+		    CONCAT_WS(' - ', io.documentno, TRUNC(io.MovementDate), cbp.name) AS supplier_inout,
+		    CONCAT_WS(' - ', pd.value, pd.name) AS material,
+		    TRUNC(io.MovementDate) AS delivery_date,
+		    ms.EM_Spquly_Totalqty AS total_material,
+		    atb.description AS lote,
+		    exc.name AS exterior_cleaning,
+		    itc.name AS interior_cleaning,
+		    ptc.name AS protect_contamination
+		FROM
+		    MA_Measure_Shift ms
+		    LEFT JOIN ma_ccp_group cg ON cg.ma_ccp_group_id = ms.EM_Spquly_Ccp_ID
+		    LEFT JOIN (
+		        SELECT
+		            rlt.name,
+		            rl.value
+		        FROM
+		            ad_ref_list rl
+		            LEFT JOIN ad_ref_list_trl rlt ON rl.ad_ref_list_id = rlt.ad_ref_list_id
+		        WHERE
+		            ad_reference_id = 'A05C9373FCCB4AD9AC75D95DEAC358DA') st ON st.value = ms.EM_Ssfdc_Status
+		    LEFT JOIN (
+		        SELECT
+		            rlt.name,
+		            rl.value
+		        FROM
+		            ad_ref_list rl
+		            LEFT JOIN ad_ref_list_trl rlt ON rl.ad_ref_list_id = rlt.ad_ref_list_id
+		        WHERE
+		            ad_reference_id = '800038') tr ON tr.value = ms.Shift
+		    LEFT JOIN (
+		        SELECT
+		            rlt.name,
+		            rl.value
+		        FROM
+		            ad_ref_list rl
+		            LEFT JOIN ad_ref_list_trl rlt ON rl.ad_ref_list_id = rlt.ad_ref_list_id
+		        WHERE
+		            ad_reference_id = '209EBF768B314A8D86D78725A82D7F46') qc ON qc.value = ms.EM_Spquly_Qualitycontroltype
+		    LEFT JOIN c_bpartner cbp ON cbp.c_bpartner_id = ms.em_spquly_supplier_id
+		    LEFT JOIN m_inout io ON io.m_inout_id = ms.EM_Spquly_Inout_ID
+		    LEFT JOIN c_bpartner cbpi ON cbpi.c_bpartner_id = io.c_bpartner_id
+		    LEFT JOIN m_product pd ON pd.m_product_id = ms.EM_Spquly_Product_ID
+		    LEFT JOIN m_attributesetinstance atb ON atb.m_attributesetinstance_id = ms.EM_Spquly_Attrsi_ID
+		    LEFT JOIN (
+		        SELECT
+		            rlt.name,
+		            rl.value
+		        FROM
+		            ad_ref_list rl
+		            LEFT JOIN ad_ref_list_trl rlt ON rl.ad_ref_list_id = rlt.ad_ref_list_id
+		        WHERE
+		            ad_reference_id = 'DE5CDC5D3265477AAECB1A73220331FD') exc ON exc.value = ms.EM_Spquly_Outsidecleanliness
+		    LEFT JOIN (
+		        SELECT
+		            rlt.name,
+		            rl.value
+		        FROM
+		            ad_ref_list rl
+		            LEFT JOIN ad_ref_list_trl rlt ON rl.ad_ref_list_id = rlt.ad_ref_list_id
+		        WHERE
+		            ad_reference_id = 'DE5CDC5D3265477AAECB1A73220331FD') itc ON itc.value = ms.EM_Spquly_Insidecleanliness
+		    LEFT JOIN (
+		        SELECT
+		            rlt.name,
+		            rl.value
+		        FROM
+		            ad_ref_list rl
+		            LEFT JOIN ad_ref_list_trl rlt ON rl.ad_ref_list_id = rlt.ad_ref_list_id
+		        WHERE
+		            ad_reference_id = 'DE5CDC5D3265477AAECB1A73220331FD') ptc ON ptc.value = ms.EM_Spquly_Protectionpollution
+		WHERE
+		    ms.EM_Spquly_Qualitycontroltype = 'RMQ'
+		ORDER BY
+		    tr.name
+      ]]>
+    </Sql>
+  </SqlMethod>
+</SqlClass>

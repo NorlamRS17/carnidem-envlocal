@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="0D99B470D1D347D5BC97BB267A7952F8" trl="N">
+    <value column="Text" isTrl="N" original="MONTO DE ULTIMA FACTURA VENTA">MONTO DE ULTIMA FACTURA VENTA</value>
+  </row>
+  <row id="3F6C4AD166004DDBAEA1187FA68FC43E" trl="N">
+    <value column="Text" isTrl="N" original="Canal :">Canal :</value>
+  </row>
+  <row id="43CBF6841EF743F88797BE3B3921612E" trl="N">
+    <value column="Text" isTrl="N" original="IDENTIFICACION">IDENTIFICACION</value>
+  </row>
+  <row id="4A3EFCDEC2C645E69088FA7D34B56209" trl="N">
+    <value column="Text" isTrl="N" original="DIAS SIN ACTIVIDAD">DIAS SIN ACTIVIDAD</value>
+  </row>
+  <row id="5DBBF9C087E44E188E8644A5E23DDC33" trl="N">
+    <value column="Text" isTrl="N" original="ORIGEN">ORIGEN</value>
+  </row>
+  <row id="5EC5012B1B0944D089434A8CE2132B8B" trl="N">
+    <value column="Text" isTrl="N" original="PAG.">PAG.</value>
+  </row>
+  <row id="725CDC9330E24032AD9C66D877AD0F70" trl="N">
+    <value column="Text" isTrl="N" original="REPORTE DE CLIENTES CAPTADOS">REPORTE DE CLIENTES CAPTADOS</value>
+  </row>
+  <row id="7C23267664714D75AD3EAE90FA2106F0" trl="N">
+    <value column="Text" isTrl="N" original="dd/MM/yyyy">dd/MM/yyyy</value>
+  </row>
+  <row id="9EED2C89462949C39399460CDA67FEFE" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de corte :">Fecha de corte :</value>
+  </row>
+  <row id="A849E1A3A2254F3182C610BFD0A36A5A" trl="N">
+    <value column="Text" isTrl="N" original="VENTAS TOTALES">VENTAS TOTALES</value>
+  </row>
+  <row id="BA359422A51F4F03A0D4D538FBF0AC6C" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de creación de cliente :">Fecha de creación de cliente :</value>
+  </row>
+  <row id="C9DBF1C60D004E11B42FDF2D8F214979" trl="N">
+    <value column="Text" isTrl="N" original="ULTIMA FECHA FACT VENTA">ULTIMA FECHA FACT VENTA</value>
+  </row>
+  <row id="CB3FE9FF172C4841BB13081D97A5C3F9" trl="N">
+    <value column="Text" isTrl="N" original="Cliente :">Cliente :</value>
+  </row>
+  <row id="CC136AA654184A1F9E7E3E70F8B1AD62" trl="N">
+    <value column="Text" isTrl="N" original="TOTALES">TOTALES</value>
+  </row>
+  <row id="CCAD1A6B56764D05B96D6EF1E4E4B95F" trl="N">
+    <value column="Text" isTrl="N" original="CANAL">CANAL</value>
+  </row>
+  <row id="CD26A081DCB14A30B6744DB4522A761D" trl="N">
+    <value column="Text" isTrl="N" original="CLIENTE">CLIENTE</value>
+  </row>
+  <row id="DFBF892D07A8495BA68B46233A0A4D0B" trl="N">
+    <value column="Text" isTrl="N" original="c.com.sidesoft.sales.custom.sanfelipe/src/ec/com/sidesoft/sales/custom/sanfelipe/ad_reports/ReportCustomerSales.jrxml">c.com.sidesoft.sales.custom.sanfelipe/src/ec/com/sidesoft/sales/custom/sanfelipe/ad_reports/ReportCustomerSales.jrxml</value>
+  </row>
+  <row id="E3D785019F694902996EE679AABA8CD4" trl="N">
+    <value column="Text" isTrl="N" original="&lt;b&gt;Usuario: &lt;/b&gt;">&lt;b&gt;Usuario: &lt;/b&gt;</value>
+  </row>
+  <row id="E8072C4186B74E08A192DB2B345975C9" trl="N">
+    <value column="Text" isTrl="N" original="&lt;b&gt;Fecha de impresion: &lt;/b&gt;">&lt;b&gt;Fecha de impresion: &lt;/b&gt;</value>
+  </row>
+  <row id="F7CF2B1420F84AAD8BC0386896746D10" trl="N">
+    <value column="Text" isTrl="N" original="FECHA CREACION CLIENTE">FECHA CREACION CLIENTE</value>
+  </row>
+</compiereTrl>

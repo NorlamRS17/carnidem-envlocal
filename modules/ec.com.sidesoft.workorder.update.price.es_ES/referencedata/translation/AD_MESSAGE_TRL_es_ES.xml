@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="1E72003960344FAEAFF7DB9EE07B28E3" trl="Y">
+    <value column="MsgText" isTrl="Y" original="No service orders were found to process, please check filters.">No se encontraron Ordenes de servicios para procesar, por favor revisar filtros.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="3891E8421E494AB698569BDBAF5916CF" trl="Y">
+    <value column="MsgText" isTrl="Y" original="not valid">No se puede realizar ninguna opción una vez procesado.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="B004C302887941738D4D0213802A05A8" trl="Y">
+    <value column="MsgText" isTrl="Y" original="The price lists for the following documents have been update">Se actualizaron los precios de las siguientes ordenes de servicio</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

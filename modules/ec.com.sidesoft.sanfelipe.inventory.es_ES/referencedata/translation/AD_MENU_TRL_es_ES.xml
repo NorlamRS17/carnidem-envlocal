@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="4DC96F7E982E4CA89EA4A2401A4DE4FA" trl="Y">
+    <value column="Name" isTrl="Y" original="Report product traceability">Reporte de trazabilidad de productos</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="8B008FFD675E43B9A3345E6E9B34FA55" trl="Y">
+    <value column="Name" isTrl="Y" original="Report inventory turns">Reporte de rotación de inventarios</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="BAE724EBFD1B42AAAA313A4ED4764205" trl="Y">
+    <value column="Name" isTrl="Y" original="Report useful life product">Reporte de vida útil</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

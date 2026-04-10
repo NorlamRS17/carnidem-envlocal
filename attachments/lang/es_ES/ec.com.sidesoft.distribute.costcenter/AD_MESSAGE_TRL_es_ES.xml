@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="05658823542542AD969762F31089BC44" trl="N">
+    <value column="MsgText" isTrl="N" original="NO SE PUEDE DISTRIBUIR LOS VALORES PORQUE EXCEDEN EL 100 DEL GASTO, VERIFICAR CONFIGURACIÓN DE DISTRIBUCIÓN">NO SE PUEDE DISTRIBUIR LOS VALORES PORQUE EXCEDEN EL 100 DEL GASTO, VERIFICAR CONFIGURACIÓN DE DISTRIBUCIÓN</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="20E5CEDA65674209BC21A59F54863937" trl="N">
+    <value column="MsgText" isTrl="Y" original="Configure dimension 1 - User, to continue with the distribution.">Configure la dimensión 1 - Usuario, para continuar con la distribución.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="8023181E801E461D950D6CDBF5A97C34" trl="N">
+    <value column="MsgText" isTrl="Y" original="To distribute, you only need to have one cost center configured.&#10;">Para realizar la distribución, solo debe tener un centro de costo configurado.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="BFE3C5A657E74A9C90206FC016D597B6" trl="N">
+    <value column="MsgText" isTrl="Y" original="The distribution cannot be deleted, the current transaction is completed / posted.">La distribución no puede ser eliminada, la transacción actual se encuentra completada/contabilizada.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="FA483E20573E44E384AFF670CB1064B2" trl="N">
+    <value column="MsgText" isTrl="Y" original="Set up a cost center to continue.">Configure un centro de costo para continuar.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

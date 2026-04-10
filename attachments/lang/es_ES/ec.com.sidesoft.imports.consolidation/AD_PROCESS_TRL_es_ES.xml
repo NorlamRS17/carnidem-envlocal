@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="084B09DDECCB437F90ED440137F7BD24" trl="Y">
+    <value column="Name" isTrl="Y" original="Process">Procesar</value>
+    <value column="Description" isTrl="Y" original="Process">Procesar</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9BF82FE937284652B2B5D327A3B7DDB4" trl="Y">
+    <value column="Name" isTrl="Y" original="Charge Costs">Cargar Costos</value>
+    <value column="Description" isTrl="Y" original="Charge Costs">Cargar Costos</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CA412B45315D4E5BB0768B731060FC70" trl="Y">
+    <value column="Name" isTrl="Y" original="Reactivate">Reactivar</value>
+    <value column="Description" isTrl="Y" original="Reactivate">Reactivar</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

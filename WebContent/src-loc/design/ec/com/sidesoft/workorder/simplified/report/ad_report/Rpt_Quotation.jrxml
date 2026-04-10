@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_Quotation" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="25e714c0-3d3f-4b5f-b279-e4dad8fd407e">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="96"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/DesarrolloLuis/OpenbravoERPindumot/modules/com.atrums.indumot.postventa/src"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="SOURCE_PATH" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select ap.documentno as "n_orden_servicio"
+	, cb.taxid as "cedula"
+	, cb.name as "cliente"
+	, c.address1 as "direccion"
+	, ap.fecha as "fecha"
+	, cl.phone as "telefono"
+	-- Vehiculos
+	, rlvv.name  as "tipo"
+	, mp.name as "modelo"
+	, ap.numeromotor as "numero_motor"
+	, b.name as "marca"
+	, y.name as "anio"
+	, ap.numerochasis as "numero_chasis"
+	, col.name as "color"
+	, ap.placa as "placa"
+	-- Datos del Conductor
+	, ap.nombre as "con_nombre"
+	, ap.apellido  as "con_apellido"
+	, ap.cedula as "con_cedula"
+	, ap.telefono as "con_telefono"
+	, ap.celular as "con_celular"
+	, mbp.name as "mecanico"
+	, ap.orden_trabajo as "orden_trabajo"
+	, ap.atindpo_postventa_id as ATINDPO_POSTVENTA_ID
+	, ap.descripcioncliente as DESCRIPCION
+From atindpo_postventa ap
+	Join c_bpartner cb on ap.c_bpartner_id = cb.c_bpartner_id
+	Join c_bpartner mbp on mbp.c_bpartner_id = ap.c_bpartner_emp_id
+	Join c_bpartner_location cl on cl.c_bpartner_location_id = ap.c_bpartner_location_id
+	Join c_location c on c.c_location_id=cl.c_location_id
+	Left Join ssfi_model_prod mp on mp.ssfi_model_prod_id = ap.em_sswos_ssfi_model_prod_id
+	Left Join m_brand b on b.m_brand_id = ap.em_sswos_m_brand_id
+	Left Join sswos_color col on col.sswos_color_id = ap.em_sswos_color_id
+	Left Join sswos_year y on y.sswos_year_id = ap.em_sswos_year_id
+	Left Join ad_ref_list_v rlvv on rlvv.value = ap.lstipovehiculo and rlvv.ad_language = 'es_ES' and rlvv.ad_reference_id = 'B7D5195562CB492B86E6BB4DFEBD377E'
+Where ap.atindpo_postventa_id = $P{DOCUMENT_ID}]]>
+	</queryString>
+	<field name="n_orden_servicio" class="java.lang.String"/>
+	<field name="cedula" class="java.lang.String"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="modelo" class="java.lang.String"/>
+	<field name="numero_motor" class="java.lang.String"/>
+	<field name="marca" class="java.lang.String"/>
+	<field name="anio" class="java.lang.String"/>
+	<field name="numero_chasis" class="java.lang.String"/>
+	<field name="color" class="java.lang.String"/>
+	<field name="placa" class="java.lang.String"/>
+	<field name="con_nombre" class="java.lang.String"/>
+	<field name="con_apellido" class="java.lang.String"/>
+	<field name="con_cedula" class="java.lang.String"/>
+	<field name="con_telefono" class="java.lang.String"/>
+	<field name="con_celular" class="java.lang.String"/>
+	<field name="mecanico" class="java.lang.String"/>
+	<field name="orden_trabajo" class="java.lang.String"/>
+	<field name="atindpo_postventa_id" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<title>
+		<band height="105" splitType="Stretch">
+			<textField>
+				<reportElement x="284" y="17" width="265" height="15" uuid="9770c4b2-fa5a-4f95-860a-ded5548fc08d"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["COTIZACIÓN"]]></textFieldExpression>
+			</textField>
+			<image vAlign="Middle">
+				<reportElement x="10" y="4" width="45" height="43" uuid="e9817b01-dae0-4f3e-bb2c-76588d866476"/>
+				<imageExpression><![CDATA[$P{SOURCE_PATH}.replace("attachments","modules") +  "/com.atrums.indumot.postventa/src/com/atrums/indumot/postventa/erpCommon/ad_reports/logo_ala.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="60" y="9" width="286" height="13" uuid="700a8cda-c237-478a-9baf-f92d1cb0c625"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INDUSTRIAS MOTORIZADAS INDUMOT S.A.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="22" width="192" height="13" uuid="96509c06-2377-4c4d-8f94-ff2896760753"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Indumot Honda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="35" width="133" height="13" uuid="4edaf775-c5d2-42fe-9d3c-0c1d86eb9569"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUC 0990304211001]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="225" y="35" width="324" height="13" uuid="c2f503ec-a00a-446e-9abd-332734671dc9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTRIBUYENTE ESPECIAL Resolución No. NAC-PCTRSGE11-00287 Del 29/07/2011]]></text>
+			</staticText>
+			<line>
+				<reportElement x="9" y="58" width="540" height="1" uuid="70d0e0ff-316f-4a1b-a188-5e54faafaa63"/>
+			</line>
+			<line>
+				<reportElement x="15" y="65" width="525" height="1" uuid="201b7a8e-c926-4d1d-9354-4baa3573f9d0"/>
+			</line>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="395" y="81" width="159" height="12" uuid="4b2f6f52-8067-4c46-bcdd-cdfa8fd8065b"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="90" y="81" width="175" height="12" uuid="e21bc150-fe5d-4904-8631-4d9b05af5606"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="90" y="93" width="464" height="12" uuid="02b06324-afee-467c-85f0-bbf01d4cf230"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="81" width="85" height="12" backcolor="#FEFEFE" uuid="dde8ab31-2fd8-4434-9165-e70cacfc03a4"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUC o Cédula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="265" y="81" width="125" height="12" backcolor="#FEFEFE" uuid="a7037db6-a58d-446c-ba60-b64b47e360d7"/>
+				<box leftPadding="6"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="395" y="69" width="159" height="12" uuid="7a9c01b2-cca9-4008-9ebe-6e522ed75497"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{n_orden_servicio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="93" width="85" height="12" backcolor="#FEFEFE" uuid="8a14a22a-4366-4dd6-b60f-13cab3ea9969"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="265" y="69" width="125" height="12" backcolor="#FEFEFE" uuid="241a9483-6d50-4cd7-8525-e49ad67e3fea"/>
+				<box leftPadding="6"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° Orden de Servicio]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="90" y="69" width="175" height="12" uuid="965d50f6-b6e3-4ae2-b76b-700ae4a68fca"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{orden_trabajo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="69" width="85" height="12" backcolor="#FEFEFE" uuid="2ed0ff73-872f-41c1-a07b-1eb80332298e"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Orden Trabajo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="390" y="69" width="5" height="12" backcolor="#FEFEFE" uuid="b4d092cd-9e5d-4e38-84a3-1863ed422f3c"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="390" y="81" width="5" height="12" backcolor="#FEFEFE" uuid="ec47a9f6-e76f-4096-947b-2e5fa31e6514"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="85" y="69" width="5" height="12" backcolor="#FEFEFE" uuid="784d8072-3908-42aa-a51e-04bdb685611b"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="85" y="81" width="5" height="12" backcolor="#FEFEFE" uuid="f10b8eec-395f-413a-91a5-109d0786d494"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="85" y="93" width="5" height="12" backcolor="#FEFEFE" uuid="ac40b01a-0e9a-46a1-adc1-a015ba8c8ca3"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<detail>
+		<band height="12">
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="85" height="12" backcolor="#FEFEFE" uuid="eed678fc-e504-4fa6-91ac-6d1d54372d29"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" mode="Transparent" x="85" y="0" width="5" height="12" backcolor="#FEFEFE" uuid="9a91807a-00d7-4c50-9e4b-519b8e22a05b"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="90" y="0" width="465" height="12" uuid="cdfa04aa-a358-4c82-9f8e-05798b8c24e1"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="88">
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="73" width="555" height="15" backcolor="#FEFEFE" uuid="313a649f-4401-4c9a-87fa-d97cdbff22f4"/>
+				<box topPadding="0" leftPadding="2"/>
+				<textElement verticalAlignment="Bottom" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Datos del Conductor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="0" width="85" height="12" backcolor="#FEFEFE" uuid="d8586bdc-07e4-4e41-9a02-cc2299ae7b8c"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Teléfono]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="395" y="56" width="160" height="12" uuid="2920ec1b-dd70-48a6-98f1-3c1b85d95764"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{placa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="323" y="44" width="67" height="12" backcolor="#FEFEFE" uuid="0870adc5-05d2-45c5-8f28-7d32415dbde3"/>
+				<box leftPadding="6"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Color]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="90" y="32" width="233" height="12" uuid="1f19b396-e38b-416f-96a9-697791b70945"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{modelo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="90" y="56" width="233" height="12" uuid="9c093b04-e044-4690-b65e-9394feb51b53"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{marca}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="395" y="44" width="160" height="12" uuid="9b25ba31-37f1-41eb-896a-30223ad1d40d"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{color}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="395" y="20" width="160" height="12" uuid="75f2cba2-712c-4840-b2fc-4f51f67bd859"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{anio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="323" y="20" width="67" height="12" backcolor="#FEFEFE" uuid="351aa85d-d0b7-4c45-8c12-1caf892689e9"/>
+				<box leftPadding="6"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Año]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="323" y="56" width="67" height="12" backcolor="#FEFEFE" uuid="2f274ac7-9898-4666-9437-2585613033a4"/>
+				<box leftPadding="6"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Placa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="44" width="85" height="12" backcolor="#FEFEFE" uuid="a874966e-4926-495e-85f0-03b8609f13fd"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° Motor]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="90" y="0" width="465" height="12" uuid="0fc23e4b-71d3-4215-9df7-f1ce3ad89753"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="20" width="85" height="12" backcolor="#FEFEFE" uuid="0917aa77-d739-4a3e-aea3-10bfb3e5c49a"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="56" width="85" height="12" backcolor="#FEFEFE" uuid="4557106a-2571-4d7c-888e-6ba4b5d28c52"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Marca]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="323" y="32" width="67" height="12" backcolor="#FEFEFE" uuid="ac6f40ea-8dbd-423a-b539-865861caf072"/>
+				<box leftPadding="6"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° Chasis]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="90" y="44" width="233" height="12" uuid="e8162141-bbdc-492b-9b92-ddbfa5a8d37c"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numero_motor}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="90" y="20" width="233" height="12" uuid="8a76e91e-7a88-46c7-b1a1-01902711b056"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="395" y="32" width="160" height="12" uuid="c7e72700-70cf-4396-962b-e9352a86051a"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numero_chasis}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="32" width="85" height="12" backcolor="#FEFEFE" uuid="7d993b21-281a-4303-a35e-7e518d38bcc3"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Modelo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="85" y="0" width="5" height="12" backcolor="#FEFEFE" uuid="d936f53d-40af-4f53-ba81-0c5cf8bd44f9"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="85" y="20" width="5" height="12" backcolor="#FEFEFE" uuid="9009b8ca-3a8a-471b-b1fa-dcff099cb80b"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="85" y="32" width="5" height="12" backcolor="#FEFEFE" uuid="45546cc0-5dd7-4d98-b210-385e5ddd3705"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="85" y="44" width="5" height="12" backcolor="#FEFEFE" uuid="c05466b5-bd1e-422b-bf4d-0dc1bc6869bf"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="85" y="56" width="5" height="12" backcolor="#FEFEFE" uuid="2e98face-ecc6-4493-b0b6-65b6bf92fa24"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="390" y="20" width="5" height="12" backcolor="#FEFEFE" uuid="441aa525-0adc-49d9-9910-8c24c9acbb44"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="390" y="32" width="5" height="12" backcolor="#FEFEFE" uuid="37807436-ee16-4bd1-a511-09d7106ba11b"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="390" y="44" width="5" height="12" backcolor="#FEFEFE" uuid="1cf9c32a-aa9e-4d9d-bc9d-7f012aeaa6aa"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="390" y="56" width="5" height="12" backcolor="#FEFEFE" uuid="974f699f-617f-486c-b7c7-7767fd9b0c9a"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="15" y="12" width="525" height="5" uuid="d208999a-202b-4963-addf-961c35f2cf93"/>
+				<box leftPadding="5">
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="15" y="68" width="525" height="5" uuid="1292263b-25d6-468f-86f6-d6e8f9710314"/>
+				<box leftPadding="5">
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+			</textField>
+		</band>
+		<band height="12">
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="0" width="85" height="12" backcolor="#FEFEFE" uuid="ff4fcb9d-d88a-4541-8636-fbb86ca146c5"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="85" y="0" width="5" height="12" backcolor="#FEFEFE" uuid="325d2361-a2a2-4f24-a196-2df0cd0693bb"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="90" y="0" width="233" height="12" uuid="ed194448-3e38-4650-ba6b-ffb3f6e156ef"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{con_nombre}+" "+$F{con_apellido}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="323" y="0" width="68" height="12" backcolor="#FEFEFE" uuid="067fffaf-19dc-4755-be0b-d07bfb185069"/>
+				<box leftPadding="6"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Teléfono]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="391" y="0" width="5" height="12" backcolor="#FEFEFE" uuid="1472aaee-9e72-4174-85ea-8cc8f6ac0d0b"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="396" y="0" width="159" height="12" uuid="c2690c6a-ab8a-4c6f-9761-bff9754cb352"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{con_telefono}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="21">
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="0" width="85" height="12" backcolor="#FEFEFE" uuid="493b7db9-36fd-431c-847e-0838f8b2d5d3"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cédula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="85" y="0" width="5" height="12" backcolor="#FEFEFE" uuid="d615ddeb-03a3-4325-b202-35f16058a364"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="90" y="0" width="233" height="12" uuid="9fc7e71b-7109-4cd3-a897-64ffccfcb9ae"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{con_cedula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="323" y="0" width="68" height="12" backcolor="#FEFEFE" uuid="95cf7495-7144-4111-9f20-eeabd7758c95"/>
+				<box leftPadding="6"/>
+				<textElement verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Celular]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="391" y="0" width="5" height="12" backcolor="#FEFEFE" uuid="25bf9bb8-fd2c-442a-9006-2bafb4a85b25"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="396" y="0" width="159" height="12" uuid="9452e6ba-1502-421a-8bf1-05d2441d7497"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{con_celular}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="15" y="12" width="525" height="8" uuid="18c67113-0b92-4734-b330-904efcd69874"/>
+				<box leftPadding="5">
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="62" splitType="Stretch">
+			<subreport>
+				<reportElement x="1" y="0" width="555" height="61" uuid="e0946c55-441d-4923-8c46-79538831025a"/>
+				<subreportParameter name="DOCUMENT_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/workorder/simplified/report/ad_report/Rpt_Quotation_Line.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="40">
+			<staticText>
+				<reportElement x="0" y="20" width="555" height="10" uuid="b79d0453-7a54-4e6f-9f9d-68cb311db534"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Matriz: Primera Transversal y Octavio Chacón Parque Industrial. ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="555" height="10" uuid="d0c1be2f-9827-4913-ba17-417645b86e74"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Frente a Graiman - Telf: 072862698 - 072806503 / Cuenca - Ecuador]]></text>
+			</staticText>
+			<line>
+				<reportElement x="6" y="18" width="540" height="1" uuid="6cbc4aff-f528-4c49-b86e-d6bc06b86432"/>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="284" y="2" width="261" height="11" uuid="dbe51ce6-29bf-4126-b3da-8c149504ef28"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[* Este documento no tiene valor comercial]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="121">
+			<line>
+				<reportElement x="6" y="99" width="540" height="1" uuid="6e6366d4-ffd2-4adb-a000-da0b11881c09"/>
+				<graphicElement>
+					<pen lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="44" width="555" height="39" uuid="b700d6bf-320c-4f15-95d6-890bb80b4192"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="101" width="555" height="10" uuid="acbbb8b3-df69-4ba8-9703-de50f5da1653"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Matriz: Primera Transversal y Octavio Chacón Parque Industrial. ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="555" height="28" uuid="4956d9d5-8cb5-4211-abf7-d5af63876889"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+			</textField>
+			<staticText>
+				<reportElement x="284" y="83" width="261" height="11" uuid="0c24ea49-6944-4bd4-a7ab-468eb0d3634d"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[* Este documento no tiene valor comercial]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="75" y="28" width="150" height="16" uuid="d61da195-9609-4105-afdd-834c63f65869"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Recibí Conforme"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="111" width="555" height="10" uuid="18c36b1b-ad62-4f48-9fab-7c91e2bc3ad5"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Frente a Graiman - Telf: 072862698 - 072806503 / Cuenca - Ecuador]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="309" y="28" width="150" height="16" uuid="3b2b283c-cd79-4924-a1e1-b1abb21788a7"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["INDUMOT S. A."]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

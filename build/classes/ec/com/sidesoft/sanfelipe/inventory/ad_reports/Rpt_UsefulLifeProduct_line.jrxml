@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_UsefulLifeProduct" pageWidth="257" pageHeight="110" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="257" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="cfaf7223-c06e-4591-8e0f-b406a2336150">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<import value="org.openbravo.dal.core.OBContext"/>
+	<style name="colorimetria">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{userful_life} >= 0 && $F{userful_life} <= 19]]></conditionExpression>
+			<style mode="Opaque" backcolor="#E74C3C"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{userful_life} >= 20 && $F{userful_life} <= 50]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F39C12"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{userful_life} >= 51 && $F{userful_life} <= 70]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F1C40F"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{userful_life} >= 71]]></conditionExpression>
+			<style mode="Opaque" backcolor="#2ECC71"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="DATEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERDECIMAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_WEB" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SOURCE_PATH" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="M_Product_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="colorimetry" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="colorimetry_condition" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{colorimetry} != null ?
+($P{colorimetry}.equals("lt") ? "x.userful_life between 20 and 50":
+ $P{colorimetry}.equals("rw") ?"x.userful_life between 51 and 70" :
+ $P{colorimetry}.equals("apt") ?"x.userful_life between 71 and 100" :
+ $P{colorimetry}.equals("lst") ?"x.userful_life between 0 and 19":"1=1" ):"1=1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="M_Warehouse_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Org_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[OBContext.getOBContext().getCurrentOrganization().getId()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="User_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[OBContext.getOBContext().getUser().getId()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="UserName" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[OBContext.getOBContext().getUser().getUsername()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="lote" class="java.lang.String"/>
+	<parameter name="qtyact" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="attributesetinstance_id" class="java.lang.String"/>
+	<parameter name="locator_id" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+  mt.M_AttributeSetInstance_ID,
+  ROUND((ABS(SUM(mt.MovementQty))/COUNT(mt.MovementQty)),2) AS test
+FROM
+  m_transaction mt
+JOIN
+  m_attributesetinstance mta ON mta.M_AttributeSetInstance_ID = mt.M_AttributeSetInstance_ID
+WHERE
+  mt.movementtype = 'C-'
+  AND (
+    mt.movementdate <= NOW()
+    OR mt.movementdate >= NOW() - INTERVAL '60 days'
+  )
+  AND (mta.m_attributesetinstance_id = $P{attributesetinstance_id} OR $P{attributesetinstance_id} IS NULL)
+  AND (mt.m_product_id = $P{M_Product_ID} OR $P{M_Product_ID} IS NULL)
+  AND (mt.m_locator_id = $P{locator_id} OR $P{locator_id} IS NULL)
+GROUP BY
+  mt.M_AttributeSetInstance_ID
+ORDER BY
+  mt.M_AttributeSetInstance_ID;]]>
+	</queryString>
+	<field name="m_attributesetinstance_id" class="java.lang.String"/>
+	<field name="test" class="java.math.BigDecimal"/>
+	<variable name="REPORT_PAGE" class="java.lang.Integer" resetType="None" incrementType="Page">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<variable name="promedio" class="java.math.BigDecimal" calculation="Average">
+		<variableExpression><![CDATA[$F{test}]]></variableExpression>
+	</variable>
+	<variable name="division" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<detail>
+		<band height="32">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="107" height="32" isPrintWhenDetailOverflows="true" uuid="b1fd8b37-9073-42f0-8cd6-dcfe081560c7"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5" lineStyle="Solid"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{promedio}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="107" y="0" width="150" height="32" isPrintWhenDetailOverflows="true" uuid="36b935a3-0d71-49a9-b055-e606f7f3ce70"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{qtyact}.doubleValue()/$V{promedio}.doubleValue()]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+	<noData>
+		<band height="32">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="107" height="32" isPrintWhenDetailOverflows="true" uuid="c8a95674-f35b-472a-a9fa-7214d9b08140">
+					<printWhenExpression><![CDATA[$V{promedio}==null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["-"]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="107" y="0" width="150" height="32" uuid="9b67d4f9-245c-4586-868f-73acede95346">
+					<printWhenExpression><![CDATA[$V{promedio}==null]]></printWhenExpression>
+				</reportElement>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["-"]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>

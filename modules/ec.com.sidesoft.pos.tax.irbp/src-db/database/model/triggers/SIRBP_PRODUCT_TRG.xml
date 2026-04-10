@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SIRBP_PRODUCT_TRG">
+    <trigger name="SIRBP_PRODUCT_TRG" table="M_PRODUCT_BOM" fires="after" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[ v_plastic_units_bom NUMBER;
+ v_package_type VARCHAR(30) := 'B';
+ v_bom_qty NUMBER:= 0;
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+  IF(INSERTING) THEN
+  SELECT em_slplag_package INTO v_package_type FROM m_product where m_product_id=:new.m_productbom_id;
+   SELECT SUM(MPB.bomqty) INTO v_bom_qty FROM M_PRODUCT_BOM MPB INNER JOIN M_PRODUCT MP ON MPB.M_PRODUCTBOM_ID = MP.M_PRODUCT_ID
+   WHERE MPB.M_PRODUCT_ID = :NEW.M_PRODUCT_ID AND MPB.M_PRODUCTBOM_ID <> :NEW.M_PRODUCTBOM_ID AND MP.em_slplag_package IN('P','SFP');  
+  IF v_package_type IN('P', 'SFP') THEN
+  UPDATE M_Product
+    SET em_sirbp_plasticunitsbom=coalesce(v_bom_qty,0)+:new.bomqty
+   WHERE M_Product_ID=:new.M_Product_ID
+      AND IsBOM='Y';
+  END IF;    
+  ELSIF(UPDATING) THEN
+   SELECT em_sirbp_plasticunitsbom INTO v_plastic_units_bom FROM m_product 
+   WHERE M_Product_ID=:new.M_Product_ID
+      AND IsBOM='Y';
+   SELECT SUM(MPB.bomqty) INTO v_bom_qty FROM M_PRODUCT_BOM MPB INNER JOIN M_PRODUCT MP ON MPB.M_PRODUCTBOM_ID = MP.M_PRODUCT_ID
+   WHERE MPB.M_PRODUCT_ID = :NEW.M_PRODUCT_ID AND MPB.M_PRODUCTBOM_ID <> :NEW.M_PRODUCTBOM_ID AND MP.em_slplag_package IN('P','SFP');
+  IF(v_plastic_units_bom IS NULL OR COALESCE(:NEW.bomqty, '0') <> COALESCE(:old.bomqty, '0')) THEN
+  SELECT em_slplag_package INTO v_package_type FROM m_product where m_product_id=:new.m_productbom_id;
+  IF v_package_type IN('P', 'SFP') THEN
+  UPDATE M_Product
+    SET em_sirbp_plasticunitsbom=coalesce(v_bom_qty,0)+:new.bomqty
+   WHERE M_Product_ID=:new.M_Product_ID
+      AND IsBOM='Y';
+  END IF;  
+  END IF;
+ ELSE
+  IF DELETING THEN
+  SELECT em_slplag_package INTO v_package_type FROM m_product where m_product_id=:old.m_productbom_id;
+   SELECT SUM(MPB.bomqty) INTO v_bom_qty 
+   FROM M_PRODUCT_BOM MPB INNER JOIN M_PRODUCT MP ON MPB.M_PRODUCTBOM_ID = MP.M_PRODUCT_ID
+   WHERE MPB.M_PRODUCT_ID = :OLD.M_PRODUCT_ID AND MPB.M_PRODUCTBOM_ID <> :OLD.M_PRODUCTBOM_ID 
+   AND MP.em_slplag_package IN('P','SFP');  
+  IF v_package_type IN('P', 'SFP') THEN
+  UPDATE M_Product
+    SET em_sirbp_plasticunitsbom=coalesce(v_bom_qty,0)
+   WHERE M_Product_ID=:OLD.M_Product_ID
+      AND IsBOM='Y';
+  END IF;  
+  END IF;
+ END IF;
+END SIRBP_PRODUCT_TRG
+]]></body>
+    </trigger>
+  </database>

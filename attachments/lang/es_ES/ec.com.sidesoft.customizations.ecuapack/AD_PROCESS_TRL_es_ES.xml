@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="0C1ECFFAA9AC4CCB81FD718F8E538764" trl="Y">
+    <value column="Name" isTrl="Y" original="Sending emails by sales stage">Envío de correos por etapa de ventas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CBD470CCB8274C60AB970DD9A8B9C9AD" trl="Y">
+    <value column="Name" isTrl="Y" original="Process Inventory Couns">Proceso de conteo de inventario</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_WINDOW" version="">
+  <row id="94CD1D04743C404CBA5AF1BCFF0BC353" trl="N">
+    <value column="Name" isTrl="N" original="Orden de Servicio">Orden de Servicio</value>
+    <value column="Description" isTrl="N" original="Indumoto Postventa especificacion ventana">Indumoto Postventa especificacion ventana</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B106DEF357584978BD6E769809662BDE" trl="N">
+    <value column="Name" isTrl="N" original="Registros Reemplazos">Registros Reemplazos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

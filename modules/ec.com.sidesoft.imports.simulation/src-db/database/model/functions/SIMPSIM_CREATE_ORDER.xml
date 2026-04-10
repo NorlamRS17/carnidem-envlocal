@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SIMPSIM_CREATE_ORDER">
+    <function name="SIMPSIM_CREATE_ORDER" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult				VARCHAR2(2000);
+	vMessage			VARCHAR2(2000);
+	
+	cPar				RECORD;
+	vRecord				RECORD;
+	vRecordID			VARCHAR2(32);
+	vClientID			VARCHAR2(32);
+	vOrgID				VARCHAR2(32);
+	vUserID				VARCHAR2(32);
+	
+	pOrgID				VARCHAR2(32);
+	pDocTypeID			VARCHAR2(32);
+	pDateOrdered		VARCHAR2(32);
+	pBPartnerID			VARCHAR2(32);
+	pPriceListID		VARCHAR2(32);
+	pWarehouseID		VARCHAR2(32);
+	
+	vCheck			 NUMBER;
+	cCur				RECORD;
+	vOrg				RECORD;
+	vDocumentNo			VARCHAR2(30);
+	vBPartnerLocationID	VARCHAR2(32);
+	vOrderID			VARCHAR2(32);
+	vPriceList			RECORD;
+	vCurrency			RECORD;
+	vBPartner			RECORD;
+	vProduct			RECORD;
+	vLineNo			 NUMBER;
+	
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID) ;
+	vResult := 'PInstanceNotFound';
+	AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+	BEGIN
+
+		vResult := 'ReadingParameters';
+		FOR cPar IN (
+			SELECT i.Record_ID,
+				i.AD_User_ID,
+				i.AD_Client_ID,
+				i.AD_Org_ID,
+				pa.ParameterName,
+				pa.P_String,
+				pa.P_Number,
+				pa.P_Date
+			FROM AD_PInstance i
+				LEFT JOIN AD_PInstance_Para AS pa ON pa.AD_PInstance_ID = i.AD_PInstance_ID
+			WHERE i.AD_PInstance_ID = PInstance_ID
+		) LOOP
+			vRecordID := cPar.Record_ID;
+			vClientID := cPar.AD_Client_ID;
+			vOrgID := cPar.AD_Org_ID;
+			vUserID := cPar.AD_User_ID;
+			
+			IF cPar.ParameterName = 'AD_Org_ID' THEN
+				pOrgID := cPar.P_String;
+			ELSEIF cPar.ParameterName = 'C_DocType_ID' THEN
+				pDocTypeID := cPar.P_String;
+			ELSEIF cPar.ParameterName = 'DateOrdered' THEN
+				pDateOrdered := cPar.P_Date;
+			ELSEIF cPar.ParameterName = 'C_BPartner_ID' THEN
+				pBPartnerID := cPar.P_String;
+			ELSEIF cPar.ParameterName = 'M_PriceList_ID' THEN
+				pPriceListID := cPar.P_String;
+			ELSEIF cPar.ParameterName = 'M_Warehouse_ID' THEN
+				pWarehouseID := cPar.P_String;
+			END IF;
+		END LOOP;
+		
+		SELECT * INTO vRecord FROM simpsim_import_simulation WHERE simpsim_import_simulation_id = vRecordID;
+		IF vRecord.processing = 'Y' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@DocBeingProcessed@');
+		END IF;
+
+		UPDATE simpsim_import_simulation SET processing = 'Y' WHERE simpsim_import_simulation_id = vRecordID;
+		
+		SELECT COUNT(*) INTO vCheck FROM simpsim_imp_sim_line WHERE simpsim_import_simulation_id = vRecordID;
+		IF vCheck = 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, 'No existen líneas');
+		END IF;
+		
+		SELECT * INTO vOrg FROM ad_org WHERE ad_org_id = pOrgID;
+		SELECT * INTO vBPartner FROM c_bpartner WHERE c_bpartner_id = pBPartnerID;
+		SELECT MAX(C_BPartner_Location_ID) INTO vBPartnerLocationID FROM C_BPartner_Location WHERE IsShipTo='Y' AND C_BPartner_ID = pBPartnerID;
+		SELECT * INTO vPriceList FROM m_pricelist WHERE m_pricelist_id = pPriceListID;
+		SELECT * INTO vCurrency FROM c_currency WHERE c_currency_id = vPriceList.c_currency_id;
+		vDocumentNo := ad_sequence_doctype(pDocTypeID, vOrg.ad_client_id, 'Y');
+		
+		vOrderID = get_uuid();
+		INSERT INTO c_order (
+			c_order_id, ad_client_id, ad_org_id, createdby, updatedby,
+			issotrx, documentno, c_doctypetarget_id, dateordered, c_bpartner_id,
+			C_BPartner_Location_ID, m_warehouse_id, m_pricelist_id, docstatus, docaction,
+			c_doctype_id, dateacct, c_currency_id, paymentrule, c_paymentterm_id,
+			invoicerule, deliveryrule, freightcostrule, deliveryviarule, priorityrule,
+			fin_paymentmethod_id, datepromised
+		) VALUES (
+			vOrderID, vOrg.ad_client_id, pOrgID, vUserID, vUserID,
+			'N', vDocumentNo, pDocTypeID, pDateOrdered::DATE, pBPartnerID,
+			vBPartnerLocationID, pWarehouseID, pPriceListID, 'DR', 'CO',
+			'0', pDateOrdered::DATE, vPriceList.c_currency_id, COALESCE(COALESCE(vBPartner.paymentrulepo,vBPartner.paymentrulepo),'P'), COALESCE(vBPartner.po_paymentterm_id,vBPartner.c_paymentterm_id),
+			vBPartner.invoicerule, COALESCE(vBPartner.deliveryrule,'A'), 'I', COALESCE(vBPartner.deliveryviarule,'P'), '5',
+			COALESCE(vBPartner.po_paymentmethod_id,vBPartner.fin_paymentmethod_id), pDateOrdered::DATE
+		);
+		
+		FOR cCur IN (
+			SELECT * FROM simpsim_imp_sim_line WHERE simpsim_import_simulation_id = vRecordID
+		) LOOP
+			SELECT * INTO vProduct FROM m_product WHERE m_product_id = cCur.m_product_id;
+			
+			SELECT COALESCE(MAX(line),0) + 10 INTO vLineNo FROM c_orderline WHERE c_order_id = vOrderID;
+			INSERT INTO c_orderline (
+				c_orderline_id, ad_client_id, ad_org_id, createdby, updatedby,
+				c_order_id, line, m_product_id, qtyordered, priceactual,
+				linenetamt, pricelist, c_tax_id, c_uom_id, dateordered,
+				datepromised, m_warehouse_id, c_currency_id, discount
+			) VALUES (
+				get_uuid(), vOrg.ad_client_id, pOrgID, vUserID, vUserID,
+				vOrderID, vLineNo, cCur.m_product_id, cCur.qtyordered, ROUND(cCur.priceactual,vCurrency.stdprecision),
+				ROUND(cCur.linenetamt,vCurrency.stdprecision), ROUND(cCur.priceactual,vCurrency.stdprecision), cCur.c_tax_id, vProduct.c_uom_id, pDateOrdered::DATE,
+				pDateOrdered::DATE, pWarehouseID, vPriceList.c_currency_id, 0
+			);
+			
+		END LOOP;
+		
+		UPDATE simpsim_import_simulation SET processing = 'N', btn_create_order = 'Y' WHERE simpsim_import_simulation_id = vRecordID;
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage) ;
+		AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, vMessage);
+		RETURN;
+		
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+    UPDATE simpsim_import_simulation SET processing = 'N' WHERE simpsim_import_simulation_id = vRecordID;
+    vResult := '@ERROR='||SQLERRM;
+    DBMS_OUTPUT.PUT_LINE( vResult) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, vResult) ;
+
+    RETURN;
+END SIMPSIM_CREATE_ORDER
+]]></body>
+    </function>
+  </database>

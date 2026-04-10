@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="213400FDECC64940B66ADD69DA2CDCBD" trl="Y">
+    <value column="Name" isTrl="Y" original="Production order number"> Número de orden de fabricación</value>
+    <value column="PrintName" isTrl="Y" original="Production order number"> Número de orden de fabricación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="ADCD36C8764F477FA6658AB4201C3C4F" trl="Y">
+    <value column="Name" isTrl="N" original="Lote">Lote</value>
+    <value column="PrintName" isTrl="N" original="Lote">Lote</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E261580975844C0A875EABCEFD3D99C0" trl="Y">
+    <value column="Name" isTrl="Y" original="Periodicity">Periodicidad</value>
+    <value column="PrintName" isTrl="Y" original="Periodicity">Periodicidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F3488B10FA6441AD8226932740200D02" trl="Y">
+    <value column="Name" isTrl="Y" original="Colorimetry">Colorimetria</value>
+    <value column="PrintName" isTrl="Y" original="Colorimetry">Colorimetria</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FF753711802542D6B46FCDDDB5C98DC9" trl="Y">
+    <value column="Name" isTrl="Y" original="Client">Cliente</value>
+    <value column="PrintName" isTrl="Y" original="Client">Cliente</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

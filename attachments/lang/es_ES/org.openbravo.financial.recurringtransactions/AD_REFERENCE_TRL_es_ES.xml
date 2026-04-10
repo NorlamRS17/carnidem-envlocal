@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="86B8E74511134C19BB3C71EF63EC198A" trl="N">
+    <value column="Name" isTrl="N" original="Recurrence Periodicity">Recurrence Periodicity</value>
+    <value column="Description" isTrl="N" original="Recurring transaction periodicity">Recurring transaction periodicity</value>
+    <value column="Help" isTrl="N" original="Recurring transaction periodicity">Recurring transaction periodicity</value>
+  </row>
+  <row id="9C9177DF28D74106916C97A026320E37" trl="N">
+    <value column="Name" isTrl="N" original="Recurring Rule">Recurring Rule</value>
+    <value column="Description" isTrl="N" original="Recurring rule reference">Recurring rule reference</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F0E1F1534B29413AA16EBBA3A386C896" trl="N">
+    <value column="Name" isTrl="N" original="G/L Journal">G/L Journal</value>
+    <value column="Description" isTrl="N" original="G/L Journal reference used for recurring transactions">G/L Journal reference used for recurring transactions</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

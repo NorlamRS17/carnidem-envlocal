@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="59F13C61991D48C2839FD9F43D018A4E" trl="N">
+    <value column="Name" isTrl="N" original="Invoice">Invoice</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A065ED102BD846F3827BA5873D6050AA" trl="N">
+    <value column="Name" isTrl="N" original="Credit Notes">Credit Notes</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1652,7 +1652,7 @@ public class CreateLines extends DalBaseProcess {
             }
             if (formatDate.equals("")) {
 
-              String StrMsgError = "Msg: Falta la fecha de vencimiento.   ";
+              String StrMsgError = "Msg: Falta la fecha de vencimiento.";
               String strSQLDate = "update imdlv_voucherpurchline set logserror = coalesce(logserror || '   ',' ')||  '"
                   + StrMsgError + "' where imdlv_voucherpurchline_id ='" + colPurchLines.getId()
                   + "'";
@@ -2152,6 +2152,7 @@ public class CreateLines extends DalBaseProcess {
       OBDal.getInstance().flush();
     }
 
+   
     OBCriteria<ImdlvVoucherDataLine> obc = OBDal.getInstance()
         .createCriteria(ImdlvVoucherDataLine.class);
     obc.add(Restrictions.eq(ImdlvVoucherDataLine.PROPERTY_IMDLVVOUCHERPURCHASE, purchaseHeader));

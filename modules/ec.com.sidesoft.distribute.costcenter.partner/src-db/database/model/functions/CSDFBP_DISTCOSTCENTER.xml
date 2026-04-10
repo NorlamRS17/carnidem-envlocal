@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION CSDFBP_DISTCOSTCENTER">
+    <function name="CSDFBP_DISTCOSTCENTER" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+  v_ResultStr VARCHAR2(2000):='';
+  v_Record_ID VARCHAR2(32);
+  v_Result NUMBER:=0; -- failure
+  v_User VARCHAR2(32);
+  
+  -- Parameter
+  TYPE RECORD IS REF CURSOR;
+    Cur_Parameter RECORD;
+    Cur_Lines RECORD;
+    Cur_CcDistribution RECORD;
+    
+    -- Parameter Variables
+    v_Client_ID VARCHAR2(32) ;
+    v_Org_ID VARCHAR2(32);
+    v_BP_ID  VARCHAR2(32);
+    V_CountCostCenter1 NUMBER:=0;
+    v_PorcentajeDistribucionTotal NUMBER:=0;
+   
+    v_Totalamt NUMBER;
+    v_CalLine NUMBER;
+
+  BEGIN
+    --  Update AD_PInstance
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing') ;
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+  BEGIN --BODY
+    -- Get Parameters
+    v_ResultStr:='ReadingParameters';
+    FOR Cur_Parameter IN
+      (SELECT i.Record_ID,
+        i.AD_User_ID,
+        p.ParameterName,
+        p.P_String,
+        p.P_Number,
+        p.P_Date
+      FROM AD_PInstance i
+      LEFT JOIN AD_PInstance_Para p
+        ON i.AD_PInstance_ID=p.AD_PInstance_ID
+      WHERE i.AD_PInstance_ID=PInstance_ID
+      ORDER BY p.SeqNo
+      )
+    LOOP
+      v_Record_ID:=Cur_Parameter.Record_ID;
+      v_User:=Cur_Parameter.AD_User_ID;
+    END LOOP; -- Get parameter
+    
+    DBMS_OUTPUT.PUT_LINE('  Record_ID=' || v_Record_ID) ;
+    v_ResultStr:='Success Distribute Cost Center';
+  
+    DELETE FROM ssdccp_distcostcenter WHERE C_INVOICE_ID = v_Record_ID;
+   
+   	SELECT c_bpartner_id
+   	INTO v_BP_ID
+   	FROM c_invoice
+	WHERE c_invoice_id = v_Record_ID;
+
+    SELECT COUNT(*), SUM(percentage)
+     INTO V_CountCostCenter1, v_PorcentajeDistribucionTotal 
+     FROM csdfbp_costcenter_d_bp
+     WHERE c_bpartner_id = v_BP_ID;
+
+    IF (V_CountCostCenter1=0) THEN
+		RAISE_APPLICATION_ERROR(-20000,'@csdfbp_SetupErrorCost@');
+    END IF;
+   
+    IF (v_PorcentajeDistribucionTotal<>100) THEN
+		RAISE_APPLICATION_ERROR(-20000,'@csdfbp_porjedistrib@' || ' ' || v_PorcentajeDistribucionTotal);
+    END IF;
+   
+   
+   	FOR Cur_Lines IN (
+		SELECT 
+		CIL.AD_CLIENT_ID,
+		CIL.AD_ORG_ID,
+		CIL.C_INVOICELINE_ID,
+		CIL.C_INVOICE_ID,
+		linenetamt as linenetamt,
+		CIL.M_PRODUCT_ID,
+		CI.TOTALLINES
+		FROM C_INVOICELINE CIL 
+		 JOIN C_INVOICE CI ON CI.C_INVOICE_ID = CIL.C_INVOICE_ID
+		WHERE CIL.C_INVOICE_ID = v_Record_ID
+    ) LOOP
+		v_Totalamt:= Cur_Lines.linenetamt;
+		IF ( v_Totalamt > 0) THEN
+
+			v_Client_ID:= Cur_Lines.AD_CLIENT_ID;
+			v_Org_ID:= Cur_Lines.AD_ORG_ID;
+			
+			FOR Cur_CcDistribution IN (
+		   		SELECT * 
+			    FROM csdfbp_costcenter_d_bp
+			    WHERE c_bpartner_id = v_BP_ID
+		   	) LOOP
+				IF (Cur_CcDistribution.percentage > 0) then
+					v_CalLine:= round((v_Totalamt*(Cur_CcDistribution.percentage)/100),2);
+				   
+				    INSERT INTO ssdccp_distcostcenter (
+					    ssdccp_distcostcenter_id, ad_client_id, ad_org_id, isactive, 
+					    created, createdby, updated, updatedby, c_invoiceline_id, c_invoice_id, 
+					    c_costcenter_id, user1_id, porcentage, amount,M_PRODUCT_ID)
+				    VALUES (get_uuid()
+					    ,  v_Client_ID
+					    ,  v_Org_ID
+					    , 'Y'
+					    , now(), v_User, now(), v_User, null
+					    , v_Record_ID
+					    , Cur_CcDistribution.c_costcenter_id
+					    , Cur_CcDistribution.User1_ID
+					    , Cur_CcDistribution.percentage
+					    , v_CalLine 
+					    , Cur_Lines.M_PRODUCT_ID
+					    );						    
+				END IF;
+			END LOOP;
+		END IF;			
+	END LOOP;
+ 
+ AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, v_ResultStr) ;   
+    
+END; --BODY
+EXCEPTION
+WHEN OTHERS THEN
+  v_ResultStr:= '@ERROR=' || SQLERRM;
+  DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+  --
+  ROLLBACK;
+  --
+  AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+  RETURN;
+END CSDFBP_DISTCOSTCENTER
+]]></body>
+    </function>
+  </database>

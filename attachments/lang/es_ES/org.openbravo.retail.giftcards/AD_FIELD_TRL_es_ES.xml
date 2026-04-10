@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_FIELD" version="">
+  <row id="E757E084DA82424C8D8D97559985892B" trl="N">
+    <value column="Name" isTrl="N" original="Certificate Status">Certificate Status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="Gift Card Certificate Status (create, used, partially used, expired, refund)">Gift Card Certificate Status (create, used, partially used, expired, refund)</value>
+  </row>
+  <row id="EA2E407D37E149AF9BBB0E5041198EF4" trl="N">
+    <value column="Name" isTrl="N" original="Return Order">Return Order</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

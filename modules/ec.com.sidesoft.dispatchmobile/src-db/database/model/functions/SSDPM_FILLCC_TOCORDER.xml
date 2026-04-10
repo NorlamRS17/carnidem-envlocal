@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSDPM_FILLCC_TOCORDER">
+    <function name="SSDPM_FILLCC_TOCORDER" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[p_record_id VARCHAR(60);
+    p_docAction VARCHAR(60);
+    p_user VARCHAR(60);
+    v_ResultStr VARCHAR2(2000):='';
+    Cur_Params RECORD;
+    rOrder RECORD;
+    cOrderLine RECORD;
+    vcostcenter VARCHAR(32):='';
+    vLineBreak TEXT:='
+';
+BEGIN
+
+    FOR Cur_Params IN (
+        SELECT *
+        FROM ad_ep_instance_para
+        WHERE ad_ep_instance_id = p_ep_instance
+    ) LOOP
+        IF cur_params.parametername = 'DocAction' THEN
+            p_docaction := Cur_Params.p_string;
+        ELSIF (cur_params.parametername = 'Record_ID') THEN
+            p_record_id := cur_params.p_string;
+        ELSIF (cur_params.parametername = 'User') THEN
+            p_user := cur_params.p_string;
+        END IF;
+    END LOOP;
+    
+    SELECT c_order_id, issotrx INTO rOrder FROM c_order WHERE c_order_id = p_record_id;
+    
+    IF (rOrder.issotrx = 'Y' and p_docaction = 'CO')THEN
+            
+			select --co.C_DocTypeTarget_ID, 
+			cdoct.EM_Ssfc_Costcenter_ID
+			into vcostcenter
+			from c_order co
+			left join C_DocType cdoct on cdoct.C_DocType_ID = co.C_DocTypeTarget_ID
+			where co.c_order_id = p_record_id;
+			
+            UPDATE c_order SET c_costcenter_id = vcostcenter WHERE c_order_id = p_record_id;
+		
+    END IF;
+    
+    EXCEPTION WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('ssdpm_fillcc_tocorder exception: '|| v_ResultStr);
+    RAISE;
+END SSDPM_FILLCC_TOCORDER
+]]></body>
+    </function>
+  </database>

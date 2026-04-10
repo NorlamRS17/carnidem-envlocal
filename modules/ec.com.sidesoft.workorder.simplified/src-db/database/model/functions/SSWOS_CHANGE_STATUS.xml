@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSWOS_CHANGE_STATUS">
+    <function name="SSWOS_CHANGE_STATUS" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[Cur_Parameter RECORD;
+    v_atindpoPostventaId VARCHAR(32);	
+    v_User_ID VARCHAR(32);
+    v_Org_ID VARCHAR(32);
+    v_Client_ID VARCHAR(32);
+    v_tercero_cab varchar(60);
+    v_organization_id varchar(60);
+
+    Cur_Ordenes RECORD;
+    v_linea_consol VARCHAR(32);
+    v_orden_id varchar(32);
+    v_org_orden VARCHAR(60);
+    v_num_orden VARCHAR(30);
+    v_tercero_orden VARCHAR(32);
+    v_crear_factura VARCHAR(1);
+    v_despacho VARCHAR(1);
+    cuenta NUMBER;
+
+    v_ResultStr VARCHAR(2000):='';
+    v_Message VARCHAR(2000):='';
+	v_MessageReactivar VARCHAR(2000):='';
+	v_MessageAnular VARCHAR(2000):='';
+    v_Record_ID VARCHAR(32);
+    v_Status VARCHAR(32);
+    v_Result NUMBER:=1;
+    v_Count NUMBER:=0;
+    v_Count_Total NUMBER:=0;
+	v_doc_duplicates VARCHAR(2000):='';
+	v_Count_duplicates NUMBER:=0;
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_PInstance_ID);
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL);
+
+    BEGIN
+    FOR Cur_Parameter IN (
+		SELECT i.Record_ID,
+			i.AD_User_ID,
+			p.ParameterName,
+			p.P_String,
+			p.P_Number,
+			p.P_Date,
+			i.AD_Org_ID,
+			i.AD_Client_ID
+             FROM AD_PInstance i
+		LEFT JOIN AD_PInstance_Para p ON i.AD_PInstance_ID = p.AD_PInstance_ID
+            WHERE i.AD_PInstance_ID = p_PInstance_ID
+            ORDER BY p.SeqNo	
+	) LOOP
+		v_Record_ID := Cur_Parameter.Record_ID;
+		v_User_ID := Cur_Parameter.AD_User_ID;
+		v_Org_ID := Cur_Parameter.AD_Org_ID;
+		v_Client_ID := Cur_Parameter.AD_Client_ID;
+	END LOOP;
+
+    SELECT c_bpartner_id, ad_org_id
+    INTO v_tercero_cab, v_organization_id
+    FROM sswos_change_status_so
+    WHERE sswos_change_status_so_id = v_Record_ID;
+
+    cuenta:=0;
+	
+	Select STRING_AGG(apv.documentno, ',' ORDER BY apv.documentno), COUNT(*)
+		Into v_doc_duplicates, v_Count_duplicates
+	From atindpo_postventa apv
+	WHERE EXISTS (Select 1
+        From sswos_change_status_so_line csl
+            Left Join atindpo_postventa pv on pv.documentno = csl.orderno
+        Where csl.sswos_change_status_so_id = v_Record_ID
+				  And apv.atindpo_postventa_id = pv.atindpo_postventa_id
+		group by pv.documentno
+		Having count(*) > 1);
+	if (v_Count_duplicates > 0) Then
+		RAISE_APPLICATION_ERROR(-20000, 'Mas de una orden con el mismo numero de documento:'||v_doc_duplicates) ;
+	End If;
+    FOR Cur_Ordenes IN (
+        Select csl.sswos_change_status_so_line_id
+            , pv.documentno as "orden"
+            , pv.atindpo_postventa_id 
+            , pv.c_bpartner_id
+            , pv.crearfactura
+            , pv.docstatus
+            , csl.orderno as "ordern_empy"
+            , pv.ad_org_id
+        From sswos_change_status_so_line csl
+            Left Join atindpo_postventa pv on pv.documentno = csl.orderno And pv.ad_org_id = v_organization_id
+        Where csl.sswos_change_status_so_id = v_Record_ID
+	) LOOP
+		v_Count_Total := v_Count_Total + 1;
+		
+		If (Cur_Ordenes.atindpo_postventa_id IS NULL) Then
+			update sswos_change_status_so_line set observation = 'NO  EXISTE LA ORDEN N° '||Cur_Ordenes.ordern_empy Where sswos_change_status_so_line_id = Cur_Ordenes.sswos_change_status_so_line_id;
+		Else
+            If (Cur_Ordenes.ad_org_id <> v_organization_id) Then
+                update sswos_change_status_so_line set observation = 'La O/Servicio no corresponde a la organización.' where sswos_change_status_so_line_id = Cur_Ordenes.sswos_change_status_so_line_id;
+            Else
+                If (Cur_Ordenes.c_bpartner_id <> v_tercero_cab) Then
+                    update sswos_change_status_so_line set observation = 'Orden no pertenece al cliente.' where sswos_change_status_so_line_id = Cur_Ordenes.sswos_change_status_so_line_id;
+                Else
+                
+                    If (Cur_Ordenes.crearfactura <> 'Y' And Cur_Ordenes.docstatus <> 'SSWOS_F' ) Then
+                        update sswos_change_status_so_line set observation = 'Orden no se encuentra en estado Facturado.' where sswos_change_status_so_line_id = Cur_Ordenes.sswos_change_status_so_line_id;
+                    Else
+                        update sswos_change_status_so_line set observation = 'Validado OK.' where sswos_change_status_so_line_id = Cur_Ordenes.sswos_change_status_so_line_id;
+                        v_Count := v_Count + 1;
+                        
+                    End IF;-- Fin (Cur_Ordenes.crearfactura = 'Y' OR Cur_Ordenes.docstatus = 'SSWOS_F' )
+                End If;-- Fin (Cur_Ordenes.c_bpartner_id <> v_tercero_cab)
+            End If;-- Fin (Cur_Ordenes.ad_org_id <> v_organization_id)
+		End If; -- Fin (v_tercero_cab = v_tercero_orden)
+    END LOOP; 
+
+    If (v_Count = v_Count_Total) Then
+        update sswos_change_status_so set status = 'CO' where sswos_change_status_so_id = v_Record_ID;
+        update atindpo_postventa set crearfactura = 'N', docstatus = 'ET' , em_sswos_c_order_id = null where documentno in (Select orderno From sswos_change_status_so_line where sswos_change_status_so_id = v_Record_ID)
+        And c_bpartner_id = v_tercero_cab
+			And docstatus = 'SSWOS_F'
+			And ad_org_id = v_organization_id;
+	Else
+		v_Message:= 'Existen registros no validados';
+        DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished - ' || v_Message) ;
+        AD_UPDATE_PINSTANCE(p_PInstance_ID, v_User_ID, 'N', 0, v_Message);
+        RETURN;
+    End If;
+	
+        v_Message:= to_char(v_Count);
+        DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished - ' || v_Message) ;
+        AD_UPDATE_PINSTANCE(p_PInstance_ID, v_User_ID, 'Y', v_Result, v_Message);
+        RETURN;
+
+    END;    
+    EXCEPTION WHEN OTHERS THEN
+        v_ResultStr:= '@ERROR=' || SQLERRM;
+        DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+                AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr);
+        RETURN;
+END SSWOS_CHANGE_STATUS
+]]></body>
+    </function>
+  </database>

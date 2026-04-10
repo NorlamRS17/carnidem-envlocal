@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SPROCTM_DETAIL_COST_TRG">
+    <trigger name="SPROCTM_DETAIL_COST_TRG" table="SPROCTM_DETAIL_COST" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[ 
+    v_EM_Sproctm_Prhasetype  VARCHAR2(5);
+    v_sproctm_task_workforce_id  VARCHAR2(32);
+    v_sproctm_task_cif_id VARCHAR2(32);
+    v_sproctm_task_machine_id VARCHAR2(32);
+BEGIN
+ 
+   IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+
+    IF  (INSERTING) THEN
+        -- No permite registrar cuando la fase y tarea no sea de tipo ejecución 
+        -- Tabla reutilizada por pestañas ( Mano de Obra - CIF - Maquinaria )
+        -- Record ID campo FK relacion a pestaña padre.
+
+            -- Pestaña Mano de Obra
+            SELECT  COALESCE(pp.EM_Sproctm_Prhasetype, ''), COALESCE(wf.sproctm_task_workforce_id , '')
+            INTO v_EM_Sproctm_Prhasetype, v_sproctm_task_workforce_id
+            FROM sproctm_task_workforce wf
+            INNER JOIN c_projecttask pt on pt.c_projecttask_id = wf.c_projecttask_id
+            INNER JOIN c_projectphase pp on pp.c_projectphase_id = pt.c_projectphase_id
+            WHERE sproctm_task_workforce_id = :NEW.record_id;
+
+            IF(v_sproctm_task_workforce_id != '') THEN
+                IF(v_EM_Sproctm_Prhasetype = '' OR v_EM_Sproctm_Prhasetype !='E') THEN 
+                    RAISE_APPLICATION_ERROR(-20000, '@sproctm_detCost_TypePhase@');
+                END IF;
+
+            END IF;
+
+
+            -- Pestaña Cobros indirectos
+            SELECT  COALESCE(pp.EM_Sproctm_Prhasetype, ''), COALESCE(cif.sproctm_task_cif_id , '')
+            INTO v_EM_Sproctm_Prhasetype, v_sproctm_task_cif_id
+            FROM sproctm_task_cif cif
+            INNER JOIN c_projecttask pt on pt.c_projecttask_id = cif.c_projecttask_id
+            INNER JOIN c_projectphase pp on pp.c_projectphase_id = pt.c_projectphase_id
+            WHERE sproctm_task_cif_id = :NEW.record_id;
+
+            IF(v_sproctm_task_cif_id != '') THEN
+                IF(v_EM_Sproctm_Prhasetype = '' OR v_EM_Sproctm_Prhasetype !='E') THEN 
+                    RAISE_APPLICATION_ERROR(-20000, '@sproctm_detCost_TypePhase@');
+                END IF;
+            END IF;
+
+
+            -- Pestaña Maquina
+            SELECT  COALESCE(pp.EM_Sproctm_Prhasetype, ''), COALESCE(maq.sproctm_task_machine_id , '')
+            INTO v_EM_Sproctm_Prhasetype, v_sproctm_task_machine_id
+            FROM sproctm_task_machine maq
+            INNER JOIN c_projecttask pt on pt.c_projecttask_id = maq.c_projecttask_id
+            INNER JOIN c_projectphase pp on pp.c_projectphase_id = pt.c_projectphase_id
+            WHERE sproctm_task_machine_id = :NEW.record_id;
+
+            IF(v_sproctm_task_machine_id != '') THEN
+                IF(v_EM_Sproctm_Prhasetype = '' OR v_EM_Sproctm_Prhasetype !='E') THEN 
+                    RAISE_APPLICATION_ERROR(-20000, '@sproctm_detCost_TypePhase@');
+                END IF;
+            END IF;
+
+    END IF;
+
+    END SPROCTM_DETAIL_COST_TRG
+]]></body>
+    </trigger>
+  </database>

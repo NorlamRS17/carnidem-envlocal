@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSMRPS_GET_QTY">
+    <function name="SSMRPS_GET_QTY" type="NUMERIC">
+      <parameter name="p_amount" type="NUMERIC" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_QtyIn  NUMBER;
+  v_Acum   NUMBER;
+  v_result NUMBER;
+BEGIN
+
+  v_QtyIn:= p_amount;
+  v_Acum :=0;
+  
+  while v_QtyIn >  v_Acum loop
+	--raise notice 'v_Acum %', v_Acum;
+ 	v_Acum:= v_Acum +10;
+   end loop;
+   return v_Acum;
+END SSMRPS_GET_QTY
+]]></body>
+    </function>
+  </database>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ImportReport" pageWidth="968" pageHeight="1067" columnWidth="968" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="1da5dde7-aca0-4fe0-83fc-d21862e7a8f3">
+	<property name="ireport.zoom" value="1.2100000000000228"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ad_user" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="documentno" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+INVL.transactiondate AS "fecha",
+CBP.name AS "proovedor",
+INVL.documenttype AS "tipodocumento",
+TRIM(REGEXP_REPLACE(TRIM(INVL.documentnumber),TRIM(INV.documentno),'','g')) AS "facturacompra",
+(CASE WHEN ADCS.name IS NULL THEN '' ELSE ADCS.name END) AS "costoadicional",
+CASE
+    WHEN INVL.amountnet = olq.valorlinea THEN INVL.amountnet
+    ELSE olq.valorlinea
+END AS "valor",
+olq.name AS "concepto",
+INVL.poreference as "nofactura"
+FROM c_order INV
+LEFT JOIN ssip_costimport INVL ON INVL.c_order_id = INV.c_order_id
+LEFT JOIN ssip_additionalcosts ADCS ON ADCS.ssip_additionalcosts_id = INVL.ssip_additionalcosts_id
+LEFT JOIN c_invoice FCP ON FCP.documentno = TRIM(REGEXP_REPLACE(TRIM(INVL.documentnumber),TRIM(INV.documentno),'','g'))
+LEFT JOIN (
+	SELECT ci.documentno, mp.name as name,cil.em_ssip_campaign_id as import, cil.linenetamt as valorlinea
+	FROM c_invoice ci
+	LEFT JOIN c_invoiceline cil ON cil.c_invoice_id = ci.c_invoice_id
+	LEFT JOIN m_product mp ON mp.m_product_id = cil.m_product_id
+	AND cil.em_ssip_campaign_id IS NOT NULL
+) olq ON olq.documentno = FCP.documentno
+LEFT JOIN c_bpartner CBP ON FCP.c_bpartner_id = CBP.c_bpartner_id
+LEFT JOIN c_campaign cca ON cca.c_campaign_id = INV.c_campaign_id
+WHERE INV.em_ssip_isimports = 'Y'
+AND FCP.issotrx = 'N'
+AND INV.documentno = $P{documentno}
+AND olq.import IS NOT NULL
+AND olq.import = INV.c_campaign_id
+
+UNION
+
+SELECT
+INVL.transactiondate AS "fecha",
+'' AS "proovedor",
+INVL.documenttype AS "tipodocumento",
+INVL.documentnumber AS "facturacompra",
+(CASE WHEN ADCS.name IS NULL THEN '' ELSE ADCS.name END) AS "costoadicional",
+INVL.amountnet::numeric AS "valor",
+GLJL.description AS "concepto",
+'' as "nofactura"
+FROM c_order INV
+LEFT JOIN ssip_costimport INVL ON INVL.c_order_id = INV.c_order_id
+LEFT JOIN ssip_additionalcosts ADCS ON ADCS.ssip_additionalcosts_id = INVL.ssip_additionalcosts_id
+INNER JOIN gl_journalbatch FCP ON FCP.documentno = INVL.documentnumber
+LEFT JOIN gl_journal GLJ ON FCP.gl_journalbatch_ID = GLJ.gl_journalbatch_id
+LEFT JOIN gl_journalline GLJL ON GLJ.GL_Journal_ID = GLJL.gl_journal_id
+LEFT JOIN c_campaign cca ON cca.c_campaign_id = INV.c_campaign_id
+WHERE INV.em_ssip_isimports = 'Y'
+AND INV.documentno = $P{documentno}
+ORDER BY fecha ASC]]>
+	</queryString>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="proovedor" class="java.lang.String"/>
+	<field name="tipodocumento" class="java.lang.String"/>
+	<field name="facturacompra" class="java.lang.String"/>
+	<field name="costoadicional" class="java.lang.String"/>
+	<field name="valor" class="java.math.BigDecimal"/>
+	<field name="concepto" class="java.lang.String"/>
+	<field name="nofactura" class="java.lang.String"/>
+	<variable name="SUM_TOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="14">
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="14" uuid="815e0bfc-98b2-4ff4-a71d-8f1efcb8e789"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="0" width="160" height="14" uuid="7cc86287-3e5c-446d-94fb-688270a6b725"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proveedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="0" width="125" height="14" uuid="e1bec636-97df-4835-8fa0-a533dd11e7b0"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="335" y="0" width="125" height="14" uuid="ca7e8c9b-256a-4827-9b78-50a4b715e87a"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No Documento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="584" y="0" width="132" height="14" uuid="7bb0fb89-75e4-4844-862d-7d7d163c6436"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Costo Adicional]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="716" y="0" width="204" height="14" uuid="ab304cb8-184d-4fd3-80c3-565414450f10"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Concepto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="920" y="0" width="47" height="14" uuid="768d231a-746f-4124-b173-104e92e203f4"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Valor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="0" width="124" height="14" uuid="61383bb2-c9f0-4273-a3d2-a78e1babf01d"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No Factura]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="0" y="0" width="50" height="14" uuid="a7a3151f-a9be-43ac-8827-f3eae2da522c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="160" height="14" uuid="0bf302cc-94e6-49c5-a2cc-af31c54a29ac"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proovedor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="0" width="125" height="14" uuid="603f7d83-65e6-4e11-88ea-5bedff65badd"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipodocumento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="335" y="0" width="125" height="14" uuid="7da0c488-2089-436b-a5a4-02516bfa3536"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturacompra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="584" y="0" width="132" height="14" uuid="5adcf637-16a6-4543-ad77-aebc3e268614"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costoadicional}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="716" y="0" width="204" height="14" uuid="1314cc47-ced5-4e41-8661-c56019a4e930"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{concepto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="920" y="0" width="47" height="14" uuid="7588773e-3cd2-4d87-9694-a0c46fde6ea0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="0" width="124" height="14" uuid="75776f43-ce8c-4ebf-8f8a-649af7dd005e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nofactura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement x="849" y="10" width="71" height="20" uuid="c1b7df31-ff1f-481d-bde1-83988ea8d8e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<textField pattern="###0.0000;-###0.0000">
+				<reportElement x="920" y="10" width="47" height="20" uuid="c5aeb859-fb3f-4811-ba70-6ce258e20407"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{SUM_TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="4F435AFD98534C21ABAB6F6F05ACECDF" trl="N">
+    <value column="Name" isTrl="Y" original="Create Notifications Mobile">Crear notificaciones móvil</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="64A1FBB0822B4835BFF0C036BD927B09" trl="N">
+    <value column="Name" isTrl="Y" original="Setup">Configuración</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7942A8F1CB0A47419DFC0895084F2624" trl="N">
+    <value column="Name" isTrl="Y" original="Analytics Tools">Herramientas de análisis</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="824F6BBA46E74054AA6EFE900EBD01A4" trl="N">
+    <value column="Name" isTrl="Y" original="Transactions">Transacciones</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="8C51CF986CCA43049710B761CECC4AAC" trl="N">
+    <value column="Name" isTrl="Y" original="Notification Type">Tipo de notificaciones</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="AE7E0CE6598A40859F1C6F5ECC6CEA69" trl="N">
+    <value column="Name" isTrl="Y" original="Managment WebService API Mobile">Gestión WebService API Móvil</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C5C5C6FAE6344744B6E41DBCD4D3E68F" trl="N">
+    <value column="Name" isTrl="Y" original="Record of Devices Mobile">Registrar dispositivos móvil</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="ECE19985479842B7A9DD065333C84567" trl="N">
+    <value column="Name" isTrl="Y" original="Setup Push Notificacions Mobile">Configuración de Notificación Push Móvil</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="189EF0F7D3DF4DF882ADDF43C26984F5" trl="Y">
+    <value column="Name" isTrl="Y" original="Transactions WS Payments">Transacciones WS Pagos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C3793DA67FF841459832453E324ECDCB" trl="Y">
+    <value column="Name" isTrl="Y" original="WS Creation Payments / Collections">Creacion WS Pagos / Cobros</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D1A175F349914E4EA74601E2426EFD32" trl="Y">
+    <value column="Name" isTrl="Y" original="WS Log Payments / Collections">Log WS Pagos / Cobros</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

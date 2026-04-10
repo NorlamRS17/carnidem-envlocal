@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+  <database name="VIEW SSWCL_BINNACLE_V">
+    <view name="SSWCL_BINNACLE_V"><![CDATA[SELECT sswos_binnacle.sswos_binnacle_id AS sswcl_binnacle_v_id, sswos_binnacle.sswos_binnacle_id, sswos_binnacle.ad_client_id, '0' AS ad_org_id, sswos_binnacle.isactive, sswos_binnacle.created, sswos_binnacle.createdby, sswos_binnacle.updated, sswos_binnacle.updatedby, sswos_binnacle.status_from, sswos_binnacle.status_to, sswos_binnacle.atindpo_postventa_id, sswos_binnacle.issummary, sswos_binnacle.em_sswon_emailsent AS sswcl_sswon_emailsent, sswos_binnacle.atindpo_postventa_id AS sswcl_work_order_v_id FROM sswos_binnacle]]></view>
+  </database>

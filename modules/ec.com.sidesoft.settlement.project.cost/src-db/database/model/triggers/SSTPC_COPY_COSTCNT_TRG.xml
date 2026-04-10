@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSTPC_COPY_COSTCNT_TRG">
+    <trigger name="SSTPC_COPY_COSTCNT_TRG" table="C_ORDERLINE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+  v_Processed VARCHAR(60) ;
+  v_C_ORDER_ID VARCHAR2(32) ;
+  v_CostCenterID  VARCHAR2(32) ;
+  v_Docaction VARCHAR(60) ;
+  v_Docstatus VARCHAR(60);
+  v_BaseDocType VARCHAR(60);
+  v_DocumentNo C_ORDER.DocumentNO%TYPE;
+  v_IsSOTrx CHAR(1);
+  v_Message VARCHAR2(2000):='';
+  v_QTYVARIABLE CHAR(1);
+  v_productname m_product.name%TYPE;
+  v_isgeneric   CHAR(1);
+    
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+	IF INSERTING THEN
+		v_C_ORDER_ID:=:NEW.C_ORDER_ID;
+	ELSE
+		v_C_ORDER_ID:=:OLD.C_ORDER_ID;
+	END IF;
+
+	IF (INSERTING OR UPDATING) THEN
+
+		SELECT CO.DOCACTION, CO.DOCSTATUS, CO.DocumentNo, CO.ISSOTRX ,cd.docbasetype 
+		INTO   v_Docaction, v_DocStatus, v_DocumentNo, v_IsSOTrx, v_BaseDocType 
+		FROM C_ORDER CO
+		left join c_doctype cd on co.c_doctype_id =  cd.c_doctype_id
+		WHERE co.C_ORDER_ID=v_C_ORDER_ID;
+
+		
+
+		IF (v_IsSOTrx='Y' AND v_BaseDocType = '---') THEN 
+			
+
+			SELECT COALESCE(TO_CHAR((select C_COSTCENTER_ID from C_ORDER CO where co.C_ORDER_ID =v_C_ORDER_ID)),TO_CHAR('ND'))
+			INTO v_CostCenterID
+			FROM DUAL;
+
+			IF (v_CostCenterID<>'ND') THEN
+				:new.c_costcenter_id:=v_CostCenterID;
+			END IF;
+		END IF;
+	
+	END IF;
+
+
+END SSTPC_COPY_COSTCNT_TRG
+]]></body>
+    </trigger>
+  </database>

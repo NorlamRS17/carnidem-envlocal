@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0373171B5A7E4C9D8AC8C5C1A935A8F5" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssfdc_Completed">Completar</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssfdc_Completed">Completar</value>
+    <value column="Description" isTrl="N" original="">Completar</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DD4D3BB1D82D4E9790418128DB47377B" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssfdc_Status">Estado</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssfdc_Status">Estado</value>
+    <value column="Description" isTrl="N" original="">Estado</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E847812ABBCA4FECBD5BD7D39321C5A1" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssfdc_Cancelled">Anular</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssfdc_Cancelled">Anular</value>
+    <value column="Description" isTrl="N" original="">Anular</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

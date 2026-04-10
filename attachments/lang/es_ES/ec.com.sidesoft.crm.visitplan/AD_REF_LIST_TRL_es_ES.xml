@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="132981CDE7E3462AB3C415CC643D75DF" trl="Y">
+    <value column="Name" isTrl="Y" original="External">Externo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1897AA10522C4463A6E60263B332DFB9" trl="Y">
+    <value column="Name" isTrl="Y" original="In Time">A tiempo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="502EA586184C4379961ABA6C573A094A" trl="Y">
+    <value column="Name" isTrl="N" original="Local">Local</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="56DD66C61FD84742A3AD75F1D7F3C828" trl="Y">
+    <value column="Name" isTrl="Y" original="Pending">Pendiente</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D8D4001D0A194D20B94CC5B66EBB60B2" trl="Y">
+    <value column="Name" isTrl="Y" original="Completed">Completada</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="DBB9ABA87BA341BF97F2735B561084A2" trl="Y">
+    <value column="Name" isTrl="Y" original="Late">Tardía</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E54CDEC4627947A2A2A7FD1819539871" trl="N">
+    <value column="Name" isTrl="N" original="In course">In course</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

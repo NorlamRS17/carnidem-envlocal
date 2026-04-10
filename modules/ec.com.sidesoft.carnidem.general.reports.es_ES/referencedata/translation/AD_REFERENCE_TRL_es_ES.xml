@@ -5,8 +5,38 @@
     <value column="Description" isTrl="N" original="SscgrAttributeIns">SscgrAttributeIns</value>
     <value column="Help" isTrl="N" original=""/>
   </row>
+  <row id="7DFDFCECFC9947C6B1A02A565C5CAE9F" trl="N">
+    <value column="Name" isTrl="N" original="sscgr_productsc">sscgr_productsc</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="825AF0ABAAC748BD9996099DAD1388FF" trl="N">
+    <value column="Name" isTrl="N" original="sscgr_group">sscgr_group</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
   <row id="86B65AC5B9A04347BE19265305C3BB49" trl="N">
     <value column="Name" isTrl="N" original="SscgrProductCatId">SscgrProductCatId</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BF8473E912784D46AD4D9871B55A338F" trl="N">
+    <value column="Name" isTrl="N" original="sscgr_inoutsc">sscgr_inoutsc</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C444E90F6E944D649B7A178C60647A1C" trl="N">
+    <value column="Name" isTrl="N" original="sscgr_partnersc">sscgr_partnersc</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DD88DAA2687D4EE694486E663DF885C8" trl="N">
+    <value column="Name" isTrl="N" original="sscgr_product">sscgr_product</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="EED1D46678B34781BD6C8A462277325A" trl="N">
+    <value column="Name" isTrl="N" original="sscgr_inout">sscgr_inout</value>
     <value column="Description" isTrl="N" original=""/>
     <value column="Help" isTrl="N" original=""/>
   </row>

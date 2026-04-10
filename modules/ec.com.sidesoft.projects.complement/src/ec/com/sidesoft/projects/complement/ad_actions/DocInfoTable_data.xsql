@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="DocInfoTableData" package="ec.com.sidesoft.projects.complement.ad_actions">
+  <SqlClassComment></SqlClassComment>
+  <SqlMethod name="selectRecord" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+		SELECT sdc.posted  
+		FROM sproctm_detail_cost sdc 
+		where sproctm_detail_cost_id = ?
+      ]]>
+     </Sql>
+     <Parameter name="id"/>
+   </SqlMethod>
+</SqlClass>

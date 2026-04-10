@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="1BE8603A3A874C8DA63963250FADB0AB" trl="N">
+    <value column="Name" isTrl="N" original="Añadir Transaccion">Añadir Transaccion</value>
+    <value column="Description" isTrl="N" original="Añadir Transaccion">Añadir Transaccion</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="514EF30BB53549B19596C5D725A5BDAD" trl="N">
+    <value column="Name" isTrl="N" original="Reconciliacion">Reconciliacion</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

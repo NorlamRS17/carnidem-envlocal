@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="1C152EF842424A2BB04E7D998E5F50FF" trl="N">
+    <value column="Name" isTrl="N" original="Collection Transit Status">Collection Transit Status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="381546BC212044D48CEF09BEB0653746" trl="N">
+    <value column="Name" isTrl="N" original="sspitra_ct_detail">sspitra_ct_detail</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

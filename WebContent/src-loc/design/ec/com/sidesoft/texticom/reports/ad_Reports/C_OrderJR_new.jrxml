@@ -1,0 +1,885 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C_OrderJR_new" pageWidth="595" pageHeight="842" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="56" bottomMargin="20" uuid="b3f285ed-96c8-4c04-9e91-d9172b1f71ef">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.818181818181819"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="1424"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="default" vAlign="Middle" fontName="Bitstream Vera Sans" fontSize="10"/>
+	<style name="Report_Title" fontName="Bitstream Vera Sans" fontSize="18">
+		<box leftPadding="5"/>
+	</style>
+	<style name="Group_Data_Label" fontName="Bitstream Vera Sans" fontSize="11" isBold="true"/>
+	<style name="Report_Subtitle" forecolor="#555555" fontName="Bitstream Vera Sans" fontSize="14">
+		<box leftPadding="5"/>
+	</style>
+	<style name="Total_Field" mode="Opaque" forecolor="#000000" backcolor="#CCCCCC" vAlign="Middle">
+		<box leftPadding="5"/>
+	</style>
+	<style name="Detail_Header" mode="Opaque" forecolor="#FFFFFF" backcolor="#555555" vAlign="Middle">
+		<box leftPadding="5">
+			<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+			<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#FFFFFF"/>
+		</box>
+	</style>
+	<style name="GroupHeader_DarkGray" mode="Opaque" forecolor="#FFFFFF" backcolor="#555555" vAlign="Middle" fontName="Bitstream Vera Sans" fontSize="14">
+		<box leftPadding="5"/>
+	</style>
+	<style name="GroupHeader_Gray" mode="Opaque" backcolor="#999999"/>
+	<style name="Detail_Line">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==1)]]></conditionExpression>
+			<style mode="Opaque" backcolor="#CCCCCC"/>
+		</conditionalStyle>
+	</style>
+	<style name="Total_Gray" mode="Opaque" forecolor="#000000" backcolor="#CCCCCC"/>
+	<parameter name="ATTACH" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="BASE_WEB" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/opt/AppsOpenbravo/src"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LANGUAGE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["en_US"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="USER_CLIENT" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["('1000000')"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="USER_ORG" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["('0')"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REPORT_TITLE" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["REPORT TITLE"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="REPORT_SUBTITLE" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{BASE_DESIGN} + "/org/openbravo/erpReports"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DOCUMENT_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA["'1000069'"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LOCALE" class="java.util.Locale" isForPrompting="false"/>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false"/>
+	<parameter name="SUBREP_C_OrderLinesJR_new" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="SUBREP_C_OrderLinesTaxIncludedJR_new" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="SUBREP_RptC_Order_TaxLines_new" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<parameter name="SHOW_LOGO" class="java.lang.String"/>
+	<parameter name="SHOW_COMPANYDATA" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="HEADER_MARGIN" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT C_ORDER.C_ORDER_ID,
+dt.name AS document,
+C_ORDER.ISSOTRX,
+C_BPARTNER.NAME,
+L.ADDRESS1 ||
+(CASE WHEN (L.POSTAL||L.CITY||R.NAME) IS NOT NULL THEN (CHR(10)||L.POSTAL || (CASE WHEN L.POSTAL IS NOT NULL THEN (' - '||TO_CHAR(L.CITY)) END) ||
+(CASE WHEN R.NAME IS NOT NULL THEN (' ('||TO_CHAR(R.NAME)|| ')') END)) END) AS ADDRESS1,
+C_BPARTNER_LOCATION.PHONE,
+C_BPARTNER_LOCATION.FAX,
+C_BPARTNER.URL,
+C_ORDER.DESCRIPTION,
+C_ORDER.DATEORDERED,
+C_ORDER.DOCUMENTNO AS ALBARAN,
+C_BPARTNER.NAME2 || ' (' || C_BPARTNER.NAME || ')' AS COMPLETE_NAME,
+AD_CLIENT.DESCRIPTION AS ENTITY,
+C_LOCATION_DESCRIPTION(AD_ORGINFO.C_LOCATION_ID) AS LOCATION,
+AD_ORG.ad_org_id AS ORGANIZATIONID, C_ORDER.docstatus AS STATUS,
+(COALESCE(TO_CHAR(AD_USER.NAME), '') || CASE WHEN AD_USER.NAME IS null THEN '' ELSE CHR(13) END || COALESCE(TO_CHAR(C_BPARTNER.TAXID), '') || CASE WHEN C_BPARTNER.TAXID IS null THEN '' ELSE CHR(13) END ||
+COALESCE(TO_CHAR(ADDRESS1), '') || CASE WHEN ADDRESS1 IS null THEN '' ELSE CHR(13) END || COALESCE(TO_CHAR(POSTAL), '') || CASE WHEN POSTAL IS null THEN '' ELSE CHR(13) END ||
+COALESCE(TO_CHAR(L.CITY), '') || CASE WHEN L.CITY IS null THEN '' ELSE CHR(13) END || COALESCE(TO_CHAR(CO.NAME), '') || CASE WHEN CO.NAME IS null THEN '' ELSE CHR(13) END ||
+COALESCE(TO_CHAR(C_BPARTNER_LOCATION.PHONE), '') || CASE WHEN C_BPARTNER_LOCATION.PHONE IS null THEN '' ELSE CHR(13) END || COALESCE(TO_CHAR(C_BPARTNER_LOCATION.FAX), '') ||
+CASE WHEN C_BPARTNER_LOCATION.FAX IS null THEN '' ELSE CHR(13) END) AS BP_DATA,
+AD_ORGINFO.TAXID AS ORG_TAXID, $P{SHOW_LOGO} AS SHOWLOGO,
+$P{SHOW_COMPANYDATA} AS SHOWCOMPANYDATA,
+$P{HEADER_MARGIN} AS HEADERMARGIN,
+AD_ORG.NAME AS ORG_NAME,
+DELIVERYRULE.NAME AS DELIVERYTERM,
+PAYMENTTERM.TERM AS PAYMENTTERM,
+C_CURRENCY.ISO_CODE as CURRENCY_ISO,
+ M_PRICELIST.ISTAXINCLUDED,
+(SELECT max(m.needbydate) FROM M_RequisitionOrder ro
+JOIN c_orderline l on l.c_orderline_id=ro.c_orderline_id
+JOIN M_Requisitionline m on m.M_Requisitionline_id=ro.M_Requisitionline_id
+WHERE l.c_order_id=C_ORDER.C_ORDER_ID ) as date_requisition
+,split_part( signatures.etiquetas, ',-,', 1) as "label_firma_1"
+,split_part( signatures.etiquetas, ',-,', 2) as "label_firma_2"
+,split_part( signatures.nombres, ',-,', 1) as "nombre_firma_1"
+,split_part( signatures.nombres, ',-,', 2) as "nombre_firma_2"
+,split_part( signatures.cargos, ',-,', 1) as "nombre_cargos_1"
+,split_part( signatures.cargos, ',-,', 2) as "nombre_cargos_2"
+FROM C_BPARTNER_LOCATION
+left join C_LOCATION L on C_BPARTNER_LOCATION.C_LOCATION_ID = L.C_LOCATION_ID
+left join C_COUNTRY CO ON L.C_COUNTRY_ID = CO.C_COUNTRY_ID
+left join  C_REGION R on L.C_REGION_ID = R.C_REGION_ID,
+AD_USER right join C_ORDER on AD_USER.AD_USER_ID = C_ORDER.AD_USER_ID LEFT JOIN c_doctype AS dt ON dt.c_doctype_id=C_ORDER.c_doctype_id,
+C_BPARTNER, AD_ORGINFO, AD_CLIENT, AD_ORG,
+(SELECT z.c_doctype_id
+,STRING_AGG(COALESCE(y.label,''),to_char(',-,') ORDER BY y.line ASC) as "etiquetas"
+, STRING_AGG(COALESCE(y.name,''),to_char(',-,') ORDER BY y.line ASC) as "nombres"
+, STRING_AGG(COALESCE(y.position,''),to_char(',-,') ORDER BY y.line ASC) as "cargos"
+FROM c_doctype z join scsdc_signaturesperdoc y on y.c_doctype_id = z.c_doctype_id
+WHERE y.c_doctype_id=(select c_doctypetarget_id from c_order where c_order_id=$P{DOCUMENT_ID})
+GROUP BY z.c_doctype_id) signatures,
+   (SELECT VALUE, NAME
+    FROM AD_REF_LIST_V
+    WHERE AD_REFERENCE_ID = '151'
+          AND AD_LANGUAGE IN ($P{LANGUAGE})) DELIVERYRULE,
+   (SELECT C_PAYMENTTERM.C_PAYMENTTERM_ID, COALESCE( C_PAYMENTTERM_TRL.NAME, C_PAYMENTTERM.NAME) AS TERM
+    FROM C_PAYMENTTERM LEFT JOIN C_PAYMENTTERM_TRL ON C_PAYMENTTERM.C_PAYMENTTERM_ID = C_PAYMENTTERM_TRL.C_PAYMENTTERM_ID
+          AND C_PAYMENTTERM_TRL.AD_LANGUAGE IN ($P{LANGUAGE})) PAYMENTTERM, C_CURRENCY, M_PRICELIST
+WHERE C_ORDER.C_BPARTNER_LOCATION_ID = C_BPARTNER_LOCATION.C_BPARTNER_LOCATION_ID
+AND C_ORDER.M_PRICELIST_ID = M_PRICELIST.M_PRICELIST_ID
+AND C_ORDER.C_BPARTNER_ID = C_BPARTNER.C_BPARTNER_ID
+AND AD_ORG.ad_org_id = AD_ORGINFO.ad_org_id
+AND AD_ORG.ad_org_id = (SELECT o.AD_ORG_ID
+FROM AD_ORG o JOIN AD_OrgType t USING (AD_ORGTYPE_ID)
+WHERE AD_ISORGINCLUDED(C_ORDER.AD_ORG_ID, o.ad_org_id, C_ORDER.ad_client_id)<>-1
+AND (t.IsLegalEntity='Y' OR t.IsAcctLegalEntity='Y'))
+AND C_ORDER.AD_CLIENT_ID = AD_CLIENT.AD_CLIENT_ID
+AND C_ORDER.C_ORDER_ID IN ($P{DOCUMENT_ID})
+AND C_ORDER.DELIVERYRULE = DELIVERYRULE.VALUE
+AND C_ORDER.C_PAYMENTTERM_ID = PAYMENTTERM.C_PAYMENTTERM_ID
+AND C_CURRENCY.C_CURRENCY_ID=C_ORDER.C_CURRENCY_ID]]>
+	</queryString>
+	<field name="c_order_id" class="java.lang.String"/>
+	<field name="document" class="java.lang.String"/>
+	<field name="issotrx" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="address1" class="java.lang.String"/>
+	<field name="phone" class="java.lang.String"/>
+	<field name="fax" class="java.lang.String"/>
+	<field name="url" class="java.lang.String"/>
+	<field name="description" class="java.lang.String"/>
+	<field name="dateordered" class="java.sql.Timestamp"/>
+	<field name="albaran" class="java.lang.String"/>
+	<field name="complete_name" class="java.lang.String"/>
+	<field name="entity" class="java.lang.String"/>
+	<field name="location" class="java.lang.String"/>
+	<field name="organizationid" class="java.lang.String"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="bp_data" class="java.lang.String"/>
+	<field name="org_taxid" class="java.lang.String"/>
+	<field name="showlogo" class="java.lang.String"/>
+	<field name="showcompanydata" class="java.lang.String"/>
+	<field name="headermargin" class="java.lang.String"/>
+	<field name="org_name" class="java.lang.String"/>
+	<field name="deliveryterm" class="java.lang.String"/>
+	<field name="paymentterm" class="java.lang.String"/>
+	<field name="currency_iso" class="java.lang.String"/>
+	<field name="istaxincluded" class="java.lang.String"/>
+	<field name="date_requisition" class="java.sql.Timestamp"/>
+	<field name="label_firma_1" class="java.lang.String"/>
+	<field name="label_firma_2" class="java.lang.String"/>
+	<field name="nombre_firma_1" class="java.lang.String"/>
+	<field name="nombre_firma_2" class="java.lang.String"/>
+	<field name="nombre_cargos_1" class="java.lang.String"/>
+	<field name="nombre_cargos_2" class="java.lang.String"/>
+	<variable name="SHOWLOGO" class="java.lang.String"/>
+	<variable name="SHOWCOMPANYDATA" class="java.lang.String"/>
+	<group name="PrintLarge" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupHeader>
+			<band height="120" splitType="Stretch">
+				<printWhenExpression><![CDATA[new Boolean($F{headermargin}.equalsIgnoreCase("large"))]]></printWhenExpression>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="PrintMedium" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupHeader>
+			<band height="80" splitType="Stretch">
+				<printWhenExpression><![CDATA[new Boolean($F{headermargin}.equalsIgnoreCase("medium"))]]></printWhenExpression>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="PrintSmall" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[]]></groupExpression>
+		<groupHeader>
+			<band height="50" splitType="Stretch">
+				<printWhenExpression><![CDATA[new Boolean($F{headermargin}.equalsIgnoreCase("small"))]]></printWhenExpression>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<group name="C_ORDER_ID" isStartNewPage="true" isResetPageNumber="true">
+		<groupExpression><![CDATA[$F{c_order_id}]]></groupExpression>
+		<groupHeader>
+			<band height="382" splitType="Stretch">
+				<staticText>
+					<reportElement key="staticText-6" style="Group_Data_Label" x="425" y="202" width="57" height="21" forecolor="#7E7979" backcolor="#FFFFFF" uuid="2930dc9a-a228-4860-a40c-4911584a412b"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="9"/>
+					</textElement>
+					<text><![CDATA[Fecha necesidad]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-1" x="1" y="201" width="482" height="1" forecolor="#CCCCCC" uuid="adeb2d94-3b52-4481-85ee-3e980389a8eb"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#A3A1A1"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement key="staticText-8" style="Group_Data_Label" x="365" y="205" width="57" height="18" forecolor="#7E7979" backcolor="#FFFFFF" uuid="8148c244-242e-47af-927b-05bdf1fdd2d8"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="9" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Date]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" x="365" y="225" width="57" height="20" uuid="c8fa10a7-7678-4d64-8d5c-60c02b283f1c"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font fontName="DejaVu Sans" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.applyCountryDateFormat($F{dateordered},$F{organizationid})]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-17" x="1" y="208" width="188" height="57" isPrintWhenDetailOverflows="true" uuid="6c1b1683-d560-4faf-95b3-37015ccedd9d"/>
+					<textElement verticalAlignment="Top">
+						<font fontName="DejaVu Sans" size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{name} + "\n" + $F{bp_data}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-20" x="0" y="77" width="155" height="91" isPrintWhenDetailOverflows="true" uuid="974be258-0088-4f4f-89af-c53fd173b5d1">
+						<printWhenExpression><![CDATA[new Boolean($F{showcompanydata}.equalsIgnoreCase("Y"))]]></printWhenExpression>
+					</reportElement>
+					<textElement>
+						<font fontName="DejaVu Sans" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($F{location}==null ? $F{org_name} + "\n" + $F{org_taxid} + "\n" : $F{org_name} + "\n" + $F{org_taxid} + "\n" + $F{location})]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-11" style="Group_Data_Label" x="305" y="205" width="57" height="18" forecolor="#7E7979" backcolor="#FFFFFF" uuid="ab08adf8-ea24-4b53-b60e-1eb0b5497cef"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="9" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<text><![CDATA[Currency]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-24" x="305" y="225" width="57" height="20" uuid="f4faef7a-a7cb-409e-a709-b169cf3038a4"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font fontName="DejaVu Sans" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{currency_iso}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-12" x="284" y="168" width="198" height="25" uuid="fc9acb39-f49b-4777-9ac4-0e7ff463ffff">
+						<printWhenExpression><![CDATA[new Boolean($F{issotrx}.equalsIgnoreCase("N"))]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right">
+						<font fontName="DejaVu Sans" size="16"/>
+					</textElement>
+					<text><![CDATA[Este es un pedido de]]></text>
+				</staticText>
+				<line>
+					<reportElement key="line-1" x="241" y="248" width="242" height="1" forecolor="#CCCCCC" uuid="82ba0ddf-4321-4100-a15e-2a24301dbc7a"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#A3A1A1"/>
+					</graphicElement>
+				</line>
+				<line direction="BottomUp">
+					<reportElement key="line-1" x="303" y="202" width="1" height="46" forecolor="#CCCCCC" uuid="2a69afd3-97d5-4692-ba7b-b956caf30303"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#A3A1A1"/>
+					</graphicElement>
+				</line>
+				<line direction="BottomUp">
+					<reportElement key="line-1" x="423" y="202" width="1" height="46" forecolor="#CCCCCC" uuid="1c026366-ecb6-4224-ab70-b8e3ef8cb301"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#A3A1A1"/>
+					</graphicElement>
+				</line>
+				<line direction="BottomUp">
+					<reportElement key="line-1" x="363" y="202" width="1" height="46" forecolor="#CCCCCC" uuid="561b052f-0618-4f47-9552-1c7aa46cf40d"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#A3A1A1"/>
+					</graphicElement>
+				</line>
+				<line direction="BottomUp">
+					<reportElement key="line-1" x="483" y="202" width="1" height="46" forecolor="#CCCCCC" uuid="485998c7-5ca3-4bfb-926b-63b7570531c2"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#A3A1A1"/>
+					</graphicElement>
+				</line>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-16" x="149" y="93" width="168" height="27" forecolor="#FF0000" uuid="1dbda0db-b66e-474e-9194-dc09d332f222"/>
+					<textElement textAlignment="Justified" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="22"/>
+					</textElement>
+					<textFieldExpression><![CDATA[(($F{status}.compareTo("VO")==0) ? "VOIDED" : " ")]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-6" style="Group_Data_Label" x="241" y="202" width="61" height="23" forecolor="#7E7979" backcolor="#FFFFFF" uuid="f11d1de9-9869-482f-9e1f-8ce4136da2eb"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="DejaVu Sans" size="9"/>
+					</textElement>
+					<text><![CDATA[Nº de]]></text>
+				</staticText>
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField-8" x="245" y="225" width="57" height="20" uuid="42ef83ee-2bf8-4cd4-9ca7-f6f4ce2cb1c5"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font fontName="DejaVu Sans" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{albaran}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="425" y="225" width="57" height="20" uuid="c5664c9d-3aa4-4c11-b9c2-09d79772963b"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font fontName="DejaVu Sans" size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{date_requisition}]]></textFieldExpression>
+				</textField>
+				<line direction="BottomUp">
+					<reportElement key="line-1" x="240" y="202" width="1" height="46" forecolor="#CCCCCC" uuid="01d3cb20-7d14-4a13-8948-68a758adf4e8"/>
+					<graphicElement>
+						<pen lineWidth="1.0" lineStyle="Solid" lineColor="#A3A1A1"/>
+					</graphicElement>
+				</line>
+				<staticText>
+					<reportElement x="414" y="50" width="68" height="10" uuid="8223d083-8b60-4649-aaa0-94cc0c2b7ffb"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="false"/>
+					</textElement>
+					<text><![CDATA[0]]></text>
+				</staticText>
+				<textField evaluationTime="Report">
+					<reportElement x="449" y="60" width="33" height="10" uuid="1066c039-dbc5-49f0-adc1-a4c65f6a415a"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA["/" + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<image hAlign="Center" vAlign="Middle">
+					<reportElement x="0" y="0" width="126" height="50" uuid="c1735aa6-9b31-4cdc-a03a-aa8a07ff2fd1"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{organizationid})]]></imageExpression>
+				</image>
+				<staticText>
+					<reportElement x="414" y="0" width="68" height="25" uuid="fbfaa3c6-3c93-4133-bde9-8ed58dbac8a6"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="false"/>
+					</textElement>
+					<text><![CDATA[2021-07-02]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="126" y="0" width="188" height="25" uuid="254770ee-6254-49b5-9e83-503855d4755f"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[REGISTRO]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="0" y="50" width="126" height="20" uuid="a43fd7a0-0d76-4ed7-88d7-775272be9bcf"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["F-CO-007"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="314" y="25" width="100" height="25" uuid="2c4e53ab-8bf4-4d7e-85a6-425d615d8e7c"/>
+					<box rightPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha de Revisión:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="314" y="60" width="100" height="10" uuid="ec46abda-135c-4dd6-a2cd-4c17d14af451"/>
+					<box rightPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Págs:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="414" y="25" width="68" height="25" uuid="71a4fbbb-1017-473c-aef6-3e4cf59ba79e"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7" isBold="false"/>
+					</textElement>
+					<text><![CDATA[2021-07-02]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="126" y="25" width="188" height="25" uuid="c280ae01-18e2-428e-b118-52f918cffc66"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{document}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="314" y="0" width="100" height="25" uuid="29106798-5f6a-4aa1-9216-3d1a3dc34d67"/>
+					<box rightPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Fecha de Creación:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="414" y="60" width="35" height="10" uuid="f0daaa75-0f8c-4510-82aa-d6e5f3b877cd"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="126" y="50" width="188" height="20" uuid="304be36d-6eb6-4180-a2ad-efee195d5edb"/>
+					<box>
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="8" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Norma de Referencia: ISO 9001]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="314" y="50" width="100" height="10" uuid="ec61d41b-b4bf-4c9f-a91e-10938c1791ec"/>
+					<box rightPadding="5">
+						<topPen lineWidth="0.5"/>
+						<leftPen lineWidth="0.5"/>
+						<bottomPen lineWidth="0.5"/>
+						<rightPen lineWidth="0.5"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Versión:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band splitType="Stretch"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="45" splitType="Stretch">
+			<subreport isUsingCache="false">
+				<reportElement key="subreport-1" x="0" y="5" width="482" height="36" uuid="acca5f7e-1035-4cb9-9b91-d7686d2b9d51">
+					<printWhenExpression><![CDATA[$F{istaxincluded}.equals("N")]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="NUMBERFORMAT">
+					<subreportParameterExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.getCountryNumberFormat($F{organizationid},$P{NUMBERFORMAT})]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LOCALE">
+					<subreportParameterExpression><![CDATA[$P{LOCALE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="C_ORDER_ID">
+					<subreportParameterExpression><![CDATA[$F{c_order_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ISTAXINCLUDED">
+					<subreportParameterExpression><![CDATA[$F{istaxincluded}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREP_C_OrderLinesJR_new}]]></subreportExpression>
+			</subreport>
+			<subreport isUsingCache="false">
+				<reportElement key="subreport-1" x="0" y="5" width="482" height="36" uuid="829a0ef4-8bc9-4385-8661-440d9778d13b">
+					<printWhenExpression><![CDATA[$F{istaxincluded}.equals("Y")]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="NUMBERFORMAT">
+					<subreportParameterExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.getCountryNumberFormat($F{organizationid},$P{NUMBERFORMAT})]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LOCALE">
+					<subreportParameterExpression><![CDATA[$P{LOCALE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="C_ORDER_ID">
+					<subreportParameterExpression><![CDATA[$F{c_order_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ISTAXINCLUDED">
+					<subreportParameterExpression><![CDATA[$F{istaxincluded}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREP_C_OrderLinesTaxIncludedJR_new}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="27">
+			<subreport isUsingCache="false">
+				<reportElement key="subreport-1" x="0" y="7" width="482" height="18" uuid="c8a22070-416c-421e-b0e3-9fdec9d3984e">
+					<printWhenExpression><![CDATA[$F{istaxincluded}.equals("Y")]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="NUMBERFORMAT">
+					<subreportParameterExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.getCountryNumberFormat($F{organizationid},$P{NUMBERFORMAT})]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="LOCALE">
+					<subreportParameterExpression><![CDATA[$P{LOCALE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="C_ORDER_ID">
+					<subreportParameterExpression><![CDATA[$F{c_order_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREP_RptC_Order_TaxLines_new}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="91" splitType="Stretch">
+			<line>
+				<reportElement key="line-2" positionType="Float" x="0" y="67" width="483" height="1" forecolor="#CCCCCC" uuid="1b1b987c-04a5-492b-afbe-5564b644bed6"/>
+				<graphicElement>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-9" style="default" positionType="Float" x="295" y="0" width="89" height="31" forecolor="#7E7979" uuid="512becc3-23fc-4997-bea1-e40cc57ba474"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Payment Terms]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" style="default" positionType="Float" x="1" y="0" width="79" height="31" forecolor="#7E7979" uuid="b7ddff7c-3214-40ef-a2c5-0174b5fd8474"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Delivery Term]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-3" style="default" positionType="Float" x="0" y="31" width="483" height="1" forecolor="#CCCCCC" uuid="e485d40f-016a-4382-ba6d-3e518584b3f2"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-21" positionType="Float" x="0" y="34" width="79" height="18" uuid="3fe89b3b-edf5-49fd-b1d8-38b0402232a7"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deliveryterm}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-9" positionType="Float" x="439" y="68" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="7a3b19bc-5b0a-476c-b94b-83533d1830de"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+					<font fontName="DejaVu Sans" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-10" positionType="Float" x="344" y="68" width="95" height="19" uuid="ed4658ef-36c6-4447-afc7-45bade796f61"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="212">
+			<textField>
+				<reportElement positionType="Float" x="102" y="88" width="92" height="12" uuid="758faf91-8bf7-43b4-9970-7cff9f7c452b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{label_firma_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="293" y="88" width="92" height="12" uuid="641737e3-1ccd-4b7d-90f0-98cd40edbb34"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" markup="none">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{label_firma_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="102" y="100" width="92" height="12" uuid="6d785a66-8091-47cd-950e-e1c9b6960471"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_firma_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="102" y="112" width="92" height="12" uuid="cc65ee68-bf42-4512-9ee9-02e063a0f45a"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_cargos_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="293" y="100" width="92" height="12" uuid="24dec12d-80df-4a8c-bdd5-be6efe07ea0b"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_firma_2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement positionType="Float" x="293" y="113" width="92" height="12" uuid="12fe81a3-2294-4c5b-9162-b967617513fa"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre_cargos_2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-10" positionType="Float" x="345" y="142" width="95" height="19" uuid="6493ee4e-82d4-4d8d-a860-21bc8301821e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-9" positionType="Float" x="440" y="142" width="36" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="fcbc2bf6-1952-4d34-b3a1-801b53cdc85d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+					<font fontName="DejaVu Sans" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="CP1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-2" positionType="Float" x="2" y="141" width="483" height="1" forecolor="#CCCCCC" uuid="1b6df629-592e-4f22-b222-b8c75307780d"/>
+				<graphicElement>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement key="staticText-10" style="default" positionType="Float" x="1" y="23" width="80" height="18" forecolor="#7E7979" uuid="1e4c3eca-347c-4521-b624-e21c9a74f4c5"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Delivery Term]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-3" style="default" positionType="Float" x="2" y="41" width="483" height="1" forecolor="#CCCCCC" uuid="212fd594-b1f5-428c-855f-7b6a6a18961f"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-21" positionType="Float" x="2" y="41" width="79" height="18" uuid="978256c5-70ff-455e-b1e7-5fecfbe84728"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deliveryterm}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-9" style="default" positionType="Float" x="299" y="24" width="89" height="18" forecolor="#7E7979" uuid="eb2678ba-89a8-4b16-8a04-0d09f13ab589"/>
+				<box leftPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Payment Terms]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-22" positionType="Float" x="299" y="42" width="89" height="18" isPrintWhenDetailOverflows="true" uuid="1a86a25e-c30a-4c87-83a9-307eb6fa5ce0"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paymentterm}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-21" positionType="Float" x="0" y="13" width="483" height="10" uuid="88c594bd-9188-415c-82bf-6c647f2f6c4a"/>
+				<box topPadding="0" bottomPadding="0"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement key="staticText-10" style="default" positionType="Float" x="0" y="0" width="483" height="13" forecolor="#7E7979" uuid="4e91a8b0-eb5d-4583-8010-88ec1efea1be"/>
+				<box leftPadding="0">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción:]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_WAREHOUSE">
+    <table name="M_WAREHOUSE" primaryKey="M_WAREHOUSE_KEY">
+      <column name="EM_SSVS_VIRTUALSTORAGE" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSVS_ISMAIN" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <check name="EM_SSVS_ISMAIN_CHK"><![CDATA[EM_SSVS_ISMAIN IN ('Y', 'N')]]></check>
+    </table>
+  </database>

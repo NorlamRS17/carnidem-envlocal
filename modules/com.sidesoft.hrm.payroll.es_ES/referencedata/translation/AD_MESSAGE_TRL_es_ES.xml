@@ -172,8 +172,4 @@
     <value column="MsgText" isTrl="Y" original="Fields concept formulates is mandatory">El campo concepto fórmula es obligatorio</value>
     <value column="MsgTip" isTrl="N" original=""/>
   </row>
-  <row id="29BBA44FB4464AE0928E400F159D3466" trl="N">
-    <value column="MsgText" isTrl="Y" original="Employee has no end of period reason defined in labor contract.">El empleado no tiene definido un motivo de fin de período en su contrato laboral.</value>
-    <value column="MsgTip" isTrl="N" original=""/>
-  </row>
 </compiereTrl>

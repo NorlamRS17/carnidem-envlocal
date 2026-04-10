@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_TASK">
+    <table name="C_TASK" primaryKey="C_TASK_KEY">
+      <column name="EM_SSPRJ_ISGOINGMO" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSPRJ_ISRETURNMO" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <check name="EM_SSPRJ_ISGOINGMO"><![CDATA[EM_SSPRJ_ISGOINGMO IN ('Y', 'N')]]></check>
+      <check name="EM_SSPRJ_ISRETURNMO_CHECK"><![CDATA[EM_SSPRJ_ISRETURNMO IN ('Y', 'N')]]></check>
+    </table>
+  </database>

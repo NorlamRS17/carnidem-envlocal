@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="5CD50F7496C24978827D12CBDD3F7FAC" trl="N">
+    <value column="Text" isTrl="N" original="\n">\n</value>
+  </row>
+  <row id="BFC8411FB7374F08AC4208B56627B228" trl="N">
+    <value column="Text" isTrl="N" original="This is a Sales order">This is a Sales order</value>
+  </row>
+  <row id="C5E8022AB95442EC8D7C082E39625330" trl="N">
+    <value column="Text" isTrl="N" original="This is a Purchase order">This is a Purchase order</value>
+  </row>
+  <row id="DD5EDB8215AD4A6A9580AF6B05D4552D" trl="N">
+    <value column="Text" isTrl="N" original="Order Nº">Order Nº</value>
+  </row>
+  <row id="EC23E362D16342A9BB7EBAF8F9128280" trl="N">
+    <value column="Text" isTrl="N" original="VO">VO</value>
+  </row>
+  <row id="FBF0AFDB027A44439F1E61727C3813B5" trl="N">
+    <value column="Text" isTrl="N" original="VOIDED">VOIDED</value>
+  </row>
+</compiereTrl>

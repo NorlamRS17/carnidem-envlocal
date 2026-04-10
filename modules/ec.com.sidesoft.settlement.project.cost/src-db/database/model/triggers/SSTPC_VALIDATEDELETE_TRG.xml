@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSTPC_VALIDATEDELETE_TRG">
+    <trigger name="SSTPC_VALIDATEDELETE_TRG" table="SSTPC_LIQUIDATION_PROJECTS" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[
+
+    v_DateNull DATE := TO_DATE('31-12-9999','DD-MM-YYYY');
+    v_LiquidateProjectsID VARCHAR2(32);
+    v_DocStatus 	  VARCHAR2(60);
+        
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+
+ IF(DELETING) THEN
+
+ v_LiquidateProjectsID:= :old.SSTPC_LIQUIDATION_PROJECTS_ID;
+
+ SELECT 
+ COALESCE(TO_CHAR((SELECT DOCSTATUS 
+ FROM SSTPC_LIQUIDATION_PROJECTS 
+ WHERE SSTPC_LIQUIDATION_PROJECTS_ID = v_LiquidateProjectsID
+ )),TO_CHAR('ND'))
+ INTO v_DocStatus
+ FROM DUAL;
+ 
+ IF (v_DocStatus='CO') THEN
+	RAISE_APPLICATION_ERROR(-20000,'@Sstpc_ValidateDeleteCommplete@') ;
+ ELSE
+	IF (v_DocStatus='LQ') THEN
+		RAISE_APPLICATION_ERROR(-20000,'@Sstpc_ValidateDeleteLiquidated@') ;
+	END IF;
+ 
+ END IF;
+
+END IF;
+ 
+END SSTPC_VALIDATEDELETE_TRG
+]]></body>
+    </trigger>
+  </database>

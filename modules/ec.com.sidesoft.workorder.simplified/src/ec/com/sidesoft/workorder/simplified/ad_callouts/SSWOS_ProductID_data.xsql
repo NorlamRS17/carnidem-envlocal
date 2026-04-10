@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html 
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License. 
+ * The Original Code is Openbravo ERP. 
+ * The Initial Developer of the Original Code is Openbravo SLU 
+ * All portions are Copyright (C) 2001-2010 Openbravo SLU 
+ * All Rights Reserved. 
+ * Contributor(s):  ______________________________________.
+ ************************************************************************
+-->
+
+ <SqlClass name="SSWOSProductIDData" package="ec.com.sidesoft.workorder.simplified.ad_callouts">
+  <SqlMethod name="select" type="preparedStatement" return="multiple"> 
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[         
+            select mpp.pricelist, ct.c_tax_id, mpp.pricestd	
+			from m_productprice as mpp 
+			join m_product as mp on (mpp.m_product_id = mp.m_product_id) 
+			join c_tax as ct on (mp.c_taxcategory_id = ct.c_taxcategory_id)
+			where mpp.m_product_id = ?
+			and mpp.m_pricelist_version_id in (select m_pricelist_version_id 
+											from m_pricelist_version 
+											where m_pricelist_id = ?
+											order by validfrom desc limit 1)
+      ]]>
+    </Sql>
+    <Parameter name="strMProductId"/>
+    <Parameter name="strMPricelistId"/>
+  </SqlMethod>
+ </SqlClass>

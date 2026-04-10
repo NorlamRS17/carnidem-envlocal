@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="3492EE1CA265471EA93B047E06701A90" trl="Y">
+    <value column="Name" isTrl="N" original="Doc Posted">Doc Posted</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="641F51EBC86242149F27945D14199485" trl="Y">
+    <value column="Name" isTrl="N" original="MA_Processplan Selector">MA_Processplan Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="75E8EA65076C4C96909DE0425EAD8F28" trl="Y">
+    <value column="Name" isTrl="N" original="MA_Workrequirement Selector">MA_Workrequirement Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8232A1BB70FB44ABA510566E7248CE02" trl="Y">
+    <value column="Name" isTrl="N" original="Table Work Effort">Table Work Effort</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8BF3EE3108C34BEF965EBFC0C15EEB2E" trl="Y">
+    <value column="Name" isTrl="N" original="Table Incidence">Table Incidence</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AC7C471683F2495AA02357665DA2E8CA" trl="Y">
+    <value column="Name" isTrl="Y" original="M_PRODUCT Selector">M_PRODUCT SelectoR</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

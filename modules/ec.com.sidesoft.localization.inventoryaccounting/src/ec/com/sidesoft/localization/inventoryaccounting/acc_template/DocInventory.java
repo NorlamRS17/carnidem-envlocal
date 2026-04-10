@@ -10,7 +10,7 @@ import javax.servlet.ServletException;
 import org.apache.log4j.Category;
 import org.apache.log4j.Logger;
 import org.openbravo.base.secureApp.VariablesSecureApp;
-//import org.openbravo.costing.CostingStatus;
+import org.openbravo.costing.CostingStatus;
 import org.openbravo.dal.core.OBContext;
 import org.openbravo.dal.service.OBDal;
 import org.openbravo.data.FieldProvider;
@@ -175,10 +175,10 @@ private Category log4j;
     int countInvLinesWithTrnCostZero = 0;
     for (int i = 0; i < p_lines.length; i++) {
       DocLine_Material line = (DocLine_Material) p_lines[i];
-//      if (CostingStatus.getInstance().isMigrated() && line.transaction != null
-//          && "NC".equals(line.transaction.getCostingStatus())) {
-//        setStatus(STATUS_NotCalculatedCost);
-//      }
+      if (CostingStatus.getInstance().isMigrated() && line.transaction != null
+          && "NC".equals(line.transaction.getCostingStatus())) {
+        setStatus(STATUS_NotCalculatedCost);
+      }
 
       if (line.transaction == null
           || (line.transaction.getTransactionCost() != null && line.transaction
@@ -194,17 +194,17 @@ private Category log4j;
 
       Currency costCurrency = FinancialUtils.getLegalEntityCurrency(OBDal.getInstance().get(
           Organization.class, line.m_AD_Org_ID));
-//      if (!CostingStatus.getInstance().isMigrated()) {
-//        costCurrency = OBDal.getInstance().get(Client.class, AD_Client_ID).getCurrency();
-//      } else if (line.transaction != null && line.transaction.getCurrency() != null) {
-//        costCurrency = line.transaction.getCurrency();
-//      }
-//      if (CostingStatus.getInstance().isMigrated() && line.transaction != null
-//          && !line.transaction.isCostCalculated()) {
-//        Map<String, String> parameters = getNotCalculatedCostParameters(line.transaction);
-//        setMessageResult(conn, STATUS_NotCalculatedCost, "error", parameters);
-//        throw new IllegalStateException();
-//      }
+      if (!CostingStatus.getInstance().isMigrated()) {
+        costCurrency = OBDal.getInstance().get(Client.class, AD_Client_ID).getCurrency();
+      } else if (line.transaction != null && line.transaction.getCurrency() != null) {
+        costCurrency = line.transaction.getCurrency();
+      }
+      if (CostingStatus.getInstance().isMigrated() && line.transaction != null
+          && !line.transaction.isCostCalculated()) {
+        Map<String, String> parameters = getNotCalculatedCostParameters(line.transaction);
+        setMessageResult(conn, STATUS_NotCalculatedCost, "error", parameters);
+        throw new IllegalStateException();
+      }
       String costs = "";
       BigDecimal b_Costs = BigDecimal.ZERO;
       if (line.transaction != null) {
@@ -221,7 +221,7 @@ private Category log4j;
         log4j.error("No Account Asset for product: " + product.getName()
             + " in accounting schema: " + schema.getName());
       }
-      if (b_Costs.compareTo(BigDecimal.ZERO) == 0 /* && !CostingStatus.getInstance().isMigrated() */
+      if (b_Costs.compareTo(BigDecimal.ZERO) == 0 && !CostingStatus.getInstance().isMigrated()
           && DocInOutTemplateData.existsCost(conn, DateAcct, line.m_M_Product_ID).equals("0")) {
         Map<String, String> parameters = getInvalidCostParameters(
             OBDal.getInstance().get(Product.class, line.m_M_Product_ID).getIdentifier(), DateAcct);

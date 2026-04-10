@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_ATIMV_FacturaM_mayoreo" printOrder="Horizontal" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="832" leftMargin="5" rightMargin="5" topMargin="56" bottomMargin="56">
+	<property name="ireport.zoom" value="1.0245201830476058"/>
+	<property name="ireport.x" value="36"/>
+	<property name="ireport.y" value="232"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/Desarrollo/OpenbravoERPIndumoto/modules/com.atrums.indumot.formatoimpresion/src"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select  p.name,
+lo.address1 || ' - '  || (select coalesce(name,'') from c_city where c_city_id = lo.c_city_id) || ' - ' ||
+        (select coalesce(name,'') from c_region where c_region_id = lo.c_region_id) || ' - ' ||
+          coalesce(l.phone,'') as "DIRECCION",
+	p.name2,
+	coalesce(l.phone,'') as telefono,
+        coalesce(p.taxid,'') AS "RUC/CI",
+        p.value as "COD.CLIENTE",
+        coalesce((select username  from ad_user where ad_user_id = i.salesrep_id),'')as "COD.VENDEDOR",
+        i.dateinvoiced as "FECHA_EMISION",
+        i.documentno as "NUM.DOC",
+        (select name from c_paymentterm where c_paymentterm_id = i.c_paymentterm_id) as "FORMA_PAGO",
+i.totallines,
+        (select sum(it.taxamt) from c_invoicetax it where it.c_invoice_id = i.c_invoice_id) as imp,
+
+        CASE when (select m_attributesetinstance_id from c_invoiceline where c_invoice_id = i.c_invoice_id limit 1)
+        is null then 0
+        when i.grandtotal-(select o.em_atvef_entrada from c_orderline o where o.c_order_id = i.c_order_id limit 1) < 0
+        then 0
+        when (select netdays from c_paymentterm where c_paymentterm_id = i.c_paymentterm_id) = 0 then 0
+        else i.grandtotal-(select o.em_atvef_entrada from c_orderline o where o.c_order_id = i.c_order_id limit 1) end as finan,
+
+        (select
+case when sum(priceactual) < 0 then round(sum(priceactual),2) else 0 end
+from c_invoiceline where priceactual<0 and c_invoice_id = $P{DOCUMENT_ID}) as descuento,
+i.totallines as subtotal,
+        i.grandtotal,
+atimv_vencimiento_factura($P{DOCUMENT_ID}) as paymentterm,
+        (select m_attributesetinstance_id from c_invoiceline where c_invoice_id = i.c_invoice_id limit 1) as "ATRIBUTOS"
+from c_invoice as i left join c_bpartner p on(i.c_bpartner_id=p.c_bpartner_id) left join c_bpartner_location as l on(l.c_bpartner_location_id=i.c_bpartner_location_id), c_location lo
+where i.c_invoice_id = $P{DOCUMENT_ID}
+and i.docstatus = 'CO'
+and lo.c_location_id = l.c_location_id]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<field name="DIRECCION" class="java.lang.String"/>
+	<field name="RUC/CI" class="java.lang.String"/>
+	<field name="COD.CLIENTE" class="java.lang.String"/>
+	<field name="COD.VENDEDOR" class="java.lang.String"/>
+	<field name="FECHA_EMISION" class="java.sql.Timestamp"/>
+	<field name="NUM.DOC" class="java.lang.String"/>
+	<field name="FORMA_PAGO" class="java.lang.String"/>
+	<field name="grandtotal" class="java.math.BigDecimal"/>
+	<field name="ATRIBUTOS" class="java.lang.String"/>
+	<field name="totallines" class="java.math.BigDecimal"/>
+	<field name="imp" class="java.math.BigDecimal"/>
+	<field name="finan" class="java.math.BigDecimal"/>
+	<field name="descuento" class="java.math.BigDecimal"/>
+	<field name="subtotal" class="java.math.BigDecimal"/>
+	<field name="paymentterm" class="java.lang.String"/>
+	<field name="name2" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
+	<columnHeader>
+		<band height="156" splitType="Stretch">
+			<textField>
+				<reportElement x="80" y="-7" width="329" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" isBold="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="63" y="22" width="346" height="16"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{DIRECCION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="471" y="-7" width="110" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{RUC/CI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="677" y="-7" width="100" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{COD.CLIENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="561" y="8" width="143" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{COD.VENDEDOR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="710" y="22" width="119" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{FECHA_EMISION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="611" y="-36" width="110" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{NUM.DOC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="677" y="38" width="124" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{FORMA_PAGO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="8" width="329" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" isBold="false" isItalic="false" isUnderline="false" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="471" y="24" width="100" height="14"/>
+				<textElement>
+					<font fontName="Courier New" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="85" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="838" height="85"/>
+				<subreportParameter name="DOCUMENT_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BASE_DESIGN">
+					<subreportParameterExpression><![CDATA[$P{BASE_DESIGN}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{BASE_DESIGN} + "/com/atrums/indumot/formatoimpresion/cobros/erpCommon/ad_reports/pronae_Rpt_ATIMV_FacturaM_may_subrpt.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="210">
+			<textField pattern="#,##0.00">
+				<reportElement x="739" y="162" width="81" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{imp}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="739" y="186" width="81" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{grandtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="739" y="138" width="81" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{subtotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="739" y="150" width="81" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{descuento}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="739" y="174" width="81" height="12"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10" pdfFontName="Courier"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{finan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

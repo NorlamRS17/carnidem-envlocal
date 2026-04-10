@@ -1,0 +1,497 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <removeTriggerChange triggerName="ATVEF_ACT_PAGOS_TRG"/>
+    <columnDataChange tablename="AD_REF_LIST" columnname="NAME" pkRow="72CF040FFFAF4D93B4F3C9EDAA2CDCA1">
+      <oldValue><![CDATA[Validado - Ordenes Entregadas]]></oldValue>
+      <newValue><![CDATA[Procesado]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="0199F9D53DE74D998876206B0419A1FD">
+      <oldValue><![CDATA[@docstatus@!'TL']]></oldValue>
+      <newValue><![CDATA[(@docstatus@='SSWOS_F' | @docstatus@='EP' | @docstatus@='ET' | @docstatus@='SSWOS_C') & @Sswos_IsConsol@='N']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="0199F9D53DE74D998876206B0419A1FD">
+      <oldValue><![CDATA[DE961440274143ED8A8A73C022F6C2F4]]></oldValue>
+      <newValue><![CDATA[83A53AEA167749C3A7381471BBFF9D0A]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="034C5955129A4A1BB89AB656CE90CB0C">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="0CE82AF9B57941FA9C250006EAC2676F">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="15EC9B4B25C742E1A81729AE5B9D7F3C">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="15EC9B4B25C742E1A81729AE5B9D7F3C">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="15EC9B4B25C742E1A81729AE5B9D7F3C">
+      <oldValue/>
+      <newValue><![CDATA[86D1F03C1CE646D089C7442F8AFF34E5]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="1D965ABE3B354762B39867A290192281">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@Atindpo_Discount@!0 | @docstatus@!'EP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="20913AFF16EA45AD801F2915273E079B">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="20D239656582409CB6EDCC13F30DEB8C">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="20D239656582409CB6EDCC13F30DEB8C">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C'  | @EM_Sswos_New@='N']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="26AAAEEA6F86463AB492980A527D73A0">
+      <oldValue><![CDATA[263693E51C7847BF90C897ADB830E2BB]]></oldValue>
+      <newValue><![CDATA[9EF40A337EF34DE69A7B5497E6088553]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="DEFAULTVALUE" pkRow="26AAAEEA6F86463AB492980A527D73A0">
+      <oldValue/>
+      <newValue><![CDATA[@SQL=SELECT M_WAREHOUSE_ID FROM M_WAREHOUSE  WHERE AD_ORG_ID = @AD_ORG_ID@ ORDER BY NAME DESC]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="26AAAEEA6F86463AB492980A527D73A0">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="294C8A90E6164A37B196F1FB70C8BD08">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="30BA6FD6540D4B07B01A02211530DE07">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="3405E4C216FA47FDA910104239A17383">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="3405E4C216FA47FDA910104239A17383">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C' | @EM_Sswos_New@='N']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="34F9795CD9D543BF9E7273DF08B8AB67">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="34F9795CD9D543BF9E7273DF08B8AB67">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="38525DE55BD34C5B9ACFBA4818845290">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="38525DE55BD34C5B9ACFBA4818845290">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C' | @EM_Sswos_New@='N']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="3A47E12B124048E9BEAC3778A64274FD">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C' | @EM_Sswos_New@='N']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="400CDE925E494A82A8DD3C2EC38E6E55">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="400CDE925E494A82A8DD3C2EC38E6E55">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISIDENTIFIER" pkRow="41994CA32CB24ECE9405C960D12C0966">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="4810E599DDE24E4485FB6FA53855B452">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="52F8CD9B19C049D596C1C7C0F8DCD93E">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="52F8CD9B19C049D596C1C7C0F8DCD93E">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="52F8CD9B19C049D596C1C7C0F8DCD93E">
+      <oldValue/>
+      <newValue><![CDATA[86D1F03C1CE646D089C7442F8AFF34E5]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="54B7A573C06342FC8E87651FF95071A8">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="54B7A573C06342FC8E87651FF95071A8">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="5DDF0D8C8698474D84C16A2B2C8FA13D">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="5DDF0D8C8698474D84C16A2B2C8FA13D">
+      <oldValue><![CDATA[1096272FE07B440BA6E02F62B2DC3B40]]></oldValue>
+      <newValue><![CDATA[0CEA5BFF33F84238807A2E96B309531E]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="64EDAFAD422E481FBB3F4582878B8630">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="6F620A9ED45D49FEADDFCE6639BF849E">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="6F620A9ED45D49FEADDFCE6639BF849E">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="DEFAULTVALUE" pkRow="770A7A5D5E2A4E6F8CC03D8121364D79">
+      <oldValue/>
+      <newValue><![CDATA[EE]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="7C87D89580CC41B8A825F4452F9EFA35">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="865180F765C34E95AB5CF1CBDDB1B8B6">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="865180F765C34E95AB5CF1CBDDB1B8B6">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="87D6D261838E4F9BAFF77EF43BCBCC2A">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="898F6854AA2C48CCA0CD156D062C29AD">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="898F6854AA2C48CCA0CD156D062C29AD">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="DEFAULTVALUE" pkRow="8A5B92C13B4745C698BB204D36534E41">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[@Sswos_IsConsol@]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="90911FECBAC04AEB8DF7322512BA3795">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="9B416D99F88B472AAE938B96EF200EB2">
+      <oldValue/>
+      <newValue><![CDATA[1BDB6AC6C0FD4DEDBA591240EE625739]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="A7E3FA11BE0A443986D06816D4C080E1">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C' | @EM_Sswos_New@='N']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="B1CD1AEF01DB435B92C337C9FDC9BF0B">
+      <oldValue><![CDATA[30]]></oldValue>
+      <newValue><![CDATA[95E2A8B50A254B2AAE6774B8C2F28120]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="B1CD1AEF01DB435B92C337C9FDC9BF0B">
+      <oldValue><![CDATA[800057]]></oldValue>
+      <newValue><![CDATA[0F174689FE7A441E8284143A59024A62]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="B1CD1AEF01DB435B92C337C9FDC9BF0B">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="B9EFAA4EBFA249ECB662EF944E81F690">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C' | @EM_Sswos_New@='N']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="BAFEBDA6E51B40F0B5C532052C07A6FE">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="BAFEBDA6E51B40F0B5C532052C07A6FE">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="BD7CAAA07A6443DA8D63A610034ECCF5">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="C3C73B756B294D858D270919AF4C46D2">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="D1BCFBB5F81E499587B6CDC725F4CCDB">
+      <oldValue><![CDATA[19]]></oldValue>
+      <newValue><![CDATA[18]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="D1BCFBB5F81E499587B6CDC725F4CCDB">
+      <oldValue/>
+      <newValue><![CDATA[EED0EF97D4A7421687F3B365D009E7A6]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="D1BCFBB5F81E499587B6CDC725F4CCDB">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="D8A1C0B6D6AC4E4B8B6E819DC5965E1E">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="D8A1C0B6D6AC4E4B8B6E819DC5965E1E">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C' | @EM_Sswos_New@='N']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="DDD31FDC78D84EDCBB0E8F48A0A24C9B">
+      <oldValue/>
+      <newValue><![CDATA[@Validado@='Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="E7024571CED040B59E815E3B85BA48A4">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="F172A9A908E14881B0BA8A2613ACDFF4">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISSESSIONATTR" pkRow="F172A9A908E14881B0BA8A2613ACDFF4">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="F172A9A908E14881B0BA8A2613ACDFF4">
+      <oldValue><![CDATA[E9F5387DD9054CCCA15D629B43067FA6]]></oldValue>
+      <newValue><![CDATA[A796954945AE47B38CA1689E6044CF2C]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="F5DFC21E45AF4237AA408A5550172B44">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="F9FAE2E6F624431EAF79ED5359AFF81A">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C' | @EM_Sswos_New@='N']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="FB4E4817DBDB4618B1A64D45A3E03270">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="FB4E4817DBDB4618B1A64D45A3E03270">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="FFD3D19EA86B47338AF221743704CF5C">
+      <oldValue><![CDATA[@docstatus@='TL' | @docstatus@='ET']]></oldValue>
+      <newValue><![CDATA[@docstatus@='TL' | @docstatus@='ET' | @docstatus@='SSWOS_F' | @docstatus@='SSWOS_C']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="HQLWHERECLAUSE" pkRow="035702E0D5124D3FA8B162ABADD2433F">
+      <oldValue/>
+      <newValue><![CDATA[e.indsupIsConsol=false]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="HQLWHERECLAUSE" pkRow="27707CD4DB0246059122988D789B4ACE">
+      <oldValue/>
+      <newValue><![CDATA[e.indsupIsConsol=false]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="ISACTIVE" pkRow="6FF590B6A1D2477AA7769615B7F30C52">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SHOWINRELATION" pkRow="147AC6D8DB914E6692A20A51CA6E38BB">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="154304F222E342A483DB28E3F87291A5">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="172921F03A7D4A3EAC47F9CD0AB44C11">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISREADONLY" pkRow="4800084EA6A34D2784D3BF332C90B45D">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="49112A7250E449FD87C88F12D9957001">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="4EF500E61A294B3E90452CF6EA84E34A">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SHOWINRELATION" pkRow="4EF500E61A294B3E90452CF6EA84E34A">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLENGTH" pkRow="58140AC269F04EC08575F2AF661B512A">
+      <oldValue><![CDATA[28]]></oldValue>
+      <newValue><![CDATA[50]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="688244008A254465A2D181E09CF50F04">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SHOWINRELATION" pkRow="688244008A254465A2D181E09CF50F04">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="6A7DC3AFB2D6458DA9AFC7AF08C11FE0">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISREADONLY" pkRow="76CA0E0F121E475B8E4CDC35143FE105">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SHOWINRELATION" pkRow="7959DCA9635142BEA46E370B124D11D2">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="8B60669A03D241F2BECC92D28DBDD9A5">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="990CAE5389CA4721897392D5843A8C6F">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="99E100ADAAEE434086BAA1C16C1B22FE">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SHOWINRELATION" pkRow="9B2B176C407A43468D63A08E5E22B0D4">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="9C205069A9A84EB29D30CFF5D4C9B40C">
+      <oldValue><![CDATA[@docstatus@!'ET' ]]></oldValue>
+      <newValue><![CDATA[@docstatus@!'ET' & @crearfactura@!'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="9E3742EE7F3648BE82569DE4BED762ED">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="AB6A7130C0CB47DB9FED86FB859D97F1">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SHOWINRELATION" pkRow="AB6A7130C0CB47DB9FED86FB859D97F1">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISSHOWNINSTATUSBAR" pkRow="B08C911BC63640D0BD456593327922C2">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="B25EA197963F4CA897FCB167704CBE0F">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="BD09581C93A944B984471D0BDB1D3DDD">
+      <oldValue><![CDATA[@em_indsup_est_consol@='BR']]></oldValue>
+      <newValue><![CDATA[@Sswos_CreateOrder@='N' & @crearfactura@='N']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISACTIVE" pkRow="BE76EEA3D1B54C3CBBF3D1ABE1DAA628">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="C3E3B368F4384ACC993BDF5C97B5447F">
+      <oldValue><![CDATA[@docstatus@!'ET' ]]></oldValue>
+      <newValue><![CDATA[@docstatus@!'ET' & @crearfactura@!'Y']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="CC090D0E1E17408F863A1C1F29E7E6DD">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="DF008809784E4D59AA26E785F8050DA9">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="DF93DCF97D1B450CBD1322DD4CAA69E7">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="F98B5A3BB1C34705AFFC9C8C1CACA81B">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="FF5FF3277E29422495D93E80244347E1">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TABLE" columnname="ISDELETEABLE" pkRow="2961912044214299B33CA73BD3D0B70E">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="PARENT_ID" pkRow="25B9FF7CC25E4D3196180600EEFE7D11">
+      <oldValue><![CDATA[800249]]></oldValue>
+      <newValue><![CDATA[F361809F2FE54FD087059F5E06A56E38]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="SEQNO" pkRow="25B9FF7CC25E4D3196180600EEFE7D11">
+      <oldValue><![CDATA[10]]></oldValue>
+      <newValue><![CDATA[30]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="PARENT_ID" pkRow="94662B0B3763443697FCFF60B0D2CD74">
+      <oldValue><![CDATA[800249]]></oldValue>
+      <newValue><![CDATA[F361809F2FE54FD087059F5E06A56E38]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="SEQNO" pkRow="94662B0B3763443697FCFF60B0D2CD74">
+      <oldValue><![CDATA[150]]></oldValue>
+      <newValue><![CDATA[30]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="PARENT_ID" pkRow="9A17FAFC7CDD459591447EF4A1F79322">
+      <oldValue><![CDATA[272]]></oldValue>
+      <newValue><![CDATA[7CBBAC49A94B446BA9AD5F8C29D436B3]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="SEQNO" pkRow="9A17FAFC7CDD459591447EF4A1F79322">
+      <oldValue><![CDATA[10]]></oldValue>
+      <newValue><![CDATA[30]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="PARENT_ID" pkRow="A78A77B971E447E7AA13F0DA18F815C9">
+      <oldValue><![CDATA[800249]]></oldValue>
+      <newValue><![CDATA[F361809F2FE54FD087059F5E06A56E38]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="SEQNO" pkRow="A78A77B971E447E7AA13F0DA18F815C9">
+      <oldValue><![CDATA[10]]></oldValue>
+      <newValue><![CDATA[30]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="PARENT_ID" pkRow="EB804B77C059441480EEF9671AEB1ED4">
+      <oldValue><![CDATA[800249]]></oldValue>
+      <newValue><![CDATA[F361809F2FE54FD087059F5E06A56E38]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TREENODE" columnname="SEQNO" pkRow="EB804B77C059441480EEF9671AEB1ED4">
+      <oldValue><![CDATA[60]]></oldValue>
+      <newValue><![CDATA[30]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_VAL_RULE" columnname="CODE" pkRow="07D8B925FC8B4383B6849027895E55B5">
+      <oldValue><![CDATA[ ad_ref_list.value in ( SELECT rl.value FROM ad_ref_list rl 
+                                            WHERE (rl.isActive = 'Y' OR rl.Value = NULL )
+                                            and rl.ad_reference_id ='A59EA6E20C0D4F92BB96158C78BFA6FF'
+                                            and (case when @docstatus@='EE' then rl.value in ('EP') 
+                                                      when @docstatus@='EP' then rl.value in ('TL','EE')
+                                                      when @docstatus@='TL' then rl.value in ('ET','EP')
+                                                      when @docstatus@='ET'then rl.value in  ('ET','EP','TL','EE') 
+                                                 end)
+                                            ORDER BY rl.SeqNo
+                            )]]></oldValue>
+      <newValue><![CDATA[ad_ref_list.value in ( 
+	SELECT rl.value FROM ad_ref_list rl 
+	WHERE (rl.isActive = 'Y' OR rl.Value = NULL )
+	and rl.ad_reference_id ='A59EA6E20C0D4F92BB96158C78BFA6FF'
+	and (case when @docstatus@='EE' then rl.value in ('EP','SSWOS_C') 
+		when @docstatus@='SSWOS_C' then rl.value in ('EE') 
+		when @docstatus@='EP' then rl.value in ('TL','EE') 
+		when @docstatus@='TL' then rl.value in ('ET','EP') 
+		when @docstatus@='ET'then rl.value in  ('ET','EP','TL','EE') 
+	end) 
+	ORDER BY rl.SeqNo
+) ]]></newValue>
+    </columnDataChange>
+  </vector>

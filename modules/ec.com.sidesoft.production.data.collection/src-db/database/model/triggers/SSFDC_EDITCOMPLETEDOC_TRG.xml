@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSFDC_EDITCOMPLETEDOC_TRG">
+    <trigger name="SSFDC_EDITCOMPLETEDOC_TRG" table="MA_MEASURE_SHIFT" fires="before" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[	v_Check NUMBER;
+	v_completed record;
+BEGIN
+	SELECT em_ssfdc_completed INTO v_completed FROM MA_Measure_Shift WHERE MA_Measure_Shift_ID = :NEW.MA_Measure_Shift_ID;
+-- Verificar si el nuevo valor del campo "estado" es 'V'
+  IF v_completed.em_ssfdc_completed = 'Y' THEN
+    -- Generar una excepción con un mensaje personalizado
+	  RAISE_APPLICATION_ERROR(-20000, 'No se puede editar una fila con estado COMPLETADO o ANULADO en esta tabla');
+  
+  END IF;
+  
+  -- Si la verificación pasa, continuar con la actualización
+  RETURN NEW;
+
+END SSFDC_EDITCOMPLETEDOC_TRG
+]]></body>
+    </trigger>
+  </database>

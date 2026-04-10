@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="537F360F3B31467BA3AD742600AE507B" trl="N">
+    <value column="MsgText" isTrl="Y" original="The transaction can not be deleted because it is liquidated.">La transacción no puede ser eliminada porque se encuentra liquidado.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="B7FEB00C134F4135943626D5FF13A864" trl="N">
+    <value column="MsgText" isTrl="Y" original="The transaction can not be deleted because it is posted.">La transacción no puede ser eliminada porque se encuentra contabilizada.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

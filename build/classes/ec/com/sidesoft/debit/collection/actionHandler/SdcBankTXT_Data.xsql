@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="SdcBankTXTData" package="ec.com.sidesoft.debit.collection.actionHandler" accessModifier="public">
+   <SqlClassComment></SqlClassComment>
+
+  <SqlMethod name="selectgeneral" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	SELECT 'CO' as c1,'' as taxid,'USD' as c3,'' as amount,'REC' as c5,'SALDOS' as c6,'' as c7
+	,'' as taxidbank,'' as partnername
+	FROM dual
+      ]]>
+    </Sql>
+  </SqlMethod>
+  <SqlMethod name="selectsummary" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	SELECT 'CO' as c1,bp.taxid,'USD' as c3,SUM(ROUND(c.outstandingamt,2)) as amount,'REC' as c5,'SALDOS' as c6,
+	CASE WHEN LENGTH(bp.taxid)=10 THEN 'C' WHEN LENGTH(bp.taxid)=13 THEN 'R' ELSE 'P' END as c7
+	,bp.taxid as taxidbank,bp.name as partnername
+	FROM sdc_dc_propocollect c
+		JOIN c_bpartner bp ON bp.c_bpartner_id=c.c_bpartner_id
+		JOIN c_invoice i ON i.c_bpartner_id=bp.c_bpartner_id AND i.documentno=c.documentno
+	WHERE sdc_debitcollect_id = ?
+		AND bp.em_sdc_collections='Y'
+	GROUP BY bp.c_bpartner_id
+      ]]>
+    </Sql>
+    <Parameter name="recordid"/>
+  </SqlMethod>
+
+  <SqlMethod name="selectdetaill" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	SELECT 'CO' as c1,bp.taxid,'USD' as c3,ROUND(c.outstandingamt,2) as amount,'REC' as c5,'SALDOS' as c6,
+	CASE WHEN LENGTH(bp.taxid)=10 THEN 'c' WHEN LENGTH(bp.taxid)=13 THEN 'r' ELSE 'p' END as c7
+	,bp.taxid as taxidbank,bp.name as partnername
+	FROM sdc_dc_propocollect c
+		JOIN c_bpartner bp ON bp.c_bpartner_id=c.c_bpartner_id
+		JOIN c_invoice i ON i.c_bpartner_id=bp.c_bpartner_id AND i.documentno=c.documentno
+	WHERE sdc_debitcollect_id = ?
+		AND bp.em_sdc_collections='Y'
+	ORDER BY c.documentno,duedate
+      ]]>
+    </Sql>
+    <Parameter name="recordid"/>
+  </SqlMethod>
+
+
+</SqlClass>

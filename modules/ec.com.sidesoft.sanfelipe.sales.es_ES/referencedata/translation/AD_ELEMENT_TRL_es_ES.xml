@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="07A518A2B84D4CEF8FD1E54DAEF87049" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssfps_Qtyinvoiced">Cantidad Facturada Original</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssfps_Qtyinvoiced">Cantidad Facturada Original</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="32145C443C344FDF9D5D7AFC35735416" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssfps_Qtydelivered">Cantidad Entregada Original</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssfps_Qtydelivered">Cantidad Entregada Original</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3419486185C44EF9A47DBCEE30087EA7" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssfps_Reason_Clousere">Motivo de cierre.</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssfps_Reason_Clousere">Motivo de cierre.</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7FC971C9A4F64E988C69F176A00D69C1" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssfps_Qtyordered">Cantidad Ordenada Original</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssfps_Qtyordered">Cantidad Ordenada Original</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D8DCCB36F80B481C866401BFF8EFA7DB" trl="N">
+    <value column="Name" isTrl="N" original="Ssfps_Reasons_Clousure_ID">Ssfps_Reasons_Clousure_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssfps_Reasons_Clousure_ID">Ssfps_Reasons_Clousure_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

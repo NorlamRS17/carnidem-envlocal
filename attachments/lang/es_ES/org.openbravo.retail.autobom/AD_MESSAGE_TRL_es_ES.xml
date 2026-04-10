@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="BE09A4EB7AED4EE78595690239C30D83" trl="N">
+    <value column="MsgText" isTrl="N" original="BOM created from WebPOS">BOM created from WebPOS</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="FB7EAA48264E4C2B98F0EC252C723FAE" trl="N">
+    <value column="MsgText" isTrl="N" original="Auto Generate BOM option is only available for stocked products">Auto Generate BOM option is only available for stocked products</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

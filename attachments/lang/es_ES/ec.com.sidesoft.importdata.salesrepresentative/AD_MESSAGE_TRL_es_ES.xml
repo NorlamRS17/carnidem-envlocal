@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="534605A05CF04965A39829AAD919F13D" trl="N">
+    <value column="MsgText" isTrl="N" original="Customer does not exists with search key ">Customer does not exists with search key </value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="813583198C534E23A154D1D60B442B08" trl="N">
+    <value column="MsgText" isTrl="N" original="Sales representative does not exists with name ">Sales representative does not exists with name </value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

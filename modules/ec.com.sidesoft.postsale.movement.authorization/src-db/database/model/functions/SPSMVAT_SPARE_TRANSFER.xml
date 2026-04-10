@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SPSMVAT_SPARE_TRANSFER">
+    <function name="SPSMVAT_SPARE_TRANSFER" type="VARCHAR">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+	v_ResultStr		VARCHAR2(2000) := '';
+	v_Message		VARCHAR2(2000) := '';
+    TYPE RECORD IS REF CURSOR;
+    Cur				RECORD;
+    cLine           RECORD;
+    cStock          RECORD;
+	-- Variables
+	vRecordID		VARCHAR2(32);
+	vRecord			RECORD;
+	vUserID 		VARCHAR2(60);
+    vSign           NUMBER;
+    
+BEGIN
+	-- Begin Get Parameters
+	FOR Cur IN (
+		SELECT *
+		FROM ad_ep_instance_para
+		WHERE ad_ep_instance_id = PInstance_ID
+	) LOOP
+		IF Cur.ParameterName = 'Record_ID' THEN
+			vRecordID := Cur.P_String;
+		ELSEIF Cur.ParameterName = 'User' THEN
+			vUserID := Cur.P_String;
+		END IF;	
+	END LOOP;
+	-- Finish Get Parameter
+	
+	--<<BEGIN_PROCESS>>
+
+	SELECT * INTO vRecord FROM m_movement WHERE m_movement_id = vRecordID;
+
+	FOR cLine IN (
+        SELECT ml.MovementQty, pvl.atindpo_postventalinea_id, pvl.atindpo_postventa_id, pvl.em_spsmvat_transfer_status,
+            ml.m_locator_id, ml.m_locatorto_id
+        FROM M_MovementLine ml
+            JOIN atindpo_postventalinea pvl ON pvl.atindpo_postventalinea_id = ml.em_spsmvat_pvl_id
+        WHERE ml.m_movement_id = vRecordID
+    ) LOOP
+    
+        IF cLine.em_spsmvat_transfer_status = 'TPA' THEN
+            vSign := 1;
+        ELSEIF cLine.em_spsmvat_transfer_status = 'RPA' THEN
+            vSign := -1;
+        END IF;
+    
+        UPDATE atindpo_postventalinea SET em_sswos_transfer = em_sswos_transfer + (cLine.MovementQty * vSign), em_spsmvat_transfer_status = 'A'
+        WHERE atindpo_postventalinea_id = cLine.atindpo_postventalinea_id;
+        
+        IF cLine.em_spsmvat_transfer_status = 'RPA' THEN
+            UPDATE sswos_transfer SET em_spsmvat_return_quantity = em_spsmvat_return_quantity + cLine.MovementQty,
+                isactive = CASE WHEN quantity = em_spsmvat_return_quantity + cLine.MovementQty THEN 'N' ELSE isactive END
+            WHERE sswos_transfer_id IN (
+                SELECT tr.sswos_transfer_id
+                FROM sswos_transfer tr
+                    JOIN atindpo_postventalinea pvl ON pvl.atindpo_postventalinea_id = tr.atindpo_postventalinea_id
+                    JOIN m_movement tm ON tm.m_movement_id = tr.m_movement_id
+                    JOIN m_movementline tml ON tml.m_movement_id = tm.m_movement_id
+                        AND tml.em_spsmvat_pvl_id = pvl.atindpo_postventalinea_id
+                        AND tml.m_locator_id = cLine.m_locatorto_id
+                        AND tml.m_locatorto_id = cLine.m_locator_id
+                WHERE pvl.atindpo_postventalinea_id = cLine.atindpo_postventalinea_id
+                    AND tr.isactive = 'Y'
+                    AND (tr.quantity - tr.em_spsmvat_return_quantity = cLine.MovementQty OR cLine.MovementQty < tr.quantity - tr.em_spsmvat_return_quantity)
+                ORDER BY tr.created DESC
+                LIMIT 1
+            );
+        END IF;
+        
+        INSERT INTO sswos_transfer (
+            sswos_transfer_id, ad_client_id, ad_org_id, createdby, updatedby,
+            atindpo_postventa_id, atindpo_postventalinea_id, transfers, quantity, date_transfer,
+            m_movement_id
+        ) VALUES (
+            get_uuid(), vRecord.ad_client_id, vRecord.ad_org_id, vUserID, vUserID,
+            cLine.atindpo_postventa_id, cLine.atindpo_postventalinea_id, vRecord.documentno, cLine.MovementQty * vSign, vRecord.movementdate,
+            vRecordID
+        );
+        
+    END LOOP;
+
+	--<<FINISH_PROCESS>>
+		
+	RETURN v_ResultStr;
+END SPSMVAT_SPARE_TRANSFER
+]]></body>
+    </function>
+  </database>

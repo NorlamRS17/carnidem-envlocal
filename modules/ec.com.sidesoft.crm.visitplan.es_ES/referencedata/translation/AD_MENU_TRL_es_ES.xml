@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="2082E5131E9B4810B66136A426C1F783" trl="Y">
+    <value column="Name" isTrl="Y" original="Routes by vendor">Rutas por vendedor</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="342D6371E60D4430918D48A09B368419" trl="Y">
+    <value column="Name" isTrl="Y" original="General Configuration Routes by Vendor">Configuración General Rutas por Vendedor</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7EBD584161094FC69C8B4F98B422FFB2" trl="Y">
+    <value column="Name" isTrl="Y" original="Defining Routes by Vendor">Definición de Rutas por Vendedor</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

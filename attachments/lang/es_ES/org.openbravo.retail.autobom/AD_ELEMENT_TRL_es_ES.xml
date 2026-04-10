@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="6A917E1F24BF4C1E9F00E86895B75F2B" trl="N">
+    <value column="Name" isTrl="N" original="Auto Generate BOM">Auto Generate BOM</value>
+    <value column="PrintName" isTrl="N" original="Auto Generate BOM">Auto Generate BOM</value>
+    <value column="Description" isTrl="N" original="Flag to force the automatic production if that product is bought from WebPOS">Flag to force the automatic production if that product is bought from WebPOS</value>
+    <value column="Help" isTrl="N" original="Flag to force the automatic production if that product is bought from WebPOS">Flag to force the automatic production if that product is bought from WebPOS</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="93F5BE5A05624B128BFDC608DC4D8CB7" trl="N">
+    <value column="Name" isTrl="N" original="Sales Order">Sales Order</value>
+    <value column="PrintName" isTrl="N" original="Sales Order">Sales Order</value>
+    <value column="Description" isTrl="N" original="A unique and often automatically generated identifier for a sales order.">A unique and often automatically generated identifier for a sales order.</value>
+    <value column="Help" isTrl="N" original="Unique identifier and a reference to a Sales Order originating from the document sequence defined for this document type.">Unique identifier and a reference to a Sales Order originating from the document sequence defined for this document type.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

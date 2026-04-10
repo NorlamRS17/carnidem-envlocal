@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="228D3EBC1BD44237BED148AD10079DB8" trl="N">
+    <value column="MsgText" isTrl="N" original="Revise si esta creado al menos un registro del tipo de cuenta en la ventana Clasificación Cuenta Contable">Revise si esta creado al menos un registro del tipo de cuenta en la ventana Clasificación Cuenta Contable</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="36C3B0885D964069B3818A4A26D91373" trl="N">
+    <value column="MsgText" isTrl="N" original="Ya existe un registro con el mismo nombre">Ya existe un registro con el mismo nombre</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="95DAB3453EC545B9A00CA570DD316267" trl="N">
+    <value column="MsgText" isTrl="N" original="No se puede eliminar un registro con relación a una cabecera">No se puede eliminar un registro con relación a una cabecera</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="C982D1B1319F470C98E2EA6E295FA450" trl="N">
+    <value column="MsgText" isTrl="N" original="No se puede eliminar un registro con lineas">No se puede eliminar un registro con lineas</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

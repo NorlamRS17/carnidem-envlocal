@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="DocProjecxtTaskData" package="ec.com.sidesoft.projects.complement.accounting">
+  <SqlClassComment></SqlClassComment>
+  <SqlMethod name="selectRecord" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+        SELECT PR.AD_CLIENT_ID, PR.AD_ORG_ID, '' as DOCUMENTNO, coalesce(PR.DATEacct,now()) as DATEacct, 		'100' AS C_CURRENCY_ID, '198B9792395A42C08C55D34C9C993CDD' as C_DOCTYPE_ID, PR.POSTED,
+        0 AS VALUE  
+        FROM sproctm_detail_cost PR  
+        WHERE PR.sproctm_detail_cost_id=?
+      ]]>
+     </Sql>
+     <Parameter name="id"/>
+   </SqlMethod>
+</SqlClass>

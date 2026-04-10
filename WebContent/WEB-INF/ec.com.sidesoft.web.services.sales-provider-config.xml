@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<provider>
+
+  <bean>
+    <name>createPaymentInvoice</name>
+    <class>ec.com.sidesoft.web.services.sales.webservices.Swssl_CreatePaymentInvoice</class>
+    <singleton>true</singleton>
+  </bean>
+  
+</provider>
+

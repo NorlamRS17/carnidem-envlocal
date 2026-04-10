@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION INDSUP_VALIDA_ORD">
+    <function name="INDSUP_VALIDA_ORD" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[Cur_Parameter RECORD;
+    Cur_Validate RECORD;
+    v_atindpoPostventaId VARCHAR(32);	
+    v_User_ID VARCHAR(32);
+    v_Org_ID VARCHAR(32);
+    v_Client_ID VARCHAR(32);
+    v_tercero_cab varchar(60);
+
+    Cur_Ordenes RECORD;
+    v_linea_consol VARCHAR(32);
+    v_orden_id varchar(32);
+    v_org_orden VARCHAR(60);
+    v_num_orden VARCHAR(30);
+    v_tercero_orden VARCHAR(32);
+    v_pricelist VARCHAR(32);
+    v_crear_factura VARCHAR(1);
+    v_despacho VARCHAR(1);
+    cuenta NUMBER;
+
+    v_ResultStr VARCHAR(2000):='';
+    v_Message VARCHAR(2000):='';
+	v_MessageReactivar VARCHAR(2000):='';
+	v_MessageAnular VARCHAR(2000):='';
+    v_Record_ID VARCHAR(32);
+    v_Status VARCHAR(32);
+    v_Result NUMBER:=1;
+    v_Count NUMBER:=1;
+    v_Total NUMBER:=0;
+    v_validated NUMBER:=0;
+    v_line NUMBER:=0;
+    v_error VARCHAR(1):='N';
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_PInstance_ID);
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL);
+
+    BEGIN
+        FOR Cur_Parameter IN
+          (SELECT i.Record_ID,
+                  i.AD_User_ID,
+                  p.ParameterName,
+                  p.P_String,
+                  p.P_Number,
+                  p.P_Date,
+                  i.AD_Org_ID,
+                  i.AD_Client_ID
+             FROM AD_PInstance i
+             LEFT JOIN AD_PInstance_Para p
+               ON i.AD_PInstance_ID=p.AD_PInstance_ID
+            WHERE i.AD_PInstance_ID=p_PInstance_ID
+            ORDER BY p.SeqNo)
+        LOOP
+            v_atindpoPostventaId:=Cur_Parameter.Record_ID;
+            v_User_ID:=Cur_Parameter.AD_User_ID;
+            v_Org_ID:=Cur_Parameter.AD_Org_ID;
+            v_Client_ID:=Cur_Parameter.AD_Client_ID;
+        END LOOP;
+
+        SELECT c_bpartner_id, ad_org_id
+        INTO v_tercero_cab, v_Org_ID
+        FROM atindpo_postventa   
+        WHERE atindpo_postventa_id=v_atindpoPostventaId;
+
+        cuenta:=0;
+
+        FOR Cur_Ordenes IN (
+		Select c.indsup_consol_id
+			, c.organizacion
+			, c.orden as "orden"
+			, pv.atindpo_postventa_id 
+			, pv.ad_org_id 
+		From indsup_consol c
+			Left Join atindpo_postventa pv on pv.documentno = c.orden And pv.ad_org_id = v_Org_ID
+		Where c.atindpo_postventa_id = v_atindpoPostventaId
+        ) LOOP
+		v_linea_consol	:=	Cur_Ordenes.indsup_consol_id;
+		v_org_orden	:=	Cur_Ordenes.organizacion;
+		v_num_orden	:=	Cur_Ordenes.orden;
+
+		Select c_bpartner_id , crearfactura , atindpo_postventa_id, docstatus, m_pricelist_id
+			Into v_tercero_orden, v_crear_factura, v_orden_id, v_Status, v_pricelist
+		From atindpo_postventa 
+		Where atindpo_postventa_id = Cur_Ordenes.atindpo_postventa_id;
+
+		If (v_orden_id IS NOT NULL) Then
+			Select Count(*)
+				Into v_Count
+			From atindpo_postventalinea apvl
+			Where apvl.atindpo_postventa_id = v_orden_id;
+			
+			If (v_Status = 'ET') Then
+				If COALESCE(v_Count,0) > 0 Then
+					IF (v_tercero_cab = v_tercero_orden) THEN    
+						IF(v_crear_factura='N')THEN
+							--v_despacho:=indsup_val_entrega(v_orden_id);
+							Select (CASE WHEN COUNT(*) > 0 Then 'N' Else 'Y' END)
+								Into v_despacho
+							From atindpo_postventalinea apvl
+								join m_product p on p.m_product_id = apvl.m_product_id
+							Where atindpo_postventa_id = Cur_Ordenes.atindpo_postventa_id
+								And p.producttype = 'I'
+							Group by apvl.atindpo_postventa_id
+							Having SUM(coalesce(apvl.cantidad,0)) - SUM(coalesce(apvl.em_sswos_transfer,0)) <> 0;
+							
+							IF (COALESCE(v_despacho,'Y')='Y') THEN
+								FOR Cur_Validate IN(
+                                    select p.value, p.name, mpp.pricestd from atindpo_postventalinea pv
+                                        join m_product p on p.m_product_id = pv.m_product_id
+                                        join atindpo_postventa pvh on pv.atindpo_postventa_id = pvh.atindpo_postventa_id and pvh.ad_org_id = v_Org_ID
+                                        left join m_productprice as mpp on mpp.m_pricelist_version_id in (select m_pricelist_version_id 
+                                        from m_pricelist_version 
+                                        where m_pricelist_id = v_pricelist
+                                        order by validfrom desc limit 1) and mpp.m_product_id = pv.m_product_id
+                    where pvh.atindpo_postventa_id = Cur_Ordenes.atindpo_postventa_id and mpp.m_pricelist_version_id is null
+                                )LOOP
+				    update indsup_consol set validado='N', observacion='NO EXISTE PRECIO PARA EL ITEM '||Cur_Validate.value||' - '||Cur_Validate.name where indsup_consol_id=v_linea_consol;
+                                    v_error :='Y';
+                                    exit;
+                                END LOOP;
+                                IF v_error = 'N' THEN
+                                    v_validated := v_validated + 1;
+                                    update indsup_consol set validado='Y' where indsup_consol_id=v_linea_consol;
+                                    update indsup_consol set observacion=NULL where indsup_consol_id=v_linea_consol;
+                                ELSE
+                                    v_error :='N';
+                                END IF;
+							ELSE
+								update indsup_consol set validado='N', observacion='ORDEN TIENE DESPACHOS PENDIENTES' where indsup_consol_id=v_linea_consol;
+				
+							END IF;-- FIN (COALESCE(v_despacho,'Y')='Y') 
+
+						ELSE
+
+						    update indsup_consol set validado='N', observacion='ORDEN YA FACTURADA' where indsup_consol_id=v_linea_consol;
+
+						END IF;-- FIN (v_crear_factura='N')
+
+					ELSE
+						update indsup_consol set validado='N', observacion='TERCERO DIFERENTE A CABECERA' where indsup_consol_id=v_linea_consol;
+
+					END IF; -- FIN (v_tercero_cab = v_tercero_orden)
+					cuenta:=cuenta+1;			
+				ELSE
+					update indsup_consol set validado='N', observacion = 'NO EXISTEN LINEAS PARA LA ORDEN N° '||v_num_orden where indsup_consol_id = v_linea_consol;
+				End IF;	
+			Else 
+				update indsup_consol set validado='N', observacion = 'EL ESTADO DE LA TRANSACCION DEBE SER ENTREGADO' where indsup_consol_id = v_linea_consol;
+			End IF;
+		Else
+			update indsup_consol set validado='N', observacion = 'NO  EXISTE LA ORDEN N° '||v_num_orden where indsup_consol_id = v_linea_consol;
+			
+		End IF; -- FIN (v_orden_id IS NOT NULL)
+		v_Total := v_Total + 1;
+        END LOOP; -- Fin (v_tercero_cab = v_tercero_orden)		
+
+	If(v_Total = v_validated) Then
+		v_Message := 'Validación exitosa.';
+		
+        	Update atindpo_postventa set docstatus='EP', EM_Indsup_Est_Consol = 'GE' where atindpo_postventa_id=v_atindpoPostventaId;
+        	
+		FOR Cur_Ordenes IN (
+			select pv.ad_client_id, pv.m_product_id, sum(cantidad) as cantidad, 
+                pv.m_attributesetinstance_id, 'Y' as entregado, mpp.pricestd as atindpo_unitprice,
+                mpp.pricestd as atindpo_pricelist, sum(cantidad)*mpp.pricestd as atindpo_linenetamt,
+                0 as atindpo_discount, ct.c_tax_id, 0 as atindpo_valdescuento, 
+                ((case when ProductType = 'S' then sum(cantidad) else sum(pv.em_sswos_transfer) end) *mpp.pricestd) * ct.rate/100 as atindpo_iva, 
+                ((case when ProductType = 'S' then sum(cantidad) else sum(pv.em_sswos_transfer) end)*mpp.pricestd) * (ct.rate+100)/100 as atindpo_total,
+                p.ProductType as em_indsup_tipo, p.M_Product_Category_ID as em_indsup_cat_id, sum(pv.em_sswos_transfer) as em_sswos_transfer, p.value as em_sswos_identifier,
+                p.EM_Slps_Product_Category_ID
+                from atindpo_postventalinea pv 
+				Join atindpo_postventa pvh on pv.atindpo_postventa_id = pvh.atindpo_postventa_id and pvh.ad_org_id = v_Org_ID
+				Join indsup_consol c on pvh.documentno = c.orden
+                join m_product p on p.m_product_id = pv.m_product_id
+                join m_productprice as mpp on mpp.m_pricelist_version_id in (select m_pricelist_version_id 
+                        from m_pricelist_version 
+                        where m_pricelist_id = pvh.m_pricelist_id
+                        order by validfrom desc limit 1) and mpp.m_product_id = p.m_product_id
+                join c_tax as ct on p.c_taxcategory_id = ct.c_taxcategory_id
+                Where c.atindpo_postventa_id = v_atindpoPostventaId
+group by pv.m_product_id, p.name, pv.ad_client_id, pv.m_attributesetinstance_id, pv.entregado, pv.em_indsup_tipo, p.M_Product_Category_ID, p.value, p.EM_Slps_Product_Category_ID, mpp.pricestd, ct.c_tax_id, p.ProductType
+		) LOOP
+			v_line := COALESCE(v_line,0) + 10;
+			INSERT INTO public.atindpo_postventalinea(
+				atindpo_postventalinea_id	, atindpo_postventa_id		, ad_client_id		, ad_org_id		, createdby	
+				, updatedby			, m_product_id			, cantidad		, m_attributesetinstance_id
+				, entregado			, line				, atindpo_unitprice	, atindpo_pricelist	, atindpo_linenetamt
+				, atindpo_discount		, c_tax_id			, m_locator_id		, atindpo_valdescuento	, atindpo_iva
+				, atindpo_total			, em_indsup_tipo		, em_indsup_cat_id	, em_sswos_transfer	, em_sswos_transferpartsreturn
+				, em_sswos_identifier, EM_Indsup_Product_Category_ID
+			) VALUES ( get_uuid()			, v_atindpoPostventaId		, Cur_Ordenes.ad_client_id, v_Org_ID		, v_User_ID	
+				, v_User_ID			, Cur_Ordenes.m_product_id	, Cur_Ordenes.cantidad				, Cur_Ordenes.m_attributesetinstance_id
+				, Cur_Ordenes.entregado		, v_line			, Cur_Ordenes.atindpo_unitprice	, Cur_Ordenes.atindpo_pricelist	, Cur_Ordenes.atindpo_linenetamt
+				, Cur_Ordenes.atindpo_discount	, Cur_Ordenes.c_tax_id		, NULL			, Cur_Ordenes.atindpo_valdescuento, Cur_Ordenes.atindpo_iva
+				, Cur_Ordenes.atindpo_total	, Cur_Ordenes.em_indsup_tipo	, Cur_Ordenes.em_indsup_cat_id	, Cur_Ordenes.em_sswos_transfer	, 'N'
+				, Cur_Ordenes.em_sswos_identifier, Cur_Ordenes.EM_Slps_Product_Category_ID);
+                END LOOP; -- Fin (v_tercero_cab = v_tercero_orden)
+        Else
+		v_Message := 'Existen ordenes NO validadas. Corrijalas y valide nuevamente.';
+	 AD_UPDATE_PINSTANCE(p_PInstance_ID, v_User_ID, 'N', 0, v_Message);
+		RETURN;
+       End If;
+
+        DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished - ' || v_Message) ;
+        AD_UPDATE_PINSTANCE(p_PInstance_ID, v_User_ID, 'Y', v_Result, v_Message);
+        RETURN;
+
+    END;    
+    EXCEPTION WHEN OTHERS THEN
+        v_ResultStr:= '@ERROR=' || SQLERRM;
+        DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+                AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr);
+        RETURN;
+END INDSUP_VALIDA_ORD
+]]></body>
+    </function>
+  </database>

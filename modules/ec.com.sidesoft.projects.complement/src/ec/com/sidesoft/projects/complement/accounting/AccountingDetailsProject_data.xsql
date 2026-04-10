@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<SqlClass name="AccountingDetailsProjectData" package="ec.com.sidesoft.projects.complement.accounting">
+  <SqlClassComment></SqlClassComment>
+  <SqlMethod name="selectRecord" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+            	    
+            select
+            spdt.AD_CLIENT_ID, spdt.AD_ORG_ID
+            ,DATE AS DATEDOC, '100' AS C_CURRENCY_ID
+            ,cp.em_sproctm_doctype  C_DOCTYPE_ID
+            ,cp.em_sproctm_documentno AS DOCUMENTNO 
+            ,POSTED,0 AS VALUE
+            from C_Project cp
+            join C_ProjectPhase cpp on cpp.c_project_id = cp.c_project_id
+            join C_ProjectTask cpt on cpt.C_ProjectPhase_id = cpp.C_ProjectPhase_id
+            join sproctm_task_workforce stw on stw.C_ProjectTask_id = cpt.C_ProjectTask_id
+            join sproctm_detail_cost spdt on spdt.record_id= stw.sproctm_task_workforce_id
+            where spdt.sproctm_detail_cost_id = ?  
+            union all
+            select
+            spdt.AD_CLIENT_ID, spdt.AD_ORG_ID
+            ,DATE AS DATEDOC, '100' AS C_CURRENCY_ID
+            ,cp.em_sproctm_doctype  C_DOCTYPE_ID
+            ,cp.em_sproctm_documentno AS DOCUMENTNO 
+            ,POSTED,0 AS VALUE
+            from C_Project cp
+            join C_ProjectPhase cpp on cpp.c_project_id = cp.c_project_id
+            join C_ProjectTask cpt on cpt.C_ProjectPhase_id = cpp.C_ProjectPhase_id
+            join sproctm_task_cif stw on stw.C_ProjectTask_id = cpt.C_ProjectTask_id
+            join sproctm_detail_cost spdt on spdt.record_id= stw.sproctm_task_cif_id
+            where spdt.sproctm_detail_cost_id = ?  
+            union all
+            select
+            spdt.AD_CLIENT_ID, spdt.AD_ORG_ID
+            ,DATE AS DATEDOC, '100' AS C_CURRENCY_ID
+            ,cp.em_sproctm_doctype  C_DOCTYPE_ID
+            ,cp.em_sproctm_documentno AS DOCUMENTNO 
+            ,POSTED,0 AS VALUE
+            from C_Project cp
+            join C_ProjectPhase cpp on cpp.c_project_id = cp.c_project_id
+            join C_ProjectTask cpt on cpt.C_ProjectPhase_id = cpp.C_ProjectPhase_id
+            join sproctm_task_machine stw on stw.C_ProjectTask_id = cpt.C_ProjectTask_id
+            join sproctm_detail_cost spdt on spdt.record_id= stw.sproctm_task_machine_id
+            where spdt.sproctm_detail_cost_id = ? 
+
+      ]]>
+     </Sql>
+     <Parameter name="id"/>
+     <Parameter name="id"/>
+     <Parameter name="id"/>
+   </SqlMethod>
+</SqlClass>

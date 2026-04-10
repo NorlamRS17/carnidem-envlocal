@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+<!--07D8B925FC8B4383B6849027895E55B5--><AD_VAL_RULE>
+<!--07D8B925FC8B4383B6849027895E55B5-->  <AD_VAL_RULE_ID><![CDATA[07D8B925FC8B4383B6849027895E55B5]]></AD_VAL_RULE_ID>
+<!--07D8B925FC8B4383B6849027895E55B5-->  <AD_CLIENT_ID><![CDATA[0]]></AD_CLIENT_ID>
+<!--07D8B925FC8B4383B6849027895E55B5-->  <AD_ORG_ID><![CDATA[0]]></AD_ORG_ID>
+<!--07D8B925FC8B4383B6849027895E55B5-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
+<!--07D8B925FC8B4383B6849027895E55B5-->  <NAME><![CDATA[Valida estado postventa]]></NAME>
+<!--07D8B925FC8B4383B6849027895E55B5-->  <DESCRIPTION><![CDATA[Valida estado postventa]]></DESCRIPTION>
+<!--07D8B925FC8B4383B6849027895E55B5-->  <TYPE><![CDATA[S]]></TYPE>
+<!--07D8B925FC8B4383B6849027895E55B5-->  <CODE><![CDATA[ ad_ref_list.value in ( SELECT rl.value FROM ad_ref_list rl 
+                                            WHERE (rl.isActive = 'Y' OR rl.Value = NULL )
+                                            and rl.ad_reference_id ='A59EA6E20C0D4F92BB96158C78BFA6FF'
+                                            and (case when @docstatus@='EE' then rl.value in ('EP') 
+                                                      when @docstatus@='EP' then rl.value in ('TL','EE')
+                                                      when @docstatus@='TL' then rl.value in ('ET','EP')
+                                                      when @docstatus@='ET'then rl.value in  ('ET','EP','TL','EE') 
+                                                 end)
+                                            ORDER BY rl.SeqNo
+                            )]]></CODE>
+<!--07D8B925FC8B4383B6849027895E55B5-->  <AD_MODULE_ID><![CDATA[AD576C2C137343C585BB0D9012B9329F]]></AD_MODULE_ID>
+<!--07D8B925FC8B4383B6849027895E55B5--></AD_VAL_RULE>
+
+<!--E18379A3B1A248AFAC650E4DE569241D--><AD_VAL_RULE>
+<!--E18379A3B1A248AFAC650E4DE569241D-->  <AD_VAL_RULE_ID><![CDATA[E18379A3B1A248AFAC650E4DE569241D]]></AD_VAL_RULE_ID>
+<!--E18379A3B1A248AFAC650E4DE569241D-->  <AD_CLIENT_ID><![CDATA[0]]></AD_CLIENT_ID>
+<!--E18379A3B1A248AFAC650E4DE569241D-->  <AD_ORG_ID><![CDATA[0]]></AD_ORG_ID>
+<!--E18379A3B1A248AFAC650E4DE569241D-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
+<!--E18379A3B1A248AFAC650E4DE569241D-->  <NAME><![CDATA[Tipo Documento Validacion]]></NAME>
+<!--E18379A3B1A248AFAC650E4DE569241D-->  <DESCRIPTION><![CDATA[Tipo Documento Validacion]]></DESCRIPTION>
+<!--E18379A3B1A248AFAC650E4DE569241D-->  <TYPE><![CDATA[S]]></TYPE>
+<!--E18379A3B1A248AFAC650E4DE569241D-->  <CODE><![CDATA[c_doctype.ad_table_id ='EADABF583490439FAEAA2E1050AE3A1B'
+AND c_doctype.issotrx = 'Y'
+AND c_doctype.ad_org_id = @ad_org_id@]]></CODE>
+<!--E18379A3B1A248AFAC650E4DE569241D-->  <AD_MODULE_ID><![CDATA[AD576C2C137343C585BB0D9012B9329F]]></AD_MODULE_ID>
+<!--E18379A3B1A248AFAC650E4DE569241D--></AD_VAL_RULE>
+
+</data>

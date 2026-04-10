@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="8CC4617192D54C69A4AE57BE1C3DE85E" trl="N">
+    <value column="Name" isTrl="N" original="Create Plan Production">Create Plan Production</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B111AB2270AA4BFC92202AB7D3AD562E" trl="N">
+    <value column="Name" isTrl="N" original="Generate Simulation">Generate Simulation</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

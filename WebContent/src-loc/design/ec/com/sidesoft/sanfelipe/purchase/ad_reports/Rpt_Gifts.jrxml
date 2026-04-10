@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_Gifts" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="27d0bff8-0fae-47f6-92af-012b321839aa">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/opt/openbravo/sanfelipepreprod/src"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DOCUMENT_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SOURCE_PATH" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/opt/openbravo/sanfelipepreprod/src"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERDECIMAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select
+	np.name as "name"
+	,count(np.name) as "cantidad"
+From c_order co
+	Join c_doctype dt on dt.c_doctype_id = co.c_doctypetarget_id
+	Join ad_org o on o.ad_org_id  = co.ad_org_id
+	Join c_bpartner cb on co.c_bpartner_id = cb.c_bpartner_id
+	Join c_bpartner_location cl on cl.c_bpartner_location_id = co.c_bpartner_location_id
+	Join c_location c on c.c_location_id = cl.c_location_id
+	Join c_orderline col on col.c_order_id = co.c_order_id
+	Join m_product mp on mp.m_product_id = col.m_product_id
+
+	left Join Ssbod_gift_order gift on gift.c_orderline_id = col.c_orderline_id
+	left Join m_product np on np.m_product_id = gift.m_product_id
+
+	Left Join (Select scol.c_orderline_id
+			, SUM(taxamt) as "impuesto"
+		From c_orderline scol
+			Join c_orderlinetax scolt on scolt.c_orderline_id = scol.c_orderline_id
+		Where scol.c_order_id = $P{DOCUMENT_ID}
+		Group by scol.c_orderline_id) colt on colt.c_orderline_id = col.c_orderline_id
+
+Where co.c_order_id = $P{DOCUMENT_ID}
+	and gift.m_product_id is not null
+group by np.name]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<field name="cantidad" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="150" height="20" uuid="55c20173-c8b0-4606-9395-62919f4ed9a7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="150" height="20" uuid="667e5fe9-cd1a-4c0f-9b59-eade90cb1ce6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Regalos:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="41" width="150" height="20" uuid="fc84e331-3ea2-47c8-a537-ec754190c29b"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="41" width="332" height="20" uuid="5919d3f6-d7dd-469b-a3e0-50ad1c238493"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="0" y="0" width="482" height="1" forecolor="#CCCCCC" uuid="3f0e487f-4ad9-4f8d-a69b-1cfe2da04fba"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#A3A1A1"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement key="line-1" x="0" y="40" width="482" height="1" forecolor="#CCCCCC" uuid="a6ece26d-cd47-4552-b4df-630e591a190b"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#A3A1A1"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="150" y="1" width="332" height="20" uuid="5b63c6b1-1d67-4ed1-9925-a6722fc40bc6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="1" width="150" height="20" uuid="e95c0c20-0084-4c15-b364-47b5ef1a64e0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement key="line-1" x="0" y="1" width="482" height="1" forecolor="#CCCCCC" uuid="a712362b-5770-47e8-a9a4-bbbc983780cd"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#A3A1A1"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

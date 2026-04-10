@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="135AFAA691B4481D85C9D913E4331101" trl="Y">
+    <value column="Name" isTrl="Y" original="Create Inventory DocAction">Dar de Alta</value>
+    <value column="Description" isTrl="N" original="">Dar de Alta</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3D6ECD5657D645F4B82ABD5CC2A09BF3" trl="Y">
+    <value column="Name" isTrl="Y" original="Breakdown DocAction">Completar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="66C88DC622C14C8EA9272AFE367A01E6" trl="Y">
+    <value column="Name" isTrl="Y" original="Type Breakdown DocAction">Tipo Despiece</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

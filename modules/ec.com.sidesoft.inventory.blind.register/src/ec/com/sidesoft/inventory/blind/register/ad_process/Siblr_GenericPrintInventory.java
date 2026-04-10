@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
+import org.openbravo.base.exception.OBException;
+//import org.openbravo.base.model.Table;
 import org.openbravo.base.secureApp.HttpSecureAppServlet;
 import org.openbravo.base.secureApp.VariablesSecureApp;
 import org.openbravo.dal.core.OBContext;
@@ -36,13 +38,11 @@ public class Siblr_GenericPrintInventory extends HttpSecureAppServlet {
 
   private static Logger log4j1 = Logger.getLogger(Siblr_GenericPrintInventory.class);
 
-  @Override
   public void init(ServletConfig config) {
     super.init(config);
     boolHist = false;
   }
 
-  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
@@ -59,13 +59,11 @@ public class Siblr_GenericPrintInventory extends HttpSecureAppServlet {
 
       // normalize the string of id to a comma separated list
       strDocumentId = strDocumentId.replaceAll("\\(|\\)|'", "");
-      if (strDocumentId.length() == 0) {
+      if (strDocumentId.length() == 0)
         throw new ServletException(Utility.messageBD(this, "NoDocument", vars.getLanguage()));
-      }
 
-      if (log4j1.isDebugEnabled()) {
+      if (log4j1.isDebugEnabled())
         log4j1.debug("strDocumentId: " + strDocumentId);
-      }
       printPagePDF(response, vars, strDocumentId);
     } else {
       pageError(response);
@@ -81,8 +79,8 @@ public class Siblr_GenericPrintInventory extends HttpSecureAppServlet {
     Window ADWindow = OBDal.getInstance().get(Window.class, StrWindowdID);
     Table ADTable = OBDal.getInstance().get(Table.class, StrTableID);
 
-    SiblrPhysicalInventory pi = OBDal.getInstance()
-        .get(SiblrPhysicalInventory.class, strDocumentId);
+    SiblrPhysicalInventory pi = OBDal.getInstance().get(SiblrPhysicalInventory.class,
+        strDocumentId);
 
     String StrLocatorID = pi.getStorageBin().getId();
 
@@ -101,7 +99,7 @@ public class Siblr_GenericPrintInventory extends HttpSecureAppServlet {
 
     if (ICountTemplate == 0) {
 
-      throw new ServletException(Utility.messageBD(conn, "@Template no Found..@", language));
+      throw new OBException(Utility.messageBD(conn, "@Template no Found..@", language));
 
     }
 
@@ -123,9 +121,8 @@ public class Siblr_GenericPrintInventory extends HttpSecureAppServlet {
       strReportName = Replace.replace(Replace.replace(strReportName, "@basedesign@", strBaseDesign),
           "@attach@", strAttach);
 
-      if (log4j1.isDebugEnabled()) {
+      if (log4j1.isDebugEnabled())
         log4j1.debug("Output: Payments Partial - pdf");
-      }
 
       // VALIDACION PARA SQL
       HashMap<String, Object> parameters = new HashMap<String, Object>();
@@ -136,13 +133,9 @@ public class Siblr_GenericPrintInventory extends HttpSecureAppServlet {
       parameters.put("BASE_WEB", StrBaseWeb);
       parameters.put("AD_USER_ID", strADUSerID);
       // String StrNameReport = LstTemplate.get(0).getTitle().replace(" ", "_") + ".jrxml";
-      String StrNameReport = LstTemplate.get(0).getTitle().replace(" ", "_");
-      String strOutputFormat = LstTemplate.get(0).getOutputType();
 
-      renderJR(vars, response, strReportName, StrNameReport, strOutputFormat, parameters, null,
-          null, false);
-
-      // pi.setPrint(false);
+      renderJR(vars, response, strReportName, "pdf", parameters, null, null);
+     // pi.setPrint(false);
 
       /*
        * OBDal.getInstance().save(pi); OBDal.getInstance().flush();

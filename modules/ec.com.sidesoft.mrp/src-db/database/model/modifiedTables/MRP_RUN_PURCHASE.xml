@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE MRP_RUN_PURCHASE">
+    <table name="MRP_RUN_PURCHASE" primaryKey="MRP_RUN_PURCHASE_KEY">
+      <column name="EM_SSMRP_DATE_DOCUMENT" primaryKey="false" required="true" type="TIMESTAMP" size="7" autoIncrement="false">
+        <default><![CDATA[SYSDATE]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSMRP_BRAND_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSMRP_A" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[80]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSMRP_B" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[15]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSMRP_C" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[5]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSMRP_TYPE_CALCULATION" primaryKey="false" required="false" type="VARCHAR" size="60" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="M_BRAND" name="EM_SSMRP_BRAND_ID">
+        <reference local="EM_SSMRP_BRAND_ID" foreign="M_BRAND_ID"/>
+      </foreign-key>
+    </table>
+  </database>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="307503AE0B02489994E97490CBAD226B" trl="Y">
+    <value column="Name" isTrl="Y" original="Create Order">Crear Orden</value>
+    <value column="Description" isTrl="Y" original="Create Order">Crear Orden</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5A4B6053329947F6AEC84DBF4A315894" trl="Y">
+    <value column="Name" isTrl="Y" original="Process">Registrar</value>
+    <value column="Description" isTrl="Y" original="Process">Registrar</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C6628A20B8C446C8A338C4BE4518DF61" trl="Y">
+    <value column="Name" isTrl="Y" original="Pre-Settle">Pre-Liquidar</value>
+    <value column="Description" isTrl="Y" original="Pre-Settle">Pre-Liquidar</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

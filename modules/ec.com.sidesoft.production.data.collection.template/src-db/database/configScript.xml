@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="BA04ED28823B4C6B80619C97CA932AF1">
+      <oldValue><![CDATA[@Processed@='Y']]></oldValue>
+      <newValue><![CDATA[@Processed@='Y' & @EM_Ssfdc_Completed@='N']]></newValue>
+    </columnDataChange>
+  </vector>

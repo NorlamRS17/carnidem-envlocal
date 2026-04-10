@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0103DEC2406B47E7A82C8BBCBA78D51C" trl="Y">
+    <value column="Name" isTrl="Y" original="PRO_Disapproved_M_Locator_ID">Ubicación Producto no aprobado</value>
+    <value column="PrintName" isTrl="Y" original="PRO_Disapproved_M_Locator_ID">Ubicación Producto no aprobado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2AFAEF188C2741DE9BBC3F721FFFCA54" trl="N">
+    <value column="Name" isTrl="N" original="Ssapq_App_Param_Movil_ID">Ssapq_App_Param_Movil_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssapq_App_Param_Movil_ID">Ssapq_App_Param_Movil_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3A4A77FE7D944155B7EA49AFD18FE95D" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssapq_Transferred">Transferido</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssapq_Transferred">Transferido</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3F326367C206428F8F86103103A6134C" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssapq_Isproductionappuser">Usuario APP producción</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssapq_Isproductionappuser">Usuario APP producción</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4E5EF0227B9346DABDDFAA208DA87949" trl="N">
+    <value column="Name" isTrl="N" original="EM_Ssapq_Munconfirm">EM_Ssapq_Munconfirm</value>
+    <value column="PrintName" isTrl="N" original="EM_Ssapq_Munconfirm">EM_Ssapq_Munconfirm</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="55792288B61A48DBACADD88E88AE5AE7" trl="N">
+    <value column="Name" isTrl="N" original="EM_Ssapq_Mconfirm">EM_Ssapq_Mconfirm</value>
+    <value column="PrintName" isTrl="N" original="EM_Ssapq_Mconfirm">EM_Ssapq_Mconfirm</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7ACEFE06BBAE44CDAC3CA3BEEF3AEAC8" trl="N">
+    <value column="Name" isTrl="N" original="EM_Ssapq_Isconfirm">EM_Ssapq_Isconfirm</value>
+    <value column="PrintName" isTrl="N" original="EM_Ssapq_Isconfirm">EM_Ssapq_Isconfirm</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D5A0A33D475F45BDA055E4B1782EDD13" trl="Y">
+    <value column="Name" isTrl="Y" original="Type Int Document">Tipo de documento integración</value>
+    <value column="PrintName" isTrl="Y" original="Type Int Document">Tipo de documento integración</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F6BF6A800D39493E821D1375BAE731D8" trl="Y">
+    <value column="Name" isTrl="Y" original="PRO_Approved_M_Locator_ID">Ubicación Producto aprobado</value>
+    <value column="PrintName" isTrl="Y" original="PRO_Approved_M_Locator_ID">Ubicación Producto aprobado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

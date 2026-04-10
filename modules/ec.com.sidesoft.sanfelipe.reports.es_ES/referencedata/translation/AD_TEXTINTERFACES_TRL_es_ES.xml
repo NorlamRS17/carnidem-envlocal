@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="07EFCFDC7E404BFA977FCE67686330CD" trl="N">
+    <value column="Text" isTrl="N" original="ETIQUETA">ETIQUETA</value>
+  </row>
+  <row id="14E47B9D8FF84BCEBD7C21EFA729D49A" trl="N">
+    <value column="Text" isTrl="N" original="ID_REFERENCIA">ID_REFERENCIA</value>
+  </row>
+  <row id="2D96E8EE75EF47AA9265DA3648BAEACE" trl="N">
+    <value column="Text" isTrl="N" original="ID_PRODUCTO">ID_PRODUCTO</value>
+  </row>
+  <row id="33881BEAA3744338A1C8B66BD15AB0E2" trl="N">
+    <value column="Text" isTrl="N" original="NOMBRE_PRODUCTO">NOMBRE_PRODUCTO</value>
+  </row>
+  <row id="3D4FF8B004114566930A850B1D87F0F7" trl="N">
+    <value column="Text" isTrl="N" original="PRECIO">PRECIO</value>
+  </row>
+  <row id="65056C2430EC4F69B2445EBAA87E96D2" trl="N">
+    <value column="Text" isTrl="N" original="DESTINATARIO">DESTINATARIO</value>
+  </row>
+  <row id="655C6ED01CA9415B8AD80CDF37D91C26" trl="N">
+    <value column="Text" isTrl="N" original="PESO">PESO</value>
+  </row>
+  <row id="6F90613469784254B155C164E6018597" trl="N">
+    <value column="Text" isTrl="N" original="CORREO">CORREO</value>
+  </row>
+  <row id="788E9C36C1524B1E849C823BEE374321" trl="N">
+    <value column="Text" isTrl="N" original="LATITUD">LATITUD</value>
+  </row>
+  <row id="7D084D8C499148B68FA5EC23952ACD52" trl="N">
+    <value column="Text" isTrl="N" original="DIRECCION">DIRECCION</value>
+  </row>
+  <row id="7D1F3764727A4E10A29A81876786C385" trl="N">
+    <value column="Text" isTrl="N" original="LONGITUD">LONGITUD</value>
+  </row>
+  <row id="AD2C5F23090749BABA056E77B4780BB4" trl="N">
+    <value column="Text" isTrl="N" original="PAGO_CONTRA_ENTREGA">PAGO_CONTRA_ENTREGA</value>
+  </row>
+  <row id="B645E3FCFFC24334A63ADBE165FE3C4A" trl="N">
+    <value column="Text" isTrl="N" original="INSTRUCCIONES">INSTRUCCIONES</value>
+  </row>
+  <row id="B7ADD331D5B945EA96894A71CC99A2E2" trl="N">
+    <value column="Text" isTrl="N" original="CANTIDAD_PRODUCTO">CANTIDAD_PRODUCTO</value>
+  </row>
+  <row id="BF59F043B2DC4BC8BAA65F8BBEE0373A" trl="N">
+    <value column="Text" isTrl="N" original="TAMAÑO_PRODUCTO">TAMAÑO_PRODUCTO</value>
+  </row>
+  <row id="C3B16429D5FA492891CF8CE039FD63D7" trl="N">
+    <value column="Text" isTrl="N" original="CIUDAD">CIUDAD</value>
+  </row>
+  <row id="C7C18203511A4411952A93740707DA0C" trl="N">
+    <value column="Text" isTrl="N" original="TELEFONO">TELEFONO</value>
+  </row>
+  <row id="DC8C002FC3D849FCA74708E381D7E24A" trl="N">
+    <value column="Text" isTrl="N" original="HORA_ENTREGA">HORA_ENTREGA</value>
+  </row>
+  <row id="F4B9FBC855E2409794A0396E3283985E" trl="N">
+    <value column="Text" isTrl="N" original="NUMERO_DIRECCION">NUMERO_DIRECCION</value>
+  </row>
+  <row id="FDB9207969A94421B4B549C23DC2D7EF" trl="N">
+    <value column="Text" isTrl="N" original="VECINDARIO">VECINDARIO</value>
+  </row>
+</compiereTrl>

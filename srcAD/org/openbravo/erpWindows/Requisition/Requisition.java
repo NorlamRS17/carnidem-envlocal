@@ -71,13 +71,13 @@ public class Requisition extends HttpSecureAppServlet {
         }
       }
      
-      if (command.contains("7A8884DD9E5B440BA5EED248D51AC50E")) {
+      if (command.contains("265B32839A6D435F910EA1E9F3F498B2")) {
         SessionInfo.setProcessType("P");
-        SessionInfo.setProcessId("7A8884DD9E5B440BA5EED248D51AC50E");
-        SessionInfo.setModuleId("491575E15647408092893DAC5E0C22CF");
-        if (securedProcess || explicitAccess.contains("7A8884DD9E5B440BA5EED248D51AC50E")) {
+        SessionInfo.setProcessId("265B32839A6D435F910EA1E9F3F498B2");
+        SessionInfo.setModuleId("53090599A5A14433888FD07193C42998");
+        if (securedProcess || explicitAccess.contains("265B32839A6D435F910EA1E9F3F498B2")) {
           classInfo.type = "P";
-          classInfo.id = "7A8884DD9E5B440BA5EED248D51AC50E";
+          classInfo.id = "265B32839A6D435F910EA1E9F3F498B2";
         }
       }
      
@@ -137,25 +137,25 @@ String stradTableId = "800212";
           printPageButtonDocAction1004400003(response, vars, strM_Requisition_ID, strdocaction, strProcessing, strdocstatus, stradTableId);
         }
 
-     } else if (vars.commandIn("BUTTONEM_Sinnapp_Approve_Need7A8884DD9E5B440BA5EED248D51AC50E")) {
-        vars.setSessionValue("button7A8884DD9E5B440BA5EED248D51AC50E.stremSinnappApproveNeed", vars.getStringParameter("inpemSinnappApproveNeed"));
-        vars.setSessionValue("button7A8884DD9E5B440BA5EED248D51AC50E.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
-        vars.setSessionValue("button7A8884DD9E5B440BA5EED248D51AC50E.strOrg", vars.getStringParameter("inpadOrgId"));
-        vars.setSessionValue("button7A8884DD9E5B440BA5EED248D51AC50E.strClient", vars.getStringParameter("inpadClientId"));
+     } else if (vars.commandIn("BUTTONEM_Sinnapp_Approve_Need265B32839A6D435F910EA1E9F3F498B2")) {
+        vars.setSessionValue("button265B32839A6D435F910EA1E9F3F498B2.stremSinnappApproveNeed", vars.getStringParameter("inpemSinnappApproveNeed"));
+        vars.setSessionValue("button265B32839A6D435F910EA1E9F3F498B2.strProcessing", vars.getStringParameter("inpprocessing", "Y"));
+        vars.setSessionValue("button265B32839A6D435F910EA1E9F3F498B2.strOrg", vars.getStringParameter("inpadOrgId"));
+        vars.setSessionValue("button265B32839A6D435F910EA1E9F3F498B2.strClient", vars.getStringParameter("inpadClientId"));
         
         
         HashMap<String, String> p = new HashMap<String, String>();
         
         
         //Save in session needed params for combos if needed
-        vars.setSessionObject("button7A8884DD9E5B440BA5EED248D51AC50E.originalParams", FieldProviderFactory.getFieldProvider(p));
-        printPageButtonFS(response, vars, "7A8884DD9E5B440BA5EED248D51AC50E", request.getServletPath());    
-     } else if (vars.commandIn("BUTTON7A8884DD9E5B440BA5EED248D51AC50E")) {
+        vars.setSessionObject("button265B32839A6D435F910EA1E9F3F498B2.originalParams", FieldProviderFactory.getFieldProvider(p));
+        printPageButtonFS(response, vars, "265B32839A6D435F910EA1E9F3F498B2", request.getServletPath());    
+     } else if (vars.commandIn("BUTTON265B32839A6D435F910EA1E9F3F498B2")) {
         String strM_Requisition_ID = vars.getGlobalVariable("inpmRequisitionId", windowId + "|M_Requisition_ID", "");
-        String stremSinnappApproveNeed = vars.getSessionValue("button7A8884DD9E5B440BA5EED248D51AC50E.stremSinnappApproveNeed");
-        String strProcessing = vars.getSessionValue("button7A8884DD9E5B440BA5EED248D51AC50E.strProcessing");
-        String strOrg = vars.getSessionValue("button7A8884DD9E5B440BA5EED248D51AC50E.strOrg");
-        String strClient = vars.getSessionValue("button7A8884DD9E5B440BA5EED248D51AC50E.strClient");
+        String stremSinnappApproveNeed = vars.getSessionValue("button265B32839A6D435F910EA1E9F3F498B2.stremSinnappApproveNeed");
+        String strProcessing = vars.getSessionValue("button265B32839A6D435F910EA1E9F3F498B2.strProcessing");
+        String strOrg = vars.getSessionValue("button265B32839A6D435F910EA1E9F3F498B2.strOrg");
+        String strClient = vars.getSessionValue("button265B32839A6D435F910EA1E9F3F498B2.strClient");
         
         
         if ((org.openbravo.erpCommon.utility.WindowAccessData.hasReadOnlyAccess(this, vars.getRole(), tabId)) || !(Utility.isElementInList(Utility.getContext(this, vars, "#User_Client", windowId, accesslevel),strClient)  && Utility.isElementInList(Utility.getContext(this, vars, "#User_Org", windowId, accesslevel),strOrg))){
@@ -163,7 +163,7 @@ String stradTableId = "800212";
           vars.setMessage(tabId, myError);
           printPageClosePopUp(response, vars);
         }else{       
-          printPageButtonEM_Sinnapp_Approve_Need7A8884DD9E5B440BA5EED248D51AC50E(response, vars, strM_Requisition_ID, stremSinnappApproveNeed, strProcessing);
+          printPageButtonEM_Sinnapp_Approve_Need265B32839A6D435F910EA1E9F3F498B2(response, vars, strM_Requisition_ID, stremSinnappApproveNeed, strProcessing);
         }
 
 
@@ -196,14 +196,14 @@ String stradTableId = "800212";
           vars.setMessage(tabId, myMessage);
         }
         printPageClosePopUp(response, vars);
-    } else if (vars.commandIn("SAVE_BUTTONEM_Sinnapp_Approve_Need7A8884DD9E5B440BA5EED248D51AC50E")) {
+    } else if (vars.commandIn("SAVE_BUTTONEM_Sinnapp_Approve_Need265B32839A6D435F910EA1E9F3F498B2")) {
         String strM_Requisition_ID = vars.getGlobalVariable("inpKey", windowId + "|M_Requisition_ID", "");
         String stremSinnappApproveNeed = vars.getStringParameter("inpemSinnappApproveNeed");
         String strProcessing = vars.getStringParameter("inpprocessing");
         OBError myMessage = null;
         try {
           String pinstance = SequenceIdData.getUUID();
-          PInstanceProcessData.insertPInstance(this, pinstance, "7A8884DD9E5B440BA5EED248D51AC50E", (("M_Requisition_ID".equalsIgnoreCase("AD_Language"))?"0":strM_Requisition_ID), strProcessing, vars.getUser(), vars.getClient(), vars.getOrg());
+          PInstanceProcessData.insertPInstance(this, pinstance, "265B32839A6D435F910EA1E9F3F498B2", (("M_Requisition_ID".equalsIgnoreCase("AD_Language"))?"0":strM_Requisition_ID), strProcessing, vars.getUser(), vars.getClient(), vars.getOrg());
           
           
           ProcessBundle bundle = ProcessBundle.pinstance(pinstance, vars, this);
@@ -302,13 +302,13 @@ xmlDocument.setParameter("array", dact.toString());
       out.println(xmlDocument.print());
       out.close();
     }
-    private void printPageButtonEM_Sinnapp_Approve_Need7A8884DD9E5B440BA5EED248D51AC50E(HttpServletResponse response, VariablesSecureApp vars, String strM_Requisition_ID, String stremSinnappApproveNeed, String strProcessing)
+    private void printPageButtonEM_Sinnapp_Approve_Need265B32839A6D435F910EA1E9F3F498B2(HttpServletResponse response, VariablesSecureApp vars, String strM_Requisition_ID, String stremSinnappApproveNeed, String strProcessing)
     throws IOException, ServletException {
-      log4j.debug("Output: Button process 7A8884DD9E5B440BA5EED248D51AC50E");
+      log4j.debug("Output: Button process 265B32839A6D435F910EA1E9F3F498B2");
       String[] discard = {"newDiscard"};
       response.setContentType("text/html; charset=UTF-8");
       PrintWriter out = response.getWriter();
-      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/EM_Sinnapp_Approve_Need7A8884DD9E5B440BA5EED248D51AC50E", discard).createXmlDocument();
+      XmlDocument xmlDocument = xmlEngine.readXmlTemplate("org/openbravo/erpCommon/ad_actionButton/EM_Sinnapp_Approve_Need265B32839A6D435F910EA1E9F3F498B2", discard).createXmlDocument();
       xmlDocument.setParameter("key", strM_Requisition_ID);
       xmlDocument.setParameter("processing", strProcessing);
       xmlDocument.setParameter("form", "Requisition_Edition.html");
@@ -316,13 +316,13 @@ xmlDocument.setParameter("array", dact.toString());
       xmlDocument.setParameter("css", vars.getTheme());
       xmlDocument.setParameter("language", "defaultLang=\"" + vars.getLanguage() + "\";");
       xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
-      xmlDocument.setParameter("processId", "7A8884DD9E5B440BA5EED248D51AC50E");
+      xmlDocument.setParameter("processId", "265B32839A6D435F910EA1E9F3F498B2");
       xmlDocument.setParameter("cancel", Utility.messageBD(this, "Cancel", vars.getLanguage()));
       xmlDocument.setParameter("ok", Utility.messageBD(this, "OK", vars.getLanguage()));
       
       {
-        OBError myMessage = vars.getMessage("7A8884DD9E5B440BA5EED248D51AC50E");
-        vars.removeMessage("7A8884DD9E5B440BA5EED248D51AC50E");
+        OBError myMessage = vars.getMessage("265B32839A6D435F910EA1E9F3F498B2");
+        vars.removeMessage("265B32839A6D435F910EA1E9F3F498B2");
         if (myMessage!=null) {
           xmlDocument.setParameter("messageType", myMessage.getType());
           xmlDocument.setParameter("messageTitle", myMessage.getTitle());

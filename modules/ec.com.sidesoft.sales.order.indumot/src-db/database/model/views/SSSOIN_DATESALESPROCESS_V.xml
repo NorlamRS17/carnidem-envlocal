@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+  <database name="VIEW SSSOIN_DATESALESPROCESS_V">
+    <view name="SSSOIN_DATESALESPROCESS_V"><![CDATA[SELECT get_uuid() AS sssoin_datesalesprocess_v_id, 'Y' AS isactive, co.ad_client_id, co.created, co.updated, co.createdby, co.updatedby, co.ad_org_id, co.m_warehouse_id, co.c_doctypetarget_id, co.documentno AS orddocmentno, co.dateordered AS orddate, co.em_sssoin_discountreq AS orddiscreq, co.em_sssoin_discountapp AS orddiscapp, co.em_sssoin_creditreq AS ordcredreq, co.em_sssoin_creditapp AS ordcredapp, co.em_sssoin_complete AS ordcomplete, ci.documentno AS invdocumentno, ci.dateinvoiced AS invdate, ci.em_sssoin_completed AS invcomplete, mio.documentno AS albdocumentno, mio.movementdate AS albdate, mio.em_sssoin_completed AS miocomplete, mio.em_smvai_enddateoftransport AS deliveryconfirm FROM c_order co LEFT JOIN c_invoice ci ON ci.c_order_id = co.c_order_id LEFT JOIN m_inout mio ON mio.c_order_id = co.c_order_id]]></view>
+  </database>

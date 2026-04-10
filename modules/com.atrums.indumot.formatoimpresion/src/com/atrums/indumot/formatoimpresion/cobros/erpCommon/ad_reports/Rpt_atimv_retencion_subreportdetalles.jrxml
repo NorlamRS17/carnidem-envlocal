@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_atimv_retencion_subreportdetalles" pageWidth="620" pageHeight="555" orientation="Landscape" columnWidth="620" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="2.5937424601000028"/>
+	<property name="ireport.x" value="553"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select
+date_part('year',tb_corecm.dateacct) as anio,
+coalesce(tb_civ.em_co_nro_estab,'') || '-' || coalesce(tb_civ.em_co_punto_emision,'') || '-' || coalesce(tb_civ.documentno,'') as numero,
+tb_corecml.base_imp_retencion as BaseRetencion,
+case when tb_cotire.tipo = 'IVA' then '2041('|| tb_cotire.tipo || ')' else '1031(RENTA)' end as tipo,
+tb_cotire.name as nombre,
+tb_cotire.porcentaje as porcentaje,
+tb_corecml.valor_retencion as ValorRetencion
+from
+co_retencion_compra_linea as tb_corecml join
+co_bp_retencion_compra as tb_cobpre on
+tb_corecml.co_bp_retencion_compra_id = tb_cobpre.co_bp_retencion_compra_id join
+co_tipo_retencion as tb_cotire on
+tb_cobpre.co_tipo_retencion_id = tb_cotire.co_tipo_retencion_id join
+co_retencion_compra as tb_corecm on
+tb_corecml.co_retencion_compra_id = tb_corecm.co_retencion_compra_id join
+c_invoice as tb_civ on
+tb_corecm.c_invoice_id = tb_civ.c_invoice_id
+where tb_corecml.co_retencion_compra_id = $P{DOCUMENT_ID}]]>
+	</queryString>
+	<field name="anio" class="java.lang.Double"/>
+	<field name="numero" class="java.lang.String"/>
+	<field name="baseretencion" class="java.math.BigDecimal"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="porcentaje" class="java.math.BigDecimal"/>
+	<field name="valorretencion" class="java.math.BigDecimal"/>
+	<field name="tipo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField pattern="###0">
+				<reportElement x="17" y="4" width="41" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{anio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="58" y="4" width="99" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{numero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="157" y="4" width="56" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{baseretencion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="296" y="4" width="165" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="473" y="4" width="42" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Courier New" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{porcentaje}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="515" y="4" width="43" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="10"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{valorretencion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="213" y="4" width="73" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Courier New" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

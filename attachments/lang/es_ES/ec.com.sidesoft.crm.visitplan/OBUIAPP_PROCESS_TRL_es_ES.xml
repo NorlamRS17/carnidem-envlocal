@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUIAPP_PROCESS" version="">
+  <row id="24813075ACDA4A0886192D2A7C1688CB" trl="N">
+    <value column="Name" isTrl="N" original="Recalculate Route JS">Recalculate Route JS</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6E4FD41D44DF4663AFECEF24B48D5040" trl="N">
+    <value column="Name" isTrl="Y" original="Create Route JS">Crear Ruta JS</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

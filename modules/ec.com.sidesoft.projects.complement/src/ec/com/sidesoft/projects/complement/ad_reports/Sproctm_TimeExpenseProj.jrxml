@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sproctm_TimeExpenseProj" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dfd9cdbb-2879-4c75-9489-4c1e39901e0b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="AD_USER_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="S_TimeExpense_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+now() as fecha_actual, o.name org, o.ad_org_id,
+coalesce((select name from ad_user where ad_user_id=$P{AD_USER_ID}),'') as usuario,
+p.name as producto,
+t.S_TimeExpense_id, t.documentno,bp.name as tercero, t.datereport as fecha_informe
+, tl.line, tl.dateexpense as fecha_gasto, tl.qty as cantidad,
+tl.invoiceprice as  gasto , tl.expenseamt as gasto_total , tl.IsInvoiced as refacturable
+ 	,split_part( signatures.etiquetas, ',-,', 1) as "label_firma_1"
+	,split_part( signatures.etiquetas, ',-,', 2) as "label_firma_2"
+	,split_part( signatures.etiquetas, ',-,', 3) as "label_firma_3"
+	,CASE WHEN split_part( signatures.auditoria, ',-,', 1) = 'N' THEN split_part( signatures.nombres, ',-,', 1)
+     ELSE (SELECT coalesce(firstname,'') || ' ' || coalesce(lastname,'') as name
+        FROM ad_user WHERE ad_user_id = tl.createdby) END  as "nombre_firma_1"
+	,CASE WHEN split_part( signatures.auditoria, ',-,', 2) = 'N' THEN split_part( signatures.nombres, ',-,', 2)
+     ELSE (SELECT coalesce(firstname,'') || ' ' || coalesce(lastname,'') as name
+        FROM ad_user WHERE ad_user_id = tl.createdby) END  as "nombre_firma_2"
+	,CASE WHEN split_part( signatures.auditoria, ',-,', 3) = 'N' THEN split_part( signatures.nombres, ',-,', 3)
+     ELSE (SELECT coalesce(firstname,'') || ' ' || coalesce(lastname,'') as name
+        FROM ad_user WHERE ad_user_id = tl.createdby) END  as "nombre_firma_3"
+	,split_part( signatures.cargos, ',-,', 1) as "nombre_cargos_1"
+	,split_part( signatures.cargos, ',-,', 2) as "nombre_cargos_2"
+	,split_part( signatures.cargos, ',-,', 3) as "nombre_cargos_3"
+,tk.name as tarea
+,ph.name as fase
+,pj.name proyecto
+from S_TimeExpenseLine tl
+left join S_TimeExpense t on t.S_TimeExpense_id = tl.S_TimeExpense_id
+LEFT JOIN c_projecttask tk on t.em_sproctm_c_projecttask_id=tk.c_projecttask_id
+LEFT JOIN c_projectphase ph on t.em_sproctm_c_projectphase_id=ph.c_projectphase_id
+LEFT JOIN c_project pj on t.em_sproctm_c_project_id=pj.c_project_id
+inner join m_product p on p.m_product_id=tl.m_product_id
+inner join ad_org o on o.ad_org_id = t.ad_org_id
+inner join c_bpartner bp on bp.c_bpartner_id = t.c_bpartner_id
+Left JOIN (SELECT
+    z.c_doctype_id
+    , STRING_AGG(COALESCE(y.label,''),to_char(',-,') ORDER BY y.line ASC) as "etiquetas"
+    , STRING_AGG(COALESCE(y.name,''),to_char(',-,') ORDER BY y.line ASC) as "nombres"
+    , STRING_AGG(COALESCE(y.position,''),to_char(',-,') ORDER BY y.line ASC) as "cargos"
+    , STRING_AGG(COALESCE(y.isaudit,'N'),to_char(',-,') ORDER BY y.line ASC) as "auditoria"
+    FROM c_doctype z join scsdc_signaturesperdoc y on y.c_doctype_id = z.c_doctype_id
+    GROUP BY z.c_doctype_id
+    ) signatures on signatures.c_doctype_id = t.EM_Sproctm_C_Doctype_ID
+where  tl.S_TimeExpense_id = $P{S_TimeExpense_ID}
+ORDER BY tl.line]]>
+	</queryString>
+	<field name="fecha_actual" class="java.sql.Timestamp"/>
+	<field name="org" class="java.lang.String"/>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="s_timeexpense_id" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="tercero" class="java.lang.String"/>
+	<field name="fecha_informe" class="java.sql.Timestamp"/>
+	<field name="line" class="java.math.BigDecimal"/>
+	<field name="fecha_gasto" class="java.sql.Timestamp"/>
+	<field name="cantidad" class="java.math.BigDecimal"/>
+	<field name="gasto" class="java.math.BigDecimal"/>
+	<field name="gasto_total" class="java.math.BigDecimal"/>
+	<field name="refacturable" class="java.lang.String"/>
+	<field name="label_firma_1" class="java.lang.String"/>
+	<field name="label_firma_2" class="java.lang.String"/>
+	<field name="label_firma_3" class="java.lang.String"/>
+	<field name="nombre_firma_1" class="java.lang.String"/>
+	<field name="nombre_firma_2" class="java.lang.String"/>
+	<field name="nombre_firma_3" class="java.lang.String"/>
+	<field name="nombre_cargos_1" class="java.lang.String"/>
+	<field name="nombre_cargos_2" class="java.lang.String"/>
+	<field name="nombre_cargos_3" class="java.lang.String"/>
+	<field name="tarea" class="java.lang.String"/>
+	<field name="fase" class="java.lang.String"/>
+	<field name="proyecto" class="java.lang.String"/>
+	<variable name="v_SumGasto" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{gasto}]]></variableExpression>
+	</variable>
+	<variable name="v_SumGastoTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{gasto_total}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="62" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy h:mm a">
+				<reportElement x="480" y="0" width="75" height="10" uuid="a4431972-7dd4-4489-a1ef-dd9ddf008b69"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_actual}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="409" y="0" width="71" height="10" uuid="8c5bd9a7-0d00-4802-bcc4-df03cb70c3fa"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha de impresión:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="10" width="75" height="52" uuid="1f52c58a-9b0b-480d-b570-36f497f02442"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="6" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="409" y="10" width="71" height="52" uuid="1e648e95-071f-4167-8d7c-1460771ffa6f"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Usuario:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="146" y="0" width="263" height="62" uuid="746a8aee-c0dc-4c55-8163-e42c0bf9546a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["INFORME DE GASTOS"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="146" height="62" uuid="d137751a-8a8d-4aa2-8083-d65de04c9786"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{ad_org_id})]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="75" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="70" height="15" uuid="8fd5772a-3441-4a85-96d7-b53561f567b1"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Organización: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="15" width="70" height="15" uuid="df4d54ab-bcd7-4c05-9644-cd858375f909"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Empleado: "]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="70" y="0" width="228" height="15" uuid="c4f0c2c7-8f6c-4882-b9ad-1ffbdacb3c1b"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h:mm a" isBlankWhenNull="true">
+				<reportElement x="70" y="15" width="228" height="15" uuid="5df3e27f-ecfd-4cc8-864d-94238539dee6"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tercero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="298" y="0" width="111" height="15" uuid="e0b15059-5850-4169-90ee-b542e13af4f8"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Documento: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="298" y="15" width="111" height="15" uuid="13bf4f62-45f4-47df-812a-ba5d621d7186"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha: "]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="409" y="0" width="146" height="15" uuid="defcad40-4b79-4fbd-9408-2727bff3705e"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h:mm a">
+				<reportElement x="409" y="15" width="146" height="15" uuid="fbad6fb0-205e-48cc-8454-8914145cf613"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_informe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="30" width="70" height="15" uuid="05245bac-3917-4cc4-90d4-20c9a804a094"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Proyecto: "]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h:mm a" isBlankWhenNull="true">
+				<reportElement x="70" y="30" width="228" height="15" uuid="ad20f209-fbc0-4a71-b24a-054b3c2cea61"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proyecto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h:mm a" isBlankWhenNull="true">
+				<reportElement x="70" y="45" width="228" height="15" uuid="52d10865-2926-4487-88e7-d48c91e9ea34"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fase}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="45" width="70" height="15" uuid="a503bd9f-06f0-4592-bda2-0fbff6d9283d"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fase: "]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h:mm a" isBlankWhenNull="true">
+				<reportElement x="70" y="60" width="228" height="15" uuid="27251a75-1eba-4a99-860e-b5b7a2b2a9de"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tarea}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="60" width="70" height="15" uuid="8a7216a1-9e1d-4d42-9f4d-3807506b48bf"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tarea: "]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="4" width="70" height="15" uuid="a3007136-599a-44b5-88a6-8c06e78fe344"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["No. Linea"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="4" width="180" height="15" uuid="18bbaba2-b9f2-44bf-89c3-8bf20c80918b"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tipo de Gasto"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="4" width="48" height="15" uuid="948c19ce-076f-47ad-a532-cc0badba5316"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Cantidad"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="298" y="4" width="47" height="15" uuid="3c454f23-168f-4e23-8088-3bd847021ccd"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gasto"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="345" y="4" width="64" height="15" uuid="4a4cabc4-c6d6-420a-94cf-c999b8edcc81"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gasto Total"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="409" y="4" width="71" height="15" uuid="3787bc18-ffe7-430b-9df8-9df0ea7b9c51"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha gasto"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="4" width="75" height="15" uuid="e6e095ab-8e2d-464b-b27c-2f2cf10415d7"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Refacturable"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="70" y="0" width="180" height="15" uuid="1962bdbc-b1ba-45b2-80e9-aef91c37d8b2"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="false">
+				<reportElement x="250" y="0" width="48" height="15" uuid="479e6bcc-4540-4c55-add4-70d61d76dc96"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="298" y="0" width="47" height="15" uuid="d73d9f06-31fd-4396-9512-3ba0573b450d"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gasto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="345" y="0" width="64" height="15" uuid="cc15c04c-0a94-40db-a5b9-8fb503be5228"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gasto_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="409" y="0" width="71" height="15" uuid="e5e8012e-eb6a-4597-92cc-81e74cb8aea3"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_gasto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="480" y="0" width="75" height="15" uuid="6c57973a-1d31-4da6-b256-f0f276c57284"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{refacturable}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="70" height="15" uuid="6edd5c1c-8250-46bf-a722-5ff3aa27f29a"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{line}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="175" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="298" height="15" uuid="e9456900-a419-4a55-8fb7-e9fd30a96bb8"/>
+				<box rightPadding="3">
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="298" y="0" width="47" height="15" uuid="6d5b06ca-bcb0-4336-be3e-c2dbb9c85362"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{v_SumGasto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="345" y="0" width="64" height="15" uuid="5f5322cc-8b0c-4b72-aeb3-9b3bef62a6ad"/>
+				<box>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{v_SumGastoTotal}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="15" width="555" height="148" uuid="d7c7326a-ccc5-43bf-a40e-405376797215"/>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="321" y="163" width="159" height="12" uuid="c02e5b99-7de8-42b6-90b2-4ef5fb89ca16"/>
+				<box leftPadding="5">
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{label_firma_2}+"<br>"+$F{nombre_firma_2}.toUpperCase()+"<br>"+$F{nombre_cargos_2}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="87" y="163" width="161" height="12" uuid="5ce80fd6-60c4-455a-b9d6-c6af3c779f87"/>
+				<box leftPadding="5">
+					<topPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top" markup="html">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{label_firma_1}+"<br>"+$F{nombre_firma_1}.toUpperCase()+"<br>"+$F{nombre_cargos_1}.toUpperCase()]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

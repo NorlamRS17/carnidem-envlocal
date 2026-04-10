@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="60A39B8DCD5147EBB891392C72D16930" trl="Y">
+    <value column="Name" isTrl="Y" original="Collection in transit">Cobro en transito</value>
+    <value column="PrintName" isTrl="Y" original="Collection in transit">Cobro en transito</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6B48EC1DBCB348C4A9F6B7FD4862F58A" trl="N">
+    <value column="Name" isTrl="N" original="Ssappor_Log_ID">Ssappor_Log_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssappor_Log_ID">Ssappor_Log_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="81BB9D8D397F4FC19B68A1AE8ABC367A" trl="Y">
+    <value column="Name" isTrl="Y" original="Generated">Generado</value>
+    <value column="PrintName" isTrl="Y" original="Generated">Generado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D5909FAF982845739D51B8F0203E7770" trl="Y">
+    <value column="Name" isTrl="Y" original="App Integration Log">Log de integración App</value>
+    <value column="PrintName" isTrl="Y" original="App Integration Log">Log de integración App</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

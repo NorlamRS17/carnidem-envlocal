@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="64010FE152FF4571A7C129033EC91A2C" trl="N">
+    <value column="Name" isTrl="N" original="Product Simulation MRP">Product Simulation MRP</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DAEA023790F540EBAEDB932E2B93A534" trl="N">
+    <value column="Name" isTrl="N" original="Type Pareto">Type Pareto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F5B9FD79BDB045398145DED9874C7168" trl="N">
+    <value column="Name" isTrl="N" original="Period MRP">Period MRP</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FF9455BAA2A0441C8889F2A94E99443A" trl="N">
+    <value column="Name" isTrl="N" original="MRP List Status">MRP List Status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

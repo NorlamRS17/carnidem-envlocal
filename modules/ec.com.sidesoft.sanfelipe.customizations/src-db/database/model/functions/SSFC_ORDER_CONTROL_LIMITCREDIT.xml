@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSFC_ORDER_CONTROL_LIMITCREDIT">
+    <function name="SSFC_ORDER_CONTROL_LIMITCREDIT" type="VARCHAR">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+	v_ResultStr		VARCHAR2(2000) := '';
+	v_Message		TEXT := ''; --OBTG:VARCHAR2--
+	-- Variables
+	Cur				RECORD;
+	vOrderID		VARCHAR2(32);
+	vOrder			RECORD;
+	vDocAction		VARCHAR2(60);
+    vCheck          NUMBER;
+	vnetdays	 NUMBER;
+	vPartner 		RECORD;
+	vOutstandingamt NUMBER;
+	vTotalOutstandingamt NUMBER;
+BEGIN
+	-- Begin Get Parameters
+	FOR Cur IN (
+		SELECT *
+		FROM ad_ep_instance_para
+		WHERE ad_ep_instance_id = PInstance_ID
+	) LOOP
+		IF Cur.ParameterName = 'Record_ID' THEN
+			vOrderID := Cur.P_String;
+		ELSEIF Cur.ParameterName = 'DocAction' THEN
+			vDocAction := Cur.P_String;
+		END IF;	
+	END LOOP;
+	-- Finish Get Parameter
+	
+	--<<BEGIN_PROCESS>>
+	vOutstandingamt := 0;
+	vTotalOutstandingamt := 0;
+	
+	-- Obtengo datos del pedido
+	SELECT o.c_order_id, o.issotrx, o.c_bpartner_id, o.grandtotal, o.c_paymentterm_id, cdoc.IsReturn
+    INTO vOrder
+    FROM c_order o
+    left join c_doctype cdoc on cdoc.c_doctype_id = o.c_doctypetarget_id
+    WHERE o.c_order_id = vOrderID
+    and cdoc.IsReturn = 'N';
+	
+	--Valido los dias de la condicion de pago para ejecutar la validacion
+	select netdays
+	into vnetdays
+	from c_paymentterm
+	where c_paymentterm_id = vOrder.c_paymentterm_id;
+
+	IF vOrder.isSoTrx = 'Y' THEN
+
+		IF vDocAction = 'CO' and vnetdays > 0 THEN
+		
+			--Obtengo limite de credito del tercero so_creditlimit
+			select * 
+			into vPartner
+			from c_bpartner
+			where c_bpartner_id = vOrder.c_bpartner_id;
+			
+			--Obtengo el valor de las facturas de venta pendientes de cobro campo outstandingamt
+			select coalesce(sum(outstandingamt), 0)
+			into vOutstandingamt
+			from c_invoice 
+			where c_bpartner_id = vOrder.c_bpartner_id
+			and docstatus = 'CO'
+			and issotrx = 'Y';
+			
+			--Sumo el valor de las facturas mas el valor del pedido de venta en proceso
+			vTotalOutstandingamt := vOutstandingamt + coalesce(vOrder.grandtotal, 0);
+			
+			--Si el valor de las adeudado en las factuas + pedido de venta en proceso es mayor
+		    -- a limite de credito del configurado en el tercero dispara el mensaje
+			If(vTotalOutstandingamt > vPartner.so_creditlimit ) then
+				RAISE_APPLICATION_ERROR(-20000, 'El valor de crédito excede al limite permitido, valor actual adeudado: ' || vTotalOutstandingamt);
+			End If;
+			
+		END IF;
+		
+	END IF; 
+
+	--<<FINISH_PROCESS>>
+		
+	RETURN v_ResultStr;
+END SSFC_ORDER_CONTROL_LIMITCREDIT
+]]></body>
+    </function>
+  </database>

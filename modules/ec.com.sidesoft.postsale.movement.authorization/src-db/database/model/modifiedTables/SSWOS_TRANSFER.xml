@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SSWOS_TRANSFER">
+    <table name="SSWOS_TRANSFER" primaryKey="SSWOS_TRANSFER_KEY">
+      <column name="EM_SPSMVAT_RETURN_QUANTITY" primaryKey="false" required="true" type="DECIMAL" size="10,2" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

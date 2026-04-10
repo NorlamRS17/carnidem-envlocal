@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_ImportMain" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a594eea9-1716-4c4f-83a8-9c8f5955ea80">
+	<property name="ireport.zoom" value="1.6105100000000012"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DATE_TO" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DOCUMENTNO" class="java.lang.String"/>
+	<parameter name="REPORT_TYPE" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AD_USER_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["100"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_WEB" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/opt/openbravo/ecuapack/modules/ec.com.sidesoft.imports.report/src"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/opt/Ambientes/indumotjunio/modules/ec.com.sidesoft.imports.report/src/ec/com/sidesoft/imports/report/ad_reports/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATE_TO2" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_format_date_to" class="java.util.Date" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+(select ad_org_id from ad_org where   ad_orgtype_id = '1' ) as organizationid,
+to_char(now(),'dd/MM/yyyyy HH24:MM') as fecha_imp
+,(select name from ad_user where ad_user_id =$P{AD_USER_ID} ) as usuario
+from dual]]>
+	</queryString>
+	<field name="organizationid" class="java.lang.String"/>
+	<field name="fecha_imp" class="java.lang.String"/>
+	<field name="usuario" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="86" splitType="Stretch">
+			<staticText>
+				<reportElement x="521" y="0" width="171" height="22" uuid="12e37da8-e93a-4e26-985c-b90f36ab9b6e">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Impresión:  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="521" y="22" width="171" height="32" uuid="15ad8eaa-d119-4658-93e9-a38c51838375">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario:  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="54" width="802" height="29" uuid="954559d8-8be0-48da-a9c0-5f1088576bb8">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("2")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE IMPORTACIONES EN CURSO DETALLADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="54" width="802" height="29" uuid="9e12a548-ba46-4a2f-a92b-a7e059328ab0">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE IMPORTACIONES EN CURSO]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="692" y="0" width="110" height="22" uuid="86573a0f-1f79-4de8-962f-85ebb96f3d86">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<box rightPadding="2"/>
+				<textFieldExpression><![CDATA[$F{fecha_imp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="692" y="22" width="110" height="32" uuid="1c6435f3-ebc8-4dd9-b8fc-bb993fc5a3a6">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<box rightPadding="15"/>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="181" height="54" uuid="a2220821-1bff-470c-a098-44ea4c2c98c7">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("1")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal",  $F{organizationid})]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="697" y="22" width="105" height="32" uuid="8f9a7181-425e-49dc-81fd-c04bc39aad18">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("2")]]></printWhenExpression>
+				</reportElement>
+				<box rightPadding="15"/>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="697" y="0" width="105" height="22" uuid="14b792b1-79dd-4d08-898d-c8a3db212273">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("2")]]></printWhenExpression>
+				</reportElement>
+				<box rightPadding="2"/>
+				<textFieldExpression><![CDATA[$F{fecha_imp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="560" y="0" width="137" height="22" uuid="e15089f4-6dfa-4fd4-9b8e-9e854e1b6711">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("2")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Impresión:  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="560" y="22" width="137" height="32" uuid="09c6fa2e-6cc7-4b3a-be59-caa2166766a5">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("2")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario:  ]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="114" height="54" uuid="0c01d576-2cd1-40dd-94a0-6b994ddb0a8b">
+					<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("2")]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal",  $F{organizationid})]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("1")]]></printWhenExpression>
+			<subreport>
+				<reportElement x="0" y="0" width="802" height="27" isRemoveLineWhenBlank="true" uuid="1d767a51-d0ca-4340-9384-cf21f4647782"/>
+				<subreportParameter name="DATE_TO">
+					<subreportParameterExpression><![CDATA[$P{DATE_TO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="C_ORDER_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENTNO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN}+ "/ec/com/sidesoft/imports/report/ad_reports/Rpt_Imports.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="30">
+			<printWhenExpression><![CDATA[$P{REPORT_TYPE}.equals("2")]]></printWhenExpression>
+			<subreport>
+				<reportElement x="0" y="0" width="802" height="27" isRemoveLineWhenBlank="true" uuid="e42a4acc-9406-4a90-9209-bee4a7331a4e"/>
+				<subreportParameter name="DATE_TO">
+					<subreportParameterExpression><![CDATA[$P{DATE_TO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="C_ORDER_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENTNO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/imports/report/ad_reports/Rpt_ImportsDetail.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band/>
+	</noData>
+</jasperReport>

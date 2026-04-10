@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="072C2C18626D4BB5AE2E8BAC2770618E" trl="Y">
+    <value column="Name" isTrl="Y" original="Line Machine">Máquina</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="Cláusula where HQL determinate show register in respective tab, apply the same tab of this tab">Cláusula where HQL determinate show register in respective tab, apply the same tab of this tab</value>
+  </row>
+  <row id="159A349996134E10911CDC8384217A61" trl="Y">
+    <value column="Name" isTrl="Y" original="Lines Workforce">Mano de obra</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="Cláusula where HQL determinate show register in respective tab, apply the same tab of this tab">Cláusula where HQL determinate show register in respective tab, apply the same tab of this tab</value>
+  </row>
+  <row id="2C25F171C49D4CB886C9CCC8175C8B5D" trl="N">
+    <value column="Name" isTrl="Y" original="Import Details (MO - CIF - MAQ)">Importar Detalles (MO - CIF - MAQ)</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="48141C6F643C419AA539E035A658A22D" trl="Y">
+    <value column="Name" isTrl="Y" original="Lines CIF">Costos Indirectos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="Cláusula where HQL determinate show register in respective tab, apply the same tab of this tab">Cláusula where HQL determinate show register in respective tab, apply the same tab of this tab</value>
+  </row>
+  <row id="4AFBFFCDB9AB4EB7BC2EC80BEB67AFA3" trl="Y">
+    <value column="Name" isTrl="Y" original="Detail MAQ">Detalle</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4F9ABD99F4CF4621887116B78370D579" trl="N">
+    <value column="Name" isTrl="N" original="Sproctm Imp Products">Sproctm Imp Products</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="58004C268DB844C8BE6F80248651F495" trl="N">
+    <value column="Name" isTrl="N" original="Lines Log">Lines Log</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5A8C86D2C3E749E0BA494213CD9583F9" trl="Y">
+    <value column="Name" isTrl="Y" original="Product">Producto</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6A68CC57F84640D2A03636B2824FA757" trl="N">
+    <value column="Name" isTrl="N" original="Line">Line</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6F2F9FAFDE3D4CB994DD1F3A9B32E31C" trl="N">
+    <value column="Name" isTrl="N" original="Line">Line</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7004432B8ED0401A9D752E0ED6E9270C" trl="Y">
+    <value column="Name" isTrl="Y" original="SUB Contract">SUB Contrato</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7A74878F95544691B91EA0359C426E4A" trl="N">
+    <value column="Name" isTrl="N" original="Accounting">Accounting</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7B3DE5EDD9574D98850A4645D19BC9CA" trl="Y">
+    <value column="Name" isTrl="Y" original="Inventory Liquidation">Liquidación de inventario</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="83F24776D39D4610B7EF526595637FB8" trl="Y">
+    <value column="Name" isTrl="Y" original="Work Force">Mano de obra</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="94265B88F63C4AFF933B62403DF13EB1" trl="Y">
+    <value column="Name" isTrl="Y" original="Account">Contabilidad</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9ADB5BA581C4492CB646F88CA19AE9DE" trl="Y">
+    <value column="Name" isTrl="Y" original="Detail Workforce">Detalle</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A60E454254204D65AB449B8A8B88AD14" trl="Y">
+    <value column="Name" isTrl="Y" original="Account MAQ">Contabilidad</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A90091007133407B9B18313ADA90129D" trl="N">
+    <value column="Name" isTrl="N" original="CIF">CIF</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B42A0EDE7ADF407A9A4BF59C7B480A14" trl="Y">
+    <value column="Name" isTrl="Y" original="Machinery">Maquinaria</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D6F26DC185A8497F9B3932ACF0CB4550" trl="N">
+    <value column="Name" isTrl="N" original="Import Workforce">Import Workforce</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="EA8004A4F9D94543A00A60378474D227" trl="Y">
+    <value column="Name" isTrl="Y" original="Account CIF">Contabilidad</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F0870A416F9D4A079A63B4152DF629CB" trl="N">
+    <value column="Name" isTrl="Y" original="Settlement Cost Project ">Liquidación de costos proyectos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F3050B7DC07C4CAABDCAC07E479F0520" trl="Y">
+    <value column="Name" isTrl="Y" original="Detail CIF">Detalle</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FCC124BB71C842D18A5CE885855A7669" trl="Y">
+    <value column="Name" isTrl="Y" original="Account">Contabilidad</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FED6C14D586040AE9D24CAFFB229C919" trl="Y">
+    <value column="Name" isTrl="Y" original="Account">Contabilidad</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FF46F66EE3784DBCAB06E477028F229F" trl="Y">
+    <value column="Name" isTrl="Y" original="Account MO">Contabilidad</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

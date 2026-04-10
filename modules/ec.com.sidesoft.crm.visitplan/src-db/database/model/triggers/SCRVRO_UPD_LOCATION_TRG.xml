@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCRVRO_UPD_LOCATION_TRG">
+    <trigger name="SCRVRO_UPD_LOCATION_TRG" table="C_BPARTNER_LOCATION" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[ 
+ 
+	vCheck NUMBER;
+	v_longitude text;
+	v_latitude text;
+	v_latitudenull text;
+	v_longitudenull text;
+	
+	
+BEGIN
+
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+	
+	IF TG_OP IN ('INSERT','UPDATE') THEN
+
+		/*
+		select cbpl.*  INTO  Cur_Partner
+		from c_bpartner_location cbpl 
+		where cbpl.c_bpartner_id = :new.c_bpartner_id
+		and em_spinco_latitude is not null limit 1;
+		
+		select coalesce((select count(cbpl.*)
+		from c_bpartner_location cbpl 
+		where cbpl.c_bpartner_id = :new.c_bpartner_id
+		and em_spinco_latitude is not null),0)
+		into vCheck
+		from dual;*/
+		
+		v_latitudenull := coalesce(:new.em_spinco_latitude,'ND') ;
+	    v_longitudenull:= coalesce(:new.em_spinco_longitude,'ND');
+		
+		
+		
+		
+		IF (v_latitudenull<>'ND' and  v_longitudenull<>'ND' ) THEN
+					
+			v_longitude:=v_longitudenull;
+			v_latitude:= v_latitudenull;
+			--raise exception '%' , v_longitude;
+			update  c_bpartner
+			set em_scrvro_latitude=v_latitude,
+			em_scrvro_longitude=v_longitude
+			where c_bpartner_id = :new.c_bpartner_id;
+		END IF;
+	END IF;
+	
+	END SCRVRO_UPD_LOCATION_TRG
+]]></body>
+    </trigger>
+  </database>

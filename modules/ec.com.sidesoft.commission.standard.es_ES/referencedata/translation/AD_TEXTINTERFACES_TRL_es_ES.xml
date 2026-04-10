@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="0432F8D7D22D43D8BCFF577B76C57D03" trl="N">
+    <value column="Text" isTrl="N" original="Página">Página</value>
+  </row>
+  <row id="11D8D48F21FE463FABC9094D9FB04033" trl="N">
+    <value column="Text" isTrl="N" original="No se encontró información para mostrar">No se encontró información para mostrar</value>
+  </row>
+  <row id="25CBCBA8C2174D90AD437FFCF1EEFB5E" trl="N">
+    <value column="Text" isTrl="N" original="DETALLE DE COMISIONES">DETALLE DE COMISIONES</value>
+  </row>
+  <row id="6201BB41F2864ED09B8A9CBFF49D552D" trl="N">
+    <value column="Text" isTrl="N" original="DOCUMENTO NO.:">DOCUMENTO NO.:</value>
+  </row>
+  <row id="6AD938A065804F4C87AE7C6282C21BA9" trl="N">
+    <value column="Text" isTrl="N" original="AGENTE COMERCIAL:">AGENTE COMERCIAL:</value>
+  </row>
+  <row id="7F241DBF7DB54F089883BA09BC3CB686" trl="N">
+    <value column="Text" isTrl="N" original="Importe comisión">Importe comisión</value>
+  </row>
+  <row id="812930CF15F349B6A0CC536CC7E7EDF7" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de vencimiento">Fecha de vencimiento</value>
+  </row>
+  <row id="8C9538DF89BB431AA4118D30504A5419" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de factura">Fecha de factura</value>
+  </row>
+  <row id="935AEF4500424810ADF2C90F96B80FC2" trl="N">
+    <value column="Text" isTrl="N" original="Pagado en">Pagado en</value>
+  </row>
+  <row id="9D983E461CA74FC7919E0B88517FA0A4" trl="N">
+    <value column="Text" isTrl="N" original="Información">Información</value>
+  </row>
+  <row id="AA3655C86B904349A2D6B6110CED2DE3" trl="N">
+    <value column="Text" isTrl="N" original="Tercero">Tercero</value>
+  </row>
+  <row id="C4DEB051B3E5419CBE7C569073ED32D3" trl="N">
+    <value column="Text" isTrl="N" original="&lt;b&gt;Usuario: &lt;/b&gt;">&lt;b&gt;Usuario: &lt;/b&gt;</value>
+  </row>
+  <row id="CD994FDB698041F497BB6212BE94B905" trl="N">
+    <value column="Text" isTrl="N" original="Importe">Importe</value>
+  </row>
+  <row id="D47AACE742F7482E9459B13AAD76B9E3" trl="N">
+    <value column="Text" isTrl="N" original="N">N</value>
+  </row>
+  <row id="DE0172B65A5A4D8091B4590E4054EF1B" trl="N">
+    <value column="Text" isTrl="N" original="Línea de la factura">Línea de la factura</value>
+  </row>
+  <row id="DE7CBE3375434726A3A48BFC7B9709C0" trl="N">
+    <value column="Text" isTrl="N" original="/ &lt;b&gt;Fecha: &lt;/b&gt;">/ &lt;b&gt;Fecha: &lt;/b&gt;</value>
+  </row>
+  <row id="EC75A3AA05284DC68D65F4C6EAB07ED2" trl="N">
+    <value column="Text" isTrl="N" original="/ec/com/sidesoft/commission/standard/ad_reports/CommissionReport.jrxml">/ec/com/sidesoft/commission/standard/ad_reports/CommissionReport.jrxml</value>
+  </row>
+  <row id="F02BEBC60DE646089F177C4EEAA6F4F4" trl="N">
+    <value column="Text" isTrl="N" original="PAGADAS">PAGADAS</value>
+  </row>
+  <row id="F50D249F914F4F9AB0A0568A05FFCDE9" trl="N">
+    <value column="Text" isTrl="N" original="NO">NO</value>
+  </row>
+  <row id="F8CF466A053B454CBC7EDB6BAABEDA49" trl="N">
+    <value column="Text" isTrl="N" original="Referencia">Referencia</value>
+  </row>
+</compiereTrl>

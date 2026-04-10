@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSIMPCN_BLOCK_ICL_TRG">
+    <trigger name="SSIMPCN_BLOCK_ICL_TRG" table="SSIMPCN_IMP_CONSOL_LINE" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[
+	vCheck NUMBER;
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF DELETING THEN
+
+		SELECT COUNT(ic.*) INTO vCheck
+		FROM ssimpcn_imp_consol_line icl
+			JOIN ssimpcn_imp_consolidation ic ON ic.ssimpcn_imp_consolidation_id = icl.ssimpcn_imp_consolidation_id
+		WHERE ic.docstatus = 'CO' AND icl.ssimpcn_imp_consol_line_id = :OLD.ssimpcn_imp_consol_line_id;
+		IF vCheck > 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, '@CannotDeleteTrx@');
+		END IF;
+
+	END IF;
+
+	END SSIMPCN_BLOCK_ICL_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSSOIN_VALIDATE_INOUT">
+    <function name="SSSOIN_VALIDATE_INOUT" type="NULL">
+      <parameter name="pinstance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[pRecordID VARCHAR2(32);
+	pMessage VARCHAR2(2000);
+	pDocAction VARCHAR2(60);
+	pUserID VARCHAR2(32);
+	pResult NUMBER;
+    pMayoreo VARCHAR2(1);
+    pProcessed VARCHAR2(1);
+    pOrderID VARCHAR2(32);
+	vParams RECORD;
+	vOrder RECORD;
+	vOrderLines RECORD;
+BEGIN
+	
+	FOR vParams IN (
+		SELECT *
+		FROM ad_ep_instance_para
+		WHERE ad_ep_instance_id = pInstance
+	) LOOP
+		IF (vParams.parametername LIKE 'DocAction') THEN
+			pDocAction := vParams.p_string;
+		ELSIF (vParams.parametername LIKE 'Record_ID') THEN
+			pRecordID := vParams.p_string;
+		ELSIF (vParams.parametername LIKE 'User') THEN
+			pUserID := vParams.p_string;
+		ELSIF (vParams.parametername LIKE 'Message') THEN
+			pMessage := vParams.p_text;
+		ELSIF (vParams.parametername LIKE 'Result') THEN
+			pResult := vParams.p_number;
+		END IF;
+	END LOOP;
+	
+    select c_order_id into pOrderID from c_invoice where c_invoice_id = pRecordID;
+    
+	--Recuperamos el pedido de venta
+ 	SELECT * INTO vOrder FROM c_order WHERE c_order_id=pOrderID;
+	IF vOrder.c_order_id IS NULL THEN
+		RETURN;
+	END IF;
+	
+    select case when em_sscuind_complete_shipment = 'N' and  em_sscuind_complete_invoice = 'N' then 'Y' else 'N' end 
+        into pMayoreo 
+        from c_doctype where c_doctype_id = vOrder.c_doctypetarget_id;
+    IF pMayoreo = 'Y' THEN
+		FOR vOrderLines IN (
+			SELECT 
+			m_inoutline_id
+			FROM c_orderline 
+			WHERE c_order_id=vOrder.c_order_id and m_inoutline_id is not null 
+		) LOOP
+            IF m_inoutline_id is not null THEN
+                select processed into pProcessed from m_inout where m_inout_id = 
+                    (select m_inout_id from m_inoutline where m_inoutline_id = vOrderLines.m_inoutline_id); 
+                IF pProcessed = 'N' THEN
+                    RAISE_APPLICATION_ERROR(-20000, '@sssoin_albaran_error@');
+                END IF;
+            END IF;
+		END LOOP;
+        select case when count(*) > 0 then 'N' else 'Y' end into pProcessed from m_inout where processed = 'N' and c_order_id = vOrder.c_order_id;
+        IF pProcessed = 'N' THEN
+            RAISE_APPLICATION_ERROR(-20000, '@sssoin_albaran_error@');
+        END IF;
+    END IF;
+END SSSOIN_VALIDATE_INOUT
+]]></body>
+    </function>
+  </database>

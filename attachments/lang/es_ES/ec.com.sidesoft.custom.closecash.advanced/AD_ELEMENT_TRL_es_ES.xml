@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0DCB3C50E58B49DB9BE2E2C68E0FBF81" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scca_Line_Type">Tipo de línea</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scca_Line_Type">Tipo de línea</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="133EEC92D089412292E18759BC5C63FE" trl="N">
+    <value column="Name" isTrl="N" original="Financial_Account_ID">Financial_Account_ID</value>
+    <value column="PrintName" isTrl="N" original="Financial_Account_ID">Financial_Account_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="13BCCF013D8F4664A2062A795D75D045" trl="N">
+    <value column="Name" isTrl="N" original="Scca_Cards_Settlement_ID">Scca_Cards_Settlement_ID</value>
+    <value column="PrintName" isTrl="N" original="Scca_Cards_Settlement_ID">Scca_Cards_Settlement_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="143D91E45A0F45059353D6F35CA9D1B6" trl="Y">
+    <value column="Name" isTrl="Y" original="Line_Type">Tipo de línea</value>
+    <value column="PrintName" isTrl="Y" original="Line_Type">Tipo de línea</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="14F074D3BA2F4145BF712FC6F09198D7" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scca_Administrator">Administrador cierre caja</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scca_Administrator">Administrador cierre caja</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="25155C704BA347778A89A31BE2BA73F3" trl="N">
+    <value column="Name" isTrl="N" original="Scca_Cash_Clousureline2_ID">Scca_Cash_Clousureline2_ID</value>
+    <value column="PrintName" isTrl="N" original="Scca_Cash_Clousureline2_ID">Scca_Cash_Clousureline2_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="27A6A6CE6B834F4DA4A3085C4B2F6796" trl="N">
+    <value column="Name" isTrl="N" original="Paymenttype">Paymenttype</value>
+    <value column="PrintName" isTrl="N" original="Paymenttype">Paymenttype</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2A5E48ACD5A94BBC96705F64CEF88A48" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scca_Type_Payment">Tipo de pago/cobro</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scca_Type_Payment">Tipo de (pago/cobro)</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3D2C78469363448F86546D7B20677920" trl="Y">
+    <value column="Name" isTrl="Y" original="Card_Type">Tipo de tarjeta</value>
+    <value column="PrintName" isTrl="Y" original="Card_Type">Tipo de tarjeta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4CF7B3AC77D245A5B8B0A9E7B446C8A1" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scca_Financial_Account_ID">Cuenta financiera</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scca_Financial_Account_ID">Cuenta financiera</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5FB064705A924EBCB29E028588357541" trl="N">
+    <value column="Name" isTrl="N" original="Order_Number">Order_Number</value>
+    <value column="PrintName" isTrl="N" original="Order_Number">Order_Number</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="63A8634F1EA84B8BBAE2A810C00B452D" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scca_Lot">Lote</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scca_Lot">Lote</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="64654363243A41F095683709521D217F" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scca_Cashier">Cajero cierre caja</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scca_Cashier">Cajero</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8C7B0DB3DF4F4A789AB618DE8CBC15BA" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scca_Card_Type">Tipo de tarjeta</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scca_Card_Type">Tipo de tarjeta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B035E40C7343422BB6E7A9172458AF2D" trl="Y">
+    <value column="Name" isTrl="Y" original="Date_Transaction">Fecha</value>
+    <value column="PrintName" isTrl="Y" original="Date">Fecha</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B72C9003204243288DB8613D71AF5124" trl="N">
+    <value column="Name" isTrl="Y" original="IVA Retention">Retención IVA</value>
+    <value column="PrintName" isTrl="Y" original="IVA Retention">Retención IVA</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BF5347DB0F2C458CAA4E7F5FC03FB5ED" trl="Y">
+    <value column="Name" isTrl="Y" original="Is Cash">Efectivo</value>
+    <value column="PrintName" isTrl="Y" original="Is Cash">Efectivo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C13FCD874A3C47619001BC8F8064E3A3" trl="Y">
+    <value column="Name" isTrl="Y" original="Commission_Amount">Valor comisión</value>
+    <value column="PrintName" isTrl="Y" original="Commission amount">Valor comisión</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C43565BCC841417E812545605A15EDB1" trl="N">
+    <value column="Name" isTrl="N" original="EM_Scca_Paymenttype">EM_Scca_Paymenttype</value>
+    <value column="PrintName" isTrl="N" original="EM_Scca_Paymenttype">EM_Scca_Paymenttype</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DD5FCD29C5304F02AD6D33BEE394DB88" trl="Y">
+    <value column="Name" isTrl="Y" original="Received_Amount">Valor cobrado</value>
+    <value column="PrintName" isTrl="Y" original="Received_Amount">Valor cobrado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EBAC1E3C07C8471BA1AB27BA474A76D2" trl="Y">
+    <value column="Name" isTrl="Y" original="Bonded_Amount">Valor depositado</value>
+    <value column="PrintName" isTrl="Y" original="Bonded_Amount">Valor depositado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FB01DFCF6D6742D1A1E9C95948A2CABE" trl="N">
+    <value column="Name" isTrl="Y" original="Rent Retention">Retención Renta</value>
+    <value column="PrintName" isTrl="Y" original="Rent Retention">Retención Renta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

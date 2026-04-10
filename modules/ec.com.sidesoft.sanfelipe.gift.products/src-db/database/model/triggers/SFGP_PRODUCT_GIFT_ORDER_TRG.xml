@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SFGP_PRODUCT_GIFT_ORDER_TRG">
+    <trigger name="SFGP_PRODUCT_GIFT_ORDER_TRG" table="C_ORDERLINE" fires="after" insert="true" update="false" delete="false" foreach="row">
+      <body><![CDATA[ v_product_check NUMBER; --OBTG:BOOL--
+ cur_product_offer RECORD%ROWTYPE;
+ v_product_offer_id CHARACTER VARYING; --OBTG:VARCHAR2--
+ v_prod_offer_qty NUMBER; --OBTG:NUMBER--
+ v_prod_identifier CHARACTER VARYING; --OBTG:VARCHAR2--
+ v_prod_unit CHARACTER VARYING; --OBTG:VARCHAR2--
+ v_cline_lineno NUMBER; --OBTG:NUMBER-- 
+ v_tax_product_id CHARACTER VARYING; --OBTG:VARCHAR2--
+ v_p_pricelist_id CHARACTER VARYING; --OBTG:VARCHAR2--
+ v_pricelist_id CHARACTER VARYING; --OBTG:VARCHAR2--
+ v_product_offer_pr NUMBER; --OBTG:NUMBER-- 
+BEGIN
+    --Ventana Modificacion de Precios--
+	--Saber si el producto esta en una promocion vigente
+	SELECT COUNT(mop.*) INTO v_product_check
+	FROM m_offer_product mop
+		LEFT JOIN m_offer mo ON mop.m_offer_id = mop.m_offer_id
+	WHERE mo.m_offer_type_id = '94AEA884F5AD4EABB72322832B9C5172' 
+ 		AND mop.m_product_id = :NEW.m_product_id
+		AND mop.EM_Obdisc_Is_Gift = 'N';
+	--FIN Saber si el producto esta en una promocion vigente
+	
+	IF(v_product_check > 0) THEN
+		FOR cur_product_offer IN (
+			--Saber si se cumple las condiciones
+			SELECT mo.m_offer_id,
+				mop.m_product_id,
+				mop.em_obdisc_qty
+			FROM m_offer_product mop
+				LEFT JOIN m_offer mo ON mop.m_offer_id = mop.m_offer_id
+			WHERE mo.m_offer_type_id = '94AEA884F5AD4EABB72322832B9C5172' 
+ 				AND mop.m_product_id = :NEW.m_product_id
+				AND mop.EM_Obdisc_Is_Gift = 'N'
+			--FIN Saber si se cumple las condiciones
+		) LOOP
+			IF (:NEW.qtyordered >= cur_product_offer.em_obdisc_qty) THEN
+				--Obtener datos del producto de regalo
+				SELECT mop.m_product_id,
+					   mop.em_obdisc_gifqty
+				INTO v_product_offer_id, v_prod_offer_qty
+				FROM m_offer_product mop
+					LEFT JOIN m_offer mo ON mop.m_offer_id = mop.m_offer_id
+				WHERE mo.m_offer_type_id = '94AEA884F5AD4EABB72322832B9C5172'
+					AND mo.m_offer_id = cur_product_offer.m_offer_id
+					AND mop.EM_Obdisc_Is_Gift = 'Y';
+				--FIN Obtener datos del producto de regalo
+				
+				--Obtener datos de producto
+				SELECT pr.value, pr.c_uom_id
+				INTO v_prod_unit, v_prod_identifier
+				FROM m_product pr
+				WHERE pr.m_product_id = v_product_offer_id;
+				--FIN Obtener datos de producto
+				
+				--Obtener nro lineas del pedido de venta
+				SELECT MAX(COL.LINE) INTO v_cline_lineno
+				FROM c_orderline col
+					LEFT JOIN c_order co ON co.c_order_id = col.c_order_id 
+				WHERE col.c_order_id = :NEW.c_order_id;
+				--FIN Obtener lineas del pedido de venta
+				
+				--Impuesto producto
+				SELECT tax.c_tax_id INTO v_tax_product_id
+				FROM m_product pr
+					LEFT JOIN c_taxcategory cat ON cat.c_taxcategory_id = pr.c_taxcategory_id
+					LEFT JOIN c_tax tax ON tax.c_taxcategory_id = cat.c_taxcategory_id
+				WHERE pr.m_product_id = v_product_offer_id;	
+				--FIN Impuesto producto
+				
+				--Producto Tarifa
+				SELECT o.m_pricelist_id INTO v_pricelist_id
+				FROM c_order o
+					WHERE o.c_order_id = :NEW.c_order_id;
+				
+				SELECT pr.pricelist INTO v_product_offer_pr
+				FROM m_productprice pr
+					LEFT JOIN m_pricelist_version plv ON plv.m_pricelist_version_id = pr.m_pricelist_version_id
+					LEFT JOIN m_pricelist pl ON pl.m_pricelist_id = plv.m_pricelist_id
+				WHERE pl.m_pricelist_ID = v_pricelist_id
+				AND pr.m_product_id = v_product_offer_id;
+				--FIN Producto Tarifa
+				
+				v_cline_lineno = 10 + v_cline_lineno;
+		    INSERT INTO c_orderline
+		      (
+			c_orderline_id, ad_client_id, ad_org_id, isactive, created, createdby,
+			updated, updatedby, c_order_id, line, c_bpartner_id, c_bpartner_location_id,
+			dateordered, datepromised, datedelivered, dateinvoiced, description,
+			m_product_id, m_warehouse_id, directship, c_uom_id, qtyordered,
+			qtyreserved, qtydelivered, qtyinvoiced, m_shipper_id, c_currency_id,
+			pricelist, priceactual, pricelimit, linenetamt, discount, freightamt,
+			c_charge_id, chargeamt, c_tax_id, s_resourceassignment_id, ref_orderline_id,
+			m_attributesetinstance_id, isdescription, quantityorder, m_product_uom_id,
+			m_offer_id, C_ORDER_DISCOUNT_ID,EM_Ssbod_Discount_Rate,c_aum
+		      )
+		    VALUES
+		      (
+			get_uuid(), :NEW.ad_client_id, :NEW.ad_org_id, 'Y', now(), :NEW.createdby,
+			now(), :NEW.updatedby, :NEW.c_order_id, v_cline_lineno, :NEW.c_bpartner_id, :NEW.c_bpartner_location_id,
+			now(), now(), now(), now(), NULL,
+			v_product_offer_id, :NEW.m_warehouse_id, 'N', v_prod_identifier, v_prod_offer_qty,
+			0, 0, 0, NULL, :NEW.c_currency_id,
+			0, 0, :NEW.pricelimit, NULL, 0, 0,
+			NULL, NULL, v_tax_product_id, NULL, NULL,
+			NULL, 'N', NULL, NULL,
+			NULL, NULL,100,v_prod_identifier
+		      );
+			ELSE
+				RETURN NEW;
+			END IF;
+		END LOOP;
+	ELSE
+		RETURN NEW;
+	END IF;
+    
+IF AD_isTriggerEnabled()='N' THEN RETURN;
+END IF; 
+  
+IF (INSERTING OR UPDATING) THEN
+  
+END IF;
+		
+END SFGP_PRODUCT_GIFT_ORDER_TRG
+]]></body>
+    </trigger>
+  </database>

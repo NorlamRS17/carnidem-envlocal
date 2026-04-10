@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="0035015BF61F4E6195DB34CDCC752FE9" trl="N">
+    <value column="Text" isTrl="N" original="Nro. Paradas">Nro. Paradas</value>
+  </row>
+  <row id="00514461EA5C4938BEB5ED166F72829E" trl="N">
+    <value column="Text" isTrl="N" original="Norma de referencia: ISO-9001">Norma de referencia: ISO-9001</value>
+  </row>
+  <row id="061460BC7C7F40B7A1C5BEC17F0D382F" trl="N">
+    <value column="Text" isTrl="N" original="Desde:">Desde:</value>
+  </row>
+  <row id="07437BF4541A4BF6B5D3D6EB846CBFBD" trl="N">
+    <value column="Text" isTrl="N" original="Tiempo estándar por cant. Procesada">Tiempo estándar por cant. Procesada</value>
+  </row>
+  <row id="090807D95E5E4152814A5F9EA7C22EBB" trl="N">
+    <value column="Text" isTrl="N" original="Norma de referencia: ISO-9001">Norma de referencia: ISO-9001</value>
+  </row>
+  <row id="0BE5DE5C2165432198C9C7E86BFC83C7" trl="N">
+    <value column="Text" isTrl="N" original="Pags.:">Pags.:</value>
+  </row>
+  <row id="0D6759B8C13C4B8F8EB41DBC20E1B794" trl="N">
+    <value column="Text" isTrl="N" original="documentno">documentno</value>
+  </row>
+  <row id="0E3D990EC1C8412B8A185677E273A2FF" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Solicitada">Cant. Solicitada</value>
+  </row>
+  <row id="0E781F5DA85542FB8E356D57F13CE979" trl="N">
+    <value column="Text" isTrl="N" original="REGISTRO">REGISTRO</value>
+  </row>
+  <row id="119447801BC949DE99C51FF9F3B9476E" trl="N">
+    <value column="Text" isTrl="N" original="Parte de fabricación">Parte de fabricación</value>
+  </row>
+  <row id="11E971DC94FE40BEA914E1926942D8BC" trl="N">
+    <value column="Text" isTrl="N" original="Totales">Totales</value>
+  </row>
+  <row id="12C0A50D90A14AE58490CEF103EDF5FB" trl="N">
+    <value column="Text" isTrl="N" original="Versión:">Versión:</value>
+  </row>
+  <row id="130B26EE70C742FF9B8CC3464D3194E9" trl="N">
+    <value column="Text" isTrl="N" original="\n">\n</value>
+  </row>
+  <row id="13562715A78A45FCBEC987C69EB98E49" trl="N">
+    <value column="Text" isTrl="N" original="F-PR-014">F-PR-014</value>
+  </row>
+  <row id="14898E1E29724E33988B46F9C5C9BB58" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de creación:">Fecha de creación:</value>
+  </row>
+  <row id="150CC21D2C47438B9FC004D0141611D5" trl="N">
+    <value column="Text" isTrl="N" original="de">de</value>
+  </row>
+  <row id="156CFF4EF18344C29B8F99B65D2441F0" trl="N">
+    <value column="Text" isTrl="N" original="Pags.:">Pags.:</value>
+  </row>
+  <row id="1641189B9A7D4C39AE78D1B6C010C93B" trl="N">
+    <value column="Text" isTrl="N" original="% cumplimiento NO conforme">% cumplimiento NO conforme</value>
+  </row>
+  <row id="16F6817C91BF4F07BF03EAA6550502C3" trl="N">
+    <value column="Text" isTrl="N" original="Categoria de producto">Categoria de producto</value>
+  </row>
+  <row id="179574D9717E4DA7854F862D32C6CA48" trl="N">
+    <value column="Text" isTrl="N" original="Página">Página</value>
+  </row>
+  <row id="18F30AE6C0C9457BA80BBB6883F41F7A" trl="N">
+    <value column="Text" isTrl="N" original="Costo promedio">Costo promedio</value>
+  </row>
+  <row id="1E3EFB4A70274F4984F96610C7008CD4" trl="N">
+    <value column="Text" isTrl="N" original="Tipo">Tipo</value>
+  </row>
+  <row id="1EDA1647A1B8443092BA726D89D5AA86" trl="N">
+    <value column="Text" isTrl="N" original="Producto">Producto</value>
+  </row>
+  <row id="1F419B8FAB1F4CE099FD567CE2503155" trl="N">
+    <value column="Text" isTrl="N" original="Área:">Área:</value>
+  </row>
+  <row id="206BBF6D10DD4B6C81C7368C13F5FFB4" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de creación:">Fecha de creación:</value>
+  </row>
+  <row id="20B39CCD1D0D488A82F7BC92980FC8BB" trl="N">
+    <value column="Text" isTrl="N" original="Unidad">Unidad</value>
+  </row>
+  <row id="28C4769A857A4AE7928B158270DB59C3" trl="N">
+    <value column="Text" isTrl="N" original="Reporte Incidencias de Producción">Reporte Incidencias de Producción</value>
+  </row>
+  <row id="293EE051817346E797CD86BD786F95C3" trl="N">
+    <value column="Text" isTrl="N" original="N. Orden de Fabricación">N. Orden de Fabricación</value>
+  </row>
+  <row id="2C144B14708B47B586FD92E38B24D913" trl="N">
+    <value column="Text" isTrl="N" original="Tiempo Total">Tiempo Total</value>
+  </row>
+  <row id="2D2FA05E44594299BF7F46B7C59C784C" trl="N">
+    <value column="Text" isTrl="N" original="Unidad medida">Unidad medida</value>
+  </row>
+  <row id="2DD00CB260AB46908BEE3CB973234780" trl="N">
+    <value column="Text" isTrl="N" original="Norma de referencia: ISO-9001">Norma de referencia: ISO-9001</value>
+  </row>
+  <row id="306EB74F209F4A4985BDBA630C44E13F" trl="N">
+    <value column="Text" isTrl="N" original="Pags.:">Pags.:</value>
+  </row>
+  <row id="307091D73BA0496AB289706BB6F0D5E4" trl="N">
+    <value column="Text" isTrl="N" original="Fecha impresión:">Fecha impresión:</value>
+  </row>
+  <row id="30899751A8724BE0889A6FF6403E0B96" trl="N">
+    <value column="Text" isTrl="N" original="Parte">Parte</value>
+  </row>
+  <row id="3091D1228150444DA115A5BA2C1109A5" trl="N">
+    <value column="Text" isTrl="N" original="Versión:">Versión:</value>
+  </row>
+  <row id="3176F8404A2C4C559077C7B2A6023345" trl="N">
+    <value column="Text" isTrl="N" original="Novedad">Novedad</value>
+  </row>
+  <row id="321333BC759D41CB99544948BC83CD0A" trl="N">
+    <value column="Text" isTrl="N" original="Observaciones">Observaciones</value>
+  </row>
+  <row id="357AFE49A322456FA2A09FC99BA23399" trl="N">
+    <value column="Text" isTrl="N" original="Fecha impresión:">Fecha impresión:</value>
+  </row>
+  <row id="39299EEB853F4776ABBD3911E98DC7EB" trl="N">
+    <value column="Text" isTrl="N" original="Variación Costo de Producción">Variación Costo de Producción</value>
+  </row>
+  <row id="3A3AB63C5C4147299521D61525FB44B0" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad promedio por parada">Cantidad promedio por parada</value>
+  </row>
+  <row id="3A744C8EDF6F46288376CBB046535166" trl="N">
+    <value column="Text" isTrl="N" original="Versión:">Versión:</value>
+  </row>
+  <row id="3BCC8D7A8F494F609523B286667B0C9A" trl="N">
+    <value column="Text" isTrl="N" original="% Cumplimiento global">% Cumplimiento global</value>
+  </row>
+  <row id="3E59A95C9CF5422390171920A64F7E3E" trl="N">
+    <value column="Text" isTrl="N" original="Costo de Producción Unitario">Costo de Producción Unitario</value>
+  </row>
+  <row id="432C7E617CF84756A9365502A6F75B2C" trl="N">
+    <value column="Text" isTrl="N" original="REGISTRO">REGISTRO</value>
+  </row>
+  <row id="442CC6C2281F44E1A4601F4E5E2CC062" trl="N">
+    <value column="Text" isTrl="N" original="Fecha final">Fecha final</value>
+  </row>
+  <row id="445E93573CCE42DE904FDAC8C6FD9358" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de creación:">Fecha de creación:</value>
+  </row>
+  <row id="46FE6AF9C6FD484CB2CAE53AFBED5A54" trl="N">
+    <value column="Text" isTrl="N" original="Fecha impresión:">Fecha impresión:</value>
+  </row>
+  <row id="475290E965D34DD99C91C602952FBD75" trl="N">
+    <value column="Text" isTrl="N" original="Nombre del producto">Nombre del producto</value>
+  </row>
+  <row id="4DA8C51B74754B1E9B5559881ADFBC57" trl="N">
+    <value column="Text" isTrl="N" original="Eficiencia por tiempo estándar">Eficiencia por tiempo estándar</value>
+  </row>
+  <row id="5038B25E223443B497CBA40EC4F30EB1" trl="N">
+    <value column="Text" isTrl="N" original="Nro. Operarios Total">Nro. Operarios Total</value>
+  </row>
+  <row id="529806632387445AB2080B9A53F3E847" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad no conforme">Cantidad no conforme</value>
+  </row>
+  <row id="54D4F5A355664BA8B94ADC9BDF5AB547" trl="N">
+    <value column="Text" isTrl="N" original="Producto">Producto</value>
+  </row>
+  <row id="55B4EAB765324E3CA03FA5E13A8C308C" trl="N">
+    <value column="Text" isTrl="N" original="% Eficiencia">% Eficiencia</value>
+  </row>
+  <row id="5683B67EA73C4B4EB49DF36182170708" trl="N">
+    <value column="Text" isTrl="N" original="F-EN-008">F-EN-008</value>
+  </row>
+  <row id="56B655DDF2B94F7894832C8D4CC1A811" trl="N">
+    <value column="Text" isTrl="N" original="Versión:">Versión:</value>
+  </row>
+  <row id="56BE7C058ED449B1B7E588DD56181FA6" trl="N">
+    <value column="Text" isTrl="N" original="Costo producción">Costo producción</value>
+  </row>
+  <row id="5AAB2C3571F44826B411244628F56744" trl="N">
+    <value column="Text" isTrl="N" original="Fecha impresión:">Fecha impresión:</value>
+  </row>
+  <row id="5AD66544F0CD40E98357C512B262B473" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad producida">Cantidad producida</value>
+  </row>
+  <row id="5ECAF766D06A4DD6B988250FF954AE76" trl="N">
+    <value column="Text" isTrl="N" original="Capacidad utilizadas de máquina">Capacidad utilizadas de máquina</value>
+  </row>
+  <row id="5F6E8E87BCE440F5A5483C0422115595" trl="N">
+    <value column="Text" isTrl="N" original="Norma de referencia: ISO-9001">Norma de referencia: ISO-9001</value>
+  </row>
+  <row id="608D3C7CA9BC4039BF91963E2E50F30B" trl="N">
+    <value column="Text" isTrl="N" original="F-PR-014">F-PR-014</value>
+  </row>
+  <row id="60EEC4BFE35D47A08CE54B3E0605B5BC" trl="N">
+    <value column="Text" isTrl="N" original="Distribución de producción %">Distribución de producción %</value>
+  </row>
+  <row id="61D868F9BA6C413EADE6FF32EBE46320" trl="N">
+    <value column="Text" isTrl="N" original="F-EN-008">F-EN-008</value>
+  </row>
+  <row id="61FA85F7C4B24DD083003968CBF9D3E9" trl="N">
+    <value column="Text" isTrl="N" original="Unidad">Unidad</value>
+  </row>
+  <row id="631983B498334D5488D9CC543C13DDE3" trl="N">
+    <value column="Text" isTrl="N" original="REGISTRO">REGISTRO</value>
+  </row>
+  <row id="667F10E7B313418F88982E170526857B" trl="N">
+    <value column="Text" isTrl="N" original="Uom">Uom</value>
+  </row>
+  <row id="66939FFBF59B48F6ACF25909C777B24F" trl="N">
+    <value column="Text" isTrl="N" original="Capacidad máquina por parada">Capacidad máquina por parada</value>
+  </row>
+  <row id="66A0947A6BE74836BAC69C12D200EB29" trl="N">
+    <value column="Text" isTrl="N" original="Fecha impresión:">Fecha impresión:</value>
+  </row>
+  <row id="67B435B0599A49698D246A5651101E76" trl="N">
+    <value column="Text" isTrl="N" original="Norma de referencia: ISO-9001">Norma de referencia: ISO-9001</value>
+  </row>
+  <row id="67BFC4A9AEF448F792296737C5F82E78" trl="N">
+    <value column="Text" isTrl="N" original="F-PR-014">F-PR-014</value>
+  </row>
+  <row id="67D2A7F03EA447BC8566E4304D44AD78" trl="N">
+    <value column="Text" isTrl="N" original="% Cumplimiento Cant. Producida">% Cumplimiento Cant. Producida</value>
+  </row>
+  <row id="6B13D611C5164CF98585F9B5BEEF70D3" trl="N">
+    <value column="Text" isTrl="N" original="Area">Area</value>
+  </row>
+  <row id="6C8BE5CFA7F4410C9621BA48FA581554" trl="N">
+    <value column="Text" isTrl="N" original="Turno">Turno</value>
+  </row>
+  <row id="6CB0355FFD5B495A93017D55628B67C8" trl="N">
+    <value column="Text" isTrl="N" original="kg/(hrs*op)">kg/(hrs*op)</value>
+  </row>
+  <row id="6F05D8FB370B49148CA843FAD0A0D552" trl="N">
+    <value column="Text" isTrl="N" original="Pags.:">Pags.:</value>
+  </row>
+  <row id="73EAF80B0AF44AC3A148955519F86B4D" trl="N">
+    <value column="Text" isTrl="N" original="Versión:">Versión:</value>
+  </row>
+  <row id="7494C9EA73C84F9D93383F2C134721CE" trl="N">
+    <value column="Text" isTrl="N" original="Tiempo total real">Tiempo total real</value>
+  </row>
+  <row id="763E71F8485F479BA890E9F8C4EFEB7B" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Parada">Cant. Parada</value>
+  </row>
+  <row id="7A843E3DB04F4CA4A0EA65BD933D6CC4" trl="N">
+    <value column="Text" isTrl="N" original="Pags.:">Pags.:</value>
+  </row>
+  <row id="7AB7CEA6BB674B39B403AA0095FC18CF" trl="N">
+    <value column="Text" isTrl="N" original="Pags.:">Pags.:</value>
+  </row>
+  <row id="7E1574A4417747D1B21B5A76AF603DFA" trl="N">
+    <value column="Text" isTrl="N" original="Categoría del Producto">Categoría del Producto</value>
+  </row>
+  <row id="7E78A38C00554841AC2F17077CF1D350" trl="N">
+    <value column="Text" isTrl="N" original="Proceso">Proceso</value>
+  </row>
+  <row id="7FD9B9213789430381825AA6D32ED5F3" trl="N">
+    <value column="Text" isTrl="N" original="Fecha impresión:">Fecha impresión:</value>
+  </row>
+  <row id="8122CA65225A4FB09F169FD293284C1B" trl="N">
+    <value column="Text" isTrl="N" original="VOIDED">VOIDED</value>
+  </row>
+  <row id="82238F2796D84579AF3D551429312142" trl="N">
+    <value column="Text" isTrl="N" original="Fecha inicial">Fecha inicial</value>
+  </row>
+  <row id="86299F5528094B4F98F68960F3ED6319" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad">Cantidad</value>
+  </row>
+  <row id="889E09A88A4C427CBC5B8AC44D8FE096" trl="N">
+    <value column="Text" isTrl="N" original="REGISTRO">REGISTRO</value>
+  </row>
+  <row id="896C6AD112A9401B999F7A9C88E29F98" trl="N">
+    <value column="Text" isTrl="N" original="% Cumplimiento Cant. Conforme">% Cumplimiento Cant. Conforme</value>
+  </row>
+  <row id="896F55C9046A4E29A2EFFEFA47C8B9D1" trl="N">
+    <value column="Text" isTrl="N" original="Fecha">Fecha</value>
+  </row>
+  <row id="8E2A2B74C5374C0D9F64A7FC3BD7E0C0" trl="N">
+    <value column="Text" isTrl="N" original="Versión:">Versión:</value>
+  </row>
+  <row id="8E2F556057354731854B48244022A817" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Producida conforme">Cant. Producida conforme</value>
+  </row>
+  <row id="91C538FFBBA44F218753247C31E425B8" trl="N">
+    <value column="Text" isTrl="N" original="Producto conforme">Producto conforme</value>
+  </row>
+  <row id="93B6969F27D74513B025DC536AF11B93" trl="N">
+    <value column="Text" isTrl="N" original="Parte">Parte</value>
+  </row>
+  <row id="951E40761E17446CA2B201CFFE8222B0" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Producida">Cant. Producida</value>
+  </row>
+  <row id="95B9863A8AAA4F2D9B57F5EE7624F649" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Receta">Cant. Receta</value>
+  </row>
+  <row id="968D9038FC1F44A2886BE387043FF8E7" trl="N">
+    <value column="Text" isTrl="N" original="%.2f">%.2f</value>
+  </row>
+  <row id="96C96799FB334C7C9B3956D82EB13C91" trl="N">
+    <value column="Text" isTrl="N" original="Norma de referencia: ISO-9001">Norma de referencia: ISO-9001</value>
+  </row>
+  <row id="96D80293BE25448A8CE620AFCC93A1DC" trl="N">
+    <value column="Text" isTrl="N" original="Máquina">Máquina</value>
+  </row>
+  <row id="9A2CEE730B0546C49CBBC57B6FE47FB7" trl="N">
+    <value column="Text" isTrl="N" original="REGISTRO">REGISTRO</value>
+  </row>
+  <row id="9E080EA7C4A44EB1B328A368DDB177AF" trl="N">
+    <value column="Text" isTrl="N" original="Und.">Und.</value>
+  </row>
+  <row id="9F718674EA104E948DE896E6E4C7F5EF" trl="N">
+    <value column="Text" isTrl="N" original="%USO">%USO</value>
+  </row>
+  <row id="A238544812AB494A8C0D644558DB6D92" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de creación:">Fecha de creación:</value>
+  </row>
+  <row id="A480EA9C38A145A3A229A102F20FBE15" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de creación:">Fecha de creación:</value>
+  </row>
+  <row id="A6E233982D3D4591B5D5A2170364C233" trl="N">
+    <value column="Text" isTrl="N" original="Puesto de Trabajo">Puesto de Trabajo</value>
+  </row>
+  <row id="A8EE0F43289148508DD7F83EDB9CBC9A" trl="N">
+    <value column="Text" isTrl="N" original="Hora de Inicio Parte">Hora de Inicio Parte</value>
+  </row>
+  <row id="AA08388CD0B4452C94AE64A39BB0EA83" trl="N">
+    <value column="Text" isTrl="N" original="Hasta:">Hasta:</value>
+  </row>
+  <row id="AB327378BC964E4C879969A679D5FB22" trl="N">
+    <value column="Text" isTrl="N" original="Tiempo estándar x UND">Tiempo estándar x UND</value>
+  </row>
+  <row id="AB664523B8034591B8CF8DF5563E7E2A" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Planificada">Cant. Planificada</value>
+  </row>
+  <row id="AB9F46A59F424788B905D83B8027DD22" trl="N">
+    <value column="Text" isTrl="N" original="Cumplimiento de Proyección de Producción">Cumplimiento de Proyección de Producción</value>
+  </row>
+  <row id="AC501814BA074CB4B671FE73A36FE599" trl="N">
+    <value column="Text" isTrl="N" original="Cant. uso proceso">Cant. uso proceso</value>
+  </row>
+  <row id="AD3EC3CA01DE468688B38D39293CA0CC" trl="N">
+    <value column="Text" isTrl="N" original="Evolución de costos por producto">Evolución de costos por producto</value>
+  </row>
+  <row id="AF04412F565C457393BDC50ABD19E1EB" trl="N">
+    <value column="Text" isTrl="N" original="REGISTRO">REGISTRO</value>
+  </row>
+  <row id="B7A4E4B7BB904B2486A01A274DE5BDD7" trl="N">
+    <value column="Text" isTrl="N" original="Tiempo desviación">Tiempo desviación</value>
+  </row>
+  <row id="B90B7EC00FD84C22BD57507C0AA8E497" trl="N">
+    <value column="Text" isTrl="N" original="Fecha final">Fecha final</value>
+  </row>
+  <row id="B9F0B27B8145477089A1A7B2CA59D5E9" trl="N">
+    <value column="Text" isTrl="N" original="Categoria del Producto">Categoria del Producto</value>
+  </row>
+  <row id="C01B35492EF447A58C6634C07ADC66D9" trl="N">
+    <value column="Text" isTrl="N" original="Registro orden de fabricación por áreas">Registro orden de fabricación por áreas</value>
+  </row>
+  <row id="C694C2C7780C45CBA22546DC2FFAFA0E" trl="N">
+    <value column="Text" isTrl="N" original="Hora de Fin Parte">Hora de Fin Parte</value>
+  </row>
+  <row id="C6BB66DF906049538B1DD0F8A84DB059" trl="N">
+    <value column="Text" isTrl="N" original="Fecha impresión:">Fecha impresión:</value>
+  </row>
+  <row id="C8B69095A87A4C0794B1708258A3E250" trl="N">
+    <value column="Text" isTrl="N" original="Fecha inicial">Fecha inicial</value>
+  </row>
+  <row id="C943B76BA9DC4B8696167F6AA31CA94B" trl="N">
+    <value column="Text" isTrl="N" original="Cant. procesados Total">Cant. procesados Total</value>
+  </row>
+  <row id="CAE4F7DE20E2464D819E71808E3D5D83" trl="N">
+    <value column="Text" isTrl="N" original="Fecha">Fecha</value>
+  </row>
+  <row id="CC2C368AB0F048259E3FB87448BD9DB6" trl="N">
+    <value column="Text" isTrl="N" original="Producto no conforme">Producto no conforme</value>
+  </row>
+  <row id="CDB5E6861B07491984E35225C172E84E" trl="N">
+    <value column="Text" isTrl="N" original="Norma de referencia: ISO-9001">Norma de referencia: ISO-9001</value>
+  </row>
+  <row id="D00246FCF3C04C49B0A1973C765E61D7" trl="N">
+    <value column="Text" isTrl="N" original="Versión:">Versión:</value>
+  </row>
+  <row id="D1626454970E48089EA80FBB12356D0B" trl="N">
+    <value column="Text" isTrl="N" original="Uom">Uom</value>
+  </row>
+  <row id="D5622A0EF6FD46088FFC4B36E87E16DA" trl="N">
+    <value column="Text" isTrl="N" original="Ingredientes">Ingredientes</value>
+  </row>
+  <row id="D62778D70AF24FB590BF6852A316DF01" trl="N">
+    <value column="Text" isTrl="N" original="Orden de fabricación">Orden de fabricación</value>
+  </row>
+  <row id="D90B6B57ADA94665A40A7AB671C70C6D" trl="N">
+    <value column="Text" isTrl="N" original="Nº de">Nº de</value>
+  </row>
+  <row id="D9BFD7F66D9C48CCA97EA51837B87E44" trl="N">
+    <value column="Text" isTrl="N" original="Pags.:">Pags.:</value>
+  </row>
+  <row id="DB48942975D14BF6832FFB5A473D13B2" trl="N">
+    <value column="Text" isTrl="N" original="Orden de fabricación">Orden de fabricación</value>
+  </row>
+  <row id="DC3E865C6379427B80E3E16BCF1B7E5B" trl="N">
+    <value column="Text" isTrl="N" original="name">name</value>
+  </row>
+  <row id="DC74D861636C461A998291E6CBB2BA93" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de creación:">Fecha de creación:</value>
+  </row>
+  <row id="DECFA07FFFB04E1FB167780B1C18640F" trl="N">
+    <value column="Text" isTrl="N" original="Und.">Und.</value>
+  </row>
+  <row id="E19D3912FC524AB4B59D08BD16BFA075" trl="N">
+    <value column="Text" isTrl="N" original="Producto:">Producto:</value>
+  </row>
+  <row id="E279BAC973A84562B599DD20D9913FC0" trl="N">
+    <value column="Text" isTrl="N" original="Este es un pedido de">Este es un pedido de</value>
+  </row>
+  <row id="E5861E240BE84799A3D9DADDAC6CB500" trl="N">
+    <value column="Text" isTrl="N" original="F-PR-014">F-PR-014</value>
+  </row>
+  <row id="ECAFD024D8D74D1687C8CA4B6DC1C130" trl="N">
+    <value column="Text" isTrl="N" original="Incidencia">Incidencia</value>
+  </row>
+  <row id="F24414AC8C764CE39361AEAE02AB0605" trl="N">
+    <value column="Text" isTrl="N" original="Eficiencia por tiempo estándar">Eficiencia por tiempo estándar</value>
+  </row>
+  <row id="F40A32045D0645329BD221C4F2B7EB38" trl="N">
+    <value column="Text" isTrl="N" original="Cantidad Entregada">Cantidad Entregada</value>
+  </row>
+  <row id="F4E1148A759E4B6E93DD134CCAC0267B" trl="N">
+    <value column="Text" isTrl="N" original="Fecha de creación:">Fecha de creación:</value>
+  </row>
+  <row id="F5D4EB127F354B4CA414E3CF179F9301" trl="N">
+    <value column="Text" isTrl="N" original="Operador">Operador</value>
+  </row>
+  <row id="F7F62E4168DA4B7AB7D28A617CFB07E3" trl="N">
+    <value column="Text" isTrl="N" original="Lote">Lote</value>
+  </row>
+  <row id="F87BB3983F8446D69D2B1F0BD2827ADE" trl="N">
+    <value column="Text" isTrl="N" original="F-EN-008">F-EN-008</value>
+  </row>
+  <row id="FA6D98644F8A48BBAA8AD039536B182C" trl="N">
+    <value column="Text" isTrl="N" original="Fecha necesidad">Fecha necesidad</value>
+  </row>
+  <row id="FD1953AD49A84869987C96E708059C09" trl="N">
+    <value column="Text" isTrl="N" original="REGISTRO">REGISTRO</value>
+  </row>
+  <row id="FE62C54965674BAAA0B50AF6E9D03EC0" trl="N">
+    <value column="Text" isTrl="N" original="VO">VO</value>
+  </row>
+</compiereTrl>

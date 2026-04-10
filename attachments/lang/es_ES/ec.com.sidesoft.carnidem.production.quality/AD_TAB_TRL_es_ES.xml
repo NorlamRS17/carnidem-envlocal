@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="4C03D111BA43493DB58848273C7B238B" trl="Y">
+    <value column="Name" isTrl="Y" original="ParamsSafetyQly">Parámetros de trasferencias seguridad y calidad</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="59EA53DD582F430495557DECB9C88842" trl="N">
+    <value column="Name" isTrl="N" original="CrprqyParamsStatus">CrprqyParamsStatus</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

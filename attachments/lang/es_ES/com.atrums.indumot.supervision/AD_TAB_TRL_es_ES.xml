@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_TAB" version="">
+  <row id="1C1B3FFDC5F044A8BE5704E6771F1B87" trl="N">
+    <value column="Name" isTrl="N" original="Pedido de Repuestos">Pedido de Repuestos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="27707CD4DB0246059122988D789B4ACE" trl="N">
+    <value column="Name" isTrl="N" original="Orden de Servicio">Orden de Servicio</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4BE63D0FB99E4F3A8ED3C95769A980EA" trl="N">
+    <value column="Name" isTrl="N" original="Tipos de Facturación">Tipos de Facturación</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="55534618C4294E3D9459B546A32768D1" trl="N">
+    <value column="Name" isTrl="N" original="Organizaciones Ordenes de Servicio">Organizaciones Ordenes de Servicio</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6FF590B6A1D2477AA7769615B7F30C52" trl="N">
+    <value column="Name" isTrl="N" original="Despachos">Despachos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7379AEEF780D460BBC9374400E33D3A5" trl="N">
+    <value column="Name" isTrl="N" original="Consolidación de Ordenes">Consolidación de Ordenes</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A6937F30089E4334BC396D882666C1AB" trl="N">
+    <value column="Name" isTrl="N" original="Orden de Servicio">Orden de Servicio</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DE697A402CC740818DEC42EB8937192A" trl="N">
+    <value column="Name" isTrl="N" original="Items">Items</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

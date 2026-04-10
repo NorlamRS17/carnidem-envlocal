@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="215B3033EFA545A490BB09FC5B443B3D" trl="Y">
+    <value column="Name" isTrl="Y" original="Invoice Reference">Referencia Factura</value>
+    <value column="PrintName" isTrl="Y" original="Invoice Reference">Referencia Factura</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="Y" original="Invoice Reference">Referencia Factura</value>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2E790AF9495B4793AF12BFA3E364F43A" trl="N">
+    <value column="Name" isTrl="N" original="invId">invId</value>
+    <value column="PrintName" isTrl="N" original="invId">invId</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6021AB3645514E3891176FCB230624EF" trl="N">
+    <value column="Name" isTrl="N" original="Invoice Line P &amp; E">Invoice Line P &amp; E</value>
+    <value column="PrintName" isTrl="N" original="Invoice Line P &amp; E">Invoice Line P &amp; E</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9B1C2027BFFB4D4DB132F33EF6102A12" trl="N">
+    <value column="Name" isTrl="N" original="Ssorel_Invoiceorder_V_ID">Ssorel_Invoiceorder_V_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssorel_Invoiceorder_V_ID">Ssorel_Invoiceorder_V_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E458D93365FF436B8BC1120C261BEC20" trl="N">
+    <value column="Name" isTrl="N" original="EM_Ssorel_Invlineid">EM_Ssorel_Invlineid</value>
+    <value column="PrintName" isTrl="N" original="EM_Ssorel_Invlineid">EM_Ssorel_Invlineid</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E859FB423D8A45B8ACA95C0A28C98905" trl="N">
+    <value column="Name" isTrl="N" original="EM_Ssorel_Isreturn">EM_Ssorel_Isreturn</value>
+    <value column="PrintName" isTrl="N" original="EM_Ssorel_Isreturn">EM_Ssorel_Isreturn</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<provider>
+  <bean>
+    <name>ApiWS</name>
+    <class>ec.com.sidesoft.custom.ws.api.webservices.ApiWS</class>
+    <singleton>true</singleton>
+  </bean>
+  <bean>
+    <name>businessPartner</name>
+    <class>ec.com.sidesoft.custom.ws.api.webservices.SCWSAP_BusinessPartner</class>
+    <singleton>true</singleton>
+  </bean>
+</provider>

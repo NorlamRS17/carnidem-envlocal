@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSWOS_VALIDATIONS_TRG">
+    <trigger name="SSWOS_VALIDATIONS_TRG" table="ATINDPO_POSTVENTA" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[v_status_From varchar(60);  
+v_status_To varchar(60);  
+Cur_Vehicle RECORD;
+v_count NUMBER;
+v_count_transfer NUMBER;
+v_count_transfer_states NUMBER;
+
+BEGIN
+IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+    
+	IF (UPDATING) THEN
+		If(:NEW.em_indsup_is_consol = 'Y')Then
+		
+			If(:NEW.c_bpartner_id <> :OLD.c_bpartner_id)Then
+				Select COUNT(*) INTO v_count
+				From indsup_consol where atindpo_postventa_id = :NEW.atindpo_postventa_id;
+				If(v_count > 0)Then
+					RAISE_APPLICATION_ERROR(-20000,'No puede cambiar de cliente mientras tenga lineas');
+				End IF;
+			End IF;
+		End If;
+
+		If(:NEW.docstatus = 'TL')Then
+			Select COUNT(*)
+				Into v_count_transfer_states
+			From atindpo_postventalinea pvl
+				Where pvl.atindpo_postventa_id = :NEW.atindpo_postventa_id
+				and ( (pvl.em_spsmvat_transfer_status is not null  and pvl.em_spsmvat_transfer_status  not in ( 'A' ) )
+				 );
+				 
+			If(COALESCE(v_count_transfer_states, 0) > 0)Then
+				RAISE_APPLICATION_ERROR(-20000,'Existen transacciones pendientes de gestión en bodega');
+			End IF;
+		End IF;
+		/*
+		If(:NEW.docstatus = 'TL')Then
+			Select COUNT(*)
+				Into v_count_transfer
+			From atindpo_postventalinea pvl
+				Join m_product p on p.m_product_id = pvl.m_product_id
+					And p.producttype = 'I'
+			Where pvl.atindpo_postventa_id = :NEW.atindpo_postventa_id
+			Group by pvl.atindpo_postventa_id
+			Having SUM(pvl.cantidad - pvl.em_sswos_transfer) <> 0;
+
+			If(COALESCE(v_count_transfer, 0) > 0)Then
+				RAISE_APPLICATION_ERROR(-20000,'Existen items sin despachar.');
+			End IF;
+			
+		End IF;
+		*/
+	End If; -- END (TG_OP = 'UPDATE')
+	IF (DELETING)Then
+		If(:OLD.docstatus <>'EE' AND :OLD.em_indsup_is_consol <> 'Y')Then
+			RAISE_APPLICATION_ERROR(-20000,'@DocBeingProcessed@');
+		End IF;
+	End IF;
+	
+END SSWOS_VALIDATIONS_TRG
+]]></body>
+    </trigger>
+  </database>

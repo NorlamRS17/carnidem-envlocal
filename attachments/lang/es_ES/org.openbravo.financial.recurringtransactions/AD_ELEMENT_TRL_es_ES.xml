@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="11B52A65334E40A98190344CC0AD3373" trl="N">
+    <value column="Name" isTrl="N" original="Next Execution Date">Next Execution Date</value>
+    <value column="PrintName" isTrl="N" original="Next Execution Date">Next Execution Date</value>
+    <value column="Description" isTrl="N" original="The next date in which the rule needs to be triggered">The next date in which the rule needs to be triggered</value>
+    <value column="Help" isTrl="N" original="The next date in which the rule needs to be triggered">The next date in which the rule needs to be triggered</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2DBF5B22CCA84524A9749DF12B2DB6A2" trl="N">
+    <value column="Name" isTrl="N" original="Obrectx_Template_Type_ID">Obrectx_Template_Type_ID</value>
+    <value column="PrintName" isTrl="N" original="Obrectx_Template_Type_ID">Obrectx_Template_Type_ID</value>
+    <value column="Description" isTrl="N" original="Recurring template type ID">Recurring template type ID</value>
+    <value column="Help" isTrl="N" original="Recurring template type ID">Recurring template type ID</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4805D66931E049B89B00F22AC81E9736" trl="N">
+    <value column="Name" isTrl="N" original="Periodicity">Periodicity</value>
+    <value column="PrintName" isTrl="N" original="Periodicity">Periodicity</value>
+    <value column="Description" isTrl="N" original="The frequency of recurrence">The frequency of recurrence</value>
+    <value column="Help" isTrl="N" original="The frequency of recurrence: daily, monthly, quarterly or yearly.">The frequency of recurrence: daily, monthly, quarterly or yearly.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="55BE642914474FABB0427EE07179C3AE" trl="N">
+    <value column="Name" isTrl="N" original="Complete">Complete</value>
+    <value column="PrintName" isTrl="N" original="Complete">Complete</value>
+    <value column="Description" isTrl="N" original="Complete clone transactions after creation">Complete clone transactions after creation</value>
+    <value column="Help" isTrl="N" original="If set to Y, this field indicates that the rule will complete transactions after having created them.&#10;&#10;If the transaction type does not require completion (i.e. Financial Account Transactions), this control is ignored.">If set to Y, this field indicates that the rule will complete transactions after having created them.
+
+If the transaction type does not require completion (i.e. Financial Account Transactions), this control is ignored.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5B6F05B41B87492DB4C9D1EAF08ADC52" trl="N">
+    <value column="Name" isTrl="N" original="Recurring Template Type Name">Recurring Template Type Name</value>
+    <value column="PrintName" isTrl="N" original="Recurring Template Type Name">Recurring Template Type Name</value>
+    <value column="Description" isTrl="N" original="Name of the recurring template type">Name of the recurring template type</value>
+    <value column="Help" isTrl="N" original="Name of the recurring template type">Name of the recurring template type</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6109A646959143538E2F000726F5201D" trl="N">
+    <value column="Name" isTrl="N" original="Obrectx_Gl_Journal_V_ID">Obrectx_Gl_Journal_V_ID</value>
+    <value column="PrintName" isTrl="N" original="Obrectx_Gl_Journal_V_ID">Obrectx_Gl_Journal_V_ID</value>
+    <value column="Description" isTrl="N" original="G/L Journal template">G/L Journal template</value>
+    <value column="Help" isTrl="N" original="G/L Journal template identifier">G/L Journal template identifier</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="80D3EA4D95704B669092078538BA826C" trl="N">
+    <value column="Name" isTrl="N" original="Name">Name</value>
+    <value column="PrintName" isTrl="N" original="Name">Name</value>
+    <value column="Description" isTrl="N" original="Recurring rule name">Recurring rule name</value>
+    <value column="Help" isTrl="N" original="Recurring rule name">Recurring rule name</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="82D71772C4AD41B99E5E47EB4FE76B02" trl="N">
+    <value column="Name" isTrl="N" original="Cloner Java Class">Cloner Java Class</value>
+    <value column="PrintName" isTrl="N" original="Cloner Java Class">Cloner Java Class</value>
+    <value column="Description" isTrl="N" original="The Java class used to clone templates into recurring transactions">The Java class used to clone templates into recurring transactions</value>
+    <value column="Help" isTrl="N" original="The Java class used to clone templates into recurring transactions.&#10;&#10;This class must implement the Cloner interface (org.openbravo.financial.recurringtransactions.Cloner)">The Java class used to clone templates into recurring transactions.
+
+This class must implement the Cloner interface (org.openbravo.financial.recurringtransactions.Cloner)</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="85A14ACD6615437A824D2F966EA10F16" trl="N">
+    <value column="Name" isTrl="N" original="Recurring Template Table">Recurring Template Table</value>
+    <value column="PrintName" isTrl="N" original="Recurring Template Table">Recurring Template Table</value>
+    <value column="Description" isTrl="N" original="A table that can be used as template to generate recurring transactions">A table that can be used as template to generate recurring transactions</value>
+    <value column="Help" isTrl="N" original="A table that can be used as template to generate recurring transactions.">A table that can be used as template to generate recurring transactions.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C93C400A1E1441E0AE0DD8E4BA6C4657" trl="N">
+    <value column="Name" isTrl="N" original="Recurring">Recurring</value>
+    <value column="PrintName" isTrl="N" original="Recurring">Recurring</value>
+    <value column="Description" isTrl="N" original="Recurring template">Recurring template</value>
+    <value column="Help" isTrl="N" original="If Y the current transaction can  be associated with a recurring rule and be the template for recurring transactions.">If Y the current transaction can  be associated with a recurring rule and be the template for recurring transactions.</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CB4D50D063FC4432827AE29F8A2ECA87" trl="N">
+    <value column="Name" isTrl="N" original="Obrectx_Rule_ID">Obrectx_Rule_ID</value>
+    <value column="PrintName" isTrl="N" original="Obrectx_Rule_ID">Obrectx_Rule_ID</value>
+    <value column="Description" isTrl="N" original="Recurring rule identifier">Recurring rule identifier</value>
+    <value column="Help" isTrl="N" original="Recurring rule identifier">Recurring rule identifier</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D8106C1BD4AF42DC9A1C96293E750836" trl="N">
+    <value column="Name" isTrl="N" original="Recurring Rule">Recurring Rule</value>
+    <value column="PrintName" isTrl="N" original="Recurring Rule">Recurring Rule</value>
+    <value column="Description" isTrl="N" original="Recurring rule">Recurring rule</value>
+    <value column="Help" isTrl="N" original="Recurring rule to be used to create recurring transactions from this template">Recurring rule to be used to create recurring transactions from this template</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F877F96BB6654AE997FE0D0359AE5337" trl="N">
+    <value column="Name" isTrl="N" original="Template GL Journal ID">Template GL Journal ID</value>
+    <value column="PrintName" isTrl="N" original="Template GL Journal ID">Template GL Journal ID</value>
+    <value column="Description" isTrl="N" original="G/L Journal template identifier">G/L Journal template identifier</value>
+    <value column="Help" isTrl="N" original="If the current transaction is created as a recurring transaction from a template, this column identifies the template">If the current transaction is created as a recurring transaction from a template, this column identifies the template</value>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

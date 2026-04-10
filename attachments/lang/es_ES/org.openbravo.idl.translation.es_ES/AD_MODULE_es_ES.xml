@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_ES" language="es_ES" table="AD_MODULE" version="">
+  <row id="1EFC8A5818574D81A7EC4A635B52A6BF" trl="N">
+    <value column="Description" isTrl="N" original="Traduccion al español de España del módulo de carga inicial de datos.">Traduccion al español de España del módulo de carga inicial de datos.</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="License" isTrl="N" original="Copyright (C) 2010 Openbravo S.L.U.&#10;Licensed under the Openbravo Commercial License version 1.0&#10;You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html">Copyright (C) 2010 Openbravo S.L.U.
+Licensed under the Openbravo Commercial License version 1.0
+You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html</value>
+    <value column="Updateinfo" isTrl="N" original="Fixed issue 27958: Is not possible to import the dataset">Fixed issue 27958: Is not possible to import the dataset</value>
+  </row>
+</compiereTrl>

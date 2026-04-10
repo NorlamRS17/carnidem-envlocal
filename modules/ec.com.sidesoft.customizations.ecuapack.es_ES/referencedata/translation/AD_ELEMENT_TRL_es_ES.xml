@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0D5D6CF8F8DA4659B3E0B2DABEE79548" trl="Y">
+    <value column="Name" isTrl="Y" original="Probability">Probabilidad</value>
+    <value column="PrintName" isTrl="Y" original="Probability">Probabilidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="237235B00A5E410C995D2D2AF7580841" trl="Y">
+    <value column="Name" isTrl="Y" original="Is Email Sent">Enviado</value>
+    <value column="PrintName" isTrl="Y" original="Is Email Sent">Enviado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6324A650D4074738A5567F2377DE5A01" trl="Y">
+    <value column="Name" isTrl="Y" original="Industry">Industria</value>
+    <value column="PrintName" isTrl="Y" original="Industry">Industria</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="67C0052B7D614784B6AA66386D8DF3D5" trl="N">
+    <value column="Name" isTrl="N" original="Sales_Stage">Sales_Stage</value>
+    <value column="PrintName" isTrl="N" original="Sales_Stage">Sales_Stage</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A53E45D9EE49420A8E7F0F946B549B52" trl="Y">
+    <value column="Name" isTrl="Y" original="Next contact date">Fecha próximo contacto</value>
+    <value column="PrintName" isTrl="Y" original="Next contact date">Fecha próximo contacto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B1C7B84B778241FD8C3655DAE1AF8046" trl="Y">
+    <value column="Name" isTrl="Y" original="Previus Sales Stage">Etapa de venta anterior</value>
+    <value column="PrintName" isTrl="Y" original="Previus Sales Stage">Etapa de venta anterior</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B49EEEF4AF8A4587B53BBD8F695494DA" trl="Y">
+    <value column="Name" isTrl="Y" original="Current Sales Stage">Etapa de venta actual</value>
+    <value column="PrintName" isTrl="Y" original="Current Sales Stage">Etapa de venta actual</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BA336DE445B042A1873670D9616EA711" trl="Y">
+    <value column="Name" isTrl="Y" original="Responsible">Responsable</value>
+    <value column="PrintName" isTrl="Y" original="Responsible">Responsable</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BAB733EAE8924DA49B21405CDE875930" trl="Y">
+    <value column="Name" isTrl="Y" original="Warranty Time">Tiempo de garantía</value>
+    <value column="PrintName" isTrl="Y" original="Warranty Time">Tiempo de garantía</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DA119E40DFD0450180F0591B1D1C3FF5" trl="N">
+    <value column="Name" isTrl="N" original="Scmecu_Probability_Stage_ID">Scmecu_Probability_Stage_ID</value>
+    <value column="PrintName" isTrl="N" original="Scmecu_Probability_Stage_ID">Scmecu_Probability_Stage_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DEB8A5B2243A4B66B18932A04AACBC87" trl="N">
+    <value column="Name" isTrl="N" original="Opcrm_Opportunities_ID">Opcrm_Opportunities_ID</value>
+    <value column="PrintName" isTrl="N" original="Opcrm_Opportunities_ID">Opcrm_Opportunities_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FB5ADD2AF21A422CA2F74F23E61509B0" trl="Y">
+    <value column="Name" isTrl="Y" original="Delivery Time">Tiempo de entrega</value>
+    <value column="PrintName" isTrl="Y" original="Delivery Time">Tiempo de entrega</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FD38D4E75A124E39BA665FCF51EDB7A6" trl="N">
+    <value column="Name" isTrl="N" original="Scmecu_Oppor_Email_Log_ID">Scmecu_Oppor_Email_Log_ID</value>
+    <value column="PrintName" isTrl="N" original="Scmecu_Oppor_Email_Log_ID">Scmecu_Oppor_Email_Log_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

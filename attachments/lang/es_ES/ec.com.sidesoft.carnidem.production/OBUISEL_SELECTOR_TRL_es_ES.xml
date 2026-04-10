@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="2164583E82674305A01D6EE0B7CCD61A" trl="N">
+    <value column="Name" isTrl="N" original="Product Production Y">Product Production Y</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4290FD5A5FA8414E89B79E463BC85661" trl="N">
+    <value column="Name" isTrl="N" original="CRPROD_ParamsAndStatus">CRPROD_ParamsAndStatus</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7C1F44CF961845F392196D63DD8625ED" trl="N">
+    <value column="Name" isTrl="N" original="ManufacturingWorkRequirement">ManufacturingWorkRequirement</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="98D8DE62BAAA40EF90A179CFDB3FE01F" trl="Y">
+    <value column="Name" isTrl="N" original="Lista Lotes">Lista Lotes</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A520C920E44949B6A858421A1D12781B" trl="N">
+    <value column="Name" isTrl="N" original="crprod selector transaction">crprod selector transaction</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

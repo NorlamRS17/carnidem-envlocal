@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="FB390C92A8834A808A0FA685D53424AB" trl="N">
+    <value column="Name" isTrl="N" original="CSV Importer Configuration">CSV Importer Configuration</value>
+    <value column="Description" isTrl="N" original="Defines date format and decimal separator used to parse the CSV file">Defines date format and decimal separator used to parse the CSV file</value>
+  </row>
+</compiereTrl>

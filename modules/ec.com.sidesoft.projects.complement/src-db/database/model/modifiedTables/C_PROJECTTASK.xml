@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_PROJECTTASK">
+    <table name="C_PROJECTTASK" primaryKey="C_PROJECTTASK_KEY">
+      <column name="EM_SPROCTM_AD_IMAGE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_C_ORDER_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_MARGIN" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default><![CDATA[0]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_CREATE_QUOTATION" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_ISNATIONALPROD" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_ADD_REQUISITION" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SPROCTM_CO_DETAILS" primaryKey="false" required="true" type="VARCHAR" size="60" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="AD_IMAGE" name="EM_SPROCTM_IMAGE_K">
+        <reference local="EM_SPROCTM_AD_IMAGE_ID" foreign="AD_IMAGE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_ORDER" name="EM_SPROCTM_TASKORD_K">
+        <reference local="EM_SPROCTM_C_ORDER_ID" foreign="C_ORDER_ID"/>
+      </foreign-key>
+    </table>
+  </database>

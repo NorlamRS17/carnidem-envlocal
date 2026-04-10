@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="23C0437573834AD6BEEEB37BC79A3F5F" trl="N">
+    <value column="Name" isTrl="N" original="AD_User SalesRep_Customizacion">AD_User SalesRep_Customizacion</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D73EB2EB00BC49A39CC73EBD2C3D9030" trl="N">
+    <value column="Name" isTrl="N" original="C_Costcenter_Org">C_Costcenter_Org</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

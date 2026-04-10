@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="28CC213CAC73448393598888FFF14FA2" trl="N">
+    <value column="MsgText" isTrl="N" original="Session tables need to preserve at least information from the last 30 days for statistical purposes. Please, set &quot;Older Than Days&quot; field to a value bigger than 30.">Session tables need to preserve at least information from the last 30 days for statistical purposes. Please, set "Older Than Days" field to a value bigger than 30.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

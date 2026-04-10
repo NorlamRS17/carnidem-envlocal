@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="64C8735D1C724266B5D3BD4D92B2DD95" trl="N">
+    <value column="Name" isTrl="N" original="Auto BOM: Allow negative stock in raw materials">Auto BOM: Allow negative stock in raw materials</value>
+    <value column="Description" isTrl="N" original="Allow negative stock or not when using raw materials at the moment of creating a BOM">Allow negative stock or not when using raw materials at the moment of creating a BOM</value>
+  </row>
+</compiereTrl>

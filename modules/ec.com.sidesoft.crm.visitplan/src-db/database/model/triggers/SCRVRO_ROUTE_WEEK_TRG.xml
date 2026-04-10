@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCRVRO_ROUTE_WEEK_TRG">
+    <trigger name="SCRVRO_ROUTE_WEEK_TRG" table="SCRVRO_ROUTE_WEEK" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	vR1 Record;
+	vR2 Record;
+	vR3 Record;
+	vI NUMBER;
+	vW NUMBER;
+	vStartDate DATE;
+	vDateFrom DATE;
+	vDateTo DATE;
+	vDayFrom NUMBER;
+	vDayTo NUMBER;
+	vMonthFrom VARCHAR2(60);
+	vMonthTo VARCHAR2(60);
+	vDayWeek NUMBER;
+	vRouteWeekId VARCHAR2(32);
+	vDay DATE;
+	v_detailRoute TEXT;
+	V_CountDF NUMBER;
+	V_CountDT NUMBER;
+	v_detailText text;
+	
+TYPE RECORD IS REF CURSOR;
+	Cur_Route RECORD;
+	
+	
+BEGIN
+
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+	
+	IF INSERTING THEN
+		
+
+		Select * into Cur_Route
+		from scrvro_route_period
+		where scrvro_route_period_id = :new.scrvro_route_period_id;
+		
+		v_detailText:=:NEW.week_detail;
+		--raise exception '%', v_detailText;
+		
+		IF (upper(trim(v_detailText))='MANUAL') THEN 
+		
+		SELECT COALESCE((SELECT COUNT(*)
+		FROM c_period WHERE c_period_id= Cur_Route.c_period_id
+		AND :NEW.DATE_FROM BETWEEN STARTDATE AND ENDDATE
+		),0) INTO V_CountDF
+		from dual;
+		
+		
+		SELECT COALESCE((SELECT COUNT(*)
+		FROM c_period WHERE c_period_id= Cur_Route.c_period_id
+		AND :NEW.DATE_TO BETWEEN STARTDATE AND ENDDATE
+		),0) INTO V_CountDT
+		from dual;
+		
+		IF (V_CountDF=0 or  V_CountDT=0) THEN
+			RAISE_APPLICATION_ERROR(-20000,'Las fechas no corresponde al período de la cabecera');
+		ELSE
+			vDateFrom:=:NEW.date_FROM;
+			vDateTo:=:NEW.date_TO;
+		END IF;
+
+	
+		FOR vR1 IN (
+			SELECT vr.*
+			FROM scrvro_vendor_route AS vr
+			JOIN c_bpartner AS bp ON bp.c_bpartner_id=vr.c_bpartner_id
+			WHERE vr.isactive='Y'
+			and vr.c_bpartner_id = :new.c_bpartner_id
+			ORDER BY bp.name
+		) LOOP
+		
+
+			vW := 1;
+			FOR vR2 IN (
+				SELECT *
+				FROM scrvro_vendor_route_line
+				WHERE scrvro_vendor_route_id=vR1.scrvro_vendor_route_id
+				ORDER BY type_route DESC
+			) LOOP
+				vI := 0;
+				WHILE vI < 1 LOOP
+
+					SELECT TO_CHAR(vDateFrom, 'DD') INTO vDayFrom;
+					
+					SELECT mt.name INTO vMonthFrom
+					FROM ad_month AS m
+						JOIN ad_month_trl AS mt ON mt.ad_month_id=m.ad_month_id
+					WHERE m.value::NUMERIC=TO_CHAR(vDateFrom,'MM')::NUMERIC;
+					
+					SELECT TO_CHAR(vDateTo, 'DD') INTO vDayTo;
+					SELECT mt.name INTO vMonthTo
+					FROM ad_month AS m
+						JOIN ad_month_trl AS mt ON mt.ad_month_id=m.ad_month_id
+					WHERE m.value::NUMERIC=TO_CHAR(vDateTo,'MM')::NUMERIC;
+ 
+					vDay := vDateFrom;
+					while vDay<= vDateTo LOOP
+					
+						INSERT INTO scrvro_route_day (
+							scrvro_route_day_id,
+							ad_client_id,
+							ad_org_id,
+							createdby,
+							updatedby,
+							scrvro_route_week_id,
+							"day",
+							"date",
+							route_time,
+							status
+						) VALUES (
+							get_uuid(),
+							:NEW.ad_client_id,
+							:NEW.ad_org_id,
+							:NEW.createdby,
+							:NEW.updatedby,
+							:NEW.scrvro_route_week_id,
+							(case when extract(dow from vDay)=0 then 7 else  extract(dow from vDay) end),
+							vDay,
+							0,
+							'P'
+						);
+						SELECT (vDay + '1 days'::INTERVAL)::DATE INTO vDay;
+						
+					END LOOP;
+					
+					
+					vW := vW + 1;
+					SELECT (DATE_TRUNC('week', vStartDate) + '7 days'::INTERVAL)::DATE INTO vStartDate;
+				vI := vI + 1;
+				END LOOP;
+				
+			END LOOP;
+			
+			
+			
+		END LOOP;
+		
+		
+		
+		if (V_CountDT>0 AND V_CountDF>0 ) then
+		
+					SELECT TO_CHAR(vDateFrom, 'DD') INTO vDayFrom;
+					
+					SELECT mt.name INTO vMonthFrom
+					FROM ad_month AS m
+						JOIN ad_month_trl AS mt ON mt.ad_month_id=m.ad_month_id
+					WHERE m.value::NUMERIC=TO_CHAR(vDateFrom,'MM')::NUMERIC;
+					
+					SELECT TO_CHAR(vDateTo, 'DD') INTO vDayTo;
+					SELECT mt.name INTO vMonthTo
+					FROM ad_month AS m
+						JOIN ad_month_trl AS mt ON mt.ad_month_id=m.ad_month_id
+					WHERE m.value::NUMERIC=TO_CHAR(vDateTo,'MM')::NUMERIC;
+ 
+ 
+			v_detailRoute:='Del '|| vDayFrom ||' de '||vMonthFrom ||' al '|| vDayTo ||' de '||vMonthTo;
+ 
+			:new.week_detail:=v_detailRoute;
+ 
+			
+		end if;
+		
+		:new.status='P';
+		:new.week=1;
+		
+		END IF;
+	END IF;
+	
+	END SCRVRO_ROUTE_WEEK_TRG
+]]></body>
+    </trigger>
+  </database>

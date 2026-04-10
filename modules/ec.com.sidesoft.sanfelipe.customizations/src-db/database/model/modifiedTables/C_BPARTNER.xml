@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_BPARTNER">
+    <table name="C_BPARTNER" primaryKey="C_BPARTNER_KEY">
+      <column name="EM_SSFC_USER1_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="USER1" name="EM_SSFC_BP_USER1">
+        <reference local="EM_SSFC_USER1_ID" foreign="USER1_ID"/>
+      </foreign-key>
+      <check name="EM_SSFC_CB_CUSBLOCKING_CHK"><![CDATA[CUSTOMER_BLOCKING = 'N' OR SO_ORDER_BLOCKING = 'Y' OR SO_GOODS_BLOCKING = 'Y' OR SO_INVOICE_BLOCKING = 'Y' OR SO_PAYMENT_BLOCKING = 'N']]></check>
+    </table>
+  </database>

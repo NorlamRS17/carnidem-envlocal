@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_TAB" version="">
+  <row id="035702E0D5124D3FA8B162ABADD2433F" trl="N">
+    <value column="Name" isTrl="N" original="Orden de Servicio">Orden de Servicio</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="57BF195F006743C6919A44B467136A33" trl="N">
+    <value column="Name" isTrl="N" original="Registros Reemplazos">Registros Reemplazos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FDE24DD34BF64F02B4EF0570D16728EB" trl="N">
+    <value column="Name" isTrl="N" original="Pedido de Repuestos">Pedido de Repuestos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR_FIELD" version="">
+  <row id="0A52BA9B96F84071ADF517455F87291E" trl="N">
+    <value column="Name" isTrl="N" original="identifier">identifier</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6BD3644C871741E4A525DCE6BEAA14F1" trl="N">
+    <value column="Name" isTrl="Y" original="Name">Nombre</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="93CAD9DBA3FB4F5CA174FE7D2F24A78C" trl="N">
+    <value column="Name" isTrl="Y" original="Customer">Cliente</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AAE0114A5EF54A809BF71C85BC38B823" trl="N">
+    <value column="Name" isTrl="Y" original="Vendor">Proveedor</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E1932D80F90F4471926F60ADD35FFBB3" trl="N">
+    <value column="Name" isTrl="Y" original="Value">Identificador</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="49866B46422C406ABDF25D6988F7E701" trl="N">
+    <value column="Name" isTrl="N" original="Country">Country</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="58238F7EC96B424796FABB5E950269CE" trl="N">
+    <value column="Name" isTrl="N" original="Region">Region</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AE62B9C27AA44527BED14801A0CEF30F" trl="N">
+    <value column="Name" isTrl="N" original="ThirdPriceList">ThirdPriceList</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E734751D676E488E9976F2F23CD2FD62" trl="N">
+    <value column="Name" isTrl="N" original="Canton">Canton</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

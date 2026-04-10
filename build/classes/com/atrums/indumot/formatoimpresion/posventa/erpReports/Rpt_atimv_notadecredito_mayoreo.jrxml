@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_atimv_notadecredito" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/DesarrolloLuis/OpenbravoERPNuevo/modules/com.atrums.indumot.formatoimpresion/src"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+    coalesce(tb_cbt.name,'') as nombre,
+    coalesce(tb_cbt.taxid,'') as rucoci,
+    coalesce(tb_cbtl.name,'') as direccion,
+    tb_iv.dateinvoiced as fechaemision,
+    c_dt.name as referentecomprobante,
+    coalesce(tb_iv.documentno,'') as serie,
+    coalesce(tb_cbt.salesrep_id,'') as cod_vendedor,
+    (select name from c_bpartner where c_bpartner_id=tb_cbt.salesrep_id) as vendedor,
+    ((select
+    (select coalesce(em_co_nro_estab,'-') || '-' || coalesce(em_co_punto_emision,'-') || '-' ||
+      coalesce(documentno,'-') from c_invoice where c_invoice_id IN (
+          select c_invoice_id from fin_payment_schedule where
+           fin_payment_schedule_id = fin_payment_detail_v.fin_payment_sched_inv_id))
+from fin_payment_detail_v where fin_payment_id IN
+(select fin_payment_id from fin_payment_detail_v where fin_payment_sched_inv_v_id IN
+(select fin_payment_schedule_id from fin_payment_schedule where c_invoice_id IN ($P{DOCUMENT_ID}))) and invoicedamt > 0 and paidconverted > 0) limit 1) as factura
+from
+    c_invoice as tb_iv join
+    c_bpartner as tb_cbt on
+    tb_iv.c_bpartner_id = tb_cbt.c_bpartner_id join
+    c_bpartner_location as tb_cbtl on
+    tb_iv.c_bpartner_location_id = tb_cbtl.c_bpartner_location_id join
+    c_doctype as c_dt on
+    tb_iv.c_doctype_id = c_dt.c_doctype_id
+where
+    tb_iv.c_invoice_id = $P{DOCUMENT_ID}]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="rucoci" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="fechaemision" class="java.sql.Timestamp"/>
+	<field name="referentecomprobante" class="java.lang.String"/>
+	<field name="serie" class="java.lang.String"/>
+	<field name="cod_vendedor" class="java.lang.String"/>
+	<field name="vendedor" class="java.lang.String"/>
+	<field name="factura" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="255" splitType="Stretch">
+			<textField>
+				<reportElement x="62" y="125" width="309" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="145" width="309" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{rucoci}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="165" width="309" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="419" y="100" width="102" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{fechaemision}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="85" width="309" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="558" y="100" width="119" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{factura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="451" y="203" width="181" height="20"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{rucoci}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="482" y="125" width="193" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vendedor}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="419" y="125" width="63" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cod_vendedor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="707" height="27"/>
+				<subreportParameter name="DOCUMENT_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{BASE_DESIGN} + "/com/atrums/indumot/formatoimpresion/posventa/erpReports/Rpt_atimv_notadecredito_subreportdetalles.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<summary>
+		<band height="105" splitType="Stretch">
+			<subreport>
+				<reportElement x="537" y="3" width="119" height="102"/>
+				<subreportParameter name="DOCUMENT_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{BASE_DESIGN} + "/com/atrums/indumot/formatoimpresion/posventa/erpReports/Rpt_atimv_notadecredito_subreporttotales.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

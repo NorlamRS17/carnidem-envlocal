@@ -5,6 +5,10 @@
       <oldValue><![CDATA[10]]></oldValue>
       <newValue><![CDATA[20]]></newValue>
     </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="2909">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
     <columnDataChange tablename="AD_COLUMN" columnname="ISIDENTIFIER" pkRow="3785">
       <oldValue><![CDATA[N]]></oldValue>
       <newValue><![CDATA[Y]]></newValue>
@@ -168,6 +172,10 @@
     <columnDataChange tablename="AD_FIELD" columnname="GRID_SEQNO" pkRow="2945">
       <oldValue/>
       <newValue><![CDATA[10]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="2959">
+      <oldValue><![CDATA[70]]></oldValue>
+      <newValue><![CDATA[95]]></newValue>
     </columnDataChange>
     <columnDataChange tablename="AD_FIELD" columnname="SHOWINRELATION" pkRow="2962">
       <oldValue><![CDATA[N]]></oldValue>

@@ -50,9 +50,6 @@ public class DepositReconciliation extends DalBaseProcess implements KillablePro
     final OBError message = new OBError();
     dao = new AdvPaymentMngtDao();
     try {
-      if (killProcess) {
-        throw new OBException("Process killed");
-      }
       OBContext.setAdminMode(true);
       logger = bundle.getLogger();
       getDepositToReconcilie(bundle, message);

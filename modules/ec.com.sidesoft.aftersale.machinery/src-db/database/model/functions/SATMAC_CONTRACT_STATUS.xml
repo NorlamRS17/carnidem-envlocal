@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SATMAC_CONTRACT_STATUS">
+    <function name="SATMAC_CONTRACT_STATUS" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult				VARCHAR2(2000);
+	vMessage			VARCHAR2(2000);
+	
+	vCheck			 NUMBER;
+	cPar				RECORD;
+	vRecord				RECORD;
+	vRecordID			VARCHAR2(32);
+	vClientID			VARCHAR2(32);
+	vOrgID				VARCHAR2(32);
+	vUserID				VARCHAR2(32);
+	
+	cCur				RECORD;
+	
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID) ;
+	vResult := 'PInstanceNotFound';
+ AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+	BEGIN
+
+		vResult := 'ReadingParameters';
+		FOR cPar IN (
+			SELECT i.Record_ID,
+				i.AD_User_ID,
+				i.AD_Client_ID,
+				i.AD_Org_ID
+			FROM AD_PInstance i
+			WHERE i.AD_PInstance_ID = PInstance_ID
+		) LOOP
+			vRecordID := cPar.Record_ID;
+			vClientID := cPar.AD_Client_ID;
+			vOrgID := cPar.AD_Org_ID;
+			vUserID := cPar.AD_User_ID;
+		END LOOP;
+		
+		SELECT * INTO vRecord FROM satmac_contract WHERE satmac_contract_id = vRecordID;
+		IF vRecord.processing = 'Y' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@DocBeingProcessed@');
+		END IF;
+        
+        UPDATE satmac_contract SET processing = 'Y' WHERE satmac_contract_id = vRecordID;
+		
+        IF vRecord.docstatus = 'DR' THEN
+            SELECT COUNT(satmac_machine_id) INTO vCheck FROM satmac_machine WHERE satmac_contract_id = vRecordID;
+            IF vCheck = 0 THEN
+                RAISE_APPLICATION_ERROR(-20000, 'No se encontraron máquinas registradas');
+            END IF;
+            /*
+            FOR cCur IN (
+                SELECT satmac_machine_id, line FROM satmac_machine WHERE satmac_contract_id = vRecordID
+            ) LOOP
+            
+                SELECT COUNT(satmac_maintenance_plan_id) INTO vCheck FROM satmac_maintenance_plan WHERE satmac_machine_id = cCur.satmac_machine_id;
+                IF vCheck = 0 THEN
+                    RAISE_APPLICATION_ERROR(-20000, 'La línea '||cCur.line||' no tiene plan de mantenimiento');
+                END IF;
+            
+            END LOOP;
+            */
+		    UPDATE satmac_contract SET docstatus = 'IP' WHERE satmac_contract_id = vRecordID;
+        ELSEIF vRecord.docstatus = 'IP' THEN
+        
+            UPDATE satmac_contract SET docstatus = 'DR' WHERE satmac_contract_id = vRecordID;
+        
+        END IF;
+
+        UPDATE satmac_contract SET processing = 'N' WHERE satmac_contract_id = vRecordID;
+        
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage) ;
+        AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, vMessage);
+		RETURN;
+		
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+    vResult := '@ERROR='||SQLERRM;
+    DBMS_OUTPUT.PUT_LINE( vResult) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, vResult) ;
+
+    RETURN;
+END SATMAC_CONTRACT_STATUS
+]]></body>
+    </function>
+  </database>

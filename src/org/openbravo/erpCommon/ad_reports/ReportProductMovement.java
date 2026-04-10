@@ -20,7 +20,6 @@ package org.openbravo.erpCommon.ad_reports;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -118,31 +117,7 @@ public class ReportProductMovement extends HttpSecureAppServlet {
       printPageDataSheet(response, vars, strDateFrom, strDateTo, strcBpartnerId, strmProductId,
           strInout, strReturn, strInventory, strMovement, strProduction,
           strmAttributesetinstanceId, strInternalConsumption);
-    } else if (vars.commandIn("EXCEL")) {
-        String strDateFrom = vars.getRequestGlobalVariable("inpDateFrom",
-                "ReportProductMovement|dateFrom");
-            String strDateTo = vars.getRequestGlobalVariable("inpDateTo", "ReportProductMovement|dateTo");
-            String strcBpartnerId = vars.getRequestGlobalVariable("inpcBPartnerId",
-                "ReportProductMovement|cBpartnerId");
-            String strmProductId = vars.getRequestGlobalVariable("inpmProductId",
-                "ReportProductMovement|mProductId");
-            String strmAttributesetinstanceId = vars.getRequestGlobalVariable(
-                "inpmAttributeSetInstanceId", "ReportProductMovement|M_AttributeSetInstance_Id");
-            String strInout = vars.getRequestGlobalVariable("inpInout", "ReportProductMovement|inout");
-            String strReturn = vars.getRequestGlobalVariable("inpReturn", "ReportProductMovement|return");
-            String strInventory = vars.getRequestGlobalVariable("inpInventory",
-                "ReportProductMovement|inventory");
-            String strMovement = vars.getRequestGlobalVariable("inpMovement",
-                "ReportProductMovement|movement");
-            String strProduction = vars.getRequestGlobalVariable("inpProduction",
-                "ReportProductMovement|production");
-            String strInternalConsumption = vars.getRequestGlobalVariable("inpInternalConsumption",
-                "ReportProductMovement|internalConsumption");
-            setHistoryCommand(request, "DIRECT");
-            printExcel(response, vars, strDateFrom, strDateTo, strcBpartnerId, strmProductId,
-                strInout, strReturn, strInventory, strMovement, strProduction,
-                strmAttributesetinstanceId, strInternalConsumption);
-          } else {
+    } else {
       pageError(response);
     }
   }
@@ -366,166 +341,6 @@ public class ReportProductMovement extends HttpSecureAppServlet {
     out.println(xmlDocument.print());
     out.close();
   }
-  
-  private void printExcel(HttpServletResponse response, VariablesSecureApp vars,
-	      String strDateFrom, String strDateTo, String strcBpartnerId, String strmProductId,
-	      String strInout, String strReturn, String strInventory, String strMovement,
-	      String strProduction, String strmAttributesetinstanceId, String strInternalConsumption)
-	      throws IOException, ServletException {
-	    String localStrDateTo = strDateTo;
-	    String localStrDateFrom = strDateFrom;
-	    if (log4j.isDebugEnabled()) {
-	      log4j.debug("Output: dataSheet");
-	    }
-	    response.setContentType("text/html; charset=UTF-8");
-//	    PrintWriter out = response.getWriter();
-	    XmlDocument xmlDocument = null; 	
-	    ReportProductMovementData[] data = null;
-	    ReportProductMovementData[] data1 = null;
-	    ReportProductMovementData[] data2 = null;
-	    ReportProductMovementData[] data3 = null;
-	    ReportProductMovementData[] data4 = null;
-	    ReportProductMovementData[] data5 = null;
-	    String discard[] = { "discard", "discard", "discard", "discard", "discard", "discard" };
-	    ConnectionProvider readOnlyCP = DalConnectionProvider.getReadOnlyConnectionProvider();
-	    if (StringUtils.isEmpty(localStrDateFrom) && StringUtils.isEmpty(localStrDateTo)) {
-	      localStrDateTo = DateTimeData.today(readOnlyCP);
-	      localStrDateFrom = DateTimeData.weekBefore(readOnlyCP);
-	    }
-
-	    int limit = 0;
-	    if (vars.commandIn("EXCEL", "DIRECT")) {
-	      limit = Integer.parseInt(Utility.getPreference(vars, "ReportsLimit", ""));
-	      String pgLimit = null, oraLimit = null;
-	      if (StringUtils.equals(readOnlyCP.getRDBMS(), "ORACLE")) {
-	        oraLimit = String.valueOf(limit + 1);
-	      } else {
-	        pgLimit = String.valueOf(limit + 1);
-	      }
-
-	      if (StringUtils.equals(strMovement, "-1")) {
-	    	  ///
-	    	  	
-	    	  	discard[0] = "selEliminar1";
-		        data = ReportProductMovementData.set();
-		        discard[5] = "selEliminar6";
-		        data5 = ReportProductMovementData.set();
-		        discard[1] = "selEliminar2";
-		        data1 = ReportProductMovementData.set();
-		        discard[3] = "selEliminar4";
-		        data3 = ReportProductMovementData.set();
-		        discard[4] = "selEliminar5";
-		        data4 = ReportProductMovementData.set();
-	    	  
-	    	  ///
-		        data2 = ReportProductMovementData.selectMovement(readOnlyCP,
-		            Utility.getContext(readOnlyCP, vars, "#User_Client", "ReportProductMovement"),
-		            Utility.getContext(readOnlyCP, vars, "#AccessibleOrgTree", "ReportProductMovement"),
-		            localStrDateFrom, DateTimeData.nDaysAfter(readOnlyCP, localStrDateTo, "1"),
-		            strcBpartnerId, strmProductId);
-		        if (data2 == null || data2.length == 0) {
-		          discard[2] = "selEliminar3";
-		          data2 = ReportProductMovementData.set();
-		        }
-		      } else {
-		        discard[2] = "selEliminar3";
-		        data2 = ReportProductMovementData.set();
-		      }
-	    } else {
-	      discard[0] = "selEliminar1";
-	      discard[1] = "selEliminar2";
-	      discard[2] = "selEliminar3";
-	      discard[3] = "selEliminar4";
-	      discard[4] = "selEliminar5";
-	      discard[5] = "selEliminar6";
-	      data = ReportProductMovementData.set();
-	      data1 = ReportProductMovementData.set();
-	      data2 = ReportProductMovementData.set();
-	      data3 = ReportProductMovementData.set();
-	      data4 = ReportProductMovementData.set();
-	      data5 = ReportProductMovementData.set();
-	    }
-	    xmlDocument = xmlEngine.readXmlTemplate(
-	        "org/openbravo/erpCommon/ad_reports/ReportProductMovement", discard).createXmlDocument();
-
-	    ToolBar toolbar = new ToolBar(readOnlyCP, vars.getLanguage(), "ReportProductMovement", false,
-	        "", "", "", false, "ad_reports", strReplaceWith, false, true);
-	    toolbar.prepareSimpleToolBarTemplate();
-	    xmlDocument.setParameter("toolbar", toolbar.toString());
-
-	    try {
-	      WindowTabs tabs = new WindowTabs(readOnlyCP, vars,
-	          "org.openbravo.erpCommon.ad_reports.ReportProductMovement");
-	      xmlDocument.setParameter("parentTabContainer", tabs.parentTabs());
-	      xmlDocument.setParameter("mainTabContainer", tabs.mainTabs());
-	      xmlDocument.setParameter("childTabContainer", tabs.childTabs());
-	      xmlDocument.setParameter("theme", vars.getTheme());
-	      NavigationBar nav = new NavigationBar(readOnlyCP, vars.getLanguage(),
-	          "ReportProductMovement.html", classInfo.id, classInfo.type, strReplaceWith,
-	          tabs.breadcrumb());
-	      xmlDocument.setParameter("navigationBar", nav.toString());
-	      LeftTabsBar lBar = new LeftTabsBar(readOnlyCP, vars.getLanguage(),
-	          "ReportProductMovement.html", strReplaceWith);
-	      xmlDocument.setParameter("leftTabs", lBar.manualTemplate());
-	    } catch (Exception ex) {
-	      throw new ServletException(ex);
-	    }
-	    {
-	      OBError myMessage = vars.getMessage("ReportProductMovement");
-	      if (limit > 0 && data.length > limit) {
-	        myMessage = new OBError();
-	        myMessage.setType("Warning");
-	        myMessage.setTitle("");
-	        String msgbody = Utility.messageBD(readOnlyCP, "ReportsLimit", vars.getLanguage());
-	        msgbody = msgbody.replace("@limit@", String.valueOf(limit + 1));
-	        myMessage.setMessage(msgbody);
-	      }
-	      vars.removeMessage("ReportProductMovement");
-	      if (myMessage != null) {
-	        xmlDocument.setParameter("messageType", myMessage.getType());
-	        xmlDocument.setParameter("messageTitle", myMessage.getTitle());
-	        xmlDocument.setParameter("messageMessage", myMessage.getMessage());
-	      }
-	    }
-
-	    xmlDocument.setParameter("calendar", vars.getLanguage().substring(0, 2));
-	    xmlDocument.setParameter("directory", "var baseDirectory = \"" + strReplaceWith + "/\";\n");
-	    xmlDocument.setParameter("paramLanguage", "defaultLang=\"" + vars.getLanguage() + "\";");
-	    xmlDocument.setParameter("dateFrom", localStrDateFrom);
-	    xmlDocument.setParameter("dateFromdisplayFormat", vars.getSessionValue("#AD_SqlDateFormat"));
-	    xmlDocument.setParameter("dateFromsaveFormat", vars.getSessionValue("#AD_SqlDateFormat"));
-	    xmlDocument.setParameter("dateTo", localStrDateTo);
-	    xmlDocument.setParameter("dateTodisplayFormat", vars.getSessionValue("#AD_SqlDateFormat"));
-	    xmlDocument.setParameter("dateTosaveFormat", vars.getSessionValue("#AD_SqlDateFormat"));
-	    xmlDocument.setParameter("paramBPartnerId", strcBpartnerId);
-	    xmlDocument.setParameter("mProduct", strmProductId);
-
-	    xmlDocument.setData(
-	        "reportM_ATTRIBUTESETINSTANCE_ID",
-	        "liststructure",
-	        AttributeSetInstanceComboData.select(readOnlyCP, vars.getLanguage(), strmProductId,
-	            Utility.getContext(readOnlyCP, vars, "#User_Client", "ReportProductMovement"),
-	            Utility.getContext(readOnlyCP, vars, "#AccessibleOrgTree", "ReportProductMovement")));
-	    xmlDocument.setParameter("parameterM_ATTRIBUTESETINSTANCE_ID", strmAttributesetinstanceId);
-
-	    xmlDocument.setParameter("bPartnerDescription",
-	        ReportProductMovementData.selectBpartner(readOnlyCP, strcBpartnerId));
-	    xmlDocument.setParameter("productDescription",
-	        ReportProductMovementData.selectMproduct(readOnlyCP, strmProductId));
-	    xmlDocument.setParameter("movement", strMovement);
-	    xmlDocument.setParameter("internalConsumption", strInternalConsumption);
-	    xmlDocument.setData("structure3", data2);
-	    
-//	    HashMap<String, Object> parameters = new HashMap<String, Object>();
-//	    parameters.put("DOCUMENT_ID", "1J3NO313OMKUN123"); ingresa la info de tu parametro 
-	    
-	    String strReportName = "@basedesign@/org/openbravo/erpCommon/ad_reports/ReportProductMovement.jrxml";
-	    renderJR(vars, response, strReportName, "xls", null, data2, null);
-
-
-//	    out.println(xmlDocument.print());
-//	    out.close();
-	  }
 
   public String getServletInfo() {
     return "Servlet ReportProductMovement. This Servlet was made by Jon Alegria";

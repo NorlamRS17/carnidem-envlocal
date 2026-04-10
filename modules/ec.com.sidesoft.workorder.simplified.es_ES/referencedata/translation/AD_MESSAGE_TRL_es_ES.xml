@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="8BD4BD8EA027428AA0F25FC6C9020340" trl="N">
+    <value column="MsgText" isTrl="Y" original="No service orders were found to process, please check filters.">No se encontraron Ordenes de servicios para procesar, por favor revisar filtros.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="D95CC414273E40B5A6EDCA01EEF7F1C5" trl="N">
+    <value column="MsgText" isTrl="Y" original="No item type products to move">No hay productos de tipo artículo para el movimiento</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="EA11736F542A43D5893979FB3566E05E" trl="N">
+    <value column="MsgText" isTrl="Y" original="The price lists for the following documents have been update">Se actualizaron las listas de precios de los siguientes documentos</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

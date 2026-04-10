@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCRVRO_VENDOR_ROUTE_CONF_TRG">
+    <trigger name="SCRVRO_VENDOR_ROUTE_CONF_TRG" table="SCRVRO_VENDOR_ROUTE_CONFIG" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	vCheck NUMBER;
+BEGIN
+
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+	
+	IF TG_OP IN ('INSERT','UPDATE') THEN
+		SELECT COUNT(*) INTO vCheck FROM scrvro_vendor_route_config WHERE isactive='Y' AND scrvro_vendor_route_config_id!=:NEW.scrvro_vendor_route_config_id;
+		IF vCheck > 0 AND :NEW.isactive='Y' THEN
+			RAISE_APPLICATION_ERROR(-20000, '@Scrvro_VendorRouteConfigActive@') ;
+		END IF;
+	END IF;
+	
+	END SCRVRO_VENDOR_ROUTE_CONF_TRG
+]]></body>
+    </trigger>
+  </database>

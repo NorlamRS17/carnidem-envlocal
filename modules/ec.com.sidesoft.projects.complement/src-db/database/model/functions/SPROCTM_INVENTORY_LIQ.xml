@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SPROCTM_INVENTORY_LIQ">
+    <function name="SPROCTM_INVENTORY_LIQ" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[p_record_id VARCHAR(60);
+p_docAction VARCHAR(60);
+p_user VARCHAR(60);
+
+v_ResultStr VARCHAR2(2000):='';
+v_order_id VARCHAR2(32);
+v_exist NUMBER;
+
+TYPE RECORD IS REF CURSOR;
+Cur_Params RECORD;
+Cur_liquidation RECORD;
+BEGIN
+
+  FOR Cur_Params IN (
+    SELECT *
+    FROM ad_ep_instance_para
+    WHERE ad_ep_instance_id = p_ep_instance
+    ) LOOP
+    IF (cur_params.parametername LIKE 'DocAction') THEN
+      p_docaction := Cur_Params.p_string;
+    ELSIF (cur_params.parametername LIKE 'Record_ID') THEN
+      p_record_id := cur_params.p_string;
+    ELSIF (cur_params.parametername LIKE 'User') THEN
+      p_user := cur_params.p_string;
+    END IF;
+  END LOOP;
+  v_ResultStr := 'Inicio del proceso';
+   --RAISE EXCEPTION '%' ,'KKK ' || p_user ;
+  FOR Cur_liquidation IN (
+  	select cl.ad_org_id
+	  , mi.ad_client_id
+	, mi.m_inout_id
+	, cl.m_inoutline_id 
+	 , m.MovementDate
+	, cl.sstpc_liquidation_projects_id  
+	, lp.dateliqproj
+	, cl.m_product_id  
+	, at.M_AttributeSet_id
+	, uom.c_uom_id
+	, mi.MovementQty
+	, mi.EM_Sproctm_C_Projectphase_ID
+	, mi.EM_Sproctm_C_Projecttask_ID
+	from sstpc_consumption_line cl
+	inner join sstpc_liquidation_projects lp on lp.sstpc_liquidation_projects_id = cl.sstpc_liquidation_projects_id
+	inner join m_inoutline mi on mi.m_inoutline_id = cl.m_inoutline_id
+	inner join m_inout m on m.m_inout_id = mi.m_inout_id
+	inner join m_product mp on mp.m_product_id = cl.m_product_id
+	left join c_uom uom on uom.c_uom_id  = mp.c_uom_id
+	left join M_AttributeSet at on at.M_AttributeSet_id = mp.M_AttributeSet_id
+	where lp.sstpc_liquidation_projects_id = p_record_id 
+  )
+  LOOP
+  	
+	INSERT INTO sproctm_inventory_settl(
+	sproctm_inventory_settl_id, ad_client_id, ad_org_id, isactive
+		, created, createdby, updated, updatedby,
+		m_inout_id, m_inoutline_id, inout_date,
+		sstpc_liquidation_projects_id, date_liquidation, 
+		m_product_id, m_attributeset_id, c_uom_id,
+		qty_inout, c_projectphase_id
+		, c_projecttask_id)
+	VALUES (get_uuid(), Cur_liquidation.ad_client_id, Cur_liquidation.ad_org_id , 'Y'
+			, now(), p_user, now(), p_user,
+			Cur_liquidation.m_inout_id , Cur_liquidation.m_inoutline_id , Cur_liquidation.MovementDate ,
+			Cur_liquidation.sstpc_liquidation_projects_id, Cur_liquidation.dateliqproj ,
+			Cur_liquidation.m_product_id , Cur_liquidation.m_attributeset_id , Cur_liquidation.c_uom_id ,
+			Cur_liquidation.MovementQty , Cur_liquidation.EM_Sproctm_C_Projectphase_ID 
+			, Cur_liquidation.EM_Sproctm_C_Projecttask_ID ); 
+  
+  END LOOP;
+  
+  v_ResultStr := 'Completado exitosamente';
+EXCEPTION
+WHEN OTHERS THEN
+  DBMS_OUTPUT.PUT_LINE('sproctm_inventory_liq exception: '|| v_ResultStr);
+  RAISE;
+END SPROCTM_INVENTORY_LIQ
+]]></body>
+    </function>
+  </database>

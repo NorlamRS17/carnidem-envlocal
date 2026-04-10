@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ATVEF_ACT_PAGOS_DETAIL_TRG">
+    <trigger name="ATVEF_ACT_PAGOS_DETAIL_TRG" table="FIN_PAYMENT_SCHEDULEDETAIL" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+v_amount NUMBER;
+v_atvef_iscredito varchar(1);
+v_invoice_id varchar(32);
+v_order_id varchar(32);
+v_entrada NUMBER;
+v_cuota NUMBER;
+v_count_cond NUMBER;
+v_count_cuotas NUMBER;
+v_paidamt NUMBER;
+v_dif NUMBER;
+v_amount_par NUMBER;
+v_outstandingamt NUMBER;
+
+v_dd varchar(2);
+v_mm varchar(2);
+v_yy varchar(4);
+Cur_fechas record;
+
+BEGIN
+    
+
+    IF (INSERTING ) THEN
+
+        
+
+        select amount, em_atvef_iscredito, c_invoice_id, paidamt, outstandingamt
+        into v_amount, v_atvef_iscredito, v_invoice_id, v_paidamt, v_outstandingamt
+        from fin_payment_schedule
+        where fin_payment_schedule_id = :new.fin_payment_schedule_invoice;
+
+        if exists (select * from fin_payment_scheduledetail where fin_payment_schedule_invoice = :new.fin_payment_schedule_invoice) then
+            
+            
+            return new;
+        else
+            
+            if (v_atvef_iscredito='Y')	then
+
+                select count(*)+1 
+                into v_count_cond
+                from c_paymenttermline
+                where c_paymentterm_id = (select c_paymentterm_id from c_invoice 
+                        where c_invoice_id = v_invoice_id);
+
+                select count(*)
+                into v_count_cuotas 
+                from fin_payment_schedule 
+                where c_invoice_id = v_invoice_id;
+
+                IF (v_count_cuotas = v_count_cond) then
+
+                    select 
+                    (select sum(grandtotal) from c_invoice where c_invoice_id = v_invoice_id)-
+                    (select sum(amount) from fin_payment_schedule where c_invoice_id = v_invoice_id) 
+                    into v_dif
+                    from dual;
+
+                    update fin_payment_schedule
+                    set amount = v_amount + v_dif, outstandingamt = v_amount + v_dif
+                    where fin_payment_schedule_id = :new.fin_payment_schedule_invoice;
+
+                    v_amount := v_amount + v_dif;
+
+                end if;
+            
+               
+                    
+               
+                    :new.amount := v_amount;
+               
+            
+            end if;
+
+        end if;
+
+    RETURN NEW; 
+
+    END IF;
+END ATVEF_ACT_PAGOS_DETAIL_TRG
+]]></body>
+    </trigger>
+  </database>

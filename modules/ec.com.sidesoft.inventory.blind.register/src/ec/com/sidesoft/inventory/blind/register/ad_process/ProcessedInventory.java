@@ -27,8 +27,8 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.function.SQLFunction;
 import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.exception.GenericJDBCException;
-import org.hibernate.SessionFactory;
-import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.impl.SessionFactoryImpl;
+import org.hibernate.impl.SessionImpl;
 import org.hibernate.type.DateType;
 import org.hibernate.type.StringType;
 import org.openbravo.advpaymentmngt.utility.FIN_Utility;
@@ -389,8 +389,7 @@ public class ProcessedInventory extends DalBaseProcess {
       throws OBException {
     return processInventory(inventory, checkReservationQty, false);
   }
-  
-  @SuppressWarnings("deprecation")
+
   public OBError processInventory(InventoryCount inventory, boolean checkReservationQty,
       boolean checkPermanentCost) throws OBException {
     OBError msg = new OBError();
@@ -399,9 +398,8 @@ public class ProcessedInventory extends DalBaseProcess {
     runChecks(inventory);
 
     // In case get_uuid is not already registered, it's registered now.
-    Session session = OBDal.getInstance().getSession();
-    SessionFactory factory = session.getSessionFactory();
-    Dialect dialect = ((SessionFactoryImplementor) factory).getDialect();
+    final Dialect dialect = ((SessionFactoryImpl) ((SessionImpl) OBDal.getInstance().getSession())
+        .getSessionFactory()).getDialect();
     Map<String, SQLFunction> function = dialect.getFunctions();
     if (!function.containsKey("get_uuid")) {
       dialect.getFunctions().put("get_uuid", new StandardSQLFunction("get_uuid", new StringType()));
@@ -637,7 +635,6 @@ public class ProcessedInventory extends DalBaseProcess {
     }
   }
 
-  @SuppressWarnings("deprecation")
   private void checkStock(InventoryCount inventory) {
     String attribute;
     final StringBuilder hqlString = new StringBuilder();

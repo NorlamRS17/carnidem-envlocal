@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="5273D3B1FA164291B8C5B9CBD608043E" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Ispay_Portal_User">Usuario Portal de Cobros</value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Ispay_Portal_User">Usuario Portal de Cobros</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5CEE33A179314DDEB1299BA42F1044FD" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Deposit_In_Ant_ID">Depositar en - Anticipo </value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Deposit_In_Ant_ID">Depositar en - Anticipo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="69769D1121C84EB1845B1A3D5DC3E41B" trl="Y">
+    <value column="Name" isTrl="Y" original="Allowed in payment portal">Permitido en portal de pagos</value>
+    <value column="PrintName" isTrl="Y" original="Allowed in payment portal">Permitido en portal de pagos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8AA3997A027642A8878450494D5119D3" trl="N">
+    <value column="Name" isTrl="N" original="em_swssl_nro_cuota">em_swssl_nro_cuota</value>
+    <value column="PrintName" isTrl="N" original="em_swssl_nro_cuota">em_swssl_nro_cuota</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B3AF61BBA77D403F8CA7264532B55588" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Payment_Method_ID">Método de pago - Cobro</value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Payment_Method_ID">Método de pago - Cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="C1E5F816801B413DA32F5AD844B44C2E" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Swssl_Payment_Method_Ant_ID">Método de pago - Anticipo</value>
+    <value column="PrintName" isTrl="Y" original="EM_Swssl_Payment_Method_Ant_ID">Método de pago - Anticipo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EF0BB670389448C8A748DB6E0A6769E4" trl="Y">
+    <value column="Name" isTrl="Y" original="isrefinancing">Refinanciamiento</value>
+    <value column="PrintName" isTrl="N" original="Refinanciamiento">Refinanciamiento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original="isrefinancing">isrefinancing</value>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

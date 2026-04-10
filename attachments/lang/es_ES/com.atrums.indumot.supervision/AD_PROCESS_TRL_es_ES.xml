@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_PROCESS" version="">
+  <row id="120616B644BA4FF6A1C9711D400DCD73" trl="N">
+    <value column="Name" isTrl="N" original="Proceso Validación Ordenes de Servicio">Proceso Validación Ordenes de Servicio</value>
+    <value column="Description" isTrl="N" original="Proceso Validación Ordenes de Servicio">Proceso Validación Ordenes de Servicio</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6D755E502F2D40CDAC472F02634A7F3E" trl="N">
+    <value column="Name" isTrl="N" original="indsup_crear_factura">indsup_crear_factura</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6F30FA329E524148B73CB25B424A71F1" trl="N">
+    <value column="Name" isTrl="N" original="Activar Orden de Servicio">Activar Orden de Servicio</value>
+    <value column="Description" isTrl="N" original="Activar Orden de Servicio">Activar Orden de Servicio</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BCC02E54A51347B1991FB55F1B75DEA7" trl="N">
+    <value column="Name" isTrl="N" original="indsup_factura_consol">indsup_factura_consol</value>
+    <value column="Description" isTrl="N" original="Proceso para crear facturas de Ordenes Consolidadas">Proceso para crear facturas de Ordenes Consolidadas</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E1B6F7BC8191403D807906FD7E7EFD5A" trl="N">
+    <value column="Name" isTrl="N" original="Proceso de Consolidación de Ordenes">Proceso de Consolidación de Ordenes</value>
+    <value column="Description" isTrl="N" original="Proceso de Consolidación de Ordenes">Proceso de Consolidación de Ordenes</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_atimv_guiaremision" pageWidth="595" pageHeight="842" columnWidth="575" leftMargin="0" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="0.7513148009015777"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="67"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/DesarrolloLuis/OpenbravoERPNuevo/modules/com.atrums.indumot.formatoimpresion/src"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+    tb_min.documentno as comprobanteventa,
+    tb_min.dateacct as fecha,
+    tb_cbpt.name as nombredestinatario,
+    coalesce(tb_cbpt.taxid) as rucoci,
+    lo.address1 || ' - ' || (select coalesce(name,'') from c_city where c_city_id = lo.c_city_id) || ' - ' ||
+        (select coalesce(name,'') from c_region where c_region_id = lo.c_region_id) as puntollegada
+from
+    m_inout as tb_min join
+    c_bpartner as tb_cbpt on
+    tb_min.c_bpartner_id = tb_cbpt.c_bpartner_id join
+    c_bpartner_location as tb_cbptl on
+    tb_min.c_bpartner_location_id = tb_cbptl.c_bpartner_location_id, c_location lo
+where lo.c_location_id = tb_cbptl.c_location_id
+and tb_min.m_inout_id = $P{DOCUMENT_ID};]]>
+	</queryString>
+	<field name="comprobanteventa" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="nombredestinatario" class="java.lang.String"/>
+	<field name="rucoci" class="java.lang.String"/>
+	<field name="puntollegada" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="281" splitType="Stretch">
+			<textField>
+				<reportElement x="256" y="125" width="162" height="15"/>
+				<textElement>
+					<font fontName="Arial" pdfFontName="Courier" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{comprobanteventa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="246" y="148" width="105" height="19"/>
+				<textElement>
+					<font fontName="Arial" pdfFontName="Courier" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="304" y="177" width="262" height="19"/>
+				<textElement>
+					<font fontName="Arial" size="9" pdfFontName="Courier" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombredestinatario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="239" y="200" width="311" height="19"/>
+				<textElement>
+					<font fontName="Arial" size="9" pdfFontName="Courier" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{puntollegada}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="48" y="200" width="128" height="20"/>
+				<textElement>
+					<font fontName="Arial" pdfFontName="Courier" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{rucoci}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="97" width="89" height="20"/>
+				<textElement>
+					<font fontName="Arial" pdfFontName="Courier" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="366" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="575" height="281"/>
+				<subreportParameter name="DOCUMENT_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BASE_DESIGN">
+					<subreportParameterExpression><![CDATA[$P{BASE_DESIGN}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{BASE_DESIGN} + "/com/atrums/indumot/formatoimpresion/ventas/Rpt_atimv_guiaremision_subreportdetalles.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="50"/>
+	</lastPageFooter>
+	<summary>
+		<band height="50" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="575" height="50"/>
+				<subreportParameter name="DOCUMENT_ID">
+					<subreportParameterExpression><![CDATA[$P{DOCUMENT_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BASE_DESIGN">
+					<subreportParameterExpression><![CDATA[$P{BASE_DESIGN}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{BASE_DESIGN} + "/com/atrums/indumot/formatoimpresion/ventas/Rpt_atimv_guia_detalle.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

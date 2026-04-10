@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE ATINDPO_POSTVENTA">
+    <table name="ATINDPO_POSTVENTA" primaryKey="ATINDPO_POSTVENTA_KEY">
+      <column name="EM_SSWOS_NEW" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_M_BRAND_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_SSFI_MODEL_PROD_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_YEAR_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_COLOR_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_C_DOCTYPETARGET_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_TRANSFERPARTS" primaryKey="false" required="false" type="VARCHAR" size="30" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_C_DOCTYPETARGETS_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_CREATEORDER" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_CREATEORDERS" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_C_ORDER_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_TRANSFERPARTSRETURN" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSWOS_LOADCONSOL" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="C_DOCTYPE" name="EM_SSWOS_C_DOCTYPETARGET_ID">
+        <reference local="EM_SSWOS_C_DOCTYPETARGET_ID" foreign="C_DOCTYPE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_DOCTYPE" name="EM_SSWOS_C_DOCTYPETARGETS">
+        <reference local="EM_SSWOS_C_DOCTYPETARGETS_ID" foreign="C_DOCTYPE_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_ORDER" name="EM_SSWOS_C_ORDER_ID">
+        <reference local="EM_SSWOS_C_ORDER_ID" foreign="C_ORDER_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SSWOS_COLOR" name="EM_SSWOS_COLOR">
+        <reference local="EM_SSWOS_COLOR_ID" foreign="SSWOS_COLOR_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="M_BRAND" name="EM_SSWOS_M_BRAND_ID">
+        <reference local="EM_SSWOS_M_BRAND_ID" foreign="M_BRAND_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SSFI_MODEL_PROD" name="EM_SSWOS_SSFI_MODEL_PROD">
+        <reference local="EM_SSWOS_SSFI_MODEL_PROD_ID" foreign="SSFI_MODEL_PROD_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="SSWOS_YEAR" name="EM_SSWOS_YEAR">
+        <reference local="EM_SSWOS_YEAR_ID" foreign="SSWOS_YEAR_ID"/>
+      </foreign-key>
+    </table>
+  </database>

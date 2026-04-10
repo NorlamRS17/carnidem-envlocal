@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSMRP_DELETE_SALESFORECAST_TRG">
+    <trigger name="SSMRP_DELETE_SALESFORECAST_TRG" table="MRP_SALESFORECAST" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[
+/********************************************************************************** 
+ * Copyright (C) 2009 Openbravo S.L.U. 
+ * Licensed under the Openbravo Commercial License version 1.0 
+ * You may obtain a copy of the License at http://www.openbravo.com/legal/obcl.html 
+ **********************************************************************************
+ * Contributor(s):  ______________________________________.
+ **********************************************************************************/
+BEGIN
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+	-- Verifica si existen líneas relacionadas
+	  IF EXISTS (
+	    SELECT 1
+	    FROM mrp_salesforecast
+	    WHERE mrp_salesforecast_id = :OLD.mrp_salesforecast_id
+	  ) THEN
+			RAISE_APPLICATION_ERROR(-20000, '@ssmrp_msgdelete_trg@');
+	  END IF;
+END SSMRP_DELETE_SALESFORECAST_TRG
+]]></body>
+    </trigger>
+  </database>

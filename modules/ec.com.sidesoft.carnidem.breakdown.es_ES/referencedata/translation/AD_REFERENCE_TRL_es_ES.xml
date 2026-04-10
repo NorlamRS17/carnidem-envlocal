@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="3BAEF73E769047A2B3508FAEF8275467" trl="N">
+    <value column="Name" isTrl="N" original="Supplier Delivery Note Selector">Supplier Delivery Note Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7BEFC25709774771B9055E611DDE4B86" trl="N">
+    <value column="Name" isTrl="N" original="AttributeSetInstance Selector">AttributeSetInstance Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original="e.id IN (select attributeSetValue.id from MaterialMgmtShipmentInOutLine where shipmentReceipt.id = @M_Inout_ID@)"/>
+  </row>
+  <row id="A3F625F6F2674D0FB4C74B44B342D217" trl="N">
+    <value column="Name" isTrl="N" original="ecscb_type_breakdown">ecscb_type_breakdown</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E8B8267124DC4EEBA25F7DEFA53F1743" trl="N">
+    <value column="Name" isTrl="N" original="Ecscb_Breakdown">Ecscb_Breakdown</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -201,6 +201,7 @@ public class SendEmailSupervisorAuth extends DalBaseProcess {
 
     // RECUPERA REGISTROS DE NECCESIDADES DE ENVIO
     try {
+      OBContext.setAdminMode(true);
       OBCriteria<EmailServerConfiguration> EmailServerConfiguration2 = OBDal.getInstance()
           .createCriteria(EmailServerConfiguration.class);
       EmailServerConfiguration2

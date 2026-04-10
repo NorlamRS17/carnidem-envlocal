@@ -25,54 +25,89 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.openbravo.database.ConnectionProvider;
-import org.openbravo.service.db.DalConnectionProvider;
 
 import org.openbravo.base.secureApp.HttpSecureAppServlet;
 import org.openbravo.base.secureApp.VariablesSecureApp;
 import org.openbravo.xmlEngine.XmlDocument;
 
-import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
+public class SS_Withholding_DocType extends HttpSecureAppServlet {
+  private static final long serialVersionUID = 1L;
 
-public class SS_Withholding_DocType extends SimpleCallout {
-	private static final long serialVersionUID = 1L;
-	
-	@Override
-	  protected void execute(CalloutInfo info) throws ServletException {
-		String strWithholdingDocType = info.getStringParameter("inpemSswhCDoctypeId", null);
-	    String strDateWithhold = info.getStringParameter("inpemSswhDatewithhold", null);
-	    String strTabId = info.getStringParameter("inpTabId", null);
-	    String strCInvoiceId = info.getStringParameter("inpcInvoiceId", null);
-	    
-	    ConnectionProvider conn = new DalConnectionProvider(true); 
-	    
-	    SSWithholdingDocTypeData[] data = SSWithholdingDocTypeData.select(conn, strWithholdingDocType, strDateWithhold);
-	    String withholdingRef = "";
-	    String authorization = "";
-	    
-	    if (data == null || data.length == 0) {
-	    	withholdingRef = "";
-	        authorization = "";
-	    } else {
-	    	String strWithholdingDoctypetinvoice = SSWithholdingDocTypeData
-	    	          .selectWithholdingDoctypeinvoice(conn, strCInvoiceId);
-	    	
-	    	String strDocumentNo = null;
-	    	
-	    	if (strWithholdingDoctypetinvoice == null || strWithholdingDoctypetinvoice.equals("")
-	    	          || !strWithholdingDoctypetinvoice.equals(strWithholdingDocType)) {
-	    		if ("Y".equals(data[0].isdocnocontrolled)) {
-	    	          strDocumentNo = data[0].currentnext;
-	    	        }
-	    	        withholdingRef = strDocumentNo != null ? "<" + strDocumentNo + ">" : "";
-	    	        authorization = data[0].authorizationno;
-	    	} else {
-	    		withholdingRef = SSWithholdingDocTypeData.selectActualinvoicewithholding(conn, strCInvoiceId);
-	            authorization = data[0].authorizationno;
-	    	}
-	    }
-	    
-	    info.addResult("inpemSswhWithholdingref", withholdingRef);
-	    info.addResult("inpemSswhAuthorization", authorization);
-	}
+  public void init(ServletConfig config) {
+    super.init(config);
+    boolHist = false;
+  }
+
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException,
+      ServletException {
+    VariablesSecureApp vars = new VariablesSecureApp(request);
+    if (vars.commandIn("DEFAULT")) {
+      String strWithholdingDocType = vars.getStringParameter("inpemSswhCDoctypeId");
+      String strDateWithhold = vars.getStringParameter("inpemSswhDatewithhold");
+      String strTabId = vars.getStringParameter("inpTabId");
+      String strCInvoiceId = vars.getStringParameter("inpcInvoiceId");
+
+      try {
+        printPage(response, vars, strWithholdingDocType, strDateWithhold, strTabId, strCInvoiceId);
+      } catch (ServletException ex) {
+        pageErrorCallOut(response);
+      }
+    } else
+      pageError(response);
+  }
+
+  private void printPage(HttpServletResponse response, VariablesSecureApp vars,
+      String strWithholdingDocType, String strDateWithhold, String strTabId, String strCInvoiceId)
+      throws IOException, ServletException {
+    if (log4j.isDebugEnabled())
+      log4j.debug("Output: dataSheet");
+    XmlDocument xmlDocument = xmlEngine.readXmlTemplate(
+        "org/openbravo/erpCommon/ad_callouts/CallOut").createXmlDocument();
+
+    SSWithholdingDocTypeData[] data = SSWithholdingDocTypeData.select(this, strWithholdingDocType,
+        strDateWithhold);
+
+    StringBuffer resultado = new StringBuffer();
+
+    resultado.append("var calloutName='SS_Withholding_DocType';\n\n");
+    resultado.append("var respuesta = new Array(");
+
+    if (data == null || data.length == 0) {
+      resultado.append("new Array(\"inpemSswhWithholdingref\", \"\"),");
+      resultado.append("new Array(\"inpemSswhAuthorization\", \"\")");
+    } else {
+
+      // check if doc type target is different, in this case assing new
+      // documentno otherwise matain the previous one
+      String strWithholdingDoctypetinvoice = SSWithholdingDocTypeData
+          .selectWithholdingDoctypeinvoice(this, strCInvoiceId);
+
+      String strDocumentNo = null;
+      if (strWithholdingDoctypetinvoice == null || strWithholdingDoctypetinvoice.equals("")
+          || !strWithholdingDoctypetinvoice.equals(strWithholdingDocType)) {
+        if (data[0].isdocnocontrolled.equals("Y")) {
+          strDocumentNo = data[0].currentnext;
+        }
+        resultado.append("new Array(\"inpemSswhWithholdingref\", \"<" + strDocumentNo + ">\"),");
+        resultado.append("new Array(\"inpemSswhAuthorization\", \"" + data[0].authorizationno
+            + "\")");
+      } else if (strWithholdingDoctypetinvoice != null && !strWithholdingDoctypetinvoice.equals("")
+          && strWithholdingDoctypetinvoice.equals(strWithholdingDocType)) {
+        resultado
+            .append("new Array(\"inpemSswhWithholdingref\", \""
+                + SSWithholdingDocTypeData.selectActualinvoicewithholding(this, strCInvoiceId)
+                + "\"),");
+        resultado.append("new Array(\"inpemSswhAuthorization\", \"" + data[0].authorizationno
+            + "\")");
+      }
+    }
+    resultado.append(");");
+
+    xmlDocument.setParameter("array", resultado.toString());
+    xmlDocument.setParameter("frameName", "appFrame");
+    response.setContentType("text/html; charset=UTF-8");
+    PrintWriter out = response.getWriter();
+    out.println(xmlDocument.print());
+    out.close();
+  }
 }

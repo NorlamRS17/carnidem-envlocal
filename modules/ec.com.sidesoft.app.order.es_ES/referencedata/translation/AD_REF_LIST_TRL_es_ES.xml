@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="05D7929F37214E70A3AEC4C7B41BF351" trl="Y">
+    <value column="Name" isTrl="Y" original="Payment In">Cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="40951102052149338990EC43103EBB1F" trl="Y">
+    <value column="Name" isTrl="Y" original="Sales Order">Pedido de venta</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

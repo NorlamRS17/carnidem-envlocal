@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+  <database name="VIEW OBRECTX_GL_JOURNAL_V">
+    <view name="OBRECTX_GL_JOURNAL_V"><![CDATA[SELECT gl_journal.gl_journal_id AS obrectx_gl_journal_v_id, gl_journal.ad_client_id, gl_journal.ad_org_id, gl_journal.created, gl_journal.createdby, gl_journal.updated, gl_journal.updatedby, gl_journal.isactive, gl_journal.gl_journalbatch_id, gl_journal.em_obrectx_gl_journal_id AS template_journal_id, gl_journal.documentno, gl_journal.datedoc, gl_journal.description, gl_journal.docstatus FROM gl_journal WHERE gl_journal.em_obrectx_gl_journal_id IS NOT NULL]]></view>
+  </database>

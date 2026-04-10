@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSWOS_VALIDATE">
+    <function name="SSWOS_VALIDATE" type="NULL">
+      <parameter name="vrecordid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vLoop RECORD;
+BEGIN
+	FOR vLoop IN (
+		SELECT con.*, pv.docstatus
+		FROM indsup_consol con
+		JOIN atindpo_postventa pv ON pv.documentno=con.orden
+		JOIN atindpo_postventa pvh ON pvh.atindpo_postventa_id =con.atindpo_postventa_id
+		WHERE con.atindpo_postventa_id=vRecordID AND pv.ad_org_id=con.ad_org_id
+		AND pv.c_bpartner_id=pvh.c_bpartner_id
+	) LOOP
+		IF vLoop.docstatus != 'ET' THEN
+			RAISE_APPLICATION_ERROR(-20000, 'La order '||vLoop.orden||' se encuentra en un estado diferente a "Entregado"');
+		END IF;
+	END LOOP;
+END SSWOS_VALIDATE
+]]></body>
+    </function>
+  </database>

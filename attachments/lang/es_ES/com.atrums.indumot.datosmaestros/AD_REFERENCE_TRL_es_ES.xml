@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="1C263963DC554D72A07CAADE08EEF282" trl="N">
+    <value column="Name" isTrl="N" original="Zona">Zona</value>
+    <value column="Description" isTrl="N" original="Zona">Zona</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="28E9AADA195C48C3BDBC0F6D773C17BF" trl="N">
+    <value column="Name" isTrl="N" original="Marcas Productos Indumot">Marcas Productos Indumot</value>
+    <value column="Description" isTrl="N" original="Marcas Productos Indumot">Marcas Productos Indumot</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="32A652657121487DA31869CA3108EF9D" trl="N">
+    <value column="Name" isTrl="N" original="C_Cities Ecuador">C_Cities Ecuador</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="35C67FD2217D4410BC251AFA294D765E" trl="N">
+    <value column="Name" isTrl="N" original="C_Countries">C_Countries</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="48A6947DE2D7444FBFB940AF7F3967B2" trl="N">
+    <value column="Name" isTrl="N" original="Lista Niveles Educación">Lista Niveles Educación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="61AE9BAAE4624000ACCA7070C5C0C095" trl="N">
+    <value column="Name" isTrl="N" original="Listado Estado Civil - Solicitud de Crédito">Listado Estado Civil - Solicitud de Crédito</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8D09DFA6DC3C4F62A9CB1C6FCD121D97" trl="N">
+    <value column="Name" isTrl="N" original="Lista Tipo Persona">Lista Tipo Persona</value>
+    <value column="Description" isTrl="N" original="Lista de los tipos de peronas">Lista de los tipos de peronas</value>
+    <value column="Help" isTrl="N" original="Lista que contiene Persona Natural o Jurídica">Lista que contiene Persona Natural o Jurídica</value>
+  </row>
+  <row id="989A466057E34603BE3723D58842E634" trl="N">
+    <value column="Name" isTrl="N" original="Lista Viviendas">Lista Viviendas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D55C6F58753D4231944C2F40EDA9C345" trl="N">
+    <value column="Name" isTrl="N" original="División de Negocio">División de Negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D7BB1C94F5884571A1F92DD502DBD922" trl="N">
+    <value column="Name" isTrl="N" original="Listado de Zonas Mayoreo">Listado de Zonas Mayoreo</value>
+    <value column="Description" isTrl="N" original="Listado de Zonas Mayoreo">Listado de Zonas Mayoreo</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

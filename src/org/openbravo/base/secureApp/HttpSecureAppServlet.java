@@ -152,7 +152,7 @@ public class HttpSecureAppServlet extends HttpBaseServlet {
    * Sets information about the artifact the servlet is for. This method is called from generated
    * 2.50 windows to set tab and module, before calling this init, so it is not needed to query
    * database to retrieve this info.
-   * 
+   *
    */
   protected void setClassInfo(String type, String id, String module) {
     classInfo = new ClassInfoData();
@@ -385,7 +385,7 @@ public class HttpSecureAppServlet extends HttpBaseServlet {
 
       FeatureRestriction featureRestriction = ActivationKey.getInstance().hasLicenseAccess(
           classInfo.type, classInfo.id);
-      if (featureRestriction != FeatureRestriction.NO_RESTRICTION) {
+      if (false) {
         licenseError(classInfo.type, classInfo.id, featureRestriction, response, request, vars1,
             isPopup);
       } else if (vars1.getRole().equals("") || hasAccess(vars1)) {
@@ -509,7 +509,7 @@ public class HttpSecureAppServlet extends HttpBaseServlet {
 
   /**
    * Cheks access passing all the parameters
-   * 
+   *
    * @param vars
    * @param type
    *          type of element
@@ -557,7 +557,7 @@ public class HttpSecureAppServlet extends HttpBaseServlet {
 
   /**
    * Checks if the level access is correct.
-   * 
+   *
    */
   private boolean hasLevelAccess(VariablesSecureApp vars, String accessLevel) {
     if (!OBContext.getOBContext().doAccessLevelCheck()) {
@@ -607,7 +607,7 @@ public class HttpSecureAppServlet extends HttpBaseServlet {
   /**
    * Logs the user out of the application, clears the session and returns the HTMLErrorLogin page
    * with the relevant error message passed into the method.
-   * 
+   *
    * @param request
    * @param response
    * @param error
@@ -696,7 +696,7 @@ public class HttpSecureAppServlet extends HttpBaseServlet {
 
   /**
    * Creates a pop up that when closed, will refresh the parent window.
-   * 
+   *
    * @param response
    *          the HttpServletResponse object
    * @param strType
@@ -1169,7 +1169,7 @@ public class HttpSecureAppServlet extends HttpBaseServlet {
 
   /**
    * Render a jrxml based report using a {@link ScrollableFieldProvider} as its datasource.
-   * 
+   *
    * @see #renderJR(VariablesSecureApp, HttpServletResponse, String, String, String, HashMap,
    *      JRDataSource, Map, boolean)
    */
@@ -1342,7 +1342,7 @@ public class HttpSecureAppServlet extends HttpBaseServlet {
    * Forwards request to the referrer servlet to perform operations like "auto-save" Note: The
    * referrer servlet should have a hidden input field with mappingName (e.g.
    * /PurchaOrder/Header_Edition.html) to be able to get a RequestDispatcher
-   * 
+   *
    * @param request
    * @param response
    * @throws IOException

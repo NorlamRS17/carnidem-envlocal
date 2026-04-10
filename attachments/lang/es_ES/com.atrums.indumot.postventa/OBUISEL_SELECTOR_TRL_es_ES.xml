@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="562C2F77DCBD496B9450A92501E754D2" trl="N">
+    <value column="Name" isTrl="N" original="Busqueda OS">Busqueda OS</value>
+    <value column="Description" isTrl="N" original="Busqueda OS">Busqueda OS</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E412264DF23B46359962568F854EFBFE" trl="N">
+    <value column="Name" isTrl="N" original="Producto Reemplazo">Producto Reemplazo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

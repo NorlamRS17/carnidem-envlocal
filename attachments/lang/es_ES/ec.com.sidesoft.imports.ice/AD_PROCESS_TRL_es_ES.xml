@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="A6D78DC97B4E437D8693D96FC65690C1" trl="Y">
+    <value column="Name" isTrl="Y" original="Load ICE">Cargar ICE</value>
+    <value column="Description" isTrl="Y" original="Load ICE">Cargar ICE</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CC2BC57DAC474C20AEA147A5486FBBFB" trl="N">
+    <value column="Name" isTrl="N" original="SSIPICE Change Status">SSIPICE Change Status</value>
+    <value column="Description" isTrl="N" original="SSIPICE Change Status">SSIPICE Change Status</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

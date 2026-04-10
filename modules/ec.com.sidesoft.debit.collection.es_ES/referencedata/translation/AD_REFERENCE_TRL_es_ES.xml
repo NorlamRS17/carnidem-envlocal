@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="124DD40323ED4575B21C36D0152A4F9C" trl="N">
+    <value column="Name" isTrl="N" original="Type Load">Type Load</value>
+    <value column="Description" isTrl="N" original="Type Load">Type Load</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A8BB968C08AD474EA91F6A93C7574AD0" trl="N">
+    <value column="Name" isTrl="Y" original="Condition List">Condición archivo banco</value>
+    <value column="Description" isTrl="N" original="Condition List">Condition List</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B732DD924E2444B382BD340D67774FDE" trl="N">
+    <value column="Name" isTrl="N" original="Medium Load">Medium Load</value>
+    <value column="Description" isTrl="N" original="Medium Load">Medium Load</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C9CEF5ADBF4441B0BF2B1A52CD6C4DF6" trl="N">
+    <value column="Name" isTrl="N" original="Status Debit Collection">Status Debit Collection</value>
+    <value column="Description" isTrl="N" original="Status Debit Collection">Status Debit Collection</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FCF9B793156F44F8ADA2DA75BD4F4C35" trl="N">
+    <value column="Name" isTrl="N" original="Financial Account Type Bank Selector">Financial Account Type Bank Selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

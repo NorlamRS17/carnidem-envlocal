@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="SummaryReportImport" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="STARTDATE" class="java.util.Date"/>
+	<parameter name="ENDDATE" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[select ord.dateordered, cbp.name as proveedor, cmp.name as import, ordl.orderfob, imp.arancel
+
+from c_order ord
+
+left join c_bpartner cbp on  ord.c_bpartner_id  = cbp.c_bpartner_id
+
+left join c_campaign cmp on cmp.c_campaign_id=ord.c_campaign_id
+
+left join (select c_order_id,sum(priceactual*qtyordered) as orderfob from c_orderline  group by c_order_id) ordl on ordl.c_order_id=ord.c_order_id
+
+left join (select c_order_id,sum(amountnet) as arancel from ssip_costimport  group by c_order_id) imp on imp.c_order_id=ord.c_order_id
+
+where ord.em_ssip_isimports='Y'
+
+and ord.dateordered>=$P{STARTDATE}
+
+and ord.dateordered<=$P{ENDDATE}]]>
+	</queryString>
+	<field name="dateordered" class="java.sql.Timestamp"/>
+	<field name="proveedor" class="java.lang.String"/>
+	<field name="import" class="java.lang.String"/>
+	<field name="orderfob" class="java.math.BigDecimal"/>
+	<field name="arancel" class="java.math.BigDecimal"/>
+	<variable name="CIF" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{orderfob}.add( $F{arancel} )]]></variableExpression>
+	</variable>
+	<variable name="FOB" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{orderfob}]]></variableExpression>
+	</variable>
+	<variable name="ARANC" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{arancel}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement x="222" y="13" width="185" height="20"/>
+				<textElement/>
+				<text><![CDATA[RESUMEN DE IMPORTACIONES ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="78" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="12" width="40" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="47" width="40" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="56" y="12" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{STARTDATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="56" y="47" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{ENDDATE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement x="7" y="13" width="114" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Creación]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-4" y="30" width="572" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="151" y="13" width="67" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proveedor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="256" y="13" width="77" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="13" width="42" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FOB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="466" y="13" width="53" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Arancel]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="535" y="13" width="27" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CIF]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="10" y="7" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{dateordered}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="156" y="7" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{proveedor}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="260" y="7" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{import}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement x="408" y="8" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{orderfob}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement x="472" y="7" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{arancel}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement x="539" y="8" width="33" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{orderfob}.add( $F{arancel} )]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="5" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="142" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="3" width="570" height="1"/>
+			</line>
+			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement x="533" y="4" width="39" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{CIF}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0.00;-###0.00" isBlankWhenNull="true">
+				<reportElement x="472" y="4" width="51" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{ARANC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="407" y="4" width="42" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{FOB}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

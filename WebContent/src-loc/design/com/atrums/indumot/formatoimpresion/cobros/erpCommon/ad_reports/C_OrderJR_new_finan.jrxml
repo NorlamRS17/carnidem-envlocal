@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C_OrderJR_new_finan" pageWidth="450" pageHeight="80" columnWidth="450" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT 1 AS "ISBOM",
+        COALESCE(M_PRODUCT.NAME ,
+        C_ORDERLINE.DESCRIPTION) AS "PRODUCT_NAME",
+        C_ORDERLINE.QTYORDERED AS "QUANTITY",
+        TO_CHAR(C_UOM.NAME) AS "UOM",  C_ORDERLINE.em_atvef_entrada as "ENTRADA",
+        C_ORDERLINE.em_atvef_cuota as "NCUOTA",
+        CASE WHEN 'N' = 'N' THEN em_atvef_valorcuota ELSE C_ORDERLINE.GROSS_UNIT_PRICE END as "VCUOTA",
+        CASE WHEN 'N' = 'N' THEN C_ORDERLINE.LINENETAMT ELSE C_ORDERLINE.LINE_GROSS_AMOUNT END as "PRECIOFINAL-CONIVA",
+        pricelist AS "PRECIOTARIFA-CONIVA",
+        (pricelist + pricelist * C_ORDERLINE.em_atvef_cuota*(select recargo from atvef_factor where m_product_category_id=(select m_product_category_id from m_product where m_product_id=c_orderline.m_product_id))/100)/1.12 as "PVP-SINIVA",
+        (pricelist + pricelist * C_ORDERLINE.em_atvef_cuota*(select recargo from atvef_factor where m_product_category_id=(select m_product_category_id from m_product where m_product_id=c_orderline.m_product_id))/100)/1.12*0.12 as "IVA-PVP",
+        (pricelist + pricelist * C_ORDERLINE.em_atvef_cuota*(select recargo from atvef_factor where m_product_category_id=(select m_product_category_id from m_product where m_product_id=c_orderline.m_product_id))/100) as "PVP"
+        FROM C_ORDERLINE left join M_PRODUCT on C_ORDERLINE.M_PRODUCT_ID = M_PRODUCT.M_PRODUCT_ID
+                         left join C_UOM on C_ORDERLINE.C_UOM_ID = C_UOM.C_UOM_ID,
+                         C_ORDER
+        WHERE C_ORDERLINE.C_ORDER_ID = $P{DOCUMENT_ID}
+        AND C_ORDERLINE.C_ORDER_ID=C_ORDER.C_ORDER_ID
+        AND C_ORDERLINE.em_atvef_cuota >0]]>
+	</queryString>
+	<field name="ISBOM" class="java.lang.Integer"/>
+	<field name="PRODUCT_NAME" class="java.lang.String"/>
+	<field name="QUANTITY" class="java.math.BigDecimal"/>
+	<field name="UOM" class="java.lang.String"/>
+	<field name="ENTRADA" class="java.math.BigDecimal"/>
+	<field name="NCUOTA" class="java.math.BigDecimal"/>
+	<field name="VCUOTA" class="java.math.BigDecimal"/>
+	<field name="PRECIOFINAL-CONIVA" class="java.math.BigDecimal"/>
+	<field name="PRECIOTARIFA-CONIVA" class="java.math.BigDecimal"/>
+	<field name="PVP-SINIVA" class="java.math.BigDecimal"/>
+	<field name="IVA-PVP" class="java.math.BigDecimal"/>
+	<field name="PVP" class="java.math.BigDecimal"/>
+	<variable name="VALOR_TOTAL" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($F{ENTRADA}.add($F{NCUOTA}.multiply( $F{VCUOTA})))]]></variableExpression>
+	</variable>
+	<variable name="VALOR_FINANC" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[($F{ENTRADA}.add($F{NCUOTA}.multiply( $F{VCUOTA}))).subtract($F{PVP})]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="73" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="73" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio sin IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="169" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="375" y="0" width="74" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="273" y="0" width="102" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Financiamiento]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="3" width="71" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{PRODUCT_NAME}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="169" y="3" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{IVA-PVP}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="73" y="3" width="96" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{PVP-SINIVA}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="270" y="3" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALOR_FINANC}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00" isBlankWhenNull="true">
+				<reportElement x="375" y="3" width="74" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{VALOR_TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

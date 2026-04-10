@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE GL_JOURNAL">
+    <table name="GL_JOURNAL" primaryKey="GL_JOURNAL_KEY">
+      <column name="EM_OBRECTX_RECURRING" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_OBRECTX_RULE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_OBRECTX_GL_JOURNAL_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="GL_JOURNAL" name="EM_OBRECTX_GL_JOURNAL_ID">
+        <reference local="EM_OBRECTX_GL_JOURNAL_ID" foreign="GL_JOURNAL_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="OBRECTX_RULE" name="EM_OBRECTX_RULE_ID">
+        <reference local="EM_OBRECTX_RULE_ID" foreign="OBRECTX_RULE_ID"/>
+      </foreign-key>
+      <check name="EM_OBRECTX_RECURRING_CHK"><![CDATA[EM_OBRECTX_RECURRING IN ('Y', 'N')]]></check>
+    </table>
+  </database>

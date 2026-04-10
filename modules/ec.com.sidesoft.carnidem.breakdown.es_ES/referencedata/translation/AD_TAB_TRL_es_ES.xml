@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="04B77C5325E9462C8AC9F7301E1D4B7C" trl="Y">
+    <value column="Name" isTrl="Y" original="Process code">Código de proceso</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="22474E6760B9421F86E14DD5391F4162" trl="Y">
+    <value column="Name" isTrl="Y" original="Breakdown">Despiece</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="34A5F1C1515145C6B2F4CEFF4FA3A339" trl="Y">
+    <value column="Name" isTrl="Y" original="BreakdownLine">Lineas</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3C5598532AA144B8B33934984D7A6730" trl="Y">
+    <value column="Name" isTrl="Y" original="Line Type Breakdown Line">Lineas</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8C96B4773AF04A879460C9AF2D9642AC" trl="Y">
+    <value column="Name" isTrl="Y" original="Header Type Breakdown">Tipo Despiece</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

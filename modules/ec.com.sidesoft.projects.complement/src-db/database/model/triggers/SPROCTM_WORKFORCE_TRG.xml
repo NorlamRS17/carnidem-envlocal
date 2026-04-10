@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SPROCTM_WORKFORCE_TRG">
+    <trigger name="SPROCTM_WORKFORCE_TRG" table="SPROCTM_TASK_WORKFORCE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[    
+    v_totalWithSimilarCategS NUMBER;
+    v_salarycategId VARCHAR2(32);
+    
+BEGIN
+ 
+   IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+
+    IF  (INSERTING OR UPDATING ) THEN
+        IF  (INSERTING ) THEN
+            v_salarycategId = :NEW.C_Salary_Category_ID;
+        END IF;
+
+
+        IF  (UPDATING ) THEN
+            IF(COALESCE(:OLD.C_Salary_Category_ID, '')  != :NEW.C_Salary_Category_ID ) THEN
+                v_salarycategId = :NEW.C_Salary_Category_ID;
+            END IF;
+        END IF;
+
+        IF(v_salarycategId is not null) THEN
+            -- Validations 
+            -- Verificar si ya existe esa categoria salarial 
+            -- en las lineas de la Mano de Obra con respecto a esa tarea.
+            SELECT count(*) as totalWithSimilarCategS 
+            INTO  v_totalWithSimilarCategS
+            FROM sproctm_task_workforce 
+            where c_projecttask_id =  :NEW.c_projecttask_id
+            AND C_Salary_Category_ID = v_salarycategId;
+            
+            IF (v_totalWithSimilarCategS >= 1) THEN
+                RAISE_APPLICATION_ERROR(-20000, '@sproctm_WF_OnlyCategory@');
+            END IF;
+            
+        END IF;
+
+    END IF;
+
+    END SPROCTM_WORKFORCE_TRG
+]]></body>
+    </trigger>
+  </database>

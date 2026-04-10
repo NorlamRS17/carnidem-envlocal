@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="84858154D43E40DBA3894406A160B074" trl="N">
+    <value column="Name" isTrl="N" original="Receipt Type">Receipt Type</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="989C3F72A65D47F4A4C37F92E3004A31" trl="N">
+    <value column="Name" isTrl="N" original="Retail Document Sequence">Retail Document Sequence</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

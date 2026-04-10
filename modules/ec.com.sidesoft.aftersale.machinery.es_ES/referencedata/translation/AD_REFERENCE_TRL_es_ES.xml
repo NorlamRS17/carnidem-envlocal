@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="065A418F5B484A248678770D9A0BE3F1" trl="N">
+    <value column="Name" isTrl="N" original="Satmac_Origin">Satmac_Origin</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="1ADC6C96CCEF4A50A373B6ABE8B58418" trl="N">
+    <value column="Name" isTrl="N" original="SalesInvoices">SalesInvoices</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6265836DB3CC4A71BD50A20346D058DD" trl="N">
+    <value column="Name" isTrl="N" original="Sswos_Year">Sswos_Year</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7E861BF9129B43528537EA8ACFFC367D" trl="N">
+    <value column="Name" isTrl="N" original="Brand">Brand</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="9843D2C5EA3B45F28F7D84EBAFCFA1CE" trl="N">
+    <value column="Name" isTrl="N" original="SalesInvoiceLines">SalesInvoiceLines</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A1CC02123CF64D6E8FA89B74C359467C" trl="N">
+    <value column="Name" isTrl="N" original="satmac_machine_type">satmac_machine_type</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AB3AB9B9022742F3945061C65D4599D5" trl="N">
+    <value column="Name" isTrl="N" original="satmac_contract">satmac_contract</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C22B15CDE8DA463B97095014097BFDED" trl="N">
+    <value column="Name" isTrl="N" original="Type_Contract">Type_Contract</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CD6C769D6E9541609E5DD23822AD69FA" trl="N">
+    <value column="Name" isTrl="N" original="Sswos_Vehicle">Sswos_Vehicle</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DD640383EECA4239A52FE89C3BE1B31B" trl="N">
+    <value column="Name" isTrl="N" original="Ssfi_Model_Prod">Ssfi_Model_Prod</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E61A067B435C4A058994DA7AB4074AB4" trl="N">
+    <value column="Name" isTrl="N" original="DocStatus Satmac_Contract">DocStatus Satmac_Contract</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

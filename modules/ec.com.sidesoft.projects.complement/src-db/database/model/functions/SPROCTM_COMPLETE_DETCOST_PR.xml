@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SPROCTM_COMPLETE_DETCOST_PR">
+    <function name="SPROCTM_COMPLETE_DETCOST_PR" type="VARCHAR">
+      <parameter name="vid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="vuserid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="vclientid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_DETAIL_ID VARCHAR2(32) := vid;   
+v_RECORD_ID VARCHAR2(32);   
+    v_AD_User_ID VARCHAR2(32) := vuserid;
+    v_AD_Client_ID VARCHAR2(32) :=vclientid;
+    v_actual_state VARCHAR2(60);
+    v_complete  VARCHAR2(60);  
+    v_sproctm_task_workforce_id VARCHAR2(32);
+    v_sproctm_task_cif_id VARCHAR2(32);
+    v_sproctm_task_machine_id VARCHAR2(32);
+    v_hours NUMBER;
+    v_Total_Cost_detail NUMBER;
+    v_cost NUMBER;
+    v_hours_co NUMBER;
+    v_cost_co NUMBER;
+    v_total_cost_co NUMBER;
+    TYPE RECORD IS REF CURSOR;
+	Cur_tprod RECORD;
+    vLines NUMBER;
+BEGIN
+	BEGIN
+
+        SELECT complete, hours, cost,  Total_Cost, record_id
+        into v_complete, v_hours ,v_cost,  v_Total_Cost_detail, v_RECORD_ID
+        from sproctm_detail_cost
+        where sproctm_detail_cost_id = v_DETAIL_ID;
+
+        SELECT sproctm_task_workforce_id 
+        INTO v_sproctm_task_workforce_id
+        FROM sproctm_task_workforce
+        WHERE sproctm_task_workforce_ID = v_RECORD_ID;
+
+        SELECT sproctm_task_cif_id 
+        INTO v_sproctm_task_cif_id  
+        FROM sproctm_task_cif
+        WHERE sproctm_task_cif_ID = v_RECORD_ID;
+
+        SELECT 	sproctm_task_machine_id 
+        INTO v_sproctm_task_machine_id  
+        FROM sproctm_task_machine
+        WHERE sproctm_task_machine_ID = v_RECORD_ID;
+
+        SELECT COALESCE(SUM(hours),0) , COALESCE(SUM(cost), 0), COALESCE(SUM(total_cost), 0), COUNT(sproctm_detail_cost)
+        into v_hours_co, v_cost_co, v_total_cost_co, vLines
+        from sproctm_detail_cost where record_id = v_RECORD_ID
+        and status = 'CO' and complete = 'CO';
+        
+        IF(v_complete = 'DR') THEN
+                 IF COALESCE(vLines,0) > 1 THEN
+                    vLines := vLines + 1;
+                ELSE
+                    vLines := 1;
+                END IF;
+                -- Afectar a MO - CIF - MAQ en cantidad ejecutada - costo total ejecutado
+                -- Verificar de que tabla llega el record_id ya q es una tabla compartida
+                IF(v_sproctm_task_workforce_id is not null) THEN 
+                                                                                             
+                    UPDATE sproctm_task_workforce 
+                    SET QTY_Executed = v_hours_co + v_hours
+                    , Total_Cost = v_total_cost_co + v_Total_Cost_detail
+                    WHERE sproctm_task_workforce_ID = v_RECORD_ID;
+                END IF;
+
+                IF(v_sproctm_task_cif_id is not null) THEN 
+                    UPDATE sproctm_task_cif 
+                    SET Uomcost_Executed = v_hours_co + v_hours
+                    , Unit_Cost_Executed = (v_cost_co + v_cost) / vLines
+                    , Total_Cost_Executed = v_total_cost_co + v_Total_Cost_detail
+                    WHERE sproctm_task_cif_id = v_RECORD_ID;
+                END IF;
+
+                IF(v_sproctm_task_machine_id is not null) THEN 
+                    UPDATE sproctm_task_machine 
+                    SET Units_Cost_Executed = v_hours_co + v_hours
+                    , Cost_Unit_Executed = (v_cost_co + v_cost) / vLines
+                    , Total_Cost_Executed =  v_total_cost_co + v_Total_Cost_detail
+                    WHERE sproctm_task_machine_id = v_RECORD_ID;
+                END IF;
+
+                UPDATE sproctm_detail_cost set complete = 'CO'  
+                , status='CO', updated = now() , updatedby = v_AD_User_ID
+                where sproctm_detail_cost_id = v_DETAIL_ID;
+        ELSE
+            IF COALESCE(vLines,0) > 1 THEN
+                vLines := vLines - 1;
+            ELSE
+                vLines := 1;
+            END IF;
+            -- Afectar a MO - CIF - MAQ en cantidad ejecutada - costo total ejecutado
+            -- Verificar de que tabla llega el record_id ya q es una tabla compartida
+            IF(v_sproctm_task_workforce_id is not null) THEN 
+
+                UPDATE sproctm_task_workforce 
+                SET QTY_Executed = v_hours_co - v_hours
+                , Total_Cost = v_total_cost_co - v_Total_Cost_detail
+                WHERE sproctm_task_workforce_ID = v_RECORD_ID;
+            END IF;
+
+            IF(v_sproctm_task_cif_id is not null) THEN 
+                UPDATE sproctm_task_cif 
+                SET Uomcost_Executed = v_hours_co - v_hours
+                , Unit_Cost_Executed = (v_cost_co - v_cost) / vLines
+                , Total_Cost_Executed = v_total_cost_co - v_Total_Cost_detail
+                WHERE sproctm_task_cif_id = v_RECORD_ID;
+            END IF;
+
+            IF(v_sproctm_task_machine_id is not null) THEN 
+                UPDATE sproctm_task_machine 
+                SET Units_Cost_Executed = v_hours_co - v_hours
+                , Cost_Unit_Executed = (v_cost_co - v_cost) / vLines
+                , Total_Cost_Executed =  v_total_cost_co - v_Total_Cost_detail
+                WHERE sproctm_task_machine_id = v_RECORD_ID;
+            END IF;
+
+            UPDATE sproctm_detail_cost set complete = 'DR'  
+            , status='DR', updated = now() , updatedby = v_AD_User_ID
+            where sproctm_detail_cost_id = v_DETAIL_ID;
+        END IF;
+        -- SET MSG
+        SELECT complete into v_complete from sproctm_detail_cost
+        where sproctm_detail_cost_id = v_DETAIL_ID;
+        
+        IF(v_complete = 'DR')THEN 
+            v_actual_state = 'Borrador';
+        ELSE
+            v_actual_state = 'Completado';
+        END IF;
+
+		RETURN 'Cambio estado del documento a: ' || v_actual_state;
+	END;
+	EXCEPTION WHEN OTHERS THEN
+	RETURN SQLERRM;
+END SPROCTM_COMPLETE_DETCOST_PR
+]]></body>
+    </function>
+  </database>

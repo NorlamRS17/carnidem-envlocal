@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSIMACC_CAPMAIGN_TRG">
+    <trigger name="SSIMACC_CAPMAIGN_TRG" table="M_INOUT" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+    /*************************************************************************
+    * The contents of this file are subject to the Openbravo  Public  License
+    * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+    * Version 1.1  with a permitted attribution clause; you may not  use this
+    * file except in compliance with the License. You  may  obtain  a copy of
+    * the License at http://www.openbravo.com/legal/license.html
+    * Software distributed under the License  is  distributed  on  an "AS IS"
+    * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+    * License for the specific  language  governing  rights  and  limitations
+    * under the License.
+    * The Original Code is Openbravo ERP.
+    * The Initial Developer of the Original Code is Openbravo SLU
+    * All portions are Copyright (C) 2001-2012 Openbravo SLU
+    * All Rights Reserved.
+    * Contributor(s):  Maykel González <mgonzalez@sidesoft.com.ec>.
+    ************************************************************************/
+
+  Cur_RepeatedLines RECORD;
+  Cur_RepeatedLinesEco RECORD;
+  v_Message varchar2(2000):='';
+  V_HaveRepeatedLines BOOLEAN:=FALSE;
+  V_ContinueBlock BOOLEAN:=FALSE;
+  v_CampaignID  varchar2(32):='';
+  v_OrderID varchar2(32):='';
+  
+BEGIN
+
+  IF AD_isTriggerEnabled()='N' THEN IF DELETING THEN RETURN OLD; ELSE RETURN NEW; END IF;
+  END IF;
+
+  IF (INSERTING OR  UPDATING)THEN
+    IF(:new.Docstatus='DR' and :new.issotrx='N') THEN
+	
+		v_OrderID := coalesce(:new.c_order_id,'ND');
+		IF (v_OrderID<>'ND') THEN
+		
+			SELECT COALESCE((SELECT C_CAMPAIGN_ID
+			FROM c_order 
+			WHERE c_order_id=v_OrderID),'ND')
+			INTO v_CampaignID
+			FROM DUAL;
+			
+			IF (v_CampaignID<>'ND') THEN
+				:new.c_campaign_id:=v_CampaignID;
+			ELSE
+				:new.c_campaign_id:=null;
+			END IF;
+		END IF;
+    END IF;
+  END IF;
+
+  END SSIMACC_CAPMAIGN_TRG
+]]></body>
+    </trigger>
+  </database>

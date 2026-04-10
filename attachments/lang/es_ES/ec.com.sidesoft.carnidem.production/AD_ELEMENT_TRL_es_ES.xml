@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="054C15A3816947898500E4A0DDC74B18" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Orderline_ID">Pedido de compra</value>
+    <value column="PrintName" isTrl="Y" original="Purchase order">Pedido de compra</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="180194B39C864B9AA69B58D8CF426EF3" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Bpartner_ID">Tercero</value>
+    <value column="PrintName" isTrl="Y" original="EM_Crprod_Bpartner_ID">Tercero</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2BE6F5D009C04D4FB1869B70D868F687" trl="Y">
+    <value column="Name" isTrl="Y" original="cr_m_attributesetinstance_id">Lote</value>
+    <value column="PrintName" isTrl="Y" original="cr_m_attributesetinstance_id">Lote</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3C1BBF3288C04C589DD1486AE65A3726" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_crprod_Quality_Control_Rpt">Reporte de Seguridad y Calidad en Producto Terminado</value>
+    <value column="PrintName" isTrl="Y" original="Safety and Quality Rpt Finished Product">Reporte de Seguridad y Calidad en Producto Terminado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="3C2A937A0C9B44F2A241750A7FFF9258" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Description">Descripción</value>
+    <value column="PrintName" isTrl="Y" original="EM_Crprod_Description">Descripción</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="458FC7229537414C8384C7C337C7502B" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Unitprice">Precio Unitario</value>
+    <value column="PrintName" isTrl="Y" original="Unitprice">Precio Unitario</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4EB9FA0581B448E89AC12BD1580F876A" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Status_ID">Estado Análisis</value>
+    <value column="PrintName" isTrl="Y" original="Status Analysis">Estado Análisis</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="51A6FFB5B8F445E7836EC07F671FDE47" trl="Y">
+    <value column="Name" isTrl="Y" original="em_crprod_MovemenNoGen">No generar movimiento</value>
+    <value column="PrintName" isTrl="Y" original="Movement No Generate">No generar movimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="51C4E175C8684AAB996B912910C53DE0" trl="Y">
+    <value column="Name" isTrl="Y" original="em_crprod_MovemenNoClose">No cerrar movimiento</value>
+    <value column="PrintName" isTrl="Y" original="Movement No Close">No cerrar movimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5768E7F802584F94937BCDFE6A653C86" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Vo">VO</value>
+    <value column="PrintName" isTrl="N" original="VO">VO</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6C56152B512644AF8FB7717DCEF9BE69" trl="Y">
+    <value column="Name" isTrl="Y" original="em_crprod_paramStatus">Estado</value>
+    <value column="PrintName" isTrl="Y" original="Status">Estado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="722A366A2E1847CB9F1735F11305D62E" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Movement_ID">Movimiento entre almacenes</value>
+    <value column="PrintName" isTrl="Y" original="Movement between warehouses">Movimiento entre almacenes</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7CC7A65E7B034AF49987E871A7380439" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Productact">Reporte Mermas</value>
+    <value column="PrintName" isTrl="Y" original="EM_Crprod_Productact">Reporte Mermas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="82EC5D1176C54768BB3B3203305A5C1B" trl="Y">
+    <value column="Name" isTrl="Y" original="em_crprod_Code">Código</value>
+    <value column="PrintName" isTrl="Y" original="Code">Código</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B254319D0E3946D18D7892787ACF08FA" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Prodplan_ID">Parte de frabricación</value>
+    <value column="PrintName" isTrl="Y" original="EM_Crprod_Prodplan_ID">Parte de frabricación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BB54E7A6809B4676922F7036D4F87896" trl="N">
+    <value column="Name" isTrl="N" original="Crprod_Dimension_ID">Crprod_Dimension_ID</value>
+    <value column="PrintName" isTrl="N" original="Crprod_Dimension_ID">Crprod_Dimension_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E6BBF32D2BE44004AB7AF68FD2AB9643" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Cutout">Recorte</value>
+    <value column="PrintName" isTrl="Y" original="EM_Crprod_Cutout">Recorte</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EB729B0686F84DFD8F3448E7C9687F71" trl="Y">
+    <value column="Name" isTrl="Y" original="cr_m_product_id">Production Terminado</value>
+    <value column="PrintName" isTrl="Y" original="cr_m_product_id">Producto Terminado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EFFD44ACC1D7438E96E182DF6DC94A72" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Label">Etiqueta</value>
+    <value column="PrintName" isTrl="Y" original="EM_Crprod_Label">Etiqueta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F5AD1C7770334341A90CA8222D6CDAC1" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Safetyqualityrpt">Reporte de Seguridad y Calidad</value>
+    <value column="PrintName" isTrl="Y" original="Safety and Quality Report">Reporte de Seguridad y Calidad</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FE44CDBDCDE84F4782AF02C61D30ACC7" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Crprod_Completed">Completar</value>
+    <value column="PrintName" isTrl="Y" original="Completed">Completar</value>
+    <value column="Description" isTrl="Y" original="CRPRODChangeToComplete">Completar</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

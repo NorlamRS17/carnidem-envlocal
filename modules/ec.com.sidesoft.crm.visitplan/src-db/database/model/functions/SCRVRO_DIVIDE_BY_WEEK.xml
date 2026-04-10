@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SCRVRO_DIVIDE_BY_WEEK">
+    <function name="SCRVRO_DIVIDE_BY_WEEK" type="VARCHAR">
+      <parameter name="vsalesrepid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="vrouteweekid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="vtyperoute" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vRecord RECORD;
+	vR1 RECORD;
+	vR2 RECORD;
+	vR3 RECORD;
+	vWeeks NUMBER;
+	vByWeek NUMBER;
+	vByDay NUMBER;
+	vClients NUMBER;
+	vFrom NUMBER;
+	vTo NUMBER;
+	vVisitOrder NUMBER;
+BEGIN
+	BEGIN
+		SELECT * INTO vRecord FROM scrvro_route_week WHERE scrvro_route_week_id=vRouteWeekId;
+		
+		--Total semanas por tipo de ruta
+		SELECT COUNT(*) INTO vWeeks FROM scrvro_route_week
+		WHERE scrvro_route_period_id=vRecord.scrvro_route_period_id AND c_bpartner_id=vSalesRepId
+			AND type_route=vTypeRoute;
+		IF vWeeks>0 THEN
+			--Total clientes por ruta
+			SELECT COUNT(*) INTO vClients
+			FROM scrvro_optimized_route
+			WHERE salesrep_id=vSalesRepId AND type_route=vTypeRoute;
+			
+			--Clientes por semana
+			SELECT ROUND(vClients::NUMERIC/vWeeks) INTO vByWeek;
+			
+			--Clientes por dia
+			SELECT ROUND(vByWeek::NUMERIC/5) INTO vByDay;
+			
+			vFrom := 1;
+			vTo := 0;
+			FOR vR1 IN (
+				SELECT *, ROW_NUMBER () OVER (ORDER BY date_from) AS num
+				FROM scrvro_route_week
+				WHERE scrvro_route_period_id=vRecord.scrvro_route_period_id AND c_bpartner_id=vSalesRepId
+					AND type_route=vTypeRoute
+				ORDER BY date_from
+			) LOOP
+				FOR vR2 IN (
+					SELECT rd.*, ROW_NUMBER () OVER (ORDER BY rd.date) AS num
+					FROM scrvro_route_week AS rw
+						JOIN scrvro_route_day AS rd ON rd.scrvro_route_week_id=rw.scrvro_route_week_id
+					WHERE rw.scrvro_route_period_id=vRecord.scrvro_route_period_id AND rw.c_bpartner_id=vSalesRepId AND rw.type_route=vTypeRoute
+						AND rw.scrvro_route_week_id=vR1.scrvro_route_week_id
+					ORDER BY rd.date
+				) LOOP
+					IF vR2.day::NUMERIC = 5 THEN
+						IF vR1.num = vWeeks THEN
+							vTo := vClients;
+						ELSE
+							vTo := vByWeek * vR1.num;
+						END IF;
+					ELSE
+						vTo := vTo + vByDay;
+					END IF;
+					
+					vVisitOrder := 1;
+					FOR vR3 IN (
+						SELECT *
+						FROM scrvro_optimized_route
+						WHERE salesrep_id=vSalesRepId AND type_route=vTypeRoute AND visit_order>=vFrom AND visit_order<=vTo
+						ORDER BY visit_order
+					) LOOP
+						INSERT INTO scrvro_route (
+							scrvro_route_id,
+							ad_client_id,
+							ad_org_id,
+							createdby,
+							updatedby,
+							scrvro_route_day_id,
+							visit_order,
+							c_bpartner_id,
+							debt,
+							location_link,
+							latitude,
+							longitude,
+							distance,
+							duration,
+							status
+						) VALUES (
+							get_uuid(),
+							vR3.ad_client_id,
+							vR3.ad_org_id,
+							vR3.createdby,
+							vR3.updatedby,
+							vR2.scrvro_route_day_id,
+							--vR3.visit_order,
+							vVisitOrder,
+							vR3.c_bpartner_id,
+							0,
+							'https://www.google.com/maps/@'||vR3.latitude||','||vR3.longitude||',19z',
+							vR3.latitude,
+							vR3.longitude,
+							vR3.distance/1000,
+							vR3.duration/60,
+							'P'
+						);
+						vVisitOrder := vVisitOrder + 1;
+					END LOOP;
+					vFrom := vTo + 1;
+				END LOOP;
+			END LOOP;
+		END IF;
+
+		RETURN 'OK';
+	END;
+	EXCEPTION WHEN OTHERS THEN
+	RETURN SQLERRM;
+END SCRVRO_DIVIDE_BY_WEEK
+]]></body>
+    </function>
+  </database>

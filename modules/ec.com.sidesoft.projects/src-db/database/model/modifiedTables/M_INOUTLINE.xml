@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_INOUTLINE">
+    <table name="M_INOUTLINE" primaryKey="M_INOUTLINE_KEY">
+      <column name="EM_SSPRJ_TASK_PROD_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="SPROCTM_TASK_PROD" name="EM_SSPRJ_IOL_TP">
+        <reference local="EM_SSPRJ_TASK_PROD_ID" foreign="SPROCTM_TASK_PROD_ID"/>
+      </foreign-key>
+    </table>
+  </database>

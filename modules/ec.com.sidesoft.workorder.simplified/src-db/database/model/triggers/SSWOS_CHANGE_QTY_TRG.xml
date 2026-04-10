@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSWOS_CHANGE_QTY_TRG">
+    <trigger name="SSWOS_CHANGE_QTY_TRG" table="ATINDPO_POSTVENTALINEA" fires="before" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[v_status_From varchar(60);  
+v_status_To varchar(60);  
+Cur_Vehicle RECORD;
+v_count NUMBER;
+
+BEGIN
+IF AD_isTriggerEnabled()='N' THEN RETURN;
+   END IF;
+    
+	IF (UPDATING ) THEN
+		If(coalesce(:NEW.cantidad,0) < :NEW.em_sswos_transfer)Then
+			RAISE_APPLICATION_ERROR(-20000, 'No puedes tener una cantidad menor a la transferida.');
+		End IF;
+
+		If(coalesce(:NEW.cantidad,0) = COALESCE(:NEW.em_sswos_transfer,0))Then
+			:NEW.entregado = 'Y';
+		Else :NEW.entregado = 'N';
+		End IF;
+	End If; -- END (TG_OP = 'UPDATE' )
+	
+END SSWOS_CHANGE_QTY_TRG
+]]></body>
+    </trigger>
+  </database>

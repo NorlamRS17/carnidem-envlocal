@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_BPARTNER">
+    <table name="C_BPARTNER" primaryKey="C_BPARTNER_KEY">
+      <column name="EM_SCOMST_ADVISOR_TYPE_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="SCOMST_ADVISOR_TYPE" name="EM_SCOMST_BP_AT">
+        <reference local="EM_SCOMST_ADVISOR_TYPE_ID" foreign="SCOMST_ADVISOR_TYPE_ID"/>
+      </foreign-key>
+    </table>
+  </database>

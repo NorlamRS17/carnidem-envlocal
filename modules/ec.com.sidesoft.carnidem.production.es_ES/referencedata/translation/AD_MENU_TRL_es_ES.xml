@@ -8,6 +8,10 @@
     <value column="Name" isTrl="Y" original="Quality Control Point 2">Monitoreo de Seguridad y Calidad MSC</value>
     <value column="Description" isTrl="Y" original="Define quality control check points to be used for testing the product quality at any point in the production process.">Monitoreo de Seguridad y Calidad MSC</value>
   </row>
+  <row id="95D101DBAA5145BCB15E4FACAC00E2C7" trl="Y">
+    <value column="Name" isTrl="Y" original="Injection loss relative to raw material">Merma de inyección respecto a la materia prima</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
   <row id="E5DAF26F18A04CC69642BB54532BE858" trl="Y">
     <value column="Name" isTrl="Y" original="Quality Control Report 2">Toma de Datos MSC</value>
     <value column="Description" isTrl="N" original="Create and edit measurements and report findings at predefined checkpoints.  The goal is to ensure output quality during production.">Create and edit measurements and report findings at predefined checkpoints.  The goal is to ensure output quality during production.</value>

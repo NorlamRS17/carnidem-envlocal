@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="A288233644264376BB21CB4EC16D6318" trl="N">
+    <value column="Name" isTrl="N" original="ATVEF_Metodos_Contado">ATVEF_Metodos_Contado</value>
+    <value column="Description" isTrl="N" original="ATVEF_Metodos_Contado">ATVEF_Metodos_Contado</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F9B00A39966445B7B4792D157D04788A" trl="N">
+    <value column="Name" isTrl="N" original="ATVEF_Metodos_Credito">ATVEF_Metodos_Credito</value>
+    <value column="Description" isTrl="N" original="ATVEF_Metodos_Credito">ATVEF_Metodos_Credito</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

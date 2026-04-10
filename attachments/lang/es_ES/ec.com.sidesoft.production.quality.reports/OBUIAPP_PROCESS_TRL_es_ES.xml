@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUIAPP_PROCESS" version="">
+  <row id="65935E4CBAB64700AAA7BC30C8665C33" trl="N">
+    <value column="Name" isTrl="Y" original="Quality Report">Reporte de Calidad materia prima</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B1EE7313A6494F8695BF2081D54522F0" trl="N">
+    <value column="Name" isTrl="Y" original="Quality Control Report">Reporte de Calidad de producto Terminado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ATINDPO_VAL_BORRA_LIN_TRG">
+    <trigger name="ATINDPO_VAL_BORRA_LIN_TRG" table="ATINDPO_POSTVENTALINEA" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[v_message varchar(255);
+BEGIN
+    
+IF DELETING THEN 
+
+    if(:old.entregado = 'Y') then
+        v_message:='No se puede eliminar un producto despachado';
+        raise exception '%',v_message;
+    end if;
+    
+    If((Select p.producttype From m_product p Where m_product_id = :OLD.m_product_id) = 'I' and :OLD.em_sswos_transfer <> 0)Then
+	v_message:='No se puede eliminar un producto despachado';
+        raise exception '%',v_message;
+    End IF;
+
+ELSE
+    RETURN NEW; 
+END IF; 
+
+END ATINDPO_VAL_BORRA_LIN_TRG
+]]></body>
+    </trigger>
+  </database>

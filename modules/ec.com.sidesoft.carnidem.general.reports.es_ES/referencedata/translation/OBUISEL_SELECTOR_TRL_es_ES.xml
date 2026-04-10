@@ -1,5 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="02DD6CEC704E494FBF64D0C3FFE0B4FF" trl="N">
+    <value column="Name" isTrl="N" original="sscgr_productsc">sscgr_productsc</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="04EA27C46C054E5EA16317A220B7EB8B" trl="N">
+    <value column="Name" isTrl="N" original="sscgr_partnersc">sscgr_partnersc</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="606C75A656D842B4BE908B662EC704E7" trl="N">
+    <value column="Name" isTrl="N" original="sscgr_group">sscgr_group</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="82D2CC9F179E4AB2854971F489F4FFD1" trl="N">
+    <value column="Name" isTrl="N" original="sscgr_product">sscgr_product</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8C617507ECE94C91B2D69A73D6EB0BAD" trl="N">
+    <value column="Name" isTrl="N" original="inout selector">inout selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A3074B9F3466480683329330DABC011B" trl="N">
+    <value column="Name" isTrl="N" original="sscgr_inoutsc">sscgr_inoutsc</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
   <row id="B833BBEED38E481882929748ADB0E968" trl="N">
     <value column="Name" isTrl="N" original="SscgrAttributeIns">SscgrAttributeIns</value>
     <value column="Description" isTrl="N" original=""/>

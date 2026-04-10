@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSTPC_VAL_PAYMENTLINE_TRG">
+    <trigger name="SSTPC_VAL_PAYMENTLINE_TRG" table="FIN_PAYMENT_SCHEDULEDETAIL" fires="before" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+
+    v_DateNull DATE := TO_DATE('31-12-9999','DD-MM-YYYY');
+    v_LiquidateProjectsID VARCHAR2(32);
+    v_DocStatus 	  VARCHAR2(60);
+    v_FinPaymentID 	  VARCHAR2(32);
+    v_FinPaymenScheduleDetailID 	  VARCHAR2(32);
+    v_SstpcLiquidationProjectsID VARCHAR2(32);
+    v_C_CostCenterID VARCHAR2(32);
+    v_C_CostCenterNewID VARCHAR2(32);
+    v_MSG 	  VARCHAR2(60);
+    v_Posted  	  VARCHAR2(60);
+    v_Count  	  NUMBER; --OBTG:NUMBER--
+        
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+ IF(UPDATING) THEN
+	--v_FinPaymentID:=new.m_inout_id;
+	v_FinPaymenScheduleDetailID:= :new.fin_payment_scheduledetail_id;
+	v_C_CostCenterID:= coalesce(:new.C_Costcenter_ID,'ND');
+	SELECT COALESCE((SELECT POSTED FROM fin_payment WHERE fin_payment_id in (
+	select fin_payment_id from fin_payment_detail_v where fin_payment_detail_v_id = v_FinPaymenScheduleDetailID)),'N')
+	INTO v_Posted
+	FROM DUAL;
+
+	IF ((v_Posted = 'Y' or v_Posted = 'N') and v_C_CostCenterID<>'ND') THEN
+
+		SELECT COALESCE((
+		SELECT count(*) as contar FROM SSTPC_LIQUIDATION_PROJECTS WHERE SSTPC_LIQUIDATION_PROJECTS_ID IN 
+		(SELECT SSTPC_LIQUIDATION_PROJECTS_ID AS MSG FROM sstpc_payment 
+		where fin_payment_scheduledetail_id = v_FinPaymenScheduleDetailID )
+		),0 )
+		INTO v_Count
+		FROM DUAL;
+
+
+		SELECT COALESCE((SELECT SLP.C_COSTCENTER_ID
+		FROM  SSTPC_LIQUIDATION_PROJECTS SLP
+		JOIN SSTPC_PAYMENT SP ON SLP.SSTPC_LIQUIDATION_PROJECTS_ID = SP.SSTPC_LIQUIDATION_PROJECTS_ID
+		WHERE SP.FIN_PAYMENT_SCHEDULEDETAIL_ID=v_FinPaymenScheduleDetailID
+		GROUP BY SLP.C_COSTCENTER_ID
+		),'ND')
+		INTO v_C_CostCenterNewID
+		FROM DUAL;
+		
+
+		IF (v_Count>0 AND v_C_CostCenterID<>v_C_CostCenterNewID) THEN
+			RAISE_APPLICATION_ERROR(-20000, '@No se puede modificar el Centro de Costo, porque la línea está liquidada@');
+		END IF;
+	END IF;
+
+ 
+ END IF; 
+ 
+END SSTPC_VAL_PAYMENTLINE_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -48,7 +48,7 @@ public class Gift extends HttpSecureAppServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     vars = new VariablesSecureApp(request);
-    Long cant = Long.valueOf(0);
+    Long cant = new Long(0);
     String lineId = "";
     String strOrgId = vars.getRequestGlobalVariable("inpadOrgId", "Reconciliation|Org");
     String strWindowId = vars.getRequestGlobalVariable("inpwindowId", "Reconciliation|windowId");
@@ -62,7 +62,7 @@ public class Gift extends HttpSecureAppServlet {
     List<PriceAdjustment> promociones = getPromotions(lineId, strTabId);
     for (PriceAdjustment promocion : promociones) {
       if (promocion.isSsbodPerunit()) {
-        Long cantLinea = Long.valueOf(1);
+        Long cantLinea = new Long(1);
         if (strTabId.equals("187")) {
           OrderLine orderLine = OBDal.getInstance().get(OrderLine.class, lineId);
           cantLinea = orderLine.getOrderedQuantity().longValue();

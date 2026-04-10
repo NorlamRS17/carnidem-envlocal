@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Pago de quincena" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d1ff138d-947f-4d0e-a277-5dc727311a7f">
+	<property name="ireport.zoom" value="1.1000000000000005"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Documentno" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="c_costcenter_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+	cc.name as centro_costo,
+	cp.EM_SSPR_DocumentNo as cedula,
+	cpc.AccountNo as no_cuenta,
+	cp.name as nombre_y_apellido,
+	ROUND(stsl.Adjustedamt,2) as valor_ajustado,
+	stsl.ad_org_id as ad_org_id,
+	cant.name as canton,
+	extract(year from Settlementdate) as anio_quin,
+	case
+		when extract(month from  Settlementdate)='1' then 'Enero'
+		when extract(month from  Settlementdate)='2' then 'Febrero'
+		when extract(month from  Settlementdate)='3' then 'Marzo'
+		when extract(month from  Settlementdate)='4' then 'Abril'
+		when extract(month from  Settlementdate)='5' then 'Mayo'
+		when extract(month from  Settlementdate)='6' then 'Junio'
+		when extract(month from  Settlementdate)='7' then 'Julio'
+		when extract(month from  Settlementdate)='8' then 'Agosto'
+		when extract(month from  Settlementdate)='9' then 'Septiembre'
+		when extract(month from  Settlementdate)='10' then 'Octubre'
+		when extract(month from  Settlementdate)='11' then 'Noviembre'
+		when extract(month from  Settlementdate)='12' then 'Diciembre'
+	end mes_quin,
+
+	cast(extract(day from current_Date) as integer) AS dia,
+	extract(month from current_Date) as mes,
+	case
+		when extract(month from current_Date)=cast('1' as DOUBLE PRECISION) then 'Enero'
+		when extract(month from current_Date)=cast('2' as DOUBLE PRECISION) then 'Febrero'
+		when extract(month from current_Date)=cast('3' as DOUBLE PRECISION) then 'Marzo'
+		when extract(month from current_Date)=cast('4' as DOUBLE PRECISION) then 'Abril'
+		when extract(month from current_Date)=cast('5' as DOUBLE PRECISION) then 'Mayo'
+		when extract(month from current_Date)=cast('6' as DOUBLE PRECISION) then 'Junio'
+		when extract(month from current_Date)=cast('7' as DOUBLE PRECISION) then 'Julio'
+		when extract(month from current_Date)=cast('8' as DOUBLE PRECISION) then 'Agosto'
+		when extract(month from current_Date)=cast('9' as DOUBLE PRECISION) then 'Septiembre'
+		when extract(month from current_Date)=cast('10' as DOUBLE PRECISION) then 'Octubre'
+		when extract(month from current_Date)=cast('11' as DOUBLE PRECISION) then 'Noviembre'
+		when extract(month from current_Date)=cast('12' as DOUBLE PRECISION) then 'Diciembre'
+	end name_mes,
+	cast(extract(year from current_Date) as integer) as anio,
+	sts.documentno as documento
+
+from SSPH_Tenth_Settlement sts
+left join SSPH_Tenth_Settlement_Line stsl on sts.SSPH_Tenth_Settlement_id = stsl.SSPH_Tenth_Settlement_id
+left join c_bpartner cp on cp.c_bpartner_id = stsl.c_bpartner_id
+left join c_costcenter cc on cc.c_costcenter_id = cp.em_sspr_costcenter_id
+left join AD_OrgInfo og on og.ad_org_id = stsl.ad_org_id
+left join secpm_canton cant on cant.secpm_canton_id = og.em_sorgi_canton_id
+left join C_BP_BankAccount cpc on cpc.C_Bpartner_ID = cp.C_Bpartner_ID
+left join ssfi_banktransfer ssf on ssf.ssfi_banktransfer_id = cpc.em_ssfi_banktransfer_id
+
+where
+cp.isemployee='Y'
+and ssf.code='203'
+and sts.documentno=$P{Documentno}
+and (cc.c_costcenter_id = $P{c_costcenter_id} or $P{c_costcenter_id} is null)
+group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14
+order by nombre_y_apellido]]>
+	</queryString>
+	<field name="centro_costo" class="java.lang.String"/>
+	<field name="cedula" class="java.lang.String"/>
+	<field name="no_cuenta" class="java.lang.String"/>
+	<field name="nombre_y_apellido" class="java.lang.String"/>
+	<field name="valor_ajustado" class="java.math.BigDecimal"/>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="canton" class="java.lang.String"/>
+	<field name="anio_quin" class="java.lang.Double"/>
+	<field name="mes_quin" class="java.lang.String"/>
+	<field name="dia" class="java.lang.Integer"/>
+	<field name="mes" class="java.lang.Double"/>
+	<field name="name_mes" class="java.lang.String"/>
+	<field name="anio" class="java.lang.Integer"/>
+	<field name="documento" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="234" height="79" uuid="713a9c63-fcd6-43a4-b5bf-43248cadadca"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{ad_org_id})]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="234" y="0" width="518" height="26" uuid="9fcd630e-3579-46aa-a8fa-124d7bfb8048"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FUENTES SAN FELIPE S.A."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="26" width="518" height="26" uuid="9e5f288b-bf44-4085-a5e3-519011449fff"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ACREDITACION DECIMO "+$F{mes_quin}.toUpperCase()+" DEL "+$F{anio_quin}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="52" width="518" height="27" uuid="ebd2015f-0221-400d-9d75-87595bbd606f"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{canton}.toUpperCase()+", "+$F{dia}+" DE "+$F{name_mes}.toUpperCase()+" DEL "+$F{anio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="18" width="109" height="20" uuid="19069489-1592-4ba1-9137-281b102fb298"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NO. CEDULA"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="18" width="125" height="20" uuid="0d499638-1f1d-4f0f-a4d5-ea6eb896a4f1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["NO. CUENTA"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="18" width="412" height="20" uuid="0fa80d54-4b07-4b92-8834-e4c0c75b5f16"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["APELLIDOS Y NOMBRES DEL SOCIO"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="646" y="18" width="106" height="20" uuid="c33656d3-2512-4dc7-ab48-4c7c0abea3cc"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["V. ACREDITAR"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="234" y="0" width="412" height="20" uuid="96f103db-7d55-4108-b933-5884bcbfaf48"/>
+				<textFieldExpression><![CDATA[$F{nombre_y_apellido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="109" height="20" uuid="0581de76-888e-444b-98d3-28aefa2761ce"/>
+				<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="0" width="125" height="20" uuid="7b994f10-870f-4c8e-b0fd-bffe16a9672c"/>
+				<textFieldExpression><![CDATA[$F{no_cuenta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="646" y="0" width="106" height="20" uuid="71d17eba-5ef0-4f4b-a515-5519e1d08742"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{valor_ajustado}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="387" y="10" width="375" height="15" uuid="a8293726-a6ff-4a81-9375-3713a97d93df"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="25" width="752" height="10" uuid="1c9c6dce-19f1-475b-8331-2a721b445428"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[com.sidesoft.hrm.payroll/src/com/sidesoft/hrm/payroll/ad_Reports/Rpt_FinalSettlement.jrxml]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="10" width="377" height="15" uuid="14a2224c-5a40-4a27-8208-cbb6d7f1b6d8"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PAG. " + $V{PAGE_NUMBER} + " /"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

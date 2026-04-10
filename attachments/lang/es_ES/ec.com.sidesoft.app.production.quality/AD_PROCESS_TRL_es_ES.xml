@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="045F42BBD5A941698172C4D688B0BE85" trl="N">
+    <value column="Name" isTrl="N" original="Confirm Status">Confirm Status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E9608F7A292C45E5AF845B2FEFD42712" trl="N">
+    <value column="Name" isTrl="N" original="Unconfirm Status">Unconfirm Status</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

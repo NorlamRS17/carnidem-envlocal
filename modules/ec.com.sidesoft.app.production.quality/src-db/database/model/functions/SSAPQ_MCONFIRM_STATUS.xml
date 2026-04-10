@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSAPQ_MCONFIRM_STATUS">
+    <function name="SSAPQ_MCONFIRM_STATUS" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[/*************************************************************************
+* The contents of this file are subject to the Openbravo Public License
+* Version 1.1 (the "License"), being the Mozilla Public License
+* Version 1.1 with a permitted attribution clause; you may not use this
+* file except in compliance with the License. You may obtain a copy of
+* the License at http://www.openbravo.com/legal/license.html
+* Software distributed under the License is distributed on an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+* License for the specific language governing rights and limitations
+* under the License.
+* The Original Code is Openbravo ERP.
+* The Initial Developer of the Original Code is Openbravo SLU
+* All portions are Copyright (C) 2001-2016 Openbravo SLU
+* All Rights Reserved.
+************************************************************************/
+
+  v_ResultStr VARCHAR2(2000) := '';
+  v_Message   VARCHAR2(2000) := '';
+  v_Record_ID VARCHAR2(32);        
+  Cur_Parameter RECORD;
+
+BEGIN
+  -- Marcar proceso como en ejecución
+  v_ResultStr := 'PInstanceNotFound';
+  AD_UPDATE_PINSTANCE(p_pinstance_id, NULL, 'Y', NULL, NULL);
+
+  -- Obtener Record_ID del proceso
+  v_ResultStr := 'ReadingParameters';
+  FOR Cur_Parameter IN
+    (SELECT i.Record_ID
+       FROM AD_PInstance i
+      WHERE i.AD_PInstance_ID = p_pinstance_id)
+  LOOP
+    v_Record_ID := Cur_Parameter.Record_ID;
+  END LOOP;
+
+  -- Confirmar (poner en Y)
+  UPDATE m_productionline
+     SET em_ssapq_isconfirm = 'Y'
+   WHERE m_productionline_id = v_Record_ID;
+
+  v_Message := 'Confirmación realizada correctamente';
+
+  -- Finalizar proceso
+  AD_UPDATE_PINSTANCE(p_pinstance_id, NULL, 'N', 1, v_Message);
+
+EXCEPTION
+WHEN OTHERS THEN
+  v_ResultStr := '@ERROR=' || SQLERRM;
+  DBMS_OUTPUT.PUT_LINE( v_ResultStr);
+  IF (p_pinstance_id IS NOT NULL) THEN
+    AD_UPDATE_PINSTANCE(p_pinstance_id, NULL, 'N', 0, v_ResultStr);
+  END IF;
+END SSAPQ_MCONFIRM_STATUS
+]]></body>
+    </function>
+  </database>

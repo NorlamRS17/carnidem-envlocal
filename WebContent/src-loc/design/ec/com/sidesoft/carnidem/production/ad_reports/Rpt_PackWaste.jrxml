@@ -1,0 +1,752 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_PackWaste" pageWidth="1000" pageHeight="842" columnWidth="960" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="457c92e4-9e5a-436b-9661-bedceeec3e3b">
+	<property name="ireport.zoom" value="1.7715610000000082"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DateFrom" class="java.util.Date"/>
+	<parameter name="DateTo" class="java.util.Date"/>
+	<parameter name="cr_m_product_id" class="java.lang.String"/>
+	<parameter name="cr_m_attributesetinstance_id" class="java.lang.String"/>
+	<parameter name="AD_User_ID" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT
+			to_char(mt.movementdate,'dd/MM/yyyy') as fecha,
+			mprod.documentno as num_documento,
+			COALESCE(mp_terminado.value, mp.value) as codigo,
+			COALESCE(mp_terminado.name, mp.name) as producto,
+			-- Producto en proceso cocido: P- con mayor cantidad
+			COALESCE(mpdl_materia_mayor.movementqty, 0) as producto_proceso_cocido,
+		-- Producto terminado: si UOM es kilogramos, tomar cantidad directamente; si no, cantidad * peso
+		CASE
+			WHEN mpdl_terminado.c_uom_id = '72BA247D31F745F3AF11F74A5E2CCBEF' THEN COALESCE(mpdl_terminado.movementqty, 0)
+			ELSE COALESCE(mpdl_terminado.movementqty * mp_terminado.weight, 0)
+		END as producto_terminado,
+			-- Recorte: valor del campo EM_Crprod_Cutout de la parte de fabricación
+			COALESCE(mpp.em_crprod_cutout, 0) as recorte,
+			-- % Recorte: recorte/producto en proceso cocido * 100
+			CASE WHEN COALESCE(mpdl_materia_mayor.movementqty, 0) > 0
+				THEN round(((COALESCE(mpp.em_crprod_cutout, 0)/mpdl_materia_mayor.movementqty)*100),2)
+				ELSE 0
+			END as porcentaje_recorte,
+			-- Desperdicio: Rejectedquantity (cantidad rechazada)
+			COALESCE(mpp.rejectedquantity, 0) as desperdicio,
+			-- % Desperdicio: desperdicio/producto_proceso_cocido * 100
+			CASE WHEN COALESCE(mpdl_materia_mayor.movementqty, 0) > 0
+				THEN round(((COALESCE(mpp.rejectedquantity, 0)/mpdl_materia_mayor.movementqty)*100),2)
+				ELSE 0
+			END as porcentaje_desperdicio,
+		-- Merma: producto_proceso_cocido - producto_terminado - recorte - desperdicio
+		COALESCE(mpdl_materia_mayor.movementqty - 
+			CASE
+				WHEN mpdl_terminado.c_uom_id = '72BA247D31F745F3AF11F74A5E2CCBEF' THEN COALESCE(mpdl_terminado.movementqty, 0)
+				ELSE COALESCE(mpdl_terminado.movementqty * mp_terminado.weight, 0)
+			END - mpp.em_crprod_cutout - mpp.rejectedquantity, 0) as merma,
+		-- % Merma: merma/producto_proceso_cocido * 100
+		CASE WHEN COALESCE(mpdl_materia_mayor.movementqty, 0) > 0
+			THEN round(((COALESCE(mpdl_materia_mayor.movementqty - 
+				CASE
+					WHEN mpdl_terminado.c_uom_id = '72BA247D31F745F3AF11F74A5E2CCBEF' THEN COALESCE(mpdl_terminado.movementqty, 0)
+					ELSE COALESCE(mpdl_terminado.movementqty * mp_terminado.weight, 0)
+				END - COALESCE(mpp.em_crprod_cutout, 0) - COALESCE(mpp.rejectedquantity, 0), 0)/mpdl_materia_mayor.movementqty)*100),2)
+			ELSE 0
+		END as porcentaje_merma,
+			mt.ad_org_id as organizationid,
+			now() as fechaimpresion,
+			(SELECT au.name FROM ad_user au WHERE au.ad_user_id = $P{AD_User_ID}) as usuario
+		FROM m_transaction mt
+		LEFT JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+		-- Navegación SIMPLIFICADA: M_Transaction -> M_ProductionLine -> M_ProductionPlan -> M_Production
+		LEFT JOIN m_productionline mpdl ON mpdl.m_productionline_id = mt.m_productionline_id
+		LEFT JOIN m_productionplan mpp ON mpp.m_productionplan_id = mpdl.m_productionplan_id
+		LEFT JOIN m_production mprod ON mprod.m_production_id = mpp.m_production_id
+		-- P+ con mayor cantidad (producto terminado)
+		LEFT JOIN (
+			SELECT mpp2.m_productionplan_id, mpdl2.movementqty, mpdl2.m_product_id, mpdl2.c_uom_id
+			FROM m_productionplan mpp2
+			LEFT JOIN m_productionline mpdl2 ON mpdl2.m_productionplan_id = mpp2.m_productionplan_id AND mpdl2.productiontype = '+'
+			WHERE mpdl2.movementqty = (
+				SELECT MAX(mpdl3.movementqty)
+				FROM m_productionline mpdl3
+				WHERE mpdl3.m_productionplan_id = mpp2.m_productionplan_id AND mpdl3.productiontype = '+'
+			)
+		) mpdl_terminado ON mpdl_terminado.m_productionplan_id = mpp.m_productionplan_id
+		LEFT JOIN m_product mp_terminado ON mp_terminado.m_product_id = mpdl_terminado.m_product_id
+		-- P- con mayor cantidad (primero busca el que tenga em_crprod_productact = 'Y' en m_product, si no existe toma el de mayor cantidad)
+		LEFT JOIN (
+			SELECT mpp2.m_productionplan_id, mpdl2.movementqty
+			FROM m_productionplan mpp2
+			LEFT JOIN m_productionline mpdl2 ON mpdl2.m_productionplan_id = mpp2.m_productionplan_id AND mpdl2.productiontype = '-'
+			LEFT JOIN m_product mp_materia ON mp_materia.m_product_id = mpdl2.m_product_id
+			WHERE (
+				-- Primero: si existe alguno con em_crprod_productact = 'Y', toma ese
+				(EXISTS (SELECT 1 FROM m_productionline mpdl_act
+				         LEFT JOIN m_product mp_act ON mp_act.m_product_id = mpdl_act.m_product_id
+				         WHERE mpdl_act.m_productionplan_id = mpp2.m_productionplan_id
+				         AND mpdl_act.productiontype = '-'
+				         AND mp_act.em_crprod_productact = 'Y')
+				 AND mp_materia.em_crprod_productact = 'Y')
+				OR
+				-- Si no existe ninguno activo, toma el de mayor cantidad
+				(NOT EXISTS (SELECT 1 FROM m_productionline mpdl_act
+				             LEFT JOIN m_product mp_act ON mp_act.m_product_id = mpdl_act.m_product_id
+				             WHERE mpdl_act.m_productionplan_id = mpp2.m_productionplan_id
+				             AND mpdl_act.productiontype = '-'
+				             AND mp_act.em_crprod_productact = 'Y')
+				 AND mpdl2.movementqty = (SELECT MAX(mpdl3.movementqty) FROM m_productionline mpdl3 WHERE mpdl3.m_productionplan_id = mpp2.m_productionplan_id AND mpdl3.productiontype = '-'))
+			)
+		) mpdl_materia_mayor ON mpdl_materia_mayor.m_productionplan_id = mpp.m_productionplan_id
+		-- P+ con menor cantidad (si solo hay 1 P+, toma ese)
+		LEFT JOIN (
+			SELECT mpp2.m_productionplan_id, mpdl2.movementqty
+			FROM m_productionplan mpp2
+			LEFT JOIN m_productionline mpdl2 ON mpdl2.m_productionplan_id = mpp2.m_productionplan_id AND mpdl2.productiontype = '+'
+			WHERE mpdl2.movementqty = (
+				SELECT MIN(mpdl3.movementqty)
+				FROM m_productionline mpdl3
+				WHERE mpdl3.m_productionplan_id = mpp2.m_productionplan_id
+					AND mpdl3.productiontype = '+'
+			)
+		) mpdl_terminado_menor ON mpdl_terminado_menor.m_productionplan_id = mpp.m_productionplan_id
+		WHERE mt.m_product_id::text = $P{cr_m_product_id}
+			AND DATE(mt.movementdate) >= DATE($P{DateFrom})
+			AND DATE(mt.movementdate) <= DATE($P{DateTo})
+			AND mt.m_productionline_id IS NOT NULL
+			AND ($P{cr_m_attributesetinstance_id} IS NULL OR $P{cr_m_attributesetinstance_id} = '' OR mt.m_attributesetinstance_id::text = $P{cr_m_attributesetinstance_id})
+		ORDER BY mt.movementdate, COALESCE(mp_terminado.value, mp.value)]]>
+	</queryString>
+	<field name="fecha" class="java.lang.String"/>
+	<field name="num_documento" class="java.lang.String"/>
+	<field name="codigo" class="java.lang.String"/>
+	<field name="producto" class="java.lang.String"/>
+	<field name="producto_proceso_cocido" class="java.math.BigDecimal"/>
+	<field name="producto_terminado" class="java.math.BigDecimal"/>
+	<field name="recorte" class="java.math.BigDecimal"/>
+	<field name="porcentaje_recorte" class="java.math.BigDecimal"/>
+	<field name="desperdicio" class="java.math.BigDecimal"/>
+	<field name="porcentaje_desperdicio" class="java.math.BigDecimal"/>
+	<field name="merma" class="java.math.BigDecimal"/>
+	<field name="porcentaje_merma" class="java.math.BigDecimal"/>
+	<field name="organizationid" class="java.lang.String"/>
+	<field name="fechaimpresion" class="java.sql.Timestamp"/>
+	<field name="usuario" class="java.lang.String"/>
+	<variable name="total_producto_proceso_cocido" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{producto_proceso_cocido}]]></variableExpression>
+	</variable>
+	<variable name="total_producto_terminado" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{producto_terminado}]]></variableExpression>
+	</variable>
+	<variable name="total_recorte" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{recorte}]]></variableExpression>
+	</variable>
+	<variable name="total_desperdicio" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{desperdicio}]]></variableExpression>
+	</variable>
+	<variable name="total_merma" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{merma}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="134" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Top" isUsingCache="true">
+				<reportElement x="0" y="0" width="120" height="80" uuid="a1b2c3d4-e5f6-7890-abcd-ef1234567890"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{organizationid})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="85" width="80" height="15" uuid="b1b2c3d4-e5f6-7890-abcd-ef1234567891"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Inicio:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="80" y="85" width="80" height="15" uuid="c1b2c3d4-e5f6-7890-abcd-ef1234567892"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DateFrom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="100" width="80" height="15" uuid="d1b2c3d4-e5f6-7890-abcd-ef1234567893"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Fin:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="80" y="100" width="80" height="15" uuid="e1b2c3d4-e5f6-7890-abcd-ef1234567894"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{DateTo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="774" y="70" width="60" height="15" uuid="a1a2c3d4-e5f6-7890-abcd-ef1234567896"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="834" y="70" width="103" height="15" uuid="b2b2c3d4-e5f6-7890-abcd-ef1234567897"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="243" y="36" width="462" height="40" uuid="f1b2c3d4-e5f6-7890-abcd-ef1234567895"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["MERMAS Y DESPERDICIOS DE EMPAQUE"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="774" y="25" width="60" height="15" uuid="11b2c3d4-e5f6-7890-abcd-ef1234567896"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="834" y="25" width="41" height="15" uuid="21b2c3d4-e5f6-7890-abcd-ef1234567897"/>
+				<textElement textAlignment="Right">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="875" y="25" width="39" height="15" uuid="31b2c3d4-e5f6-7890-abcd-ef1234567898"/>
+				<textElement textAlignment="Left">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" / " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="774" y="40" width="60" height="15" uuid="41b2c3d4-e5f6-7890-abcd-ef1234567899"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="834" y="40" width="103" height="15" uuid="51b2c3d4-e5f6-7890-abcd-ef123456789a"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaimpresion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="774" y="55" width="60" height="15" uuid="61b2c3d4-e5f6-7890-abcd-ef123456789b"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hora:]]></text>
+			</staticText>
+			<textField pattern="HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="834" y="55" width="103" height="15" uuid="71b2c3d4-e5f6-7890-abcd-ef123456789c"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaimpresion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="4" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="80" height="40" backcolor="#B4ECF9" uuid="a2b2c3d4-e5f6-7890-abcd-ef12345678a1"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="260" y="0" width="157" height="40" backcolor="#B4ECF9" uuid="c2b2c3d4-e5f6-7890-abcd-ef12345678a3"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="417" y="0" width="100" height="40" backcolor="#B4ECF9" uuid="d2b2c3d4-e5f6-7890-abcd-ef12345678a4"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO EN PROCESO COCIDO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="517" y="0" width="71" height="40" backcolor="#B4ECF9" uuid="e2b2c3d4-e5f6-7890-abcd-ef12345678a5"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO TERMINADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="588" y="0" width="59" height="40" backcolor="#B4ECF9" uuid="f2b2c3d4-e5f6-7890-abcd-ef12345678a6"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RECORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="647" y="0" width="58" height="40" backcolor="#B4ECF9" uuid="12b2c3d4-e5f6-7890-abcd-ef12345678a7"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[% RECORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="705" y="0" width="80" height="40" backcolor="#B4ECF9" uuid="22b2c3d4-e5f6-7890-abcd-ef12345678a8"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESPERDICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="785" y="0" width="80" height="40" backcolor="#B4ECF9" uuid="32b2c3d4-e5f6-7890-abcd-ef12345678a9"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[% DESPERDICIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="865" y="0" width="49" height="40" backcolor="#B4ECF9" uuid="42b2c3d4-e5f6-7890-abcd-ef12345678aa"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MERMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="914" y="0" width="46" height="40" backcolor="#B4ECF9" uuid="52b2c3d4-e5f6-7890-abcd-ef12345678ab"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[% MERMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="80" y="0" width="100" height="40" backcolor="#B4ECF9" uuid="a0b2c3d4-e5f6-7890-abcd-ef12345678a0"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[N° DOCUMENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="180" y="0" width="80" height="40" backcolor="#B4ECF9" uuid="b2b2c3d4-e5f6-7890-abcd-ef12345678a2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="32" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="80" height="32" uuid="a3b2c3d4-e5f6-7890-abcd-ef12345678b1"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="0" width="100" height="32" uuid="a0b2c3d4-e5f6-7890-abcd-ef12345678b0"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num_documento}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="180" y="0" width="80" height="32" uuid="b3b2c3d4-e5f6-7890-abcd-ef12345678b2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="260" y="0" width="157" height="32" uuid="c3b2c3d4-e5f6-7890-abcd-ef12345678b3"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="417" y="0" width="100" height="32" uuid="d3b2c3d4-e5f6-7890-abcd-ef12345678b4"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto_proceso_cocido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="517" y="0" width="71" height="32" uuid="e3b2c3d4-e5f6-7890-abcd-ef12345678b5"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto_terminado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="588" y="0" width="59" height="32" uuid="f3b2c3d4-e5f6-7890-abcd-ef12345678b6"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{recorte}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="647" y="0" width="58" height="32" uuid="13b2c3d4-e5f6-7890-abcd-ef12345678b7"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{porcentaje_recorte}.toString() + "%"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="705" y="0" width="80" height="32" uuid="23b2c3d4-e5f6-7890-abcd-ef12345678b8"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{desperdicio}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="785" y="0" width="80" height="32" uuid="33b2c3d4-e5f6-7890-abcd-ef12345678b9"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{porcentaje_desperdicio}.toString() + "%"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="865" y="0" width="49" height="32" uuid="43b2c3d4-e5f6-7890-abcd-ef12345678ba"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{merma}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="914" y="0" width="46" height="32" uuid="53b2c3d4-e5f6-7890-abcd-ef12345678bb"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{porcentaje_merma}.toString() + "%"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="10" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="9" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="417" height="20" uuid="a1b2c3d4-e5f6-7890-abcd-ef12345678c1"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTALES]]></text>
+			</staticText>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="417" y="0" width="100" height="20" uuid="b1b2c3d4-e5f6-7890-abcd-ef12345678c2"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_producto_proceso_cocido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="517" y="0" width="71" height="20" uuid="c1b2c3d4-e5f6-7890-abcd-ef12345678c3"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_producto_terminado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="588" y="0" width="59" height="20" uuid="d1b2c3d4-e5f6-7890-abcd-ef12345678c4"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_recorte}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="705" y="0" width="80" height="20" uuid="e1b2c3d4-e5f6-7890-abcd-ef12345678c5"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_desperdicio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="865" y="0" width="49" height="20" uuid="f1b2c3d4-e5f6-7890-abcd-ef12345678c6"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_merma}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="647" y="0" width="58" height="20" uuid="11b2c3d4-e5f6-7890-abcd-ef12345678c7"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{total_producto_proceso_cocido} != null && $V{total_producto_proceso_cocido}.doubleValue() > 0 ? new java.math.BigDecimal(($V{total_recorte}.doubleValue() / $V{total_producto_proceso_cocido}.doubleValue()) * 100).setScale(2, java.math.BigDecimal.ROUND_HALF_UP).toString() + "%" : "0%")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="785" y="0" width="80" height="20" uuid="21b2c3d4-e5f6-7890-abcd-ef12345678c8"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{total_producto_proceso_cocido} != null && $V{total_producto_proceso_cocido}.doubleValue() > 0 ? new java.math.BigDecimal(($V{total_desperdicio}.doubleValue() / $V{total_producto_proceso_cocido}.doubleValue()) * 100).setScale(2, java.math.BigDecimal.ROUND_HALF_UP).toString() + "%" : "0%")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="914" y="0" width="46" height="20" uuid="31b2c3d4-e5f6-7890-abcd-ef12345678c9"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{total_producto_proceso_cocido} != null && $V{total_producto_proceso_cocido}.doubleValue() > 0 ? new java.math.BigDecimal(($V{total_merma}.doubleValue() / $V{total_producto_proceso_cocido}.doubleValue()) * 100).setScale(2, java.math.BigDecimal.ROUND_HALF_UP).toString() + "%" : "0%")]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

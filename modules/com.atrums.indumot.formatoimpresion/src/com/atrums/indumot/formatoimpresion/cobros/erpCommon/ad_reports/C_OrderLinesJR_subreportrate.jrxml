@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="C_OrderLinesJR_subreportrate" pageWidth="190" pageHeight="100" columnWidth="190" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="C_ORDER_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select sum(A.priceactual) as "SUBTOTAL" ,'IVA ' || B.rate || ' %' AS "IMPUESTO", sum(A.priceactual)*B.rate/100 as "VALORIMP"
+from c_orderline A,c_tax B
+where c_order_id = $P{C_ORDER_ID}
+and A.c_tax_id=B.c_tax_id
+and B.rate = 12
+group by B.rate
+union
+select sum(A.priceactual) as "SUBTOTAL" ,'IVA ' || B.rate || ' %' AS "IMPUESTO", sum(A.priceactual)*B.rate/100 as "VALORIMP"
+from c_orderline A,c_tax B
+where c_order_id = $P{C_ORDER_ID}
+and A.c_tax_id=B.c_tax_id
+and B.rate = 0
+group by B.rate]]>
+	</queryString>
+	<field name="SUBTOTAL" class="java.math.BigDecimal"/>
+	<field name="IMPUESTO" class="java.lang.String"/>
+	<field name="VALORIMP" class="java.math.BigDecimal"/>
+	<variable name="TOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{VALORIMP}.add($F{SUBTOTAL})]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="2" width="80" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{IMPUESTO}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00">
+				<reportElement x="110" y="2" width="80" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{VALORIMP}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="3" width="51" height="15"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField pattern="###0.00">
+				<reportElement x="111" y="0" width="79" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

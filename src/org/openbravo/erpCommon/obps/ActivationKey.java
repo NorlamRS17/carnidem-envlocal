@@ -4,15 +4,15 @@
  * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
  * Version 1.1  with a permitted attribution clause; you may not  use this
  * file except in compliance with the License. You  may  obtain  a copy of
- * the License at http://www.openbravo.com/legal/license.html 
+ * the License at http://www.openbravo.com/legal/license.html
  * Software distributed under the License  is  distributed  on  an "AS IS"
  * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
  * License for the specific  language  governing  rights  and  limitations
- * under the License. 
+ * under the License.
  * The Original Code is Openbravo ERP.
- * The Initial Developer of the Original Code is Openbravo SLU 
- * All portions are Copyright (C) 2009-2018 Openbravo SLU 
- * All Rights Reserved. 
+ * The Initial Developer of the Original Code is Openbravo SLU
+ * All portions are Copyright (C) 2009-2018 Openbravo SLU
+ * All Rights Reserved.
  * Contributor(s):  ______________________________________.
  ************************************************************************
  */
@@ -25,8 +25,6 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.math.BigInteger;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.Signature;
@@ -78,7 +76,6 @@ import org.openbravo.erpCommon.obps.DisabledModules.Artifacts;
 import org.openbravo.erpCommon.obps.ModuleLicenseRestrictions.ActivationMsg;
 import org.openbravo.erpCommon.obps.ModuleLicenseRestrictions.MsgSeverity;
 import org.openbravo.erpCommon.security.SessionListener;
-import org.openbravo.erpCommon.utility.HttpsUtils;
 import org.openbravo.erpCommon.utility.OBError;
 import org.openbravo.erpCommon.utility.OBMessageUtils;
 import org.openbravo.erpCommon.utility.StringCollectionUtils;
@@ -97,7 +94,7 @@ import org.openbravo.xmlEngine.XmlEngine;
 public class ActivationKey {
   private final static String OB_PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCPwCM5RfisLvWhujHajnLEjEpLC7DOXLySuJmHBqcQ8AQ63yZjlcv3JMkHMsPqvoHF3s2ztxRcxBRLc9C2T3uXQg0PTH5IAxsV4tv05S+tNXMIajwTeYh1LCoQyeidiid7FwuhtQNQST9/FqffK1oVFBnWUfgZKLMO2ZSHoEAORwIDAQAB";
 
-  private static final String HEARTBEAT_URL = "https://butler.openbravo.com:443/heartbeat-server/heartbeat";
+  private static final String HEARTBEAT_URL = "";// "https://butler.openbravo.com:443/heartbeat-server/heartbeat";
 
   private boolean isActive = false;
   private boolean hasActivationKey = false;
@@ -160,8 +157,8 @@ public class ActivationKey {
 
   public enum FeatureRestriction {
     NO_RESTRICTION(""), DISABLED_MODULE_RESTRICTION("FeatureInDisabledModule"), TIER1_RESTRICTION(
-        "FEATURE_OBPS_ONLY"), TIER2_RESTRICTION("FEATURE_OBPS_ONLY"), UNKNOWN_RESTRICTION(""), GOLDEN_RESTRICTION(
-        "RESTRICTED_TO_GOLDEN");
+        "FEATURE_OBPS_ONLY"), TIER2_RESTRICTION("FEATURE_OBPS_ONLY"), UNKNOWN_RESTRICTION(
+            ""), GOLDEN_RESTRICTION("RESTRICTED_TO_GOLDEN");
 
     private String msg;
 
@@ -193,7 +190,7 @@ public class ActivationKey {
   }
 
   public enum LicenseType {
-    CONCURRENT_USERS("USR");
+    CONCURRENT_USERS("USR"), ON_DEMAND("DMD");
     private String code;
 
     private LicenseType(String code) {
@@ -218,7 +215,7 @@ public class ActivationKey {
      * Returns the name of the current status in the given language.
      */
     public String getStatusName(String language) {
-      return Utility.getListValueName("OBPSLicenseStatus", code, language);
+      return Utility.getListValueName("OBPSLicenseStatus", "COM", language);
     }
 
   }
@@ -255,7 +252,7 @@ public class ActivationKey {
 
   /**
    * @see ActivationKey#getInstance(boolean)
-   * 
+   *
    */
   public static ActivationKey getInstance() {
     return getInstance(false);
@@ -264,12 +261,12 @@ public class ActivationKey {
   /**
    * Obtains the ActivationKey instance. Instances should be get in this way, rather than creating a
    * new one.
-   * 
+   *
    * If refreshIfNeeded parameter is true, license is tried to be refreshed if it is needed to.
-   * 
+   *
    * @param refreshIfNeeded
    *          refresh license if needed to
-   * 
+   *
    */
   public static ActivationKey getInstance(boolean refreshIfNeeded) {
     if (refreshIfNeeded) {
@@ -408,6 +405,7 @@ public class ActivationKey {
     // Get license class, old Activation Keys do not have this info, so treat them as Standard
     // Edition instances
     String pLicenseClass = getProperty("licenseedition");
+    System.out.println(pLicenseClass);
     if (pLicenseClass == null || pLicenseClass.isEmpty() || pLicenseClass.equals("STD")) {
       licenseClass = LicenseClass.STD;
     } else if (pLicenseClass.equals("B")) {
@@ -425,7 +423,7 @@ public class ActivationKey {
     // Check for dates to know if the instance is active
     subscriptionConvertedProperty = "true".equals(getProperty("subscriptionConverted"));
 
-    trial = "true".equals(getProperty("trial"));
+    trial = "false".equals(getProperty("trial"));
     golden = "true".equals(getProperty("golden"));
 
     String strUnlimitedWsAccess = getProperty("unlimitedWsAccess");
@@ -610,6 +608,10 @@ public class ActivationKey {
    */
   @SuppressWarnings("unchecked")
   private void loadRestrictions() {
+    if (golden) {
+      // Don't read restrictions for Standard instances
+      return;
+    }
     DisabledModules.reload();
     tier1Artifacts = new HashSet<>();
     tier2Artifacts = new HashSet<>();
@@ -625,13 +627,12 @@ public class ActivationKey {
       String restrictionsFilePath = null;
       if (DalContextListener.getServletContext() != null) {
         // Taking restrictions from Tomcat context
-        restrictionsFilePath = DalContextListener.getServletContext().getRealPath(
-            "/src-loc/design/org/openbravo/erpCommon/obps/licenseRestrictions");
+        restrictionsFilePath = DalContextListener.getServletContext()
+            .getRealPath("/src-loc/design/org/openbravo/erpCommon/obps/licenseRestrictions");
       } else {
         // Not in Tomcat context, taking restrictions from sources
         restrictionsFilePath = OBPropertiesProvider.getInstance().getOpenbravoProperties()
-            .getProperty("source.path")
-            + "/src/org/openbravo/erpCommon/obps/licenseRestrictions";
+            .getProperty("source.path") + "/src/org/openbravo/erpCommon/obps/licenseRestrictions";
       }
 
       File restrictionsFile = new File(restrictionsFilePath);
@@ -643,19 +644,17 @@ public class ActivationKey {
       ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bos.toByteArray()));
       HashMap<String, ArrayList<String>> m1 = (HashMap<String, ArrayList<String>>) ois.readObject();
       ois.close();
+      tier1Artifacts.addAll(m1.get(TIER_1_PREMIUM_FEATURE));
 
-      if (!isActive()) {
-        // community instance, restrict both tiers
-        tier1Artifacts.addAll(m1.get(TIER_1_PREMIUM_FEATURE));
-        tier2Artifacts.addAll(m1.get(TIER_2_PREMIUM_FEATURE));
-      } else if (licenseClass == LicenseClass.BASIC) {
-        // basic, restrict tier 2
-        tier2Artifacts.addAll(m1.get(TIER_2_PREMIUM_FEATURE));
-      }
-
-      if (isGolden()) {
-        goldenExcludedArtifacts.addAll(m1.get(GOLDEN_EXCLUDED));
-      }
+      /*
+       * if (!isActive()) { // community instance, restrict both tiers
+       * tier1Artifacts.addAll(m1.get(TIER_1_PREMIUM_FEATURE));
+       * tier2Artifacts.addAll(m1.get(TIER_2_PREMIUM_FEATURE)); } else if (licenseClass ==
+       * LicenseClass.BASIC) { // basic, restrict tier 2
+       * tier2Artifacts.addAll(m1.get(TIER_2_PREMIUM_FEATURE)); }
+       *
+       * if (isGolden()) { goldenExcludedArtifacts.addAll(m1.get(GOLDEN_EXCLUDED)); }
+       */
     } catch (Exception e) {
       log4j.error("Error reading license restriction file", e);
       tier1Artifacts = null;
@@ -665,7 +664,8 @@ public class ActivationKey {
   }
 
   public LicenseClass getLicenseClass() {
-    return licenseClass == null ? LicenseClass.COMMUNITY : licenseClass;
+    // return licenseClass == null ? LicenseClass.COMMUNITY : licenseClass;
+    return LicenseClass.STD;
   }
 
   /** Returns a CRC hash of the public key */
@@ -678,8 +678,8 @@ public class ActivationKey {
   private PublicKey getPublicKey(String strPublickey) {
     try {
       KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-      byte[] rawPublicKey = org.apache.commons.codec.binary.Base64.decodeBase64(strPublickey
-          .getBytes());
+      byte[] rawPublicKey = org.apache.commons.codec.binary.Base64
+          .decodeBase64(strPublickey.getBytes());
 
       X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(rawPublicKey);
       return keyFactory.generatePublic(publicKeySpec);
@@ -744,8 +744,8 @@ public class ActivationKey {
     String customMsg = "";
     MsgSeverity severity = MsgSeverity.ERROR;
     for (ModuleLicenseRestrictions moduleRestriction : getModuleLicenseRestrictions()) {
-      ActivationMsg moduleMsg = moduleRestriction.getActivationMessage(this, OBContext
-          .getOBContext().getLanguage().getLanguage());
+      ActivationMsg moduleMsg = moduleRestriction.getActivationMessage(this,
+          OBContext.getOBContext().getLanguage().getLanguage());
 
       if (moduleMsg != null) {
         customMsg += moduleMsg.getMsgText();
@@ -778,7 +778,7 @@ public class ActivationKey {
 
   /**
    * Deprecated, use instead {@link ActivationKey#checkOPSLimitations(String)}
-   * 
+   *
    */
   @Deprecated
   public LicenseRestriction checkOPSLimitations() {
@@ -792,14 +792,14 @@ public class ActivationKey {
 
   /**
    * Checks the current activation key
-   * 
+   *
    * @param currentSession
    *          Current session, not to be taken into account
    * @param sessionType
    *          Successful session type: if the session is finally successful this is the type that
    *          will be marked with in {@code AD_Session}, it is used to determine whether it should
    *          or not count for CU limitation. In case it is {@code null} it will be counted.
-   * 
+   *
    * @return {@link LicenseRestriction} with the status of the restrictions
    */
   public LicenseRestriction checkOPSLimitations(String currentSession, String sessionType) {
@@ -927,12 +927,11 @@ public class ActivationKey {
       OBCriteria<Session> obCriteria = OBDal.getInstance().createCriteria(Session.class);
 
       // sesion_active='Y' and (lastPing is null or lastPing<lastValidPing)
-      obCriteria.add(Restrictions.and(
-          Restrictions.eq(Session.PROPERTY_SESSIONACTIVE, true),
+      obCriteria.add(Restrictions.and(Restrictions.eq(Session.PROPERTY_SESSIONACTIVE, true),
           Restrictions.or(Restrictions.isNull(Session.PROPERTY_LASTPING),
               Restrictions.lt(Session.PROPERTY_LASTPING, lastValidPingTime))));
-      obCriteria.add(Restrictions.not(Restrictions.in(Session.PROPERTY_LOGINSTATUS,
-          NO_CU_SESSION_TYPES)));
+      obCriteria.add(
+          Restrictions.not(Restrictions.in(Session.PROPERTY_LOGINSTATUS, NO_CU_SESSION_TYPES)));
 
       if (currentSessionId != null) {
         obCriteria.add(Restrictions.ne(Session.PROPERTY_ID, currentSessionId));
@@ -1070,7 +1069,7 @@ public class ActivationKey {
 
   /**
    * Obtains a List of all the modules that are installed in the instance which license has expired.
-   * 
+   *
    * @return List of the expired modules
    */
   public ArrayList<Module> getExpiredInstalledModules() {
@@ -1096,7 +1095,7 @@ public class ActivationKey {
 
   /**
    * Obtains a list for modules ID the instance is subscribed to and their statuses
-   * 
+   *
    * @return HashMap&lt;String, CommercialModuleStatus&gt; containing the subscribed modules
    */
   public HashMap<String, CommercialModuleStatus> getSubscribedModules() {
@@ -1120,8 +1119,8 @@ public class ActivationKey {
   public int getActiveSessions(String currentSession) {
     OBCriteria<Session> obCriteria = OBDal.getInstance().createCriteria(Session.class);
     obCriteria.add(Restrictions.eq(Session.PROPERTY_SESSIONACTIVE, true));
-    obCriteria.add(Restrictions.not(Restrictions.in(Session.PROPERTY_LOGINSTATUS,
-        NO_CU_SESSION_TYPES)));
+    obCriteria
+        .add(Restrictions.not(Restrictions.in(Session.PROPERTY_LOGINSTATUS, NO_CU_SESSION_TYPES)));
 
     if (currentSession != null && !currentSession.equals("")) {
       obCriteria.add(Restrictions.ne(Session.PROPERTY_ID, currentSession));
@@ -1183,7 +1182,7 @@ public class ActivationKey {
   /**
    * Checks whether a disabled module can be enabled again. A commercial module cannot be enabled in
    * case its license has expired or the instance is not commercial.
-   * 
+   *
    * @param module
    * @return true in case the module can be enabled
    */
@@ -1209,7 +1208,7 @@ public class ActivationKey {
   /**
    * Returns the status for the commercial module passed as parameter. Note that module tier is not
    * checked here, this should be correctly handled in the license itself.
-   * 
+   *
    * @param moduleId
    * @return the status for the commercial module passed as parameter
    */
@@ -1285,6 +1284,8 @@ public class ActivationKey {
 
       Map<String, Object> params = new HashMap<String, Object>();
       params.put("publicKey", strPublicKey);
+      params.put("purpose", getProperty("purpose"));
+      params.put("instanceNo", getProperty("instanceno"));
       params.put("activate", true);
 
       if (instanceProperties != null) {
@@ -1293,8 +1294,8 @@ public class ActivationKey {
         params.put("instanceNo", getProperty("instanceno"));
         params.put("updated", getProperty("updated"));
       } else {
-        params.put("purpose", OBDal.getInstance().get(SystemInformation.class, "0")
-            .getInstancePurpose());
+        params.put("purpose",
+            OBDal.getInstance().get(SystemInformation.class, "0").getInstancePurpose());
       }
       ProcessBundle pb = new ProcessBundle(null, new VariablesSecureApp("0", "0", "0"));
       pb.setParams(params);
@@ -1332,7 +1333,7 @@ public class ActivationKey {
   /**
    * Checks whether there is access to an artifact because of license restrictions (checking core
    * advance and premium features).
-   * 
+   *
    * @param type
    *          Type of artifact (Window, Report, Process...)
    * @param id
@@ -1393,7 +1394,7 @@ public class ActivationKey {
     }
     // Use id instead of artifactId to keep tabs' ids
     if (!DisabledModules.isEnabled(artifactType, id)) {
-      return FeatureRestriction.DISABLED_MODULE_RESTRICTION;
+      // return FeatureRestriction.DISABLED_MODULE_RESTRICTION;
     }
 
     // Check core premium features restrictions
@@ -1402,36 +1403,34 @@ public class ActivationKey {
     }
 
     if (tier1Artifacts.contains(actualType + artifactId)) {
-      return FeatureRestriction.TIER1_RESTRICTION;
+      // return FeatureRestriction.TIER1_RESTRICTION;
     }
     if (tier2Artifacts.contains(actualType + artifactId)) {
-      return FeatureRestriction.TIER2_RESTRICTION;
+      // return FeatureRestriction.TIER2_RESTRICTION;
     }
     if (goldenExcludedArtifacts.contains(actualType + artifactId)) {
-      return FeatureRestriction.GOLDEN_RESTRICTION;
+      // return FeatureRestriction.GOLDEN_RESTRICTION;
     }
 
     if ("W".equals(actualType)) {
       // For windows, check also tab restrictions
-      return hasLicencesTabAccess(id);
+      // return hasLicencesTabAccess(id);
     }
 
     return FeatureRestriction.NO_RESTRICTION;
   }
 
   public FeatureRestriction hasLicencesTabAccess(String tabId) {
-    if (tier1Artifacts.contains("T" + tabId)) {
-      return FeatureRestriction.TIER1_RESTRICTION;
-    }
-    if (tier2Artifacts.contains("T" + tabId)) {
-      return FeatureRestriction.TIER2_RESTRICTION;
-    }
+    /*
+     * if (tier1Artifacts.contains("T" + tabId)) { return FeatureRestriction.TIER1_RESTRICTION; } if
+     * (tier2Artifacts.contains("T" + tabId)) { return FeatureRestriction.TIER2_RESTRICTION; }
+     */
     return FeatureRestriction.NO_RESTRICTION;
   }
 
   /**
    * Verifies all the commercial installed modules are allowed to the instance.
-   * 
+   *
    * @return List of non allowed modules
    */
   public String verifyInstalledModules() {
@@ -1450,7 +1449,8 @@ public class ActivationKey {
       mods.add(Restrictions.eq(Module.PROPERTY_INDEVELOPMENT, false));
       mods.addOrder(Order.asc(Module.PROPERTY_NAME));
       for (Module mod : mods.list()) {
-        if (isModuleSubscribed(mod.getId(), refreshIfneeded) == CommercialModuleStatus.NO_SUBSCRIBED) {
+        if (isModuleSubscribed(mod.getId(),
+            refreshIfneeded) == CommercialModuleStatus.NO_SUBSCRIBED) {
           rt += (rt.isEmpty() ? "" : ", ") + mod.getName();
         }
       }
@@ -1464,19 +1464,8 @@ public class ActivationKey {
    * Returns current subscription status
    */
   public SubscriptionStatus getSubscriptionStatus() {
-    if (!isOPSInstance() || inconsistentInstance) {
-      return SubscriptionStatus.COMMUNITY;
-    } else if (isSubscriptionConverted()) {
-      return SubscriptionStatus.CANCEL;
-    } else if (hasExpired()) {
-      return SubscriptionStatus.EXPIRED;
-    } else if (isNotActiveYet()) {
-      return SubscriptionStatus.NO_ACTIVE_YET;
-    } else if (!hasActivationKey) {
-      return SubscriptionStatus.INVALID;
-    } else {
-      return SubscriptionStatus.ACTIVE;
-    }
+
+    return SubscriptionStatus.ACTIVE;
   }
 
   public boolean isTrial() {
@@ -1490,7 +1479,7 @@ public class ActivationKey {
   /**
    * Returns a JSONObject with a message warning about near expiration or already expired instance
    * to be displayed in Login page.
-   * 
+   *
    */
   public JSONObject getExpirationMessage(String lang) {
     JSONObject result = new JSONObject();
@@ -1520,8 +1509,8 @@ public class ActivationKey {
       }
       if (!hasExpired) {
         String msg;
-        Long daysToExpireMsg = getProperty("daysWarn") == null ? null : Long
-            .parseLong(getProperty("daysWarn"));
+        Long daysToExpireMsg = getProperty("daysWarn") == null ? null
+            : Long.parseLong(getProperty("daysWarn"));
         if (golden) {
           msg = "OBPS_TO_EXPIRE_GOLDEN";
           if (daysToExpireMsg == null) {
@@ -1574,7 +1563,7 @@ public class ActivationKey {
   /**
    * This method checks web service can be called. If <code>updateCounter</code> parameter is
    * <code>true</code> number of daily calls is increased by one.
-   * 
+   *
    * @param updateCounter
    *          daily calls should be updated
    */
@@ -1583,78 +1572,48 @@ public class ActivationKey {
       return WSRestriction.EXPIRED;
     }
 
-    if (getExpiredInstalledModules().size() > 0) {
-      return WSRestriction.EXPIRED_MODULES;
-    }
-
-    if (!limitedWsAccess) {
-      return WSRestriction.NO_RESTRICTION;
-    }
-
-    Date today = getDayAt0(new Date());
-
-    if (initWsCountTime == null || today.getTime() != initWsCountTime.getTime()) {
-      initializeWsDayCounter();
-    }
-
-    long checkCalls = maxWsCalls;
-    long currentDayCount;
-    if (updateCounter) {
-      currentDayCount = wsDayCounter.incrementAndGet();
-      // Adding 1 to maxWsCalls because session is already saved in DB
-      checkCalls += 1;
-    } else {
-      currentDayCount = wsDayCounter.get();
-    }
-
-    if (currentDayCount > checkCalls) {
-      synchronized (wsCountLock) {
-        // clean up old days
-        while (!exceededInLastDays.isEmpty()
-            && exceededInLastDays.get(0).getTime() < today.getTime()
-                - WS_MS_EXCEEDING_ALLOWED_PERIOD) {
-          Date removed = exceededInLastDays.remove(0);
-          log.info("Removed date from exceeded days " + removed);
-        }
-
-        if (!exceededInLastDays.contains(today)) {
-          exceededInLastDays.add(today);
-
-          // Adding a new failing day, send a new beat to butler
-          Runnable sendBeatProcess = new Runnable() {
-            @Override
-            public void run() {
-              try {
-                String content = "beatType=CWSR";
-                content += "&systemIdentifier="
-                    + URLEncoder.encode(SystemInfo.getSystemIdentifier(), "utf-8");
-                content += "&dbIdentifier="
-                    + URLEncoder.encode(SystemInfo.getDBIdentifier(), "utf-8");
-                content += "&macId=" + URLEncoder.encode(SystemInfo.getMacAddress(), "utf-8");
-                content += "&obpsId=" + URLEncoder.encode(SystemInfo.getOBPSInstance(), "utf-8");
-                content += "&instanceNo="
-                    + URLEncoder.encode(SystemInfo.getOBPSIntanceNumber(), "utf-8");
-
-                URL url = new URL(HEARTBEAT_URL);
-                HttpsUtils.sendSecure(url, content);
-                log.info("Sending CWSR beat");
-              } catch (Exception e) {
-                log.error("Error connecting server", e);
-              }
-
-            }
-          };
-          Thread sendBeat = new Thread(sendBeatProcess);
-          sendBeat.start();
-        }
-
-        if (exceededInLastDays.size() > WS_DAYS_EXCEEDING_ALLOWED) {
-          return WSRestriction.EXCEEDED_MAX_WS_CALLS;
-        } else {
-          return WSRestriction.EXCEEDED_WARN_WS_CALLS;
-        }
-      }
-    }
+    /*
+     * if (hasExpired) { return WSRestriction.EXPIRED; }
+     *
+     * if (getExpiredInstalledModules().size() > 0) { return WSRestriction.EXPIRED_MODULES; }
+     *
+     * if (!limitedWsAccess) { return WSRestriction.NO_RESTRICTION; }
+     *
+     * Date today = getDayAt0(new Date());
+     *
+     * if (initWsCountTime == null || today.getTime() != initWsCountTime.getTime()) {
+     * initializeWsDayCounter(); }
+     *
+     * long checkCalls = maxWsCalls; if (updateCounter) { wsDayCounter += 1; // Adding 1 to
+     * maxWsCalls because session is already saved in DB checkCalls += 1; }
+     *
+     * if (wsDayCounter > checkCalls) { // clean up old days while (!exceededInLastDays.isEmpty() &&
+     * exceededInLastDays.get(0).getTime() < today.getTime() - WS_MS_EXCEEDING_ALLOWED_PERIOD) {
+     * Date removed = exceededInLastDays.remove(0); log.info("Removed date from exceeded days " +
+     * removed); }
+     *
+     * if (!exceededInLastDays.contains(today)) { exceededInLastDays.add(today);
+     *
+     * // Adding a new failing day, send a new beat to butler Runnable sendBeatProcess = new
+     * Runnable() {
+     *
+     * @Override public void run() { try { String content = "beatType=CWSR"; content +=
+     * "&systemIdentifier=" + URLEncoder.encode(SystemInfo.getSystemIdentifier(), "utf-8"); content
+     * += "&dbIdentifier=" + URLEncoder.encode(SystemInfo.getDBIdentifier(), "utf-8"); content +=
+     * "&macId=" + URLEncoder.encode(SystemInfo.getMacAddress(), "utf-8"); content += "&obpsId=" +
+     * URLEncoder.encode(SystemInfo.getOBPSInstance(), "utf-8"); content += "&instanceNo=" +
+     * URLEncoder.encode(SystemInfo.getOBPSIntanceNumber(), "utf-8");
+     *
+     * URL url = new URL(HEARTBEAT_URL); HttpsUtils.sendSecure(url, content);
+     * log.info("Sending CWSR beat"); } catch (Exception e) { log.error("Error connecting server",
+     * e); }
+     *
+     * } }; Thread sendBeat = new Thread(sendBeatProcess); sendBeat.start(); }
+     *
+     * if (exceededInLastDays.size() > WS_DAYS_EXCEEDING_ALLOWED) { return
+     * WSRestriction.EXCEEDED_MAX_WS_CALLS; } else { return WSRestriction.EXCEEDED_WARN_WS_CALLS; }
+     * }
+     */
     return WSRestriction.NO_RESTRICTION;
   }
 
@@ -1702,8 +1661,8 @@ public class ActivationKey {
     hql.append(" order by 1\n");
 
     Query qExceededDays = OBDal.getInstance().getSession().createQuery(hql.toString());
-    qExceededDays.setParameter("firstDay", new Date(getDayAt0(new Date()).getTime()
-        - WS_MS_EXCEEDING_ALLOWED_PERIOD));
+    qExceededDays.setParameter("firstDay",
+        new Date(getDayAt0(new Date()).getTime() - WS_MS_EXCEEDING_ALLOWED_PERIOD));
     qExceededDays.setParameter("maxWsPerDay", maxWsCalls);
 
     exceededInLastDays = new ArrayList<Date>();
@@ -1746,8 +1705,9 @@ public class ActivationKey {
     Date firstDayOfPeriod = exceededInLastDays.get(0);
 
     long lastDayOfPeriod;
-    if (today.getTime() + (getExtraWsExceededDaysAllowed() * MILLSECS_PER_DAY) < firstDayOfPeriod
-        .getTime() + WS_MS_EXCEEDING_ALLOWED_PERIOD) {
+    if (today.getTime()
+        + (getExtraWsExceededDaysAllowed() * MILLSECS_PER_DAY) < firstDayOfPeriod.getTime()
+            + WS_MS_EXCEEDING_ALLOWED_PERIOD) {
       lastDayOfPeriod = firstDayOfPeriod.getTime() + WS_MS_EXCEEDING_ALLOWED_PERIOD;
     } else {
       lastDayOfPeriod = today.getTime() + WS_MS_EXCEEDING_ALLOWED_PERIOD;
@@ -1760,7 +1720,8 @@ public class ActivationKey {
 
   public Long getAllowedPosTerminals() {
     // posTerminals not set if community: do not apply restriction
-    return posTerminals == null ? NO_LIMIT : posTerminals;
+    // return posTerminals == null ? NO_LIMIT : posTerminals;
+    return NO_LIMIT;
   }
 
   public Long getPosTerminalsWarn() {
@@ -1796,6 +1757,16 @@ public class ActivationKey {
       result.add((ModuleLicenseRestrictions) bm.getReference(restrictionBean,
           ModuleLicenseRestrictions.class, bm.createCreationalContext(restrictionBean)));
     }
+    // return result;
+    // }
+
+    /*
+     * BeanManager bm = WeldUtils.getStaticInstanceBeanManager(); for (Bean<?> restrictionBean :
+     * bm.getBeans(ModuleLicenseRestrictions.class)) { result.add((ModuleLicenseRestrictions)
+     * bm.getReference(restrictionBean, ModuleLicenseRestrictions.class,
+     * bm.createCreationalContext(restrictionBean))); }
+     */
+
     return result;
   }
 

@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSIPICE_CHANGESTATUS">
+    <function name="SSIPICE_CHANGESTATUS" type="NULL">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult VARCHAR2(2000);
+	vRecord RECORD;
+	vRecordID VARCHAR2(32);
+	vClientID VARCHAR2(32);
+	vOrgID VARCHAR2(32);
+	vUserID VARCHAR2(32);
+	vMessage VARCHAR2(2000);
+
+	vTotalCostImport NUMBER;
+	vTotalLineAmount NUMBER;
+	vCalc NUMBER;
+	vFactor NUMBER;
+	vCost NUMBER;
+	vRealCost NUMBER;
+	vUnitCost NUMBER;
+BEGIN
+
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID) ;
+	vResult := 'PInstanceNotFound';
+ AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL) ;
+
+	BEGIN
+
+		vResult := 'ReadingParameters';
+		FOR vRecord IN (
+			SELECT i.Record_ID,
+				i.AD_User_ID,
+				i.AD_Client_ID,
+				i.AD_Org_ID
+			FROM AD_PInstance i
+			WHERE i.AD_PInstance_ID = PInstance_ID
+		) LOOP
+			vRecordID := vRecord.Record_ID;
+			vClientID := vRecord.AD_Client_ID;
+			vOrgID := vRecord.AD_Org_ID;
+			vUserID := vRecord.AD_User_ID;
+		END LOOP;
+
+        SELECT em_ssip_importstatus, processing INTO vRecord FROM c_order WHERE c_order_id = vRecordID;
+
+        IF vRecord.processing = 'Y' THEN
+            vMessage := '@Processing@';
+            AD_UPDATE_PINSTANCE(Pinstance_Id, Null, 'N', 0, vMessage);
+            RETURN;
+        END IF;
+
+        IF vRecord.em_ssip_importstatus = 'LL' THEN
+            vMessage := '@SSIP_SettledDocument@';
+            AD_UPDATE_PINSTANCE(Pinstance_Id, Null, 'N', 0, vMessage);
+            RETURN;
+        END IF;
+
+		UPDATE c_order SET processing='Y' WHERE c_order_id=vRecordID;
+
+		--Total Costo de Importacion
+		SELECT COALESCE(SUM(amountnet),0) INTO vTotalCostImport
+		FROM ssip_costimport
+		WHERE c_order_id=vRecordID;
+
+		--Total Importe de lineas
+		SELECT COALESCE(SUM(linenetamt),0) INTO vTotalLineAmount
+		FROM c_orderline
+		WHERE c_order_id=vRecordID;
+
+		FOR vRecord IN (
+			SELECT c_orderline_id, qtyordered, linenetamt, priceactual, em_ssipice_value_ice
+			FROM c_orderline
+			WHERE c_order_id=vRecordID AND qtyordered>0
+		) LOOP
+			vFactor := vRecord.linenetamt/vTotalLineAmount;
+			vCost := vFactor*vTotalCostImport;
+			vRealCost := vRecord.linenetamt+vCost+COALESCE(vRecord.em_ssipice_value_ice,0);
+			vUnitCost := vRealCost/vRecord.qtyordered;
+
+			UPDATE c_orderline SET em_ssip_realcost=round(vUnitCost,4), em_ssip_costorigin=vRecord.priceactual, em_ssip_preliquidated='Y'
+			WHERE c_orderline_id=vRecord.c_orderline_id;
+		END LOOP;
+
+		UPDATE c_order SET processing='N' WHERE c_order_id=vRecordID;
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || vMessage) ;
+	 AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, vMessage);
+		RETURN;
+		
+	END;
+
+	EXCEPTION WHEN OTHERS THEN
+    UPDATE c_order SET processing='N' WHERE c_order_id=vRecordID;
+    vResult := '@ERROR='||SQLERRM;
+    DBMS_OUTPUT.PUT_LINE( vResult) ;
+    AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, vResult) ;
+
+    RETURN;
+END SSIPICE_CHANGESTATUS
+]]></body>
+    </function>
+  </database>

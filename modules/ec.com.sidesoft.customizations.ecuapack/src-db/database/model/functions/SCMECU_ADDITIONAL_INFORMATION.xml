@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SCMECU_ADDITIONAL_INFORMATION">
+    <function name="SCMECU_ADDITIONAL_INFORMATION" type="VARCHAR">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+
+	v_ResultStr		VARCHAR2(2000) := '';
+	v_Message		TEXT := ''; --OBTG:VARCHAR2--
+	-- Variables
+	vInvoiceID		VARCHAR2(32);
+	vInvoice		RECORD;
+	vDocAction		VARCHAR2(60);
+	vLineBreak		VARCHAR := '
+';
+    vDescription    TEXT := ''; --OBTG:VARCHAR2--
+    vIDescription   TEXT := ''; --OBTG:VARCHAR2--
+    vTemp           TEXT := ''; --OBTG:VARCHAR2--
+    vPositionFrom   INTEGER;
+    vPositionTo     INTEGER;
+    TYPE RECORD IS REF CURSOR;
+    Cur	RECORD;
+
+BEGIN
+	-- Begin Get Parameters
+	FOR Cur IN (
+		SELECT * FROM ad_ep_instance_para WHERE ad_ep_instance_id = PInstance_ID
+	) LOOP
+		IF Cur.ParameterName = 'Record_ID' THEN
+			vInvoiceID := Cur.P_String;
+		ELSEIF Cur.ParameterName = 'DocAction' THEN
+			vDocAction := Cur.P_String;
+		END IF;	
+	END LOOP;
+	-- Finish Get Parameter
+	
+	--<<BEGIN_PROCESS>>
+
+	SELECT * INTO vInvoice FROM c_invoice WHERE c_invoice_id = vInvoiceID;
+
+	IF vInvoice.issotrx = 'Y' THEN
+	
+		IF vDocAction = 'CO' THEN
+
+		SELECT pm.name paymentmethod, pt.name paymentterm, TO_CHAR(dd.duedate,'DD-MM-YYYY') duedate, sr.name salesrep,
+                COALESCE(i.EM_Eei_Description,'') description, i.c_order_id
+                INTO vInvoice
+			FROM c_invoice i
+				JOIN c_paymentterm pt ON pt.c_paymentterm_id = i.c_paymentterm_id
+				JOIN fin_paymentmethod pm ON pm.fin_paymentmethod_id = i.fin_paymentmethod_id
+				LEFT JOIN ad_user u ON u.ad_user_id = i.salesrep_id
+				LEFT JOIN c_bpartner sr ON sr.c_bpartner_id = u.c_bpartner_id
+				LEFT JOIN (
+					SELECT c_invoice_id, MAX(duedate) duedate
+					FROM fin_payment_schedule
+					WHERE c_invoice_id = vInvoiceID
+					GROUP BY c_invoice_id
+				) dd ON dd.c_invoice_id = i.c_invoice_id
+			WHERE i.c_invoice_id = vInvoiceID;
+            
+            vIDescription := 'Método de pago: '||vInvoice.paymentmethod
+				||vLineBreak||'Condición de pago: '||vInvoice.paymentterm
+				||vLineBreak||'Fecha vencimiento: '||COALESCE(vInvoice.duedate,'')
+				||vLineBreak||'Agente comercial: '||COALESCE(vInvoice.salesrep,'');
+            
+            SELECT POSITION('[' IN vInvoice.description) INTO vPositionFrom;
+            IF vPositionFrom >= 1 THEN
+                SELECT POSITION(']' IN vInvoice.description) INTO vPositionTo;
+                IF vPositionTo = 0 THEN
+                    SELECT LENGTH(vInvoice.description) INTO vPositionTo;
+                END IF;
+                
+                SELECT SUBSTRING(vInvoice.description,vPositionFrom,vPositionTo-vPositionFrom+1) INTO vTemp;
+                
+                SELECT REPLACE(vInvoice.description,vTemp,'['||vIDescription||']') INTO vDescription;
+
+            ELSEIF vInvoice.description != '' THEN
+                vDescription := vInvoice.description||vLineBreak||'['||vIDescription||']';
+            ELSE
+                vDescription := '['||vIDescription||']';
+            END IF;
+            
+            UPDATE c_invoice SET EM_Eei_Description = SUBSTRING(vDescription,1,255)
+            WHERE c_invoice_id = vInvoiceID;
+		
+            END IF;
+		
+	END IF; 
+
+	--<<FINISH_PROCESS>>
+		
+	RETURN v_ResultStr;
+END SCMECU_ADDITIONAL_INFORMATION
+]]></body>
+    </function>
+  </database>

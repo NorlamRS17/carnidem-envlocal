@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SATMAC_PROJECT_TASK_SEQ_TRG">
+    <trigger name="SATMAC_PROJECT_TASK_SEQ_TRG" table="C_PROJECTTASK" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+    rProject RECORD;
+    rMachine RECORD;
+    rParentOrg RECORD;
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+	
+	IF INSERTING THEN
+        SELECT pr.value, pp.seqno INTO rProject
+        FROM c_project pr
+            JOIN c_projectphase pp ON pp.c_project_id = pr.c_project_id
+        WHERE pp.c_projectphase_id = :NEW.c_projectphase_id
+            AND pp.em_sproctm_prhasetype = 'E';
+            
+        IF rProject.value IS NOT NULL THEN
+            :NEW.em_satmac_chassis_number = COALESCE(rProject.value,'')||'-'||COALESCE(rProject.seqno::VARCHAR,'')
+                ||'-'||COALESCE(:NEW.seqno::VARCHAR,'');
+        END IF;
+	END IF;
+    
+    IF UPDATING AND COALESCE(:NEW.em_satmac_chassis_number,'') != '' THEN
+        SELECT chassis_number, em_satmac_machine_type_id, m_brand_id, ssfi_model_prod_id, sswos_year_id INTO rMachine
+        FROM sswos_vehicle
+        WHERE chassis_number = :NEW.em_satmac_chassis_number;
+        
+        IF rMachine.chassis_number IS NULL THEN
+            SELECT c_project_id  INTO rProject
+            FROM c_projectphase
+            WHERE c_projectphase_id = :NEW.c_projectphase_id;
+            
+            SELECT ad_client_id, ad_org_id INTO rParentOrg FROM ad_org WHERE issummary = 'Y' AND ad_orgtype_id = '1';
+        
+            INSERT INTO sswos_vehicle (
+                sswos_vehicle_id, ad_client_id, ad_org_id, createdby, updatedby,
+                m_brand_id, ssfi_model_prod_id, sswos_year_id, chassis_number, em_satmac_project_id,
+                em_satmac_machine_type_id, em_satmac_origin, em_satmac_name
+            ) VALUES (
+                get_uuid(), rParentOrg.ad_client_id, rParentOrg.ad_org_id, :NEW.createdby, :NEW.updatedby,
+                :NEW.em_satmac_brand_id, :NEW.em_satmac_model_prod_id, :NEW.em_satmac_year_id, :NEW.em_satmac_chassis_number, rProject.c_project_id,
+                :NEW.em_satmac_machine_type_id, 'P', :NEW.name
+            );
+        ELSE
+        
+            UPDATE sswos_vehicle SET m_brand_id = :NEW.em_satmac_brand_id, ssfi_model_prod_id = :NEW.em_satmac_model_prod_id,
+                sswos_year_id = :NEW.em_satmac_year_id, em_satmac_machine_type_id = :NEW.em_satmac_machine_type_id
+            WHERE chassis_number = :NEW.em_satmac_chassis_number;
+            
+        END IF;
+    END IF;
+
+	END SATMAC_PROJECT_TASK_SEQ_TRG
+]]></body>
+    </trigger>
+  </database>

@@ -26,7 +26,7 @@ public class Head98EF722B1AD54C79894820F95F1D68CE extends HttpSecureAppServlet {
   
   private static final String windowId = "E10BCF6E6F064DA6BAC15F8991085A62";
   private static final String tabId = "98EF722B1AD54C79894820F95F1D68CE";
-  private static final int accesslevel = 7;
+  private static final int accesslevel = 3;
   private static final String moduleId = "EDC67FCFF1394BFA91FE9337081602ED";
   
   @Override

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="es_EC" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="028329B933214F48BFBC60A13FE87FD5" trl="N">
+    <value column="Name" isTrl="N" original="Universidad">Universidad</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1B69DB0677D84DCD80325AE457EC5146" trl="N">
+    <value column="Name" isTrl="N" original="Casado">Casado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="209C52084E184795A52F369071504E17" trl="N">
+    <value column="Name" isTrl="N" original="De Familiares">De Familiares</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="2561D5CEEB7E4C35A85F7884EACBC10A" trl="N">
+    <value column="Name" isTrl="N" original="Pimaria">Pimaria</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="2C6E2B6B8D0D4A8BA910D78A401BF481" trl="N">
+    <value column="Name" isTrl="N" original="Persona Jurídica">Persona Jurídica</value>
+    <value column="Description" isTrl="N" original="Persona Jurídica">Persona Jurídica</value>
+  </row>
+  <row id="2DA4D3F4E9B64698ACD1EC3972DCF6F7" trl="N">
+    <value column="Name" isTrl="N" original="Arrendada">Arrendada</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="5899E09A43BB46FB91904DB9A39B0CB4" trl="N">
+    <value column="Name" isTrl="N" original="Consolidado">Consolidado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="626B54C14B734FCC94AE49B32A12E5C8" trl="N">
+    <value column="Name" isTrl="N" original="Viudo">Viudo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="67571D49B0814B8EB36890B7E64372DA" trl="N">
+    <value column="Name" isTrl="N" original="Anticresis">Anticresis</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="96060F78C4C544DD8DAA4BD15AAED88B" trl="N">
+    <value column="Name" isTrl="N" original="Unión Libre">Unión Libre</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="9D888459BABB4792917EAE8B9D9CC9F1" trl="N">
+    <value column="Name" isTrl="N" original="Otros">Otros</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A617505FE33D4D368F2EC5778628335C" trl="N">
+    <value column="Name" isTrl="N" original="Divorciado">Divorciado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="BA3AF2BCEB474A4ABE590476B66F7DBD" trl="N">
+    <value column="Name" isTrl="N" original="Propia sin deuda">Propia sin deuda</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="D155C8FC979542E381562C8C09E88A68" trl="N">
+    <value column="Name" isTrl="N" original="Persona Natural">Persona Natural</value>
+    <value column="Description" isTrl="N" original="Persona Natural">Persona Natural</value>
+  </row>
+  <row id="D194228CCCA043D9A4D7503C871A94E0" trl="N">
+    <value column="Name" isTrl="N" original="Propia con deuda">Propia con deuda</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="FD13D229E00D4CA39971D20D2099472E" trl="N">
+    <value column="Name" isTrl="N" original="Soltero">Soltero</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="FF8CB83E6D054E0A8137705D0226A6DD" trl="N">
+    <value column="Name" isTrl="N" original="Secundaria">Secundaria</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

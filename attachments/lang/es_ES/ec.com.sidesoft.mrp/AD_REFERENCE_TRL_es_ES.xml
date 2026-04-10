@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="1CFA0F2CCC7744619214AFAEA117B43A" trl="N">
+    <value column="Name" isTrl="N" original="Status Forecast (SSMRP)">Status Forecast (SSMRP)</value>
+    <value column="Description" isTrl="N" original="Status Forecast (SSMRP)">Status Forecast (SSMRP)</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2A225BCD4242420BB48A0DCA66DF8E10" trl="N">
+    <value column="Name" isTrl="N" original="EM_Ssmrp_Brand_ID">EM_Ssmrp_Brand_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A7FFD5E854664E338794A701BFB5203C" trl="N">
+    <value column="Name" isTrl="N" original="All Action Button (SSMRP)">All Action Button (SSMRP)</value>
+    <value column="Description" isTrl="N" original="All Action Button (SSMRP)">All Action Button (SSMRP)</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B7CA89EECE50401D87A94C6D8D9C6CD5" trl="N">
+    <value column="Name" isTrl="N" original="Calculation type">Calculation type</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="CA5BC01FE52C4A7B83807F51015E2D3F" trl="N">
+    <value column="Name" isTrl="N" original="forecast_period">forecast_period</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D199AFBD1110479D8489A3727B60390E" trl="N">
+    <value column="Name" isTrl="N" original="forecast_method">forecast_method</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

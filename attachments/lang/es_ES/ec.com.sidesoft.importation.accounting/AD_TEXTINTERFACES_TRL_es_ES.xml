@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="07473DF52BF94B8AB8AB2C8AB0F9CF1D" trl="N">
+    <value column="Text" isTrl="N" original="N° Documento">N° Documento</value>
+  </row>
+  <row id="0939EAE13BB24E22A02F146348318F22" trl="N">
+    <value column="Text" isTrl="N" original="Saldo">Saldo</value>
+  </row>
+  <row id="743765200C884A0AB6A1972CDC1891F9" trl="N">
+    <value column="Text" isTrl="N" original="Usuario:">Usuario:</value>
+  </row>
+  <row id="7C30A4F0E3C14EC5A32211B9A5A48871" trl="N">
+    <value column="Text" isTrl="N" original="Tipo de Documento">Tipo de Documento</value>
+  </row>
+  <row id="7DD4A21F3FBA499CA3C1584CB5E629BB" trl="N">
+    <value column="Text" isTrl="N" original="Fecha impresión:">Fecha impresión:</value>
+  </row>
+  <row id="80B2D5321E8049A89E7DA8AAC78847F2" trl="N">
+    <value column="Text" isTrl="N" original="Tercero">Tercero</value>
+  </row>
+  <row id="82E206E0E79344548379EC87B241D299" trl="N">
+    <value column="Text" isTrl="N" original="Fecha">Fecha</value>
+  </row>
+  <row id="85A73A8154094CD980AF94330AF673C5" trl="N">
+    <value column="Text" isTrl="N" original="REPORTE DE IMPORTACIONES EN CURSO">REPORTE DE IMPORTACIONES EN CURSO</value>
+  </row>
+  <row id="8A377EBADCF84E2E8C0E625215A36CCB" trl="N">
+    <value column="Text" isTrl="N" original="Haber">Haber</value>
+  </row>
+  <row id="BE5F3B2954B14C1EB709B2D4F9370D10" trl="N">
+    <value column="Text" isTrl="N" original="Debe">Debe</value>
+  </row>
+  <row id="C97E05A7DA564517B1788BE9F6998135" trl="N">
+    <value column="Text" isTrl="N" original="N° Importación">N° Importación</value>
+  </row>
+</compiereTrl>

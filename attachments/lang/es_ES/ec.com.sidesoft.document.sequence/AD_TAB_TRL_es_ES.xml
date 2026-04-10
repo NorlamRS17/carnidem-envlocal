@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="1B0A14C41E5F49E080F809C286B6C21E" trl="N">
+    <value column="Name" isTrl="N" original="Credit Note Document Sequence">Credit Note Document Sequence</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3CD292DD621345D9BA1ADE6355C796FA" trl="N">
+    <value column="Name" isTrl="N" original="Invoice Document Sequence">Invoice Document Sequence</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="40AE3895EF09481ABCEC62A9B8A29782" trl="N">
+    <value column="Name" isTrl="N" original="Document Sequence Values Invoices">Document Sequence Values Invoices</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4C17F5D6FA114CD4889DF9A813BF586F" trl="N">
+    <value column="Name" isTrl="N" original="Receipt Type">Receipt Type</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AA3FEB369AE943F8BE3D0F2301530F47" trl="N">
+    <value column="Name" isTrl="N" original="Document Sequence Values Credit Note">Document Sequence Values Credit Note</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

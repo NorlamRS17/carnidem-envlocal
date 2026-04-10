@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE M_INOUTLINE">
+    <table name="M_INOUTLINE" primaryKey="M_INOUTLINE_KEY">
+      <column name="EM_SSTPC_ISCONSWORKP" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSTPC_ISLIQUIDATED" primaryKey="false" required="true" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <check name="EM_SSTPC_ISCONSWORKP_CHK"><![CDATA[EM_SSTPC_ISCONSWORKP IN ('Y', 'N')]]></check>
+      <check name="EM_SSTPC_ISLIQUIDATED_CHK"><![CDATA[EM_SSTPC_ISLIQUIDATED IN ('Y', 'N')]]></check>
+    </table>
+  </database>

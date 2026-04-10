@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SNMA_GENERATE_ALERTS">
+    <function name="SNMA_GENERATE_ALERTS" type="VARCHAR">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+	v_ResultStr VARCHAR2(2000) := '';
+	v_Message TEXT := ''; --OBTG:VARCHAR2--
+	-- Variables
+	Cur RECORD;
+	vRecordID VARCHAR2(32);
+	vRecord RECORD;
+	vPeriod VARCHAR2(32);
+	vSales NUMBER;
+	vReturns NUMBER;
+	vActualAmount NUMBER;
+	vPercentage NUMBER;
+	vsql TEXT;
+BEGIN
+
+					--raise exception '%','Side' ;
+
+	-- Update AD_PInstance
+	DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing '||PInstance_ID);
+	v_ResultStr := 'PInstanceNotFound';
+ AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'Y', NULL, NULL);
+	
+	BEGIN -- BODY
+    	-- Begin Get Parameters
+		v_ResultStr := 'ReadingParameters';
+		FOR Cur IN (
+			SELECT i.Record_ID, p.ParameterName, p.P_String, p.P_Number, p.P_Date
+			FROM AD_PInstance i
+				LEFT JOIN AD_PInstance_Para p ON i.AD_PInstance_ID=p.AD_PInstance_ID
+			WHERE i.AD_PInstance_ID=PInstance_ID
+			ORDER BY p.SeqNo
+		) LOOP
+			vRecordID := CurParameter.Record_ID;
+		END LOOP;
+		DBMS_OUTPUT.PUT_LINE('	vRecordID='||vRecordID);
+		-- Finish Get Parameter
+		
+		--<<BEGIN_PROCESS>>
+
+		
+ 		insert into snma_app_notify(snma_app_notify_id, ad_client_id, ad_org_id, isactive, created, createdby, updated, updatedby
+		, snma_type_notify_id, 
+		salesrep_id, description, datenotification)
+
+		select 
+ 
+		a.ad_alert_id as snma_app_notify_id, 
+		a.ad_client_id, a.ad_org_id, 
+		a.isactive, now() AS created, a.createdby, 
+		now() as updated, a.updatedby
+		,(select snma_type_notify_id 
+		  from snma_type_notify where value ='NEWS')  as snma_type_notify_id, 
+		a.ad_user_id as salesrep_id, a.description, now() as datenotification
+		from ad_alert a
+		inner join ad_user b on a.ad_user_id = b.ad_user_id
+		inner join c_bpartner c on b.c_bpartner_id = c.c_bpartner_id
+		where a.ad_user_id is not null
+		and c.issalesrep = 'Y'
+		and not exists (
+				select 1 from snma_app_notify san 
+				where san.snma_app_notify_id= a.ad_alert_id
+		) and exists
+		(select 1 from ad_alertrule aar where aar.ad_alertrule_id = a.ad_alertrule_id
+		and aar.EM_Snma_Alert_Mobile='Y'
+		);
+
+
+		--<<FINISH_PROCESS>>
+		
+		-- Update AD_PInstance
+		DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished '||v_Message);
+	 AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 1, v_Message);
+		RETURN v_Message;
+	END; -- BODY
+EXCEPTION WHEN OTHERS THEN
+	v_ResultStr:= '@ERROR='||SQLERRM;
+	DBMS_OUTPUT.PUT_LINE( v_ResultStr) ;
+ AD_UPDATE_PINSTANCE(PInstance_ID, NULL, 'N', 0, v_ResultStr);
+	RETURN v_ResultStr;
+END SNMA_GENERATE_ALERTS
+]]></body>
+    </function>
+  </database>

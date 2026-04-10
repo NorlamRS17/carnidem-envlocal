@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="4BA3484E3D4148C39A8082A5A1E06464" trl="N">
+    <value column="Name" isTrl="Y" original="Imports of Summary">Resumen de Importaciones</value>
+    <value column="Description" isTrl="Y" original="Imports of Summary">Resumen de Importaciones</value>
+  </row>
+  <row id="4E97B9A43CA740FBBDA043D8C003C035" trl="N">
+    <value column="Name" isTrl="Y" original="Transaction ">Transacción</value>
+    <value column="Description" isTrl="Y" original="Transaction">Transacción</value>
+  </row>
+  <row id="5EBDC3203B1745929A4F484C543FF932" trl="N">
+    <value column="Name" isTrl="Y" original="Port Type">Tipo de Puerto</value>
+    <value column="Description" isTrl="N" original="">Tipo de Puerto</value>
+  </row>
+  <row id="7D4C67C923F64244B77D274C4C7FAF21" trl="N">
+    <value column="Name" isTrl="Y" original="Configuration">Configuración</value>
+    <value column="Description" isTrl="Y" original="Configuration">Configuración</value>
+  </row>
+  <row id="9BF568D96EE746E7A720AC54F1A62F71" trl="N">
+    <value column="Name" isTrl="Y" original="Imports">Importaciones</value>
+    <value column="Description" isTrl="Y" original="Imports">Importaciones</value>
+  </row>
+  <row id="9F20842BF3AA490FBE9A6C5B47B41745" trl="N">
+    <value column="Name" isTrl="Y" original="Imports">Importaciones</value>
+    <value column="Description" isTrl="Y" original="Imports Maintenance">Importaciones</value>
+  </row>
+  <row id="A5B008136B5742A1A35B1438488909DA" trl="N">
+    <value column="Name" isTrl="Y" original="Imports status">Estado de importaciones</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A8DD6F169E3E4769B3395133B6629E96" trl="N">
+    <value column="Name" isTrl="Y" original="Import Report">Reporte  de Importacion</value>
+    <value column="Description" isTrl="Y" original="Import Report">Reporte  de Importacion</value>
+  </row>
+  <row id="B1F867811757429096518DA13C65A572" trl="N">
+    <value column="Name" isTrl="Y" original="Means Transport">Medios de Trasporte</value>
+    <value column="Description" isTrl="N" original="">Medios de Trasporte</value>
+  </row>
+  <row id="B604C897BFA740A38AAD06282C5003E7" trl="N">
+    <value column="Name" isTrl="Y" original="Analysis Tools">Herramientas de Análisis </value>
+    <value column="Description" isTrl="Y" original="Analysis Tools">Herramientas de Análisis</value>
+  </row>
+  <row id="C1AEC5F7DD9B4A5CA6ECD74BC8149813" trl="Y">
+    <value column="Name" isTrl="Y" original="Import detail">Detalle de importaciones</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E2494D405B0B4CFEBFC65CFB22D7476B" trl="N">
+    <value column="Name" isTrl="Y" original="Additional Costs">Costos Adicionales</value>
+    <value column="Description" isTrl="N" original="">Costos Adicionales</value>
+  </row>
+</compiereTrl>

@@ -15,7 +15,7 @@ public abstract class Sdcc_Helper {
 
   static public String getString(Cell cell) throws Exception {
     if (cell.getCellTypeEnum().equals(CellType.NUMERIC)) {
-      cell.setCellType(CellType.STRING);
+      cell.setCellType(Cell.CELL_TYPE_STRING);
     }
     DataFormatter dataFormatter = new DataFormatter();
     String value = dataFormatter.formatCellValue(cell);

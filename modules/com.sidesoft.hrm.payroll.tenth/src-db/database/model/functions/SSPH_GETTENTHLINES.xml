@@ -33,6 +33,7 @@
   V_MonthlyValue NUMBER(10,2):=0.0;
   V_Monthly NUMBER(10,2):=0.0;
 
+
 BEGIN
   --  Update AD_PInstance
   DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || PInstance_ID) ;
@@ -141,7 +142,8 @@ BEGIN
     
     if V_CheckDate <> 0 then
       RAISE_APPLICATION_ERROR(-20000, '@SSPH_NoRegimenDetailDate@');
-    end if; 
+    end if;
+      
     -- Lines
     FOR Cur_Lines IN
     (
@@ -188,19 +190,9 @@ BEGIN
       ) camt on camt.c_bpartner_id = bp.c_bpartner_id
       --Dias 14TH
 	left join (
-      	select cpa.c_bpartner_id, sum(coalesce(prt.workeddays, cpa.amount, 0)) as workeddays
+      	select cpa.c_bpartner_id, sum(cpa.amount) as workeddays
         from  sspr_concept_amount cpa 
         left join sspr_concept cp on cpa.sspr_concept_id=cp.sspr_concept_id 
-        left join (
-          select aa.c_period_id, bb.c_bpartner_id,
-                 sum(coalesce(bb.worked_days_benefits, bb.workeddays, 0)) as workeddays
-          from sspr_payroll aa
-          left join sspr_payroll_ticket bb on bb.sspr_payroll_id = aa.sspr_payroll_id
-          where aa.isliquidation = 'N'
-            and aa.ispayroll = 'N'
-          group by aa.c_period_id, bb.c_bpartner_id
-        ) prt on prt.c_period_id = cpa.c_period_id
-             and prt.c_bpartner_id = cpa.c_bpartner_id
         left join SSPR_Contract ct on cpa.c_bpartner_id=ct.c_bpartner_id  and ct.isactive='Y' AND ct.sspr_contract_id = SSPH_ACTIVE_CONTRACT_IDENT(ct.c_bpartner_id, V_DocumentDate)
         left join sspr_labor_regime lr on ct.sspr_labor_regime_id = lr.sspr_labor_regime_id
         left join sspr_labor_regime_detail lrd on lr.sspr_labor_regime_id = lrd.sspr_labor_regime_id and lrd.typeconcept = V_TypeConcept and lrd.isactive ='Y'
@@ -301,7 +293,7 @@ BEGIN
         case when V_TypeConcept = '14TH' then
           coalesce((case when Cur_Lines.workeddays_b > 359 then V_Salbasic else (Cur_Lines.workeddays_b * V_Salbasic)/360 end), 0)
         else 0 end,
-        coalesce((case when Cur_Lines.workeddays_b >= 360 then 360 else Cur_Lines.workeddays_b end), 0), V_MonthlyValue, COALESCE(V_Monthly,0)  
+        coalesce((case when Cur_Lines.workeddays >= 360 then 360 else Cur_Lines.workeddays end), 0), V_MonthlyValue, COALESCE(V_Monthly,0)  
       );
       
     END LOOP; -- End Lines

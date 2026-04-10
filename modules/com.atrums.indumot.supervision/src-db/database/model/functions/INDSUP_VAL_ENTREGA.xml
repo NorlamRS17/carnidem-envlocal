@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION INDSUP_VAL_ENTREGA">
+    <function name="INDSUP_VAL_ENTREGA" type="VARCHAR">
+      <parameter name="orden_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_resultado varchar(1);
+    desp_pendientes NUMBER:=0;
+
+BEGIN
+
+
+    select count(l.atindpo_postventalinea_id)
+    into desp_pendientes
+    from m_product p,atindpo_postventalinea l
+    where l.atindpo_postventa_id=orden_id
+    and l.m_product_id=p.m_product_id
+    and p.producttype='I'
+    and l.entregado='N';
+
+    IF(desp_pendientes>0)THEN
+        v_resultado='N';
+    else
+        v_resultado='Y';
+    end if;
+
+return v_resultado;
+END INDSUP_VAL_ENTREGA
+]]></body>
+    </function>
+  </database>

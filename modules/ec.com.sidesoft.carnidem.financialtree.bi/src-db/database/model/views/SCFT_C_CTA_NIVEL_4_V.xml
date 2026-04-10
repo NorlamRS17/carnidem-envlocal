@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
   <database name="VIEW SCFT_C_CTA_NIVEL_4_V">
-    <view name="SCFT_C_CTA_NIVEL_4_V"><![CDATA[SELECT c_elementvalue.elementlevel, c_elementvalue.c_elementvalue_id AS cta_nivel_4, c_elementvalue.name AS name_4, c_elementvalue.value AS nivel_4, ad_treenode.parent_id AS padre FROM c_elementvalue LEFT JOIN ad_treenode ON c_elementvalue.c_elementvalue_id = ad_treenode.node_id WHERE ad_treenode.ad_tree_id = '7D59BBFB20034668BFAE02146880197D' AND (ad_treenode.parent_id IN (SELECT scft_c_cta_nivel_3_V.cta_nivel_3 FROM scft_c_cta_nivel_3_V))]]></view>
+    <view name="SCFT_C_CTA_NIVEL_4_V"><![CDATA[SELECT c_elementvalue.elementlevel, c_elementvalue.c_elementvalue_id AS cta_nivel_4, c_elementvalue.name AS name_4, c_elementvalue.value AS nivel_4, ad_treenode.parent_id AS padre FROM c_elementvalue LEFT JOIN ad_treenode ON c_elementvalue.c_elementvalue_id = ad_treenode.node_id WHERE ad_treenode.ad_tree_id = '7D59BBFB20034668BFAE02146880197D' AND (ad_treenode.parent_id IN (SELECT scft_c_cta_nivel_3_v.cta_nivel_3 FROM scft_c_cta_nivel_3_v))]]></view>
   </database>

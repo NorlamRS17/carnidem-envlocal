@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="125B545AB00B4E0481196AFD50DBC600" trl="N">
+    <value column="Name" isTrl="N" original="AEC">AEC</value>
+    <value column="Description" isTrl="N" original="AEC">AEC</value>
+  </row>
+  <row id="23526399F6A9456C8B21F220B186ECF7" trl="N">
+    <value column="Name" isTrl="N" original="SALVAGUARDIA">SALVAGUARDIA</value>
+    <value column="Description" isTrl="N" original="SALVAGUARDIA">SALVAGUARDIA</value>
+  </row>
+  <row id="39637200F34843C58AC2C0CE21278347" trl="N">
+    <value column="Name" isTrl="N" original="VALOR SEGURO">VALOR SEGURO</value>
+    <value column="Description" isTrl="N" original="VALOR SEGURO">VALOR SEGURO</value>
+  </row>
+  <row id="398B05C9459B43609170E01CED3EC1F4" trl="N">
+    <value column="Name" isTrl="N" original="No Liquidado">No Liquidado</value>
+    <value column="Description" isTrl="N" original="No Liquidado">No Liquidado</value>
+  </row>
+  <row id="4E5FE85526CC41AB9F20CA62ED0FFFA0" trl="N">
+    <value column="Name" isTrl="N" original="Pre Liquidado">Pre Liquidado</value>
+    <value column="Description" isTrl="N" original="Pre Liquidado">Pre Liquidado</value>
+  </row>
+  <row id="5C033A8BC8704B10A85B8E454DCFFAEF" trl="N">
+    <value column="Name" isTrl="N" original="PESO">PESO</value>
+    <value column="Description" isTrl="N" original="PESO">PESO</value>
+  </row>
+  <row id="6C35206BDEAD44FDAAC0E8D1879A1ED2" trl="N">
+    <value column="Name" isTrl="N" original="VALOR FLETE">VALOR FLETE</value>
+    <value column="Description" isTrl="N" original="VALOR FLETE">VALOR FLETE</value>
+  </row>
+  <row id="6F6DA1378E87427D829809CEA01B8A2C" trl="N">
+    <value column="Name" isTrl="N" original="IVA">IVA</value>
+    <value column="Description" isTrl="N" original="IVA">IVA</value>
+  </row>
+  <row id="7D8AA3E1C9484432A27951E03C1CACD1" trl="N">
+    <value column="Name" isTrl="N" original="ANTIDUMPING">ANTIDUMPING</value>
+    <value column="Description" isTrl="N" original="ANTIDUMPING">ANTIDUMPING</value>
+  </row>
+  <row id="89C01117FE6944F7B822C469F0557854" trl="N">
+    <value column="Name" isTrl="N" original="VALOR ADUANA">VALOR ADUANA</value>
+    <value column="Description" isTrl="N" original="VALOR ADUANA">VALOR ADUANA</value>
+  </row>
+  <row id="8D54363458534FE68D1A4BB214F39601" trl="N">
+    <value column="Name" isTrl="N" original="ICE ADVALOREM">ICE ADVALOREM</value>
+    <value column="Description" isTrl="N" original="ICE ADVALOREM">ICE ADVALOREM</value>
+  </row>
+  <row id="A43FD8C246F44D64A63891843E070D3D" trl="N">
+    <value column="Name" isTrl="N" original="CANTIDAD">CANTIDAD</value>
+    <value column="Description" isTrl="N" original="CANTIDAD">CANTIDAD</value>
+  </row>
+  <row id="AB767A03B1FA4A0C9FD9036DE57EBD51" trl="N">
+    <value column="Name" isTrl="N" original="INCREMENTO ICE">INCREMENTO ICE</value>
+    <value column="Description" isTrl="N" original="INCREMENTO ICE">INCREMENTO ICE</value>
+  </row>
+  <row id="B2DB2ABECB45437DA16852B47280E1E2" trl="N">
+    <value column="Name" isTrl="N" original="Liquidado">Liquidado</value>
+    <value column="Description" isTrl="N" original="Liquidado">Liquidado</value>
+  </row>
+  <row id="B3968063E1344551B6943452C7A6FA68" trl="N">
+    <value column="Name" isTrl="N" original="DOLARES">DOLARES</value>
+    <value column="Description" isTrl="N" original="DOLARES">DOLARES</value>
+  </row>
+  <row id="C2887A549E3F4DF09E4ADFE8ADE6778F" trl="N">
+    <value column="Name" isTrl="N" original="VOLUMEN">VOLUMEN</value>
+    <value column="Description" isTrl="N" original="VOLUMEN">VOLUMEN</value>
+  </row>
+  <row id="C3F72AD1862A4851914CE76D2B168F4A" trl="N">
+    <value column="Name" isTrl="N" original="FODINFA">FODINFA</value>
+    <value column="Description" isTrl="N" original="FODINFA">FODINFA</value>
+  </row>
+  <row id="C8E99B92FDD4465CB0DECEEDE53E82B8" trl="N">
+    <value column="Name" isTrl="N" original="ARANCEL ADVALOREM">ARANCEL ADVALOREM</value>
+    <value column="Description" isTrl="N" original="ARANCEL ADVALOREM">ARANCEL ADVALOREM</value>
+  </row>
+  <row id="CF15BA8D9E1B4364A637CF8B2BDAC113" trl="N">
+    <value column="Name" isTrl="N" original="PORCENTANJE TECHO CONSOLIDADO">PORCENTANJE TECHO CONSOLIDADO</value>
+    <value column="Description" isTrl="N" original="PORCENTANJE TECHO CONSOLIDADO">PORCENTANJE TECHO CONSOLIDADO</value>
+  </row>
+</compiereTrl>

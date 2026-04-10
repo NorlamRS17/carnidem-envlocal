@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="0CC7A53BE5D249738AA7EEBB9E1799D9" trl="N">
+    <value column="MsgText" isTrl="N" original="Motivo de Cierre">Motivo de Cierre</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="1B15EE30D15E4A599910B76BF07698EF" trl="N">
+    <value column="MsgText" isTrl="N" original="¿Desea cerrar el pedido de ventas %0 ?">¿Desea cerrar el pedido de ventas %0 ?</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="4BFDD4B5C0154F788C430B43BA5CAB10" trl="N">
+    <value column="MsgText" isTrl="N" original="Cerrar">Cerrar</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="7721C6C9DC304C549FB9CB057B96DD7D" trl="N">
+    <value column="MsgText" isTrl="N" original="Cerrar Pedido">Cerrar Pedido</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

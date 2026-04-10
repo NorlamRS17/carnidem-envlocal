@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="05B38539B3A74EF3B3F40F625862E807" trl="Y">
+    <value column="Name" isTrl="Y" original="Reconcile Data">Conciliar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="95A03FFAC99144738D3FAC63A4C84750" trl="N">
+    <value column="Name" isTrl="N" original="Load LInes Collection Proposal">Load LInes Collection Proposal</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A0B82EA8975D47189861FD5F75C89083" trl="Y">
+    <value column="Name" isTrl="Y" original="Generate Collection Proposals">Generar propuestas de cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A3D36D357A9F48DDB7507FCADC8465F3" trl="Y">
+    <value column="Name" isTrl="Y" original="Generate Payment">Crear Cobros</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A43E4972B01443BE903852BD9C5AE26C" trl="Y">
+    <value column="Name" isTrl="Y" original="Process Debit Collection">Procesar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="EEF702E1F1B44ACEBA7B15D8C30A8E02" trl="N">
+    <value column="Name" isTrl="N" original="Valid Payments">Valid Payments</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F89D98E2478B4FF6856678A9D76AE645" trl="Y">
+    <value column="Name" isTrl="Y" original="Remove Lines">Eliminar lineas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>
