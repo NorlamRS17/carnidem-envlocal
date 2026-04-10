@@ -73,5 +73,18 @@ Así la **próxima ejecución** parte exactamente de esos punteros.
 ### Detalles útiles
 
 - Si **todos** los SHA remotos coinciden con el JSON, el job **no modifica archivos** del ambiente y no hace commit.
+- **`sha` vacío** o **cambio de `repo`** en una entrada: solo se **actualiza el puntero** en `last_commits.json` al HEAD remoto; **no** se vuelca el repositorio remoto sobre `modules/` ni sobre la raíz (se asume que el árbol del ambiente ya es el correcto).
+- Los **cambios de archivos** solo se aplican cuando hay un SHA previo **no vacío** y distinto del remoto: entonces se usa `git diff` entre esos dos commits del **mismo** repo.
 - Variable opcional `SYNC_APPLY_DELETES=0` desactiva borrados en disco para entradas `D` del diff (por defecto se aplican).
-- Si cambiás el orden o la lista de repos en el workflow, hay que alinear o regenerar `last_commits.json` (el script lo detecta y falla con mensaje claro).
+- Si cambiás el orden o la lista de repos en el workflow, el script intenta seguir; si el `repo` de una posición cambia, solo alinea punteros (ver arriba).
+
+### Fallo en Actions: `No url found for submodule path ...`
+
+Suele pasar si en el índice Git hay un **gitlink** (modo `160000`) a una carpeta `modules/...` pero no hay `.gitmodules` válido. Hay que dejar de tratar esa carpeta como submódulo y versionar archivos normales:
+
+```bash
+rm -rf modules/<ruta>/.git   # si existía clone embebido
+git rm --cached modules/<ruta>
+git add modules/<ruta>
+git commit -m "fix: quitar submódulo roto, trackear archivos del módulo"
+```

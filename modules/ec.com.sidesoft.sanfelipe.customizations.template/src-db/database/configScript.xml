@@ -1,0 +1,258 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <removeCheckChange tableName="C_BPARTNER" checkName="C_BPARTNER_CUSBLOCKING_CHK">
+      <check name="C_BPARTNER_CUSBLOCKING_CHK"><![CDATA[CUSTOMER_BLOCKING = 'N' OR SO_ORDER_BLOCKING = 'Y' OR SO_GOODS_BLOCKING = 'Y' OR SO_INVOICE_BLOCKING = 'Y' OR SO_PAYMENT_BLOCKING = 'Y']]></check>
+    </removeCheckChange>
+    <columnRequiredChange tableName="M_LOCATOR" columnName="EM_SSVS_CAPACITY">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnDataChange tablename="AD_ELEMENT" columnname="PRINTNAME" pkRow="192">
+      <oldValue><![CDATA[Country]]></oldValue>
+      <newValue><![CDATA[País]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_ELEMENT" columnname="PRINTNAME" pkRow="AA8C39C756A740F5820ED60F2D52A9DB">
+      <oldValue><![CDATA[Second Line]]></oldValue>
+      <newValue><![CDATA[Segunda Linea]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_ELEMENT" columnname="PRINTNAME" pkRow="FE38F83E711D4423970247F1F75969D8">
+      <oldValue><![CDATA[Postal Code]]></oldValue>
+      <newValue><![CDATA[Código Postal]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="0207EC9F9AB741CEA734D1DFFD7B4370">
+      <oldValue><![CDATA[User 1]]></oldValue>
+      <newValue><![CDATA[Distribution Channel_new]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="DESCRIPTION" pkRow="0207EC9F9AB741CEA734D1DFFD7B4370">
+      <oldValue><![CDATA[A display of optional elements that are previously defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="HELP" pkRow="0207EC9F9AB741CEA734D1DFFD7B4370">
+      <oldValue><![CDATA[The user defined element displays the optional elements that have been defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="0E050512FAE2449DB7C984F0610AF785">
+      <oldValue><![CDATA[User 1]]></oldValue>
+      <newValue><![CDATA[Distribution Channel_new]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="DESCRIPTION" pkRow="0E050512FAE2449DB7C984F0610AF785">
+      <oldValue><![CDATA[A display of optional elements that are previously defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="HELP" pkRow="0E050512FAE2449DB7C984F0610AF785">
+      <oldValue><![CDATA[The user defined element displays the optional elements that have been defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="0E323A3B49DB45778E24CB22C4FEDBA3">
+      <oldValue><![CDATA[User 1]]></oldValue>
+      <newValue><![CDATA[Distribution Channel_new]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="COLUMNNAME" pkRow="0E323A3B49DB45778E24CB22C4FEDBA3">
+      <oldValue><![CDATA[USER1_ID]]></oldValue>
+      <newValue><![CDATA[User1_ID]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="0F62C351CBE74F9F856E8383AF932DD6">
+      <oldValue><![CDATA[1st Dimension]]></oldValue>
+      <newValue><![CDATA[Distribution Channel_new]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="DESCRIPTION" pkRow="0F62C351CBE74F9F856E8383AF932DD6">
+      <oldValue><![CDATA[A display of optional elements that are previously defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="HELP" pkRow="0F62C351CBE74F9F856E8383AF932DD6">
+      <oldValue><![CDATA[The user defined element displays the optional elements that have been defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="43664D7B43CA4091A40A58D521F4DEC4">
+      <oldValue><![CDATA[1st Dimension]]></oldValue>
+      <newValue><![CDATA[Distribution Channel_new]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="DESCRIPTION" pkRow="43664D7B43CA4091A40A58D521F4DEC4">
+      <oldValue><![CDATA[A display of optional elements that are previously defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="HELP" pkRow="43664D7B43CA4091A40A58D521F4DEC4">
+      <oldValue><![CDATA[The user defined element displays the optional elements that have been defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="COLUMNNAME" pkRow="43664D7B43CA4091A40A58D521F4DEC4">
+      <oldValue><![CDATA[User1_Id]]></oldValue>
+      <newValue><![CDATA[User1_ID]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="511EADD5BD1A4BC881FEB1E90FC8BDA6">
+      <oldValue><![CDATA[User1]]></oldValue>
+      <newValue><![CDATA[Distribution Channel_new]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="62DD55A2A8BF4D5F830B2F0EF7633E33">
+      <oldValue><![CDATA[1st Dimension]]></oldValue>
+      <newValue><![CDATA[Distribution Channel_new]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="DESCRIPTION" pkRow="62DD55A2A8BF4D5F830B2F0EF7633E33">
+      <oldValue><![CDATA[A display of optional elements that are previously defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="HELP" pkRow="62DD55A2A8BF4D5F830B2F0EF7633E33">
+      <oldValue><![CDATA[The user defined element displays the optional elements that have been defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="6B546F022AF340C5ACD515296CCC9D69">
+      <oldValue><![CDATA[1st Dimension]]></oldValue>
+      <newValue><![CDATA[Distribution Channel_new]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="DESCRIPTION" pkRow="6B546F022AF340C5ACD515296CCC9D69">
+      <oldValue><![CDATA[A display of optional elements that are previously defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="HELP" pkRow="6B546F022AF340C5ACD515296CCC9D69">
+      <oldValue><![CDATA[The user defined element displays the optional elements that have been defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="75416695AB4F41929DD6B7DB56CA6723">
+      <oldValue><![CDATA[1st Dimension]]></oldValue>
+      <newValue><![CDATA[Distribution Channel_new]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="DESCRIPTION" pkRow="75416695AB4F41929DD6B7DB56CA6723">
+      <oldValue><![CDATA[A display of optional elements that are previously defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="HELP" pkRow="75416695AB4F41929DD6B7DB56CA6723">
+      <oldValue><![CDATA[The user defined element displays the optional elements that have been defined for this account combination.]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="NAME" pkRow="D6A63907121B45FCBD9356D53F45D46D">
+      <oldValue><![CDATA[Project]]></oldValue>
+      <newValue><![CDATA[Distribution Channel_new]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="COLUMNNAME" pkRow="D6A63907121B45FCBD9356D53F45D46D">
+      <oldValue><![CDATA[USER1_ID]]></oldValue>
+      <newValue><![CDATA[User1_ID]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="2186">
+      <oldValue><![CDATA[190]]></oldValue>
+      <newValue><![CDATA[23C0437573834AD6BEEEB37BC79A3F5F]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="2762">
+      <oldValue><![CDATA[107]]></oldValue>
+      <newValue><![CDATA[2DF9042609334011A5CD5782DDCDB1E1]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="3499">
+      <oldValue><![CDATA[90F08782C77B4D728D2EC1A5333989F7]]></oldValue>
+      <newValue><![CDATA[2DF9042609334011A5CD5782DDCDB1E1]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="3512">
+      <oldValue><![CDATA[190]]></oldValue>
+      <newValue><![CDATA[23C0437573834AD6BEEEB37BC79A3F5F]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="4431">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="9569">
+      <oldValue><![CDATA[95E2A8B50A254B2AAE6774B8C2F28120]]></oldValue>
+      <newValue><![CDATA[18]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="9569">
+      <oldValue><![CDATA[0E0D1661E18E4E05A118785A7CF146B8]]></oldValue>
+      <newValue><![CDATA[5E6828AAA48A4DC8A29C550AD84406DA]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_VAL_RULE_ID" pkRow="9569">
+      <oldValue/>
+      <newValue><![CDATA[DF506EAA26C24632B84BB79FE4B81C41]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="9579">
+      <oldValue><![CDATA[95E2A8B50A254B2AAE6774B8C2F28120]]></oldValue>
+      <newValue><![CDATA[18]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="9579">
+      <oldValue><![CDATA[0E0D1661E18E4E05A118785A7CF146B8]]></oldValue>
+      <newValue><![CDATA[5E6828AAA48A4DC8A29C550AD84406DA]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_VAL_RULE_ID" pkRow="9579">
+      <oldValue/>
+      <newValue><![CDATA[DF506EAA26C24632B84BB79FE4B81C41]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="9582">
+      <oldValue><![CDATA[95E2A8B50A254B2AAE6774B8C2F28120]]></oldValue>
+      <newValue><![CDATA[18]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="9582">
+      <oldValue><![CDATA[0E0D1661E18E4E05A118785A7CF146B8]]></oldValue>
+      <newValue><![CDATA[5E6828AAA48A4DC8A29C550AD84406DA]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_VAL_RULE_ID" pkRow="9582">
+      <oldValue/>
+      <newValue><![CDATA[DF506EAA26C24632B84BB79FE4B81C41]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="6CF3E69515CE4C3595538750AE208570">
+      <oldValue><![CDATA[95E2A8B50A254B2AAE6774B8C2F28120]]></oldValue>
+      <newValue><![CDATA[18]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="6CF3E69515CE4C3595538750AE208570">
+      <oldValue><![CDATA[DEE6B917B36D4648B2DA729FC2872CF4]]></oldValue>
+      <newValue><![CDATA[D73EB2EB00BC49A39CC73EBD2C3D9030]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_VAL_RULE_ID" pkRow="6CF3E69515CE4C3595538750AE208570">
+      <oldValue/>
+      <newValue><![CDATA[1F7ADEAD445E40399B10C47AF98E97D6]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="88BFF23CE5664105A1EA10AFB8B50FA9">
+      <oldValue><![CDATA[95E2A8B50A254B2AAE6774B8C2F28120]]></oldValue>
+      <newValue><![CDATA[18]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="88BFF23CE5664105A1EA10AFB8B50FA9">
+      <oldValue><![CDATA[DEE6B917B36D4648B2DA729FC2872CF4]]></oldValue>
+      <newValue><![CDATA[D73EB2EB00BC49A39CC73EBD2C3D9030]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_VAL_RULE_ID" pkRow="88BFF23CE5664105A1EA10AFB8B50FA9">
+      <oldValue/>
+      <newValue><![CDATA[5A43487737684385AE03C0607692AFA5]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="8F5F5A23DC93454480632EACB64034EC">
+      <oldValue><![CDATA[95E2A8B50A254B2AAE6774B8C2F28120]]></oldValue>
+      <newValue><![CDATA[18]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_VALUE_ID" pkRow="8F5F5A23DC93454480632EACB64034EC">
+      <oldValue><![CDATA[DEE6B917B36D4648B2DA729FC2872CF4]]></oldValue>
+      <newValue><![CDATA[D73EB2EB00BC49A39CC73EBD2C3D9030]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_VAL_RULE_ID" pkRow="8F5F5A23DC93454480632EACB64034EC">
+      <oldValue/>
+      <newValue><![CDATA[1F7ADEAD445E40399B10C47AF98E97D6]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBUIAPP_PARAMETER" columnname="AD_ELEMENT_ID" pkRow="1C6492E57EA447E9B15AB80648296D9A">
+      <oldValue><![CDATA[9EEA82CC39C04777B2545C4501C9B579]]></oldValue>
+      <newValue><![CDATA[5950A82A7FA948D1B7649E4158B5A2A8]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBUIAPP_PARAMETER" columnname="AD_ELEMENT_ID" pkRow="7D96391DB59546CEBE369597033B70BC">
+      <oldValue><![CDATA[505]]></oldValue>
+      <newValue><![CDATA[19DEDC654C5B412680901232E8823E3D]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="OBUIAPP_PARAMETER" columnname="AD_ELEMENT_ID" pkRow="88BB41CDBCE24DBBBDC5CB2AE0EB0BE9">
+      <oldValue><![CDATA[449]]></oldValue>
+      <newValue><![CDATA[A2F43B10B5384A668123428E733A5602]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="F996168266614B89B6EAC1E674AC9D2C">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="802537">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="3335F4C219804DC7B52D746D4F138355">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="86A71F5E8AAB49CEB02E647349BBCDE7">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="B964CF87250C417FBE5FC7D12B52763B">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="B981A4A8D6AB445B973C3F0D3BB4DBD0">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+  </vector>

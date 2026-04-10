@@ -188,9 +188,9 @@ def apply_delta(
 ) -> None:
     if old_sha == new_sha:
         return
-    # Sin SHA previo o repo fuente recién sustituido: volcar árbol completo de esa fuente.
+    # Sin SHA previo (bootstrap de puntero): solo actualizar last_commits.json en main();
+    # no copiar el repo remoto encima del ambiente (el árbol ya es el de producción).
     if not (old_sha or "").strip():
-        full_sync_rsync(token, slug, dest_root, kind=kind)
         return
     url = clone_url(token, slug)
     with tempfile.TemporaryDirectory(prefix="carnidem_delta_") as td:
@@ -363,7 +363,7 @@ def main() -> int:
         if a.get("repo") != b["repo"]:
             print(
                 f"⚠️  Índice {i}: fuente cambió de {a.get('repo')} → {b['repo']}. "
-                "Se hará resync completo de esa entrada (no diff entre repos distintos).",
+                "Solo se alineará el puntero (SHA); no se copia el árbol remoto.",
                 file=sys.stderr,
             )
             effective_stored.append("")
@@ -377,7 +377,7 @@ def main() -> int:
         print("Sin novedades.")
         return 0
 
-    lines_msg.append("📦 Aplicando deltas (jerarquía core → capas → módulos):")
+    lines_msg.append("📦 Cambios detectados (orden: core → capas → módulos):")
     for i, s in enumerate(spec):
         if effective_stored[i] == remote_shas[i]:
             continue
@@ -386,7 +386,14 @@ def main() -> int:
         dest = repo_b if kind in ("core", "layer") else repo_b / "modules"
         old_s = effective_stored[i]
         short_old = (old_s[:7] if len(old_s) >= 7 else old_s) or "∅"
-        lines_msg.append(f"  • {kind} {repo}: {short_old}..{remote_shas[i][:7]}")
+        rmt = remote_shas[i]
+        short_rmt = rmt[:7] if len(rmt) >= 7 else rmt
+        if not (old_s or "").strip():
+            lines_msg.append(
+                f"  • {kind} {repo}: puntero → {short_rmt} (sin copiar archivos del remoto)"
+            )
+            continue
+        lines_msg.append(f"  • {kind} {repo}: diff {short_old}..{short_rmt}")
         apply_delta(
             token,
             repo,
