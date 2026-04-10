@@ -75,8 +75,8 @@ public class MobileCoreLoginHandler extends LoginHandler {
   private MobileStaticResourceComponent mobileStaticResourceComponent;
 
   @Override
-  public void service(HttpServletRequest request, HttpServletResponse response) throws IOException,
-      ServletException {
+  public void service(HttpServletRequest request, HttpServletResponse response)
+      throws IOException, ServletException {
     // always set the cors headers
     AllowedCrossDomainsHandler.getInstance().setCORSHeaders(request, response);
 
@@ -98,11 +98,11 @@ public class MobileCoreLoginHandler extends LoginHandler {
   }
 
   @Override
-  public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException,
-      ServletException {
+  public void doPost(HttpServletRequest req, HttpServletResponse res)
+      throws IOException, ServletException {
     res.setContentType("application/json;charset=UTF-8");
     CalloutHttpServletResponse loginHandlerResponse = new CalloutHttpServletResponse(res);
-    final VariablesSecureApp vars = new VariablesSecureApp(req);
+    VariablesSecureApp vars = new VariablesSecureApp(req);
     final String appName = vars.getStringParameter("appName");
 
     String user = (String) req.getSession().getAttribute("#AD_USER_ID");
@@ -113,13 +113,18 @@ public class MobileCoreLoginHandler extends LoginHandler {
 
     super.doPost(req, loginHandlerResponse);
 
+    vars = new VariablesSecureApp(req);
+
     Session session = null;
 
     try {
-      JSONObject originalResult = loginHandlerResponse.getOutputFromWriter().equals("") ? new JSONObject()
+      JSONObject originalResult = loginHandlerResponse.getOutputFromWriter().equals("")
+          ? new JSONObject()
           : new JSONObject(loginHandlerResponse.getOutputFromWriter());
 
-      final String sessionId = vars.getSessionValue("#AD_Session_ID");
+      final String sessionId = !StringUtils.isEmpty(vars.getSessionValue("#AD_Session_ID"))
+          && vars.getSessionValue("#AD_Session_ID") != null ? vars.getSessionValue("#AD_Session_ID")
+              : req.getSession() != null ? req.getSession().getId() : "";
       OBContext.setAdminMode(false);
 
       if (!StringUtils.isEmpty(sessionId)) {
@@ -127,9 +132,10 @@ public class MobileCoreLoginHandler extends LoginHandler {
       }
 
       if (originalResult.has("showMessage") && originalResult.getBoolean("showMessage")) {
-        boolean validMobileSession = (session != null && LOGIN_RESTRICTED_ROLES_ERROR
-            .equals(session.getLoginStatus()))
-            || ActivationKey.getInstance().checkOPSLimitations(sessionId, getSessionType()) == LicenseRestriction.POS_TERMINALS_EXCEEDED;
+        boolean validMobileSession = (session != null
+            && LOGIN_RESTRICTED_ROLES_ERROR.equals(session.getLoginStatus()))
+            || ActivationKey.getInstance().checkOPSLimitations(sessionId,
+                getSessionType()) == LicenseRestriction.POS_TERMINALS_EXCEEDED;
 
         if (!validMobileSession) {
           // show invalid session message and go away
@@ -159,15 +165,16 @@ public class MobileCoreLoginHandler extends LoginHandler {
         jsonMsg.put("showMessage", false);
         jsonMsg.put("userId", userId);
         if (MobileKeyAuthenticationManager.isInstalled()) {
-          jsonMsg.put("authenticationToken", MobileAuthenticationKeyUtils
-              .getEncryptedAuthenticationToken(OBContext.getOBContext().getCurrentClient().getId(),
+          jsonMsg.put("authenticationToken",
+              MobileAuthenticationKeyUtils.getEncryptedAuthenticationToken(
+                  OBContext.getOBContext().getCurrentClient().getId(),
                   OBContext.getOBContext().getCurrentOrganization().getId(), userId, role.getId(),
                   (String) RequestContext.get().getSessionAttribute("POSTerminal")));
           jsonMsg.put("authenticationClient", defaults.client);
         }
 
-        final Map<String, Object> parameters = MobileCoreKernelUtils.getParameterMap(
-            getServletContext(), req);
+        final Map<String, Object> parameters = MobileCoreKernelUtils
+            .getParameterMap(getServletContext(), req);
         if (parameters.get("appName") != null) {
           parameters.put("_appName", parameters.get("appName"));
         }
@@ -196,8 +203,8 @@ public class MobileCoreLoginHandler extends LoginHandler {
     }
   }
 
-  protected void errorLoginNoSession(HttpServletResponse res, VariablesSecureApp vars,
-      String title, String msg, List<String> arguments) {
+  protected void errorLoginNoSession(HttpServletResponse res, VariablesSecureApp vars, String title,
+      String msg, List<String> arguments) {
 
     Client systemClient = OBDal.getInstance().get(Client.class, "0");
     String language = systemClient.getLanguage().getLanguage();
@@ -264,8 +271,8 @@ public class MobileCoreLoginHandler extends LoginHandler {
     // note fill session arguments will set the LOGGINGIN session var
     // to N
     DalConnectionProvider cp = new DalConnectionProvider(false);
-    if (LoginUtils.fillSessionArguments(cp, vars, userId, strLanguage, strIsRTL, strRole,
-        strClient, strOrg, strWarehouse)) {
+    if (LoginUtils.fillSessionArguments(cp, vars, userId, strLanguage, strIsRTL, strRole, strClient,
+        strOrg, strWarehouse)) {
       readProperties(vars, globalParameters.getOpenbravoPropertiesPath());
       readNumberFormat(vars, globalParameters.getFormatPath());
     } else {
@@ -354,10 +361,10 @@ public class MobileCoreLoginHandler extends LoginHandler {
               .getNodeValue();
           formatMap.put(strNumberName, strFormatOutput);
           vars.setSessionValue("#FormatOutput|" + strNumberName, strFormatOutput);
-          vars.setSessionValue("#DecimalSeparator|" + strNumberName, NumberElement.getAttributes()
-              .getNamedItem("decimal").getNodeValue());
-          vars.setSessionValue("#GroupSeparator|" + strNumberName, NumberElement.getAttributes()
-              .getNamedItem("grouping").getNodeValue());
+          vars.setSessionValue("#DecimalSeparator|" + strNumberName,
+              NumberElement.getAttributes().getNamedItem("decimal").getNodeValue());
+          vars.setSessionValue("#GroupSeparator|" + strNumberName,
+              NumberElement.getAttributes().getNamedItem("grouping").getNodeValue());
           // set the numberFormat to be used in the renderJR function
           if (strNumberName.equals(formatNameforJrxml)) {
             strDecimalSeparator = NumberElement.getAttributes().getNamedItem("decimal")
@@ -386,8 +393,8 @@ public class MobileCoreLoginHandler extends LoginHandler {
       if (hasMobileAccess(role, appName)) {
         return role;
       } else {
-        log4j.warn("Default Mobile role (" + role.getName() + ") of user " + user
-            + " has no access");
+        log4j.warn(
+            "Default Mobile role (" + role.getName() + ") of user " + user + " has no access");
       }
     }
 
@@ -415,9 +422,8 @@ public class MobileCoreLoginHandler extends LoginHandler {
 
   protected boolean hasMobileAccess(Role role, String appName) {
 
-    if (RequestContext.get().getSession() != null
-        && Boolean.TRUE
-            .equals(RequestContext.get().getSessionAttribute("MOBILE_ACCESS_" + appName))) {
+    if (RequestContext.get().getSession() != null && Boolean.TRUE
+        .equals(RequestContext.get().getSessionAttribute("MOBILE_ACCESS_" + appName))) {
       return true;
     }
 
@@ -429,8 +435,7 @@ public class MobileCoreLoginHandler extends LoginHandler {
       }
       return true;
     }
-    String hql = "select 1 from "
-        + FormAccess.ENTITY_NAME
+    String hql = "select 1 from " + FormAccess.ENTITY_NAME
         + " where role.id=:roleId and specialForm.id=:formId and role.forPortalUsers = false and active='Y'";
     OBContext.setAdminMode(false);
     try {
@@ -463,8 +468,8 @@ public class MobileCoreLoginHandler extends LoginHandler {
    * should be invalidated.
    * 
    */
-  protected RoleDefaults getDefaults(HttpServletRequest req, HttpServletResponse res,
-      String userId, String roleId, Session session) {
+  protected RoleDefaults getDefaults(HttpServletRequest req, HttpServletResponse res, String userId,
+      String roleId, Session session) {
     try {
       return LoginUtils.getLoginDefaults(userId, roleId, myPool);
     } catch (Exception e) {

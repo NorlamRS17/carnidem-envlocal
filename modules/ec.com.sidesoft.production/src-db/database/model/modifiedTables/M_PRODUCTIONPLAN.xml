@@ -5,5 +5,9 @@
         <default/>
         <onCreateDefault/>
       </column>
+      <column name="EM_SSPROD_QTYSECRECH" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
     </table>
   </database>

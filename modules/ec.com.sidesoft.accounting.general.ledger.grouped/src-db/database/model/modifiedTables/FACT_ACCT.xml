@@ -1,28 +1,6 @@
 <?xml version="1.0"?>
   <database name="MODIFIED TABLE FACT_ACCT">
     <table name="FACT_ACCT" primaryKey="FACT_ACCT_KEY">
-      <index name="EM_SACGLD_FACCT_ORDER" unique="false">
-        <index-column name="ACCTVALUE"/>
-        <index-column name="ACCTDESCRIPTION"/>
-        <index-column name="ACCOUNT_ID"/>
-        <index-column name="DATEACCT"/>
-        <index-column name="FACT_ACCT_GROUP_ID"/>
-        <index-column name="AMTACCTDR"/>
-      </index>
-      <index name="EM_SACGLD_FACCTACCT" unique="false">
-        <index-column name="ACCOUNT_ID"/>
-      </index>
-      <index name="EM_SACGLD_FACCTACCTDATE" unique="false">
-        <index-column name="ACCOUNT_ID"/>
-        <index-column name="DATEACCT"/>
-      </index>
-      <index name="EM_SACGLD_FACCTDATEACCT" unique="false">
-        <index-column name="DATEACCT"/>
-      </index>
-      <index name="EM_SACGLD_FACCTDATEACCTACCT" unique="false">
-        <index-column name="DATEACCT"/>
-        <index-column name="ACCOUNT_ID"/>
-      </index>
       <index name="EM_SACGLD_FACTACCT_LIBROMAYOR" unique="false">
         <index-column name="ACCOUNT_ID"/>
         <index-column name="DATEACCT"/>

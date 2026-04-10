@@ -82,11 +82,7 @@ coalesce((a.assetvalueamt-a.residualassetvalueamt-a.depreciatedpreviousamt),0) a
 CASE WHEN a.assetschedule = 'YE' THEN a.uselifeyears || ' años' ELSE a.uselifemonths || ' meses' END  as "vidautil",(a.assetvalueamt-(COALESCE(a.depreciatedpreviousamt, 0) + COALESCE(a.depreciatedvalue, 0))) AS valorenlibros,
 coalesce((select sum(t.valoramort) from (select sum(al.amortizationamt) valoramort from  a_amortization am inner join a_amortizationline al on am.a_amortization_id = al.a_amortization_id
  where am.startdate>= $P{Datefrom} and am.enddate<= $P{Dateto} and al.a_asset_id= a.a_asset_id and am.processed='Y' group by al.a_asset_id,al.amortizationamt ) t),0) as "depreciacionperiodo" ,
-coalesce( (select amortizationamt from a_amortizationline where a_asset_id = a.a_asset_id
-GROUP BY amortizationamt
-ORDER BY COUNT(*) DESC, amortizationamt DESC
-FETCH FIRST 1 ROW ONLY
- ) , 0) as "impdepremensual",
+coalesce( (select amortizationamt from a_amortizationline where a_asset_id = a.a_asset_id and SEQ_No_Asset = 10 ) , 0) as "impdepremensual",
 to_char('Fecha de impresión: ') || to_char(now(),'dd/MM/yyyy HH24:MI:SS') as "fecha_impresion",
 to_char('Usuario: ') || (select coalesce(cbp.name,adu.name) from ad_user adu left join c_bpartner cbp on
 adu.c_bpartner_id = cbp.c_bpartner_id where adu.ad_user_id= $P{AD_User_ID} ) as "usuario",  (SELECT upper(coalesce(rl.name,'')) from AD_Ref_List_Trl rl

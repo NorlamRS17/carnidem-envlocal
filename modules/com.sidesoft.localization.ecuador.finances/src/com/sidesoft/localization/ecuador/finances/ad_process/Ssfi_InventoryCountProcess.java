@@ -61,7 +61,6 @@ import org.openbravo.scheduling.Process;
 import org.openbravo.scheduling.ProcessBundle;
 import org.openbravo.service.db.DalConnectionProvider;
 
-@SuppressWarnings("deprecation")
 public class Ssfi_InventoryCountProcess implements Process {
 	private static final Logger log4j = Logger.getLogger(Ssfi_InventoryCountProcess.class);
 

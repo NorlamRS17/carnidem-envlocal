@@ -5,13 +5,11 @@ import java.sql.ResultSet;
 
 import org.apache.log4j.Logger;
 import org.openbravo.base.ConfigParameters;
-import org.openbravo.base.exception.OBException;
 import org.openbravo.dal.core.OBContext;
 import org.openbravo.database.ConnectionProvider;
 import org.openbravo.erpCommon.utility.OBError;
 import org.openbravo.erpCommon.utility.OBMessageUtils;
 import org.openbravo.erpCommon.utility.Utility;
-import org.openbravo.scheduling.KillableProcess;
 import org.openbravo.scheduling.ProcessBundle;
 import org.openbravo.scheduling.ProcessLogger;
 import org.openbravo.service.db.DalBaseProcess;
@@ -19,7 +17,7 @@ import org.openbravo.service.db.DalConnectionProvider;
 
 import ec.cusoft.facturaec.filewriter.FileGeneration;
 
-public class PayrollEventsBackground extends DalBaseProcess implements KillableProcess {
+public class PayrollEventsBackground extends DalBaseProcess {
   private static final Logger log4j = Logger.getLogger(PayrollEventsBackground.class);
   private ProcessLogger logger;
   FileGeneration filegeneration = new FileGeneration();
@@ -27,7 +25,6 @@ public class PayrollEventsBackground extends DalBaseProcess implements KillableP
   String msgMessage = "";
   String msgType = ""; // success, warning or error
   public ConfigParameters cf;
-  private boolean killProcess = false;
 
   @Override
   protected void doExecute(ProcessBundle bundle) throws Exception {
@@ -46,19 +43,10 @@ public class PayrollEventsBackground extends DalBaseProcess implements KillableP
       // PROCESOS DIARIOS
       // ********************************************************************//
 
-      if (killProcess) {
-        throw new OBException("Process killed");
-      }
       // PROCESO FALTANTES DE CAJA Y MULTAS FALTANTES DE CAJA
       cashMissing();
-      if (killProcess) {
-        throw new OBException("Process killed");
-      }
       // PROCESO PEDIDOS MOTORIZADOS
       motorizedOrder();
-      if (killProcess) {
-        throw new OBException("Process killed");
-      }
       // PROCESO FACTURA CLIENTE
       processedInvoice();
 
@@ -164,8 +152,4 @@ public class PayrollEventsBackground extends DalBaseProcess implements KillableP
 
   }
 
-  @Override
-  public void kill(ProcessBundle processBundle) throws Exception {
-    this.killProcess = true;
-  }
 }

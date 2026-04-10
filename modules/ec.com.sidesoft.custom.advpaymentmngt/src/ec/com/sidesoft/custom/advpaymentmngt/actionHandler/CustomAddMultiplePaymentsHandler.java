@@ -237,7 +237,6 @@ public class CustomAddMultiplePaymentsHandler extends BaseProcessActionHandler {
     return newTransaction;
   }
 
-  @SuppressWarnings("deprecation")
   public static Long getTransactionMaxLineNo(FIN_FinancialAccount financialAccount) {
     Query query = OBDal.getInstance().getSession().createQuery(
         "select max(f.lineNo) as maxLineno from FIN_Finacc_Transaction as f where account.id=?");

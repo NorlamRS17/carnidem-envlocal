@@ -283,6 +283,13 @@ enyo.kind({
         if (!keyboard.line) {
           return true;
         }
+        // Validación adicional del permiso para dispositivos móviles
+        if (!OB.MobileApp.model.hasPermission('OBPOS_order.changePrice', true)) {
+          me.doShowPopup({
+            popup: 'modalNotEditableLine'
+          });
+          return true;
+        }
         if (keyboard.line.get('product').get('isEditablePrice') === false) {
           me.doShowPopup({
             popup: 'modalNotEditableLine'

@@ -58,26 +58,19 @@
       v_User_ID:=Cur_Parameter.AD_User_ID;
       v_Client_ID := Cur_Parameter.AD_Client_ID;
       v_Org_ID := Cur_Parameter.AD_Org_ID;
-      IF UPPER(Cur_Parameter.ParameterName) = 'C_DOCTYPE_ID' THEN
-        v_DocType_ID := Cur_Parameter.P_String;
-      END IF;
+	  IF UPPER(Cur_Parameter.ParameterName) = 'C_DOCTYPE_ID' THEN
+   v_DocType_ID := Cur_Parameter.P_String;
+END IF;
     END LOOP; -- Get Parameter
+-- Validar que el tipo de documento tenga secuencia asignada
+PERFORM 1
+FROM C_DocType
+WHERE c_doctype_id = v_DocType_ID
+  AND docnosequence_id IS NOT NULL;
 
-    -- Validar que el tipo de documento tenga secuencia asignada
-    PERFORM
-        1
-    FROM
-        C_DocType
-    WHERE
-        c_doctype_id = v_DocType_ID
-        AND docnosequence_id IS NOT NULL;
-
-    IF NOT FOUND THEN
-        v_message := 'El tipo de documento no tiene una secuencia asignada. Configure una secuencia en el tipo de documento seleccionado.' || coalesce(v_DocType_ID, 'N/A');
-        RAISE_APPLICATION_ERROR(-20000, v_message);
-    END IF;
-
-
+IF NOT FOUND THEN
+RAISE_APPLICATION_ERROR(-20000,' El tipo de documento no tiene una secuencia asignada. Configure una secuencia en el tipo de documento seleccionado. ') ; 
+END IF;
 
     FOR Cur_workproposal IN (
       SELECT MRP_RUN_PRODUCTIONLINE.* , MA_PROCESSPLAN.EXPLODEPHASES, 
@@ -95,53 +88,45 @@
         AND MRP_RUN_PRODUCTIONLINE.QTY <> 0
       ORDER BY PLANNEDDATE
       ) LOOP
-        v_ResultStr := 'Create Work Requirement';
+      v_ResultStr:='Create Work Requirement';
+V_ORG_ID :=Cur_workproposal.ADORG_ID;
+      Ad_Sequence_Next('MA_WorkRequirement', v_Client_ID, v_WR_ID);
+      IF v_DocType_ID IS NOT NULL THEN
+       SELECT s.name
+         INTO v_DocumentNo
+         FROM C_DocType dt
+         JOIN AD_Sequence s ON dt.docnosequence_id = s.ad_sequence_id
+        WHERE dt.c_doctype_id = v_DocType_ID;
 
-        V_ORG_ID := Cur_workproposal.ADORG_ID;
-
-        Ad_Sequence_Next('MA_WorkRequirement', v_Client_ID, v_WR_ID); -- Get WR_ID
-
-        IF v_DocType_ID IS NOT NULL THEN
-            SELECT
-                s.name INTO v_DocumentNo
-            FROM
-                C_DocType dt
-                JOIN AD_Sequence s ON dt.docnosequence_id = s.ad_sequence_id
-            WHERE
-                dt.c_doctype_id = v_DocType_ID;
-
-            IF v_DocumentNo IS NOT NULL THEN
-                v_DocumentNo := Ad_Sequence_Doc(v_DocumentNo, v_Client_ID, 'Y');
-
-            ELSE
-                v_DocumentNo := Ad_Sequence_Doc('DocumentNo_MA_WorkRequirement', v_Client_ID, 'Y');
-
-            END IF;
-        ELSE
-            v_DocumentNo := Ad_Sequence_Doc('DocumentNo_MA_WorkRequirement', v_Client_ID, 'Y');
-
-        END IF;
-
-        INSERT INTO MA_WORKREQUIREMENT (
-          MA_WORKREQUIREMENT_ID, AD_CLIENT_ID, AD_ORG_ID, ISACTIVE,
-          CREATED, CREATEDBY, UPDATED, UPDATEDBY, NAME,
-          MA_PROCESSPLAN_ID, QUANTITY,
-          LAUNCHDATE, STARTDATE, ENDDATE,
-          CLOSED, EXPLOTE, PROCESSED, DOCUMENTNO, EXPLODEPHASES,
-          SECONDARYQTY, SECONDARYUNIT, CONVERSIONRATE, C_DOCTYPE_ID
-        ) VALUES (
-          v_WR_ID, v_Client_ID, v_Org_ID, 'Y',
-          now(), v_User_ID, now(), v_User_ID, null,
-          Cur_workproposal.MA_PROCESSPLAN_ID, Cur_workproposal.PROCESSPLANQTY,
-          now(), Cur_workproposal.plannedorderdate, Cur_workproposal.planneddate,
-          'N', 'N', 'N', v_DocumentNo, Cur_workproposal.explodephases,
-          CASE WHEN Cur_workproposal.conversionrate IS NOT NULL THEN (Cur_workproposal.conversionrate*Cur_workproposal.PROCESSPLANQTY) ELSE null END,
-          Cur_workproposal.secondaryunit, Cur_workproposal.conversionrate,v_DocType_ID
-        );
-        v_Creados := v_Creados + 1;
-        UPDATE MRP_RUN_PRODUCTIONLINE
-          SET MA_WORKREQUIREMENT_ID=v_WR_ID
-        WHERE MRP_RUN_PRODUCTIONLINE_ID = Cur_workproposal.MRP_RUN_PRODUCTIONLINE_ID;
+       IF v_DocumentNo IS NOT NULL THEN
+          v_DocumentNo := Ad_Sequence_Doc(v_DocumentNo, v_Client_ID, 'Y');
+       ELSE
+          v_DocumentNo := Ad_Sequence_Doc('DocumentNo_MA_WorkRequirement', v_Client_ID, 'Y');
+       END IF;
+    ELSE
+       v_DocumentNo := Ad_Sequence_Doc('DocumentNo_MA_WorkRequirement', v_Client_ID, 'Y');
+    END IF;
+ 
+      INSERT INTO MA_WORKREQUIREMENT (
+        MA_WORKREQUIREMENT_ID, AD_CLIENT_ID, AD_ORG_ID, ISACTIVE,
+        CREATED, CREATEDBY, UPDATED, UPDATEDBY, NAME,
+        MA_PROCESSPLAN_ID, QUANTITY,
+        LAUNCHDATE, STARTDATE, ENDDATE,
+        CLOSED, EXPLOTE, PROCESSED, DOCUMENTNO, EXPLODEPHASES,
+        SECONDARYQTY, SECONDARYUNIT, CONVERSIONRATE, C_DOCTYPE_ID
+      ) VALUES (
+        v_WR_ID, v_Client_ID, v_Org_ID, 'Y',
+        now(), v_User_ID, now(), v_User_ID, null,
+        Cur_workproposal.MA_PROCESSPLAN_ID, Cur_workproposal.PROCESSPLANQTY,
+        now(), Cur_workproposal.plannedorderdate, Cur_workproposal.planneddate,
+        'N', 'N', 'N', v_DocumentNo, Cur_workproposal.explodephases,
+        CASE WHEN Cur_workproposal.conversionrate IS NOT NULL THEN (Cur_workproposal.conversionrate*Cur_workproposal.PROCESSPLANQTY) ELSE null END,
+        Cur_workproposal.secondaryunit, Cur_workproposal.conversionrate,v_DocType_ID
+      );
+	  v_Creados := v_Creados + 1;
+      UPDATE MRP_RUN_PRODUCTIONLINE
+         SET MA_WORKREQUIREMENT_ID=v_WR_ID
+       WHERE MRP_RUN_PRODUCTIONLINE_ID = Cur_workproposal.MRP_RUN_PRODUCTIONLINE_ID;
     END LOOP;
   v_ResultStr :='Set requisition lines as planned';
   UPDATE M_RequisitionLine

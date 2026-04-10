@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-  <database name="MODIFIED TABLE AD_SESSION">
-    <table name="AD_SESSION" primaryKey="AD_SESSION_KEY">
-      <index name="EM_EPERF_SESSION_ACTIVE" unique="false">
-        <index-column name="AD_SESSION_ID"/>
-        <index-column name="SESSION_ACTIVE"/>
-      </index>
-    </table>
-  </database>

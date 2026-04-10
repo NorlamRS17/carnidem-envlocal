@@ -257,6 +257,10 @@
       <oldValue><![CDATA[Process]]></oldValue>
       <newValue/>
     </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="35FBA16E48F34DB1B8CB6686AC36DA10">
+      <oldValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></oldValue>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW' | @em_seact_abprocess@='Y']]></newValue>
+    </columnDataChange>
     <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="3808ABE5D08E4650A2DE65596DB61F49">
       <oldValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></oldValue>
       <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW' | @em_seact_abprocess@='Y']]></newValue>
@@ -1004,6 +1008,14 @@
     <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="9CBFEB2C2FFF4093BEA5681F42EAF5CB">
       <oldValue><![CDATA[232]]></oldValue>
       <newValue><![CDATA[480]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="AD_FIELDGROUP_ID" pkRow="A221AAF4A113423EAE40113657E7B00F">
+      <oldValue/>
+      <newValue><![CDATA[800000]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="A221AAF4A113423EAE40113657E7B00F">
+      <oldValue><![CDATA[75]]></oldValue>
+      <newValue><![CDATA[830]]></newValue>
     </columnDataChange>
     <columnDataChange tablename="AD_FIELD" columnname="AD_FIELDGROUP_ID" pkRow="A6F1FF5824F04B31A2EEFB578251C127">
       <oldValue/>

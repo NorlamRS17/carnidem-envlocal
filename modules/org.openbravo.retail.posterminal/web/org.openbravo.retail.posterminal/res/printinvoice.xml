@@ -15,23 +15,23 @@
 	Definimos el numero de lineas disponibles para impresion 22, writtenLines especifica el numero de lineas utilizadas
 	-->
 	<line>
-        <text align ="left" length="42">     COMERCIAL FERRETERO CHIMBORAZO    </text>
+        <text align ="center" length="42">CARNIDEM CIA. LTDA. </text>
     </line>
     <line>
-        <text align ="left" length="42">             1793202995001</text>
+        <text align ="center" length="42">1791293363001</text>
     </line>
     <line>
-        <text align ="left" length="42">      023470935 Celular:0968835205</text>
+        <text align ="center" length="42">Teléfono: 032719202 / 032719016</text>
     </line>
+	<line>
+		<text align="center" length="42">COTOPAXI / LATACUNGA / TANICUCHI /</text>
+	</line>
+	<line>
+		<text align="center" length="42">PANAMERICANA NORTE</text>
+	</line>
     <line>
-        <text align ="left" length="42">                 Matriz </text>
+        <text align ="center" length="42">Comprobante sin valor tributario</text>
     </line>
-		<line>
-        <text align ="left" length="42">           CALDERON - QUITO</text>
-    </line>
-    <line>
-        <text align ="left" length="42">  SUCURSAL: PIO XII y CARLOS MANTILLA </text>
-    </line>	
 	<%
 	var availableLines = 500;
 	
@@ -61,7 +61,7 @@
     <!-- Fin MM 20160103 N-->		
     <line><!---->
       <text align="left" length="15"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_TaxID')) %></text>
-      <text><%= OB.UTIL.encodeXMLComponent(order.get('bp').get('taxID')) %></text>
+      <text align="left" length="27"><%= OB.UTIL.encodeXMLComponent(order.get('bp').get('taxID')) %></text>
     </line>
     <line><!---->
 	<text align="left" length="15"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_Address')) %></text>
@@ -71,21 +71,19 @@
 		secStreet =order.get('bp').get('locName2');
 	}
 	%>
-	<text align="left" length="25"><%= OB.UTIL.encodeXMLComponent(order.get('bp').get('locName')+','+secStreet) %></text>
+	<text align="left" length="27"><%= OB.UTIL.encodeXMLComponent(order.get('bp').get('locName')+','+secStreet) %></text>
     </line>
     <line>
       <text align="left" length="15"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_Date')) %></text>
-      <text><%= OB.I18N.formatDate(order.get('orderDate')) %></text>
-      <text>, </text>
-      <text><%= OB.I18N.formatHour(order.get('orderDate')) %></text>
+      <text align="left" length="27"><%= OB.I18N.formatDate(order.get('orderDate')) + ', ' + OB.I18N.formatHour(order.get('orderDate')) %></text>
     </line>
     <line>
 	<text align="left" length="15"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_Reciept')) %></text>
-	<text><%= OB.UTIL.encodeXMLComponent(order.get('documentNo')) %></text>
+	<text align="left" length="27"><%= OB.UTIL.encodeXMLComponent(order.get('documentNo')) %></text>
     </line>
     <line>
-	<text align="left" length="15"><%= 'Factura N°: ' %></text>
-	<text><%= OB.UTIL.encodeXMLComponent(order.get('invoiceDocumentNo')) %></text>
+	<text align="left" length="15"><%= 'Factura No: ' %></text>
+	<text align="left" length="27"><%= OB.UTIL.encodeXMLComponent(order.get('invoiceDocumentNo')) %></text>
     </line>    
     
     
@@ -328,7 +326,8 @@
 	<!--MM 20151229-->
 
       <line>
-        <text align ="right" length="28"><%= OB.I18N.getLabel('SSPOS_SubtotalTax') %></text>
+        <!-- <text align ="right" length="28"><%= OB.I18N.getLabel('SSPOS_SubtotalTax') %></text> -->
+        <text align ="right" length="28">Subtotal 15%</text>
         <text align ="right" length="2"></text>
         <text align ="right" length="8"><%= OB.I18N.formatCurrency(totNoTax) %></text>  
       </line>
@@ -343,7 +342,8 @@
         <text align ="right" length="8"><%= OB.I18N.formatCurrency(totSub) %></text>  
       </line>
       <line>
-        <text align ="right" length="28"><%= OB.I18N.getLabel('SSPOS_Tax') %></text>
+        <!-- <text align ="right" length="28"><%= OB.I18N.getLabel('SSPOS_Tax') %></text> -->
+        <text align ="right" length="28">IVA 15%</text>
         <text align ="right" length="2"></text>
         <text align ="right" length="8"><%= OB.I18N.formatCurrency(totAmount) %></text>
       </line>
@@ -380,6 +380,30 @@
     <line>
       <text align="left" length="25"><%= OB.UTIL.encodeXMLComponent(OB.I18N.getLabel('SSPOS_AtendBy')) %></text>
       <text align="left" length="15"><%= OB.POS.modelterminal.get('context').user._identifier %></text>
+    </line>
+    <line>
+    </line>
+    <line>
+      <text align="center" length="30">Estimado cliente, su factura</text>
+    </line>
+    <line>
+      <text align="center" length="30">le llegará al mail registrado.</text>
+    </line>
+    <line>
+    </line>
+    <line>
+      <text align="center" length="30">Revísela en https://portalfe</text>
+    </line>
+    <line>
+      <text align="center" length="30">.sidesoft.com.ec/carnidem/</text>
+    </line>
+    <line>
+    </line>
+    <line>
+      <text align="center" length="30">Usuario y clave de acceso son</text>
+    </line>
+    <line>
+      <text align="center" length="30">su RUC o CI</text>
     </line>
 
     

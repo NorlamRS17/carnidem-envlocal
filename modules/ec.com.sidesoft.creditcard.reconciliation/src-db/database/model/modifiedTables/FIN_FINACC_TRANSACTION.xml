@@ -81,14 +81,5 @@
       <foreign-key foreignTable="SSCCR_TYPES_OF_CREDIT" name="EM_SSCCR_TYPES_OF_CREDIT_ID">
         <reference local="EM_SSCCR_TYPES_OF_CREDIT_ID" foreign="SSCCR_TYPES_OF_CREDIT_ID"/>
       </foreign-key>
-      <index name="EM_SSCCR_FFT_PEND_ACCT_DT" unique="false">
-        <index-column name="FIN_FINANCIAL_ACCOUNT_ID"/>
-        <index-column name="STATEMENTDATE"/>
-        <whereClause><![CDATA[EM_SSCCR_RECONCILED='N']]></whereClause>
-      </index>
-      <index name="EM_SSCCR_FFT_PEND_INV" unique="false">
-        <index-column name="EM_SSCCR_C_INVOICE_ID"/>
-        <whereClause><![CDATA[EM_SSCCR_RECONCILED='N' AND em_ssccr_c_invoice_id IS NOT NULL]]></whereClause>
-      </index>
     </table>
   </database>

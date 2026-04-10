@@ -133,15 +133,7 @@ AND F.FACTACCTTYPE = 'N'
 AND F.ISACTIVE = 'Y'
 AND (F.C_COSTCENTER_ID = $P{C_Costcenter_ID} OR $P{C_Costcenter_ID} IS NULL)
 AND (F.USER1_ID = $P{User1_ID} OR $P{User1_ID} IS NULL)
-AND f.ad_org_id = CASE
-    WHEN (
-        SELECT ad_orgtype_id FROM ad_org WHERE ad_org_id = $P{ad_org_id}
-    ) IN (
-        SELECT ad_orgtype_id FROM ad_orgtype WHERE isacctlegalentity = 'Y' AND islegalentity = 'Y'
-    ) THEN f.ad_org_id  -- se comporta como si fuera '*'
-    ELSE $P{ad_org_id}
-END
-
+and f.ad_org_id = CASE WHEN $P{ad_org_id} = '0' then f.ad_org_id ELSE $P{ad_org_id} END
 GROUP BY f.ad_org_id,ACCOUNT_ID,EV.NAME, EV.VALUE, EV.ELEMENTLEVEL,EV.accounttype
 ) rep
 		GROUP BY ad_org_id,ID, NAME, ACCOUNT_ID, ELEMENTLEVEL,accounttype
@@ -162,14 +154,7 @@ FROM (
     WHERE (F.DATEACCT < $P{datefrom} OR (F.DATEACCT = $P{datefrom} AND F.FACTACCTTYPE = 'O'))
     AND F.FACTACCTTYPE <> 'C'
     AND F.ISACTIVE = 'Y'
-    AND f.ad_org_id = CASE
-    WHEN (
-        SELECT ad_orgtype_id FROM ad_org WHERE ad_org_id = $P{ad_org_id}
-	    ) IN (
-	        SELECT ad_orgtype_id FROM ad_orgtype WHERE isacctlegalentity = 'Y' AND islegalentity = 'Y'
-	    ) THEN f.ad_org_id  -- se comporta como si fuera '*'
-	    ELSE $P{ad_org_id}
-	END
+    AND f.ad_org_id = CASE WHEN $P{ad_org_id} = '0' then f.ad_org_id ELSE $P{ad_org_id} END
     AND (F.C_COSTCENTER_ID = $P{C_Costcenter_ID} OR $P{C_Costcenter_ID} IS NULL)
     AND (F.USER1_ID = $P{User1_ID} OR $P{User1_ID} IS NULL)
 ) A
@@ -243,33 +228,33 @@ where (saldo_final <> 0 or $P{sfcbr_showzeroaccount}='Y')]]>
 		<groupHeader>
 			<band height="15">
 				<printWhenExpression><![CDATA[$V{saldo_final_6}.doubleValue()> Double.parseDouble("0")]]></printWhenExpression>
-				<textField>
-					<reportElement isPrintRepeatedValues="false" x="82" y="0" width="463" height="15" uuid="ca7ae16e-fb8b-4944-b710-b551cac4b705"/>
-					<textElement>
-						<font size="9"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{p6name}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement isPrintRepeatedValues="false" x="0" y="0" width="82" height="15" uuid="52209900-85d8-417c-b30e-c3c45c45f696"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="113" height="15" uuid="52209900-85d8-417c-b30e-c3c45c45f696"/>
 					<textElement>
 						<font size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{p6}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="113" y="0" width="348" height="15" uuid="0a85bece-2b7d-4be4-a6d1-169059364a13"/>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{p6name}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="23">
+			<band height="15">
 				<textField>
-					<reportElement x="82" y="0" width="255" height="23" forecolor="#FF0500" uuid="5504ffbe-fbc0-48ea-8dd3-be2903dd2e81"/>
+					<reportElement stretchType="RelativeToBandHeight" x="113" y="0" width="348" height="15" forecolor="#FF0500" uuid="8743b9b4-5dc8-4c62-aa3c-83b89529d16f"/>
 					<textElement>
 						<font fontName="SansSerif" size="13" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["TOTAL ".concat($F{p6name})]]></textFieldExpression>
 				</textField>
-				<textField pattern="#,##0.00;-#,##0.00">
-					<reportElement x="337" y="0" width="107" height="23" uuid="a70372b0-4138-4819-a689-48526750c0be"/>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00">
+					<reportElement stretchType="RelativeToBandHeight" x="461" y="0" width="113" height="15" uuid="ffac7f37-cc39-4116-bc60-e1106333b5f1"/>
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="13" isBold="true"/>
 					</textElement>
@@ -281,130 +266,115 @@ where (saldo_final <> 0 or $P{sfcbr_showzeroaccount}='Y')]]>
 	<group name="p5name">
 		<groupExpression><![CDATA[$F{p5name}]]></groupExpression>
 		<groupHeader>
-			<band height="20">
+			<band height="15">
 				<printWhenExpression><![CDATA[$P{nivel}.equals("1") || $P{nivel}.equals("2") || $P{nivel}.equals("3") || $P{nivel}.equals("4") || $P{nivel}.equals("5")]]></printWhenExpression>
-				<textField>
-					<reportElement x="82" y="0" width="255" height="20" uuid="9dcbcb7d-e33d-4ce8-be8d-46beb8a12607"/>
-					<textElement>
-						<font fontName="SansSerif" size="13" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{p5name}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Group" evaluationGroup="p5name" pattern="#,##0.00;-#,##0.00">
-					<reportElement x="337" y="0" width="208" height="20" uuid="2a63381f-391c-482f-b5c2-efdbbc9c7760"/>
-					<textElement textAlignment="Right">
-						<font size="13" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{saldo_final_5}.abs().multiply($F{accounttype}.equals("R")? new BigDecimal("-1"):new BigDecimal("1"))]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="0" y="0" width="82" height="20" uuid="71653f4e-b4e7-4b59-b093-becc2387c9ec"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="113" height="15" uuid="71653f4e-b4e7-4b59-b093-becc2387c9ec"/>
 					<textElement>
 						<font size="13" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{p5}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="113" y="0" width="348" height="15" uuid="7f808cf6-3a27-4b6b-8daa-92c359a5893b"/>
+					<textElement>
+						<font fontName="SansSerif" size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{p5name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="p5name" pattern="#,##0.00;-#,##0.00">
+					<reportElement stretchType="RelativeToBandHeight" x="461" y="0" width="113" height="15" uuid="9f30c245-c4e1-4441-a6bc-d3dd5560815f"/>
+					<textElement textAlignment="Right">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{saldo_final_5}.abs().multiply($F{accounttype}.equals("R")? new BigDecimal("-1"):new BigDecimal("1"))]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
-		<groupFooter>
-			<band height="6">
-				<printWhenExpression><![CDATA[$P{nivel}.equals("1") || $P{nivel}.equals("2") || $P{nivel}.equals("3") || $P{nivel}.equals("4") || $P{nivel}.equals("5")]]></printWhenExpression>
-			</band>
-		</groupFooter>
 	</group>
 	<group name="p4name">
 		<groupExpression><![CDATA[$F{p4name}]]></groupExpression>
 		<groupHeader>
 			<band height="15">
 				<printWhenExpression><![CDATA[$P{nivel}.equals("2") || $P{nivel}.equals("3") || $P{nivel}.equals("4") || $P{nivel}.equals("5")]]></printWhenExpression>
-				<textField>
-					<reportElement x="82" y="0" width="255" height="15" uuid="fb5d023f-a874-47e7-9c93-77d171b36be9"/>
-					<textElement>
-						<font fontName="SansSerif" size="12" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{p4name}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Group" evaluationGroup="p4name" pattern="#,##0.00;-#,##0.00">
-					<reportElement x="337" y="0" width="107" height="15" uuid="b1e9ea2a-ded6-470a-a980-96eaf6eab883"/>
-					<textElement textAlignment="Right">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{saldo_final_4}.multiply(!$F{accounttype}.equals("R")? new BigDecimal("-1"):new BigDecimal("1"))]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="0" y="0" width="82" height="15" uuid="24628da7-fbb8-4581-8d25-4de3481179c5"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="113" height="15" uuid="24628da7-fbb8-4581-8d25-4de3481179c5"/>
 					<textElement>
 						<font size="12" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{p4}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="p4name" pattern="#,##0.00;-#,##0.00">
+					<reportElement stretchType="RelativeToBandHeight" x="461" y="0" width="113" height="15" uuid="503711c1-f920-4d90-8a5b-dbd9f7eacb31"/>
+					<textElement textAlignment="Right">
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{saldo_final_4}.multiply(!$F{accounttype}.equals("R")? new BigDecimal("-1"):new BigDecimal("1"))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="113" y="0" width="348" height="15" uuid="200bf695-202d-472a-bed8-d7705580f48c"/>
+					<textElement>
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{p4name}]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
-		<groupFooter>
-			<band height="4">
-				<printWhenExpression><![CDATA[$P{nivel}.equals("2") || $P{nivel}.equals("3") || $P{nivel}.equals("4") || $P{nivel}.equals("5")]]></printWhenExpression>
-			</band>
-		</groupFooter>
 	</group>
 	<group name="p3name">
 		<groupExpression><![CDATA[$F{p3name}]]></groupExpression>
 		<groupHeader>
 			<band height="15">
 				<printWhenExpression><![CDATA[$P{nivel}.equals("3") || $P{nivel}.equals("4") || $P{nivel}.equals("5")]]></printWhenExpression>
-				<textField>
-					<reportElement x="82" y="0" width="255" height="15" uuid="7d770542-b75d-4d5f-9571-c4bb034d506c"/>
-					<textElement>
-						<font fontName="SansSerif" size="11" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{p3name}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Group" evaluationGroup="p3name" pattern="#,##0.00;-#,##0.00">
-					<reportElement x="337" y="0" width="107" height="15" uuid="b3b52813-a7da-4892-99e4-708787711ea3"/>
-					<textElement textAlignment="Right">
-						<font fontName="SansSerif" size="11" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{saldo_final_3}.multiply(!$F{accounttype}.equals("R")? new BigDecimal("-1"):new BigDecimal("1"))]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="0" y="0" width="82" height="15" uuid="7ccc6604-5126-41af-b651-07205d3c33e7"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="113" height="15" uuid="7ccc6604-5126-41af-b651-07205d3c33e7"/>
 					<textElement>
 						<font size="11" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{p3}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="113" y="0" width="348" height="15" uuid="05250281-805e-4501-9ab5-4b5b3deab9d3"/>
+					<textElement>
+						<font fontName="SansSerif" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{p3name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="p3name" pattern="#,##0.00;-#,##0.00">
+					<reportElement stretchType="RelativeToBandHeight" x="461" y="0" width="113" height="15" uuid="c333063a-ce84-43d3-949c-80efd6e5c028"/>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{saldo_final_3}.multiply(!$F{accounttype}.equals("R")? new BigDecimal("-1"):new BigDecimal("1"))]]></textFieldExpression>
+				</textField>
 			</band>
 		</groupHeader>
-		<groupFooter>
-			<band height="5">
-				<printWhenExpression><![CDATA[$P{nivel}.equals("3") || $P{nivel}.equals("4") || $P{nivel}.equals("5")]]></printWhenExpression>
-			</band>
-		</groupFooter>
 	</group>
 	<group name="p2name">
 		<groupExpression><![CDATA[$F{p2name}]]></groupExpression>
 		<groupHeader>
 			<band height="15">
 				<printWhenExpression><![CDATA[$P{nivel}.equals("4") || $P{nivel}.equals("5")]]></printWhenExpression>
-				<textField>
-					<reportElement x="82" y="0" width="255" height="15" uuid="3d0a83c0-90e0-46a1-ae94-9a7bfb8e1294"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="113" height="15" uuid="07ab1308-0104-47a8-8624-2b27b23bf227"/>
+					<textElement>
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{p2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true">
+					<reportElement stretchType="RelativeToBandHeight" x="113" y="0" width="348" height="15" uuid="25a06dc5-befd-4e00-b293-18cdacfb5947"/>
 					<textElement>
 						<font fontName="SansSerif" size="10" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{p2name}]]></textFieldExpression>
 				</textField>
-				<textField evaluationTime="Group" evaluationGroup="p2name" pattern="#,##0.00;-#,##0.00">
-					<reportElement x="337" y="0" width="107" height="15" uuid="9bd1f22a-3128-439d-b9dd-cb124e27029a"/>
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="p2name" pattern="#,##0.00;-#,##0.00">
+					<reportElement stretchType="RelativeToBandHeight" x="461" y="0" width="113" height="15" uuid="f5378d2d-8b43-4830-9600-09dc3183bcb2"/>
 					<textElement textAlignment="Right">
 						<font size="10" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{saldo_final_2}.multiply(!$F{accounttype}.equals("R")? new BigDecimal("-1"):new BigDecimal("1"))]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="0" y="0" width="82" height="15" uuid="07ab1308-0104-47a8-8624-2b27b23bf227"/>
-					<textElement>
-						<font size="10" isBold="true"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{p2}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -417,153 +387,123 @@ where (saldo_final <> 0 or $P{sfcbr_showzeroaccount}='Y')]]>
 	<title>
 		<band height="95" splitType="Stretch">
 			<staticText>
-				<reportElement x="82" y="45" width="463" height="19" uuid="c0f9f0d8-96dc-4e31-bc91-1a2be1ede233"/>
+				<reportElement x="113" y="46" width="461" height="19" uuid="c0f9f0d8-96dc-4e31-bc91-1a2be1ede233"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BALANCE DE RESULTADO ACUMULADO]]></text>
 			</staticText>
 			<textField pattern="">
-				<reportElement x="82" y="64" width="463" height="20" uuid="7b7bae13-59ba-47da-be5f-755d3337dd54"/>
+				<reportElement x="113" y="65" width="461" height="20" uuid="7b7bae13-59ba-47da-be5f-755d3337dd54"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA["DESDE "+$F{fdesde}+" AL "+$F{fhasta}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="82" y="20" width="463" height="25" forecolor="#FF0000" uuid="0daee4a5-4b4b-4cfa-a1df-4038cd106f30"/>
+				<reportElement x="113" y="21" width="461" height="25" forecolor="#FF0000" uuid="0daee4a5-4b4b-4cfa-a1df-4038cd106f30"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{name}.toUpperCase()]]></textFieldExpression>
 			</textField>
 			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
-				<reportElement key="image-1" x="0" y="0" width="82" height="84" uuid="8492bbd9-6835-4b32-abaf-b36a5669eb53"/>
+				<reportElement key="image-1" x="0" y="0" width="113" height="85" uuid="8492bbd9-6835-4b32-abaf-b36a5669eb53"/>
 				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $P{ad_org_id})]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="344" y="0" width="201" height="20" uuid="4dc64111-fc5f-4fbd-84e8-60a912243d3d"/>
+				<reportElement x="113" y="0" width="461" height="20" uuid="4dc64111-fc5f-4fbd-84e8-60a912243d3d"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{usuario} +" - "+ $F{fecha}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<detail>
-		<band height="16" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{nivel}.equals("5")]]></printWhenExpression>
-			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00">
-				<reportElement stretchType="RelativeToBandHeight" x="337" y="0" width="107" height="16" isPrintWhenDetailOverflows="true" uuid="435e5495-6013-4354-8400-3827266bc5b0"/>
-				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{saldo_final}.multiply(!$F{accounttype}.equals("R")? new BigDecimal("-1"):new BigDecimal("1"))]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="82" y="0" width="255" height="16" isPrintWhenDetailOverflows="true" uuid="75907ba4-421a-49c2-870f-ed6ea2d415fd"/>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{p1name}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="82" height="16" isPrintWhenDetailOverflows="true" uuid="c31a96e2-7cb4-4297-b13f-37ffab70a898"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="113" height="15" isPrintWhenDetailOverflows="true" uuid="c31a96e2-7cb4-4297-b13f-37ffab70a898"/>
 				<textElement>
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{p1}]]></textFieldExpression>
 			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="113" y="0" width="348" height="15" uuid="8464fc04-2d7f-4dc9-99f0-41bb844cf3c6"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p1name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00">
+				<reportElement stretchType="RelativeToBandHeight" x="461" y="0" width="113" height="15" isPrintWhenDetailOverflows="true" uuid="5d4b0da0-7584-4ca4-89c5-d6da175646e3"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldo_final}.multiply(!$F{accounttype}.equals("R")? new BigDecimal("-1"):new BigDecimal("1"))]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>
-		<band height="149">
-			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement x="337" y="0" width="107" height="20" uuid="ad2e752c-051a-424d-b93c-1270153efef4"/>
-				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="13" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{utilidades}.multiply(new BigDecimal("-1"))]]></textFieldExpression>
-			</textField>
+		<band height="140">
 			<staticText>
-				<reportElement x="82" y="0" width="255" height="20" uuid="697818c3-d424-42a8-b6b1-0e7adf7396b9"/>
+				<reportElement stretchType="RelativeToBandHeight" x="113" y="0" width="348" height="15" uuid="88cc225c-c894-48ce-96f1-ffe9b7b82f06"/>
 				<textElement>
 					<font fontName="SansSerif" size="13" isBold="true"/>
 				</textElement>
 				<text><![CDATA[UTILIDAD /PERDIDA]]></text>
 			</staticText>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="461" y="0" width="113" height="15" uuid="4d00c14c-e1ba-409f-8841-54a4bdcc7a95"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{utilidades}.multiply(new BigDecimal("-1"))]]></textFieldExpression>
+			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="140" y="106" width="119" height="20" uuid="d65a25ef-389b-484e-9505-b4d9f995e749"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="100" width="113" height="20" uuid="63789b94-b036-4bef-ab1b-826b9faa0030"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nombrefirma2}.toUpperCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cargofirma1}.toUpperCase()]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="15" width="113" height="83" uuid="5e6676b1-0b9b-4dee-af75-ab9c28d91b7b"/>
+				<text><![CDATA[]]></text>
+			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="12" y="106" width="119" height="20" uuid="f1088e21-e548-4b4f-a700-c4d98a5e58bd"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="120" width="113" height="20" uuid="137de01d-5b3f-4042-8b86-acfd4e57d674"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombrefirma1}.toUpperCase()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="140" y="104" width="119" height="1" uuid="2332b377-2047-4bbd-a765-2aadf44ab587">
-					<printWhenExpression><![CDATA[$F{nombrefirma2} != null]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="12" y="126" width="119" height="20" uuid="017299f0-2e3f-4760-812b-26b280b534ea"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cargofirma1}.toUpperCase()]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="140" y="126" width="119" height="20" uuid="66d5c0a0-affd-480c-9d25-0037040b7d03"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cargofirma2}.toUpperCase()]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="12" y="104" width="119" height="1" uuid="0f97f593-71b3-439d-a5bb-7c6ba9c10d15">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="98" width="113" height="1" uuid="aa5b1a25-8374-43cf-add5-328040752727">
 					<printWhenExpression><![CDATA[$F{nombrefirma1} != null]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="276" y="126" width="119" height="20" uuid="0579009d-eadd-468f-85ca-e91d90664e87"/>
+				<reportElement stretchType="RelativeToBandHeight" x="461" y="120" width="113" height="20" uuid="9bec91a8-964b-4279-8225-0097c6cc6f0a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{cargofirma3}.toUpperCase()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombrefirma2}.toUpperCase()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="276" y="106" width="119" height="20" uuid="30d11102-2c83-44bd-b062-32e37f6994cf"/>
+				<reportElement stretchType="RelativeToBandHeight" x="461" y="100" width="113" height="20" uuid="d8cd2f5b-97c5-435e-b1a8-f43a1a432a70"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
+					<font size="8" isBold="true" isItalic="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nombrefirma3}.toUpperCase()]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="404" y="106" width="119" height="20" uuid="f053085d-1ffe-4505-b8a6-7aa2bb590e92"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nombrefirma4}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cargofirma2}.toUpperCase()]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="404" y="104" width="119" height="1" uuid="f692f969-a517-4a3f-b956-014aa672ead8">
-					<printWhenExpression><![CDATA[$F{nombrefirma4} != null]]></printWhenExpression>
+				<reportElement stretchType="RelativeToBandHeight" x="461" y="97" width="113" height="1" uuid="8655f5b8-d38f-4540-a831-37cedc4c7849">
+					<printWhenExpression><![CDATA[$F{nombrefirma1} != null]]></printWhenExpression>
 				</reportElement>
 			</line>
-			<line>
-				<reportElement x="276" y="104" width="119" height="1" uuid="78e07e50-52f4-4db7-8432-8ee8e5faecc1">
-					<printWhenExpression><![CDATA[$F{nombrefirma3} != null]]></printWhenExpression>
-				</reportElement>
-			</line>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="404" y="126" width="119" height="20" uuid="58746c1c-4b80-46ae-9f81-a8c7ecfd5096"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{cargofirma4}]]></textFieldExpression>
-			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="461" y="15" width="113" height="83" uuid="cad1e4db-7f70-442e-a072-ea29d0f4d0bd"/>
+				<text><![CDATA[]]></text>
+			</staticText>
 		</band>
 	</summary>
-</jasperReport>	
+</jasperReport>

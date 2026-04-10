@@ -7,13 +7,15 @@ import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.openbravo.erpCommon.utility.OBMessageUtils;
 import org.openbravo.idl.proc.Value;
+import org.hibernate.criterion.Restrictions;
 import java.util.Objects;
 import org.openbravo.base.exception.OBException;
+
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -27,6 +29,7 @@ import org.openbravo.model.financialmgmt.accounting.Costcenter;
 import org.openbravo.model.financialmgmt.accounting.UserDimension1;
 import org.openbravo.model.financialmgmt.payment.FIN_FinaccTransaction;
 import org.openbravo.model.financialmgmt.payment.FIN_FinancialAccount;
+
 import ec.com.sidesoft.creditcard.reconciliation.transaction.SccrtCardLoadLine;
 import ec.com.sidesoft.creditcard.reconciliation.transaction.SccrtCardLoadTransaction;
 import ec.com.sidesoft.creditcard.reconciliation.transaction.utils.SCCRT_Helper;
@@ -43,7 +46,7 @@ public class ImportDataFile {
       Sheet sheet = wb.getSheetAt(0);
       
       int sin_lote = 0;
-      String error_message = null;
+      String mensajeErrorComparacion = null;
 
       final SccrtCardLoadTransaction head = OBDal.getInstance().get(SccrtCardLoadTransaction.class,
           recordId);
@@ -146,7 +149,6 @@ public class ImportDataFile {
               newLine.setSccrtCardLoadTransaction(head);
             //validar si hay algun archivo con lote gemelo
               String verificar_lote=lote;
-	          int standardPrecision = 0;
               OBCriteria<FIN_FinancialAccount> finanAcct = OBDal.getInstance().createCriteria(FIN_FinancialAccount.class);
               finanAcct.add(Restrictions.eq(FIN_FinancialAccount.PROPERTY_ID, head.getFINFinancialAccountFrom().getId()));
               finanAcct.setMaxResults(1);
@@ -156,12 +158,16 @@ public class ImportDataFile {
               //verificar si el lote esta lleno
               if(verificar_lote!= null) {
             	  //verificar los datos duplicados
-            	  String hql = "select t.depositAmount, t.costCenter.id, t.organization.id, t.currency.standardPrecision " +
+            	  String hql = "select t.depositAmount, t.costCenter.id, t.organization.id " +
             	             "from " + FIN_FinaccTransaction.class.getName() + " t " +
             	             "where t.account = :account " +
-            	             "group by t.depositAmount, t.costCenter.id, t.organization.id, t.currency.standardPrecision " +
+            	             "group by t.depositAmount, t.costCenter.id, t.organization.id " +
             	             "having count(t.id) > 1";
-
+//            	  String hql2 = "select t.depositAmount, t.costCenter.id, t.organization.id " +
+//            	             "from " + FIN_FinaccTransaction.class.getName() + " t " +
+//            	             "where t.account.id = :accountId " +
+//            	             "and t.sSccrLot = :lote " +
+//            	             "order by t.depositAmount";
             	  List<Object[]> duplicados = OBDal.getInstance()
             	    .getSession()
             	    .createQuery(hql)
@@ -175,7 +181,6 @@ public class ImportDataFile {
             		    depositAmount = (BigDecimal) rows[0];
             		    costCenterId = (String) rows[1];
             		    orgId = (String) rows[2];
-			            standardPrecision = ((Long) rows[3]).intValue();
             		}
             	  //si hay datos duplicados entonces me coja los distintos registros de la tabla FIN_FinaccTransaction
             	  if(depositAmount!=BigDecimal.ZERO && costCenterId!= null && orgId!=null) {
@@ -190,10 +195,10 @@ public class ImportDataFile {
                       }
                       List<FIN_FinaccTransaction> transacciones = critTx.list();
                       System.out.println("Transacciones encontradas: " + transacciones.size());
-                      int count_size=transacciones.size();
+                      int tamano=transacciones.size();
           	          
-          	          if (count_size == 0) {
-          	        	  error_message = OBMessageUtils.messageBD("Sccrt_not_matchfound");
+          	          if (tamano == 0) {
+          	        	  mensajeErrorComparacion = "No se ha hecho match con ninguna Transaccion.";
           	          }
           	          
                       System.out.println("Transacciones asignadas hasta ahora: " + transaccionesAsignadas);
@@ -205,98 +210,120 @@ public class ImportDataFile {
                    	    	
                     	        String user_id = null;
                     	        String costcenter_id = null;
-                    	        BigDecimal credited_value = BigDecimal.ZERO;
-                    	        BigDecimal commission = BigDecimal.ZERO;
-                    	        BigDecimal ret_sale = BigDecimal.ZERO;
-                    	        BigDecimal ret_tax = BigDecimal.ZERO;
-                    	        depositAmount = tx.getDepositAmount();
+                    	        BigDecimal montoTransaccion = tx.getDepositAmount();
+                    	        BigDecimal importeExcelStr = new BigDecimal(cellE.toString());
+                    	        BigDecimal importeExcelStrQA;
+                    	        BigDecimal valorAcreditado = BigDecimal.ZERO;
+                    	        BigDecimal comision = BigDecimal.ZERO;
+                    	        BigDecimal ret_venta = BigDecimal.ZERO;
+                    	        BigDecimal ret_iva = BigDecimal.ZERO;
 
                     	        
                     	        
                     	    if (!transaccionesAsignadas.contains(tx.getId())) {
+                    	    	// cellE
+                    	    	if (cellE == null) {
+                    	    	    importeExcelStrQA = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+                    	    	} else {
+                    	    	    switch (cellE.getCellType()) {
+                    	    	        case Cell.CELL_TYPE_NUMERIC:
+                    	    	            importeExcelStrQA = BigDecimal.valueOf(cellE.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
+                    	    	            break;
+                    	    	        case Cell.CELL_TYPE_STRING:
+                    	    	            importeExcelStrQA = new BigDecimal(cellE.getStringCellValue().trim()).setScale(2, RoundingMode.HALF_UP);
+                    	    	            break;
+                    	    	        case Cell.CELL_TYPE_FORMULA:
+                    	    	            importeExcelStrQA = BigDecimal.valueOf(cellE.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
+                    	    	            break;
+                    	    	        default:
+                    	    	            importeExcelStrQA = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+                    	    	            break;
+                    	    	    }
+                    	    	}
+
                     	    	// cellF
                     	    	if (cellF == null) {
-                    	    	    credited_value = BigDecimal.ZERO.setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	    valorAcreditado = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
                     	    	} else {
                     	    	    switch (cellF.getCellType()) {
                     	    	        case Cell.CELL_TYPE_NUMERIC:
-                    	    	            credited_value = BigDecimal.valueOf(cellF.getNumericCellValue()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            valorAcreditado = BigDecimal.valueOf(cellF.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        case Cell.CELL_TYPE_STRING:
-                    	    	            credited_value = new BigDecimal(cellF.getStringCellValue().trim()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            valorAcreditado = new BigDecimal(cellF.getStringCellValue().trim()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        case Cell.CELL_TYPE_FORMULA:
-                    	    	            credited_value = BigDecimal.valueOf(cellF.getNumericCellValue()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            valorAcreditado = BigDecimal.valueOf(cellF.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        default:
-                    	    	            credited_value = BigDecimal.ZERO.setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            valorAcreditado = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	    }
                     	    	}
 
                     	    	// cellG
                     	    	if (cellG == null) {
-                    	    	    commission = BigDecimal.ZERO.setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	    comision = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
                     	    	} else {
                     	    	    switch (cellG.getCellType()) {
                     	    	        case Cell.CELL_TYPE_NUMERIC:
-                    	    	            commission = BigDecimal.valueOf(cellG.getNumericCellValue()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            comision = BigDecimal.valueOf(cellG.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        case Cell.CELL_TYPE_STRING:
-                    	    	            commission = new BigDecimal(cellG.getStringCellValue().trim()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            comision = new BigDecimal(cellG.getStringCellValue().trim()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        case Cell.CELL_TYPE_FORMULA:
-                    	    	            commission = BigDecimal.valueOf(cellG.getNumericCellValue()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            comision = BigDecimal.valueOf(cellG.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        default:
-                    	    	            commission = BigDecimal.ZERO.setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            comision = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	    }
                     	    	}
 
                     	    	// cellH
                     	    	if (cellH == null) {
-                    	    	    ret_sale = BigDecimal.ZERO.setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	    ret_venta = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
                     	    	} else {
                     	    	    switch (cellH.getCellType()) {
                     	    	        case Cell.CELL_TYPE_NUMERIC:
-                    	    	            ret_sale = BigDecimal.valueOf(cellH.getNumericCellValue()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            ret_venta = BigDecimal.valueOf(cellH.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        case Cell.CELL_TYPE_STRING:
-                    	    	            ret_sale = new BigDecimal(cellH.getStringCellValue().trim()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            ret_venta = new BigDecimal(cellH.getStringCellValue().trim()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        case Cell.CELL_TYPE_FORMULA:
-                    	    	            ret_sale = BigDecimal.valueOf(cellH.getNumericCellValue()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            ret_venta = BigDecimal.valueOf(cellH.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        default:
-                    	    	            ret_sale = BigDecimal.ZERO.setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            ret_venta = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	    }
                     	    	}
 
                     	    	// cellI
                     	    	if (cellI == null) {
-                    	    	    ret_tax = BigDecimal.ZERO.setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	    ret_iva = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
                     	    	} else {
                     	    	    switch (cellI.getCellType()) {
                     	    	        case Cell.CELL_TYPE_NUMERIC:
-                    	    	            ret_tax = BigDecimal.valueOf(cellI.getNumericCellValue()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            ret_iva = BigDecimal.valueOf(cellI.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        case Cell.CELL_TYPE_STRING:
-                    	    	            ret_tax = new BigDecimal(cellI.getStringCellValue().trim()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            ret_iva = new BigDecimal(cellI.getStringCellValue().trim()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        case Cell.CELL_TYPE_FORMULA:
-                    	    	            ret_tax = BigDecimal.valueOf(cellI.getNumericCellValue()).setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            ret_iva = BigDecimal.valueOf(cellI.getNumericCellValue()).setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	        default:
-                    	    	            ret_tax = BigDecimal.ZERO.setScale(standardPrecision, RoundingMode.HALF_UP);
+                    	    	            ret_iva = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
                     	    	            break;
                     	    	    }
                     	    	}
 
 
-                    	        BigDecimal sum_amount = credited_value.add(commission).add(ret_tax).add(ret_sale);  
-                    	        String costcenterExcelStr = (cellM != null) ? cellM.toString().trim() : null;
+                    	        BigDecimal sumatoria = valorAcreditado.add(comision).add(ret_iva).add(ret_venta);  
+                    	        String costcenterExcelStr = new String(cellM.toString());
                     	        String userExcelStr = (cellN != null) ? cellN.toString().trim() : null;
                     	        
                     	        OBCriteria<Costcenter> ObjCostCenterXlsx = OBDal.getInstance()
@@ -329,23 +356,24 @@ public class ImportDataFile {
                     	        String user_id_xlsx = userXlsx != null ? userXlsx.getId() : null;
 
                     	        // ===== Comparaciones =====
-                    	        boolean equal_amount = (depositAmount != null 
-                    	                && depositAmount.compareTo(sum_amount) == 0);
-                    	        boolean equal_costcenter = (costcenter_id != null && costcenter_id.equals(costcenter_id_xlsx));
-                    	        boolean equal_user = Objects.equals(user_id, user_id_xlsx);
+                    	        boolean sumamontoIgual = (montoTransaccion != null 
+                    	                && montoTransaccion.compareTo(sumatoria) == 0);
+                    	        boolean costCenterIgual = (costcenter_id != null && costcenter_id.equals(costcenter_id_xlsx));
+                    	        boolean userIgual = Objects.equals(user_id, user_id_xlsx);
+                    	        boolean sinTransacciones = (tamano == 0);
 
-                    	        error_message = null;
+                    	        mensajeErrorComparacion = null;
 
                     	        // Verificar errores específicos
-                    	        if (!equal_amount) {
-                    	            error_message = OBMessageUtils.messageBD("Sccrt_incorrect_amount");
-                    	        } else if (!equal_costcenter) {
-                    	            error_message = OBMessageUtils.messageBD("Sccrt_incorrect_costcenter");
-                    	        } else if (!equal_user) {
-                    	            error_message = OBMessageUtils.messageBD("Sccrt_incorrect_user");
+                    	        if (!sumamontoIgual) {
+                    	            mensajeErrorComparacion = "No se ha hecho match con ninguna Transaccion: valor de importe no coincide.";
+                    	        } else if (!costCenterIgual) {
+                    	            mensajeErrorComparacion = "No se ha hecho match con ninguna Transaccion: Centro de costo no coincide.";
+                    	        } else if (!userIgual) {
+                    	            mensajeErrorComparacion = "No se ha hecho match con ninguna Transaccion: Usuario no coincide.";
                     	        }
                     	        
-                    	        if(equal_costcenter && equal_user && equal_amount) {
+                    	        if(costCenterIgual && userIgual && sumamontoIgual) {
                     	    	// Asignar al newLine
                     	    	newLine.setFINFinaccTranssaction(tx);
                           	  	idinsert=newLine.getFINFinaccTranssaction();
@@ -361,7 +389,7 @@ public class ImportDataFile {
 
                     	}
                       if (!matchFound) {
-                    	    newLine.setLOGError(error_message);
+                    	    newLine.setLOGError(mensajeErrorComparacion);
                     	    newLine.setError(true);
                     	}
             	  }
@@ -388,4 +416,3 @@ public class ImportDataFile {
   }
 
 }
-

@@ -89,14 +89,6 @@
         <default><![CDATA[0]]></default>
         <onCreateDefault/>
       </column>
-      <column name="WORKED_DAYS_BENEFITS" primaryKey="false" required="false" type="DECIMAL" autoIncrement="false">
-        <default/>
-        <onCreateDefault/>
-      </column>
-      <column name="PARTIAL_WORK_HOURS" primaryKey="false" required="false" type="DECIMAL" size="10,4" autoIncrement="false">
-        <default/>
-        <onCreateDefault/>
-      </column>
       <foreign-key foreignTable="C_BPARTNER" name="SSPR_PAYROLL_C_BPARTNER">
         <reference local="C_BPARTNER_ID" foreign="C_BPARTNER_ID"/>
       </foreign-key>

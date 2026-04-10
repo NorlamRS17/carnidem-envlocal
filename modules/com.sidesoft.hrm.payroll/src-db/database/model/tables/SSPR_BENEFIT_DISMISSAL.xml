@@ -69,13 +69,6 @@
         <default/>
         <onCreateDefault/>
       </column>
-      <column name="SSPR_CONCEPT_TENTH_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
-        <default/>
-        <onCreateDefault/>
-      </column>
-      <foreign-key foreignTable="SSPR_CONCEPT" name="SSPR_CONCEPT_TENTH_IDK">
-        <reference local="SSPR_CONCEPT_TENTH_ID" foreign="SSPR_CONCEPT_ID"/>
-      </foreign-key>
       <foreign-key foreignTable="AD_CLIENT" name="SSPR_SETTLEMENTLINE_CLIENT">
         <reference local="AD_CLIENT_ID" foreign="AD_CLIENT_ID"/>
       </foreign-key>

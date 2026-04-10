@@ -60,7 +60,7 @@ end),' ') as jornada_parcial
 ,coalesce(round(coalesce(comision,0) + coalesce(com_liq.total_liquid_com,0),2),0) as comision
 ,abs(round(coalesce(su.advance_utilities,0),2)) as anticipo_utilidad
 ,to_number(su.judicial_retention) as retencion_judicial
-,coalesce(round(su.incometaxwithholding, 2), 0) as impuesto_retencion
+,to_number(0) as impuesto_retencion
 ,to_char('') as informacion_mdt
 ,coalesce((case cbp.em_sspr_typeofincome   
         when 'H' then 'P'  
@@ -360,7 +360,7 @@ select  coalesce(ssd.taxid_partner,'') as cedula
 ,to_number(0) as comision
 ,to_number(0) as anticipo_utilidad
 ,to_number(su.judicial_retention) as retencion_judicial 
-,coalesce(round(su.incometaxwithholding, 2), 0) as impuesto_retencion
+,to_number(0) as impuesto_retencion
 ,to_char('') as informacion_mdt
 ,coalesce((case ssd.paymenttype     
         when 'H' then 'P'    

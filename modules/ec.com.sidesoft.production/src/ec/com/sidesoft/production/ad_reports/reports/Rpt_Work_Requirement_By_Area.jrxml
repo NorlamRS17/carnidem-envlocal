@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_Work_Requirement_By_Area" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="2.593742460100013"/>
-	<property name="ireport.x" value="479"/>
-	<property name="ireport.y" value="198"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_Work_Requirement_By_Area" pageWidth="1300" pageHeight="595" orientation="Landscape" columnWidth="1260" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d51e3112-6fca-40c1-af2d-b28557fa8976">
+	<property name="ireport.zoom" value="0.9090909090909355"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="AD_USER_ID" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -15,19 +15,45 @@
 	<parameter name="Ma_Section_ID" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="MA_WorkRequirement_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="M_Product_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_DESIGN" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{BASE_DESIGN} != null && $P{BASE_DESIGN}.trim().length() > 0 ? $P{BASE_DESIGN} + "/ec/com/sidesoft/production/ad_reports/reports/" : ""]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
 wr.startdate AS "desde",
 wr.enddate AS "hasta",
-pd.name AS "producto",
+wr.documentno AS "workrequirement",
+COALESCE(mpd.documentno,'') AS "productionplan",
+mpd.m_production_id::text AS "m_production_id",
 now() AS "fechaimpresion",
 sc.name AS "area",
+pd2.value AS "productvalue",
 pd2.name AS "ingredientes",
-'' AS "lotemp",
-coalesce(wp2.MovementQty,0) AS "cantidadreceta",
-coalesce(wr.Secondaryqty,0) AS "cantidadsolicitada",
-coalesce(wr.Secondaryqty,0)  * coalesce(wp2.MovementQty,0) AS "cantidadparada",
+COALESCE(mas.description, mas.lot, '') AS "lotemp",
+CASE WHEN wp2.ma_wrphaseproduct_id IS NOT NULL THEN wp2.MovementQty ELSE NULL END AS "cantidadreceta",
+CASE WHEN wp2.ma_wrphaseproduct_id IS NOT NULL THEN coalesce(wr.Secondaryqty,0) ELSE NULL END AS "cantidadsolicitada",
+CASE WHEN wp2.ma_wrphaseproduct_id IS NOT NULL THEN coalesce(wr.Secondaryqty,0) * wp2.MovementQty ELSE NULL END AS "cantidadparada",
+CASE WHEN wp2.ma_wrphaseproduct_id IS NOT NULL THEN
+    wp2.MovementQty * COALESCE(
+        (SELECT mpl2.movementqty
+         FROM m_productionline mpl2
+         WHERE mpl2.m_productionplan_id = mpp.m_productionplan_id
+           AND mpl2.productiontype = '+'
+         LIMIT 1), 0)
+ELSE NULL END AS "consumototalTeorico",
+coalesce(mpl.movementqty, 0) AS "cantidadreal",
+CASE WHEN wp2.ma_wrphaseproduct_id IS NOT NULL THEN (coalesce(wr.Secondaryqty,0) * wp2.MovementQty) - coalesce(mpl.movementqty, 0) ELSE NULL END AS "diferencia",
 COALESCE(tr.uomsymbol,uo.uomsymbol) AS "unidad",
+COALESCE(ws.name,'') AS "puesto_trabajo",
 sc.description AS "descripcion",
 (select ao.name from ad_org ao where ao.ad_orgtype_id='1') AS "organizacion",
 (select ad_org_id from ad_org ao where ao.ad_orgtype_id='1') AS "ad_org_id",
@@ -36,214 +62,358 @@ coalesce(cbu.name,adu.name) as usuario
 from ad_user adu
 left join c_bpartner cbu on cbu.c_bpartner_id = adu.c_bpartner_id
 where adu.ad_user_id = $P{AD_USER_ID}) as "usuario",
-to_date(wr.startdate,'dd/mm/yyyy')as "dat"
-FROM MA_WorkRequirement wr
-LEFT JOIN ma_processplan pp ON wr.ma_processplan_id = pp.ma_processplan_id
---ÁREA
-LEFT JOIN MA_WRPhase ph ON wr.MA_WorkRequirement_id = ph.MA_WorkRequirement_id
+to_date(wr.startdate,'dd/mm/yyyy')as "dat",
+CASE WHEN $P{M_Product_ID} IS NULL OR trim(coalesce($P{M_Product_ID},'')) = '' THEN '' WHEN pd2.m_product_id::text = $P{M_Product_ID} THEN pd2.name ELSE (SELECT name FROM m_product WHERE m_product_id::text = $P{M_Product_ID} LIMIT 1) END AS "producto_titulo",
+CASE WHEN $P{M_Product_ID} IS NULL OR trim(coalesce($P{M_Product_ID},'')) = '' THEN '' WHEN pd2.m_product_id::text = $P{M_Product_ID} THEN COALESCE(mas.description, mas.lot, '') ELSE (SELECT COALESCE(mas_f.description, mas_f.lot, '') FROM m_productionline mpl_f LEFT JOIN m_attributesetinstance mas_f ON mas_f.m_attributesetinstance_id = mpl_f.m_attributesetinstance_id WHERE mpl_f.m_productionplan_id = mpp.m_productionplan_id AND mpl_f.productiontype = '+' AND mpl_f.m_product_id::text = $P{M_Product_ID} LIMIT 1) END AS "lote_titulo"
+FROM m_productionline mpl
+INNER JOIN m_productionplan mpp ON mpl.m_productionplan_id = mpp.m_productionplan_id AND mpl.productiontype = '-'
+INNER JOIN m_production mpd ON mpp.m_production_id = mpd.m_production_id
+INNER JOIN ma_wrphase ph ON mpp.ma_wrphase_id = ph.ma_wrphase_id
+INNER JOIN ma_workrequirement wr ON ph.ma_workrequirement_id = wr.ma_workrequirement_id
 LEFT JOIN ma_process pr ON ph.ma_process_id = pr.ma_process_id
-LEFT JOIN ma_workstation ws ON pr.ma_workstation_id  = ws.ma_workstation_id
+LEFT JOIN ma_workstation ws ON pr.ma_workstation_id = ws.ma_workstation_id
 LEFT JOIN ma_section sc ON ws.ma_section_id = sc.ma_section_id
---PRODUCTO
-
-LEFT JOIN MA_WRPhaseProduct wp ON ph.MA_WRPhase_id = wp.MA_WRPhase_id AND wp.productiontype='+'
-LEFT JOIN m_product pd ON wp.m_product_id = pd.m_product_id
-
---INGREDIENTES
-LEFT JOIN MA_WRPhaseProduct wp2 ON ph.MA_WRPhase_id = wp2.MA_WRPhase_id AND wp2.productiontype='-'
-LEFT JOIN m_product pd2 ON wp2.m_product_id =  pd2.m_product_id
+LEFT JOIN ma_wrphaseproduct wp2 ON ph.ma_wrphase_id = wp2.ma_wrphase_id AND wp2.productiontype = '-' AND wp2.m_product_id = mpl.m_product_id
+LEFT JOIN m_product pd2 ON mpl.m_product_id = pd2.m_product_id
+LEFT JOIN m_attributesetinstance mas ON mpl.m_attributesetinstance_id = mas.m_attributesetinstance_id
 LEFT JOIN c_uom uo ON pd2.c_uom_id = uo.c_uom_id
-LEFT JOIN c_uom_trl tr ON uo.c_uom_id =tr.c_uom_id AND UPPER(tr.ad_language)='ES_ES'
+LEFT JOIN c_uom_trl tr ON uo.c_uom_id = tr.c_uom_id AND UPPER(tr.ad_language)='ES_ES'
 
 WHERE (sc.ma_section_id = $P{Ma_Section_ID} OR $P{Ma_Section_ID} IS NULL)
+AND ($P{MA_WorkRequirement_ID} IS NULL OR trim(coalesce($P{MA_WorkRequirement_ID},'')) = '' OR wr.ma_workrequirement_id::text = $P{MA_WorkRequirement_ID})
 AND wr.startdate >= $P{StartDate}
 AND wr.enddate <= $P{EndDate}
 AND wr.closed='Y'
-ORDER BY sc.name,pd.name,pd2.name ASC]]>
+AND ($P{M_Product_ID} IS NULL OR trim(coalesce($P{M_Product_ID},'')) = '' OR EXISTS (SELECT 1 FROM m_productionline mpl_f WHERE mpl_f.m_productionplan_id = mpp.m_productionplan_id AND mpl_f.m_product_id::text = $P{M_Product_ID}))
+ORDER BY sc.name, mpd.documentno, pd2.name ASC]]>
 	</queryString>
 	<field name="desde" class="java.sql.Timestamp"/>
 	<field name="hasta" class="java.sql.Timestamp"/>
-	<field name="producto" class="java.lang.String"/>
+	<field name="workrequirement" class="java.lang.String"/>
+	<field name="productionplan" class="java.lang.String"/>
+	<field name="m_production_id" class="java.lang.String"/>
 	<field name="fechaimpresion" class="java.sql.Timestamp"/>
 	<field name="area" class="java.lang.String"/>
+	<field name="productvalue" class="java.lang.String"/>
 	<field name="ingredientes" class="java.lang.String"/>
 	<field name="lotemp" class="java.lang.String"/>
 	<field name="cantidadreceta" class="java.math.BigDecimal"/>
 	<field name="cantidadsolicitada" class="java.math.BigDecimal"/>
 	<field name="cantidadparada" class="java.math.BigDecimal"/>
+	<field name="consumototalTeorico" class="java.math.BigDecimal"/>
+	<field name="cantidadreal" class="java.math.BigDecimal"/>
+	<field name="diferencia" class="java.math.BigDecimal"/>
 	<field name="unidad" class="java.lang.String"/>
+	<field name="puesto_trabajo" class="java.lang.String"/>
 	<field name="descripcion" class="java.lang.String"/>
 	<field name="organizacion" class="java.lang.String"/>
 	<field name="ad_org_id" class="java.lang.String"/>
 	<field name="usuario" class="java.lang.String"/>
 	<field name="dat" class="java.sql.Timestamp"/>
+	<field name="producto_titulo" class="java.lang.String"/>
+	<field name="lote_titulo" class="java.lang.String"/>
+	<variable name="sumcantidadparada" class="java.math.BigDecimal" resetType="Group" resetGroup="PARTE" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidadparada} != null ? $F{cantidadparada} : java.math.BigDecimal.ZERO]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="sumconsumoTeorico" class="java.math.BigDecimal" resetType="Group" resetGroup="PARTE" calculation="Sum">
+		<variableExpression><![CDATA[$F{consumototalTeorico} != null ? $F{consumototalTeorico} : java.math.BigDecimal.ZERO]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="sumcantidadreal" class="java.math.BigDecimal" resetType="Group" resetGroup="PARTE" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidadreal}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="sumdiferencia" class="java.math.BigDecimal" resetType="Group" resetGroup="PARTE" calculation="Sum">
+		<variableExpression><![CDATA[$F{diferencia} != null ? $F{diferencia} : java.math.BigDecimal.ZERO]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="sumcantidadparadaReport" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidadparada} != null ? $F{cantidadparada} : java.math.BigDecimal.ZERO]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="sumconsumoTeoricoReport" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{consumototalTeorico} != null ? $F{consumototalTeorico} : java.math.BigDecimal.ZERO]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="sumcantidadrealReport" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{cantidadreal}]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
+	<variable name="sumdiferenciaReport" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{diferencia} != null ? $F{diferencia} : java.math.BigDecimal.ZERO]]></variableExpression>
+		<initialValueExpression><![CDATA[java.math.BigDecimal.ZERO]]></initialValueExpression>
+	</variable>
 	<group name="ÁREA">
 		<groupExpression><![CDATA[$F{area}]]></groupExpression>
 		<groupHeader>
-			<band height="22">
-				<staticText>
-					<reportElement x="0" y="1" width="134" height="20"/>
-					<textElement verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Área:]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement x="134" y="1" width="404" height="20"/>
-					<textElement verticalAlignment="Middle">
-						<font size="12"/>
-					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{area}]]></textFieldExpression>
-				</textField>
-			</band>
+			<band/>
 		</groupHeader>
 	</group>
-	<group name="PRODUCTO">
-		<groupExpression><![CDATA[$F{producto}]]></groupExpression>
+	<group name="PARTE">
+		<groupExpression><![CDATA[$F{m_production_id}]]></groupExpression>
 		<groupHeader>
-			<band height="38">
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement x="0" y="0" width="802" height="18"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
+			<band height="72">
+				<staticText>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="154" height="18" uuid="1caf4775-6608-41d6-bd5a-375950248360"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression class="java.lang.String"><![CDATA[$F{producto}]]></textFieldExpression>
+					<text><![CDATA[ORDEN FABRICACIÓN]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="154" y="0" width="140" height="18" uuid="24f8c724-87c3-45bf-a71f-755ba11574ee"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{workrequirement}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement x="0" y="18" width="134" height="20"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="294" y="0" width="147" height="18" uuid="8c7955b5-e0b5-49e6-89c2-f5a892c249c6"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Ingredientes]]></text>
+					<text><![CDATA[PARTE FABRICACIÓN]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="441" y="0" width="139" height="18" uuid="93e84ded-e6b9-45b4-bd36-8b0c6a489af3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{productionplan}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" x="0" y="52" width="154" height="20" uuid="aa76bcea-be2a-444d-957f-49d9a7b6fcdd"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Código]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="134" y="18" width="94" height="20"/>
+					<reportElement positionType="Float" x="952" y="52" width="114" height="20" uuid="b0d9f298-f540-4f72-8dcd-efa50ccd8e91"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Lote]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="228" y="18" width="100" height="20"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Cant. Receta]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="328" y="18" width="110" height="20"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Cant. Solicitada]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="438" y="18" width="100" height="20"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Cant. Parada]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="538" y="18" width="135" height="20"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Unidad]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="673" y="18" width="129" height="20"/>
+					<reportElement positionType="Float" x="1066" y="52" width="194" height="20" uuid="17c7efae-2153-4cfd-922d-5a3465606882"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font size="12" isBold="true"/>
+						<font size="9" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Observaciones]]></text>
+					<text><![CDATA[Puesto de trabajo]]></text>
 				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="294" y="52" width="147" height="20" uuid="37dccac0-df81-4e89-ace5-e93e4a5e65be"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Lote]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="154" y="52" width="140" height="20" uuid="bbbf5140-1125-4830-b7e8-a2a2f654c0bd"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Ingredientes]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="441" y="52" width="139" height="20" uuid="9d7d6fb8-595f-4366-b7da-c79466c976a9"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Consumo según fórmula]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="580" y="52" width="125" height="20" uuid="1ead77a4-8265-4829-b4c0-e7ceccb89192"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Consumo total teórico]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="705" y="52" width="122" height="20" uuid="fd88958c-3ca6-4880-883f-32cb62986949"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Consumo total Real]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" x="827" y="52" width="125" height="20" uuid="a2a7431d-3564-433e-94e0-347b4f1f3813"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Diferencia]]></text>
+				</staticText>
+				<subreport>
+					<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="580" y="0" width="680" height="18" uuid="df22f2c3-f3ec-4c4a-84ee-5e72a07672ba"/>
+					<subreportParameter name="M_PRODUCTION_ID">
+						<subreportParameterExpression><![CDATA[$F{m_production_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubReport_Productos_P_Plus.jasper"]]></subreportExpression>
+				</subreport>
 			</band>
 		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<staticText>
+					<reportElement x="441" y="0" width="139" height="20" uuid="a1b2c3d4-0001-4000-8000-000000000001"/>
+					<textElement verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total Masas:]]></text>
+				</staticText>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="580" y="0" width="125" height="20" uuid="a1b2c3d4-0002-4000-8000-000000000002"/>
+					<box leftPadding="2" rightPadding="2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumconsumoTeorico}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="705" y="0" width="122" height="20" uuid="a1b2c3d4-0003-4000-8000-000000000003"/>
+					<box leftPadding="2" rightPadding="2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumcantidadreal}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement x="827" y="0" width="125" height="20" uuid="a1b2c3d4-0004-4000-8000-000000000004"/>
+					<box leftPadding="2" rightPadding="2"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{sumdiferencia}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
 	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="121" splitType="Stretch">
+		<band height="140" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="80" width="134" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Desde:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="100" width="135" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Hasta:]]></text>
-			</staticText>
-			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="134" y="80" width="130" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[$P{StartDate}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement x="135" y="100" width="129" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[$P{EndDate}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy HH:mm:ss" isBlankWhenNull="true">
-				<reportElement x="670" y="100" width="129" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression class="java.sql.Timestamp"><![CDATA[$F{fechaimpresion}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="535" y="100" width="135" height="20"/>
-				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Fecha impresión:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="134" y="20" width="668" height="20"/>
+				<reportElement x="154" y="20" width="1106" height="20" uuid="37c0468a-7798-4eb8-be8b-ecb41662f841"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Registro orden de fabricación por áreas]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="134" y="0" width="668" height="20"/>
+				<reportElement x="154" y="0" width="1106" height="20" uuid="29350d46-abc7-4009-8590-81c225bb1852"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{organizacion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{organizacion}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="154" height="80" uuid="9af26bd8-0f9a-48ec-87c7-b6b1bb6c7185"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal",$F{ad_org_id})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="80" width="154" height="20" uuid="fd8c4fc1-70fd-4097-9deb-ff368e37350e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="100" width="154" height="20" uuid="099641ca-d7ce-4e9b-89ca-91a88cf222ff"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="154" y="80" width="140" height="20" uuid="2a8d7a68-2201-4387-bec5-e4dfd2778dde"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{StartDate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="154" y="100" width="140" height="20" uuid="145d637f-12d1-4db3-86c6-b7316e7e5b28"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{EndDate}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy HH:mm:ss" isBlankWhenNull="true">
+				<reportElement x="1131" y="120" width="129" height="20" uuid="8f7dac71-396b-4e2d-88ed-c130a8767b40"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaimpresion}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="535" y="80" width="135" height="20"/>
+				<reportElement x="996" y="120" width="135" height="20" uuid="4fdbb48c-780e-4c25-8e47-fa9f42cf710c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha impresión:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="996" y="100" width="135" height="20" uuid="f975d686-0c08-47b9-af95-f01ab39f3f7e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Usuario:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="670" y="80" width="129" height="20"/>
+				<reportElement x="1131" y="100" width="129" height="20" uuid="d00cc1b5-1585-41a4-aa05-c4370032bea3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{usuario}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
 			</textField>
-			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
-				<reportElement key="image-1" x="0" y="0" width="134" height="60"/>
-				<imageExpression class="java.awt.Image"><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal",$F{ad_org_id})]]></imageExpression>
-			</image>
+			<staticText>
+				<reportElement x="0" y="120" width="154" height="20" uuid="d7eae5b9-9e01-4be3-854e-64497a6b6357">
+					<printWhenExpression><![CDATA[$P{M_Product_ID} != null && $P{M_Product_ID}.toString().trim().length() > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Producto:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="154" y="120" width="287" height="20" uuid="bf42da02-6314-4c54-9f6a-99aed78668c0">
+					<printWhenExpression><![CDATA[$P{M_Product_ID} != null && $P{M_Product_ID}.toString().trim().length() > 0]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto_titulo}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
-		<band splitType="Stretch"/>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement x="996" y="0" width="135" height="19" uuid="0fcbae14-44a7-4037-a8ba-1a1d28e6d6f9"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Página:]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="1156" y="0" width="28" height="19" uuid="4b16d32c-e8bf-4f48-be5e-f3235ca27ae5"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1131" y="0" width="25" height="19" uuid="e8a3fb40-975b-4a7f-83e2-585b0a658308"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageHeader>
 	<columnHeader>
 		<band splitType="Stretch"/>
@@ -251,46 +421,76 @@ ORDER BY sc.name,pd.name,pd2.name ASC]]>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="134" y="0" width="94" height="20"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="294" y="0" width="147" height="20" uuid="4ac194a6-8d7a-4838-8efb-2307cbe6c9ec"/>
 				<box leftPadding="2" rightPadding="2"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{lotemp}]]></textFieldExpression>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lotemp}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="134" height="20"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="154" y="0" width="140" height="20" uuid="f40ef4b9-598b-412d-b68b-7ef79e1b28f6"/>
 				<box leftPadding="2" rightPadding="2"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingredientes}]]></textFieldExpression>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingredientes}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.0000;-#,##0.0000" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="228" y="0" width="100" height="20"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="441" y="0" width="139" height="20" uuid="82924415-61a5-4cf9-80f2-19743442e0ad"/>
 				<box leftPadding="0" rightPadding="5"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cantidadreceta}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidadreceta}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="328" y="0" width="110" height="20"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="580" y="0" width="125" height="20" uuid="8a48bbd1-4f77-45bc-b4c8-b410e786b33d"/>
 				<box leftPadding="2" rightPadding="2"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cantidadsolicitada}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consumototalTeorico}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="952" y="0" width="114" height="20" uuid="b2986a43-65ab-4160-9ff8-e35ade9a3d2f"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unidad}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="154" height="20" uuid="4a465f18-f1f5-4ae6-81b1-aa99aab29c78"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productvalue}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="438" y="0" width="100" height="20"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="705" y="0" width="122" height="20" uuid="e79b1349-5520-4f54-8222-cbe8460d5902"/>
 				<box leftPadding="2" rightPadding="2"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{cantidadparada}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidadreal}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="827" y="0" width="125" height="20" uuid="35597cab-96d6-4277-a474-041ddbe7f9e0"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diferencia}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="538" y="0" width="135" height="20"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1066" y="0" width="194" height="20" uuid="939cc07a-5500-41c9-9d4a-439e3f806f3b"/>
 				<box leftPadding="2" rightPadding="2"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{unidad}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="673" y="0" width="129" height="20"/>
-				<box leftPadding="2" rightPadding="2"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{descripcion}]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{puesto_trabajo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -301,6 +501,38 @@ ORDER BY sc.name,pd.name,pd2.name ASC]]>
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band splitType="Stretch"/>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="705" y="0" width="122" height="20" uuid="b90375f0-f825-4125-a50d-eeeea895a712"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumcantidadrealReport}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="827" y="0" width="125" height="20" uuid="419d1131-39ad-41c6-8797-30bef764dff7"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumdiferenciaReport}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="441" y="0" width="139" height="20" uuid="76d08a39-11e2-4c15-8a08-dc90637904dc"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Masas General:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="580" y="0" width="125" height="20" uuid="d284b682-47de-4ebd-8745-6b42292b9059"/>
+				<box leftPadding="2" rightPadding="2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sumconsumoTeoricoReport}]]></textFieldExpression>
+			</textField>
+		</band>
 	</summary>
 </jasperReport>

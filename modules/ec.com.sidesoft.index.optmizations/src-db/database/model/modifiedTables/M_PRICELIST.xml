@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-  <database name="MODIFIED TABLE M_PRICELIST">
-    <table name="M_PRICELIST" primaryKey="M_PRICELIST_KEY">
-      <index name="EM_DBIDXO_PRICELIST_ISTAX" unique="false">
-        <index-column name="ISTAXINCLUDED"/>
-        <index-column name="M_PRICELIST_ID"/>
-      </index>
-    </table>
-  </database>

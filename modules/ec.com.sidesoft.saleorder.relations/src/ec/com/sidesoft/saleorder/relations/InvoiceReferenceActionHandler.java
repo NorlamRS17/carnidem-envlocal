@@ -145,8 +145,7 @@ public class InvoiceReferenceActionHandler extends BaseProcessActionHandler {
 
     return message;
   }
-  
-  @SuppressWarnings("deprecation")
+
   private void deleteInvoiceLine(final String invoiceId) {
     final String deleteHql = "delete from InvoiceLine where invoice.id = :invoiceId ";
     final Query deleteQry = OBDal.getInstance().getSession().createQuery(deleteHql.toString());

@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 
 import org.apache.log4j.Logger;
 import org.openbravo.base.ConfigParameters;
-import org.openbravo.base.exception.OBException;
 import org.openbravo.dal.core.OBContext;
 import org.openbravo.database.ConnectionProvider;
 import org.openbravo.erpCommon.utility.OBError;
@@ -15,12 +14,10 @@ import org.openbravo.scheduling.ProcessBundle;
 import org.openbravo.scheduling.ProcessLogger;
 import org.openbravo.service.db.DalBaseProcess;
 import org.openbravo.service.db.DalConnectionProvider;
-import org.openbravo.scheduling.KillableProcess;
-
 
 import ec.cusoft.facturaec.filewriter.FileGeneration;
 
-public class PayrollEventsBackgroundMonth extends DalBaseProcess implements KillableProcess{
+public class PayrollEventsBackgroundMonth extends DalBaseProcess {
   private static final Logger log4j = Logger.getLogger(PayrollEventsBackgroundMonth.class);
   private ProcessLogger logger;
   FileGeneration filegeneration = new FileGeneration();
@@ -28,8 +25,7 @@ public class PayrollEventsBackgroundMonth extends DalBaseProcess implements Kill
   String msgMessage = "";
   String msgType = ""; // success, warning or error
   public ConfigParameters cf;
-  private boolean killProcess = false;
-  
+
   @Override
   protected void doExecute(ProcessBundle bundle) throws Exception {
 
@@ -47,14 +43,8 @@ public class PayrollEventsBackgroundMonth extends DalBaseProcess implements Kill
       // PROCESOS MENSUALES
       // ********************************************************************//
 
-      if (killProcess) {
-        throw new OBException("Process killed");
-      }
       // PROCESO BONO VENTAS
       bonusSales();
-      if (killProcess) {
-        throw new OBException("Process killed");
-      }
       // PROCESO BONO ESPECIAL CC
       specialCCbonus();
 
@@ -127,10 +117,6 @@ public class PayrollEventsBackgroundMonth extends DalBaseProcess implements Kill
       }
     }
 
-  }
-  @Override
-  public void kill(ProcessBundle processBundle) throws Exception {
-    this.killProcess = true;
   }
 
 }

@@ -63,21 +63,12 @@ from
       case when e.rate < 0 then e.rate *-1 else e.rate end as porc_ret,
       (
         select
-          coalesce(sum(fa.amtacctdr - fa.amtacctcr), 0)
+          sum(d1.WhIVAAmt)
         from
-          fact_acct fa
+          ssws_withholdingsaleline d1
         where
-          fa.record_id = d.ssws_withholdingsale_id
-          and exists (
-            select
-              1
-            from
-              c_tax_acct ta
-              join c_validcombination vc on vc.c_validcombination_id = ta.t_due_acct
-            where
-              ta.c_tax_id = d.c_tax_id
-              and vc.account_id = fa.account_id
-          )
+          d1.ssws_withholdingsale_id = d.ssws_withholdingsale_id
+          and d1.c_tax_id = d.c_tax_id
       ) as val_ret,
       to_char(now(), 'dd/MM/yyyy HH24:MI:SS') as fecha_impresion,
       (

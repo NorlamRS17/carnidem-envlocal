@@ -644,7 +644,6 @@ End Loop;
 				OR b.em_sspr_status = 'L')
 			AND a.cancelliquidation = 'N'
 			AND a.earneddays > 0
-			AND a.nodays > 0
 	)Loop
 
 		v_amount := 0;			
@@ -888,7 +887,7 @@ End Loop;
 				totalvalue = round(v_amount, 2), -- CASE WHEN v_add_valid THEN round(v_amount, 2) ELSE 0 END,
 				dayvalue = round(v_amount,2) / Cur_valued_vacations.earneddays, -- CASE WHEN v_add_valid THEN v_day_value ELSE 0 END,
 				vacationsvalue = (round(v_amount,2) / Cur_valued_vacations.earneddays) * Cur_valued_vacations.nodays,				--Earneddays_Add = CASE WHEN v_add_valid THEN v_balance_add + (noadditionaldays - 1) ELSE 0 END,
-				additional_day_value = CASE WHEN additional_assessment > 0 AND noadditionaltotal >= 0.01 THEN  round(additional_assessment/round(noadditionaltotal,2), 2) ELSE 0 END
+				additional_day_value = CASE WHEN additional_assessment > 0 AND noadditionaltotal > 0 THEN  round(additional_assessment/round(noadditionaltotal,2), 2) ELSE 0 END
 				--additional_day_value = noadditionaltotal
 				/*additional_day_value = CASE WHEN v_add_valid THEN
 					round(v_amount_add, 2) * v_balance_add

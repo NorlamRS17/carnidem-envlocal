@@ -276,7 +276,7 @@ public class ImportLinesOrders extends IdlServiceJava {
       // Almacen
       ObjOrderLine.setWarehouse(ObjOrder.getWarehouse());
       // Linea
-      ObjOrderLine.setLineNo(Long.valueOf(Linea));
+      ObjOrderLine.setLineNo(new Long(Linea));
       // Producto
       ObjOrderLine.setProduct(ObjProduct);
       // Cantidad

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportIncomeStatementCostCenter_CTTotal" columnCount="20" printOrder="Horizontal" pageWidth="1760" pageHeight="23" columnWidth="88" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" uuid="00ab118b-9e86-47b8-8051-f9fdb9e1ca03">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReportIncomeStatementCostCenter_CTTotal" columnCount="200" printOrder="Horizontal" pageWidth="17600" pageHeight="23" columnWidth="88" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" uuid="00ab118b-9e86-47b8-8051-f9fdb9e1ca03">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -40,64 +40,35 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[WITH movs AS (
-    SELECT
-        COALESCE(SUM(fa.amtacctdr - fa.amtacctcr), 0.00) AS amount,
-        CASE
-            WHEN cos.name IS NULL OR cos.name = 'NA'
-                THEN 'X-' || COALESCE(cos.name, 'NA')
-            ELSE cos.name
-        END AS costcenter
-    FROM fact_acct fa
-    LEFT JOIN c_elementvalue ev
-        ON ev.c_elementvalue_id = fa.account_id
-    LEFT JOIN mv_tree_acct ta
-        ON ta.id = ev.c_elementvalue_id
-    LEFT JOIN c_costcenter cos
-        ON cos.c_costcenter_id = fa.c_costcenter_id
-    WHERE
-        fa.dateacct BETWEEN $P{datefrom} AND $P{dateto}
-        AND fa.factaccttype = 'N'
-        AND fa.isactive = 'Y'
-        AND ev.accounttype = $P{accounttype}
-        AND (
-            $P{ad_org_id} = '0'
-            OR fa.ad_org_id = $P{ad_org_id}
-        )
-        AND (
-            $P{C_Costcenter_ID} IS NULL
-            OR fa.c_costcenter_id = $P{C_Costcenter_ID}
-        )
-        AND NOT (
-            $P{C_Costcenter_ID} IS NOT NULL
-            AND fa.c_costcenter_id IS NULL
-        )
-    GROUP BY cos.name
-),
-
-centers AS (
-    SELECT DISTINCT
-        CASE
-            WHEN cos.name IS NULL OR cos.name = 'NA'
-                THEN 'X-' || COALESCE(cos.name, 'NA')
-            ELSE cos.name
-        END AS costcenter
-    FROM c_costcenter cos
-    -- solo devolvemos los centros de costo que aplican al filtro
-    WHERE (
-            $P{C_Costcenter_ID} IS NULL
-            OR cos.c_costcenter_id = $P{C_Costcenter_ID}
-        )
-)
-
-SELECT
-    SUM(COALESCE(m.amount, 0)) AS amount,
-    REPLACE(c.costcenter, 'X-', '') AS costcenter
-FROM centers c
-LEFT JOIN movs m
-       ON m.costcenter = c.costcenter
-GROUP BY c.costcenter
-ORDER BY c.costcenter desc;]]>
+		<![CDATA[SELECT SUM(sq.amount) AS amount, REPLACE(sq.Costcenter,'X-','') AS Costcenter FROM ((SELECT COALESCE(SUM(fa.AmtAcctDr)-SUM(fa.AmtAcctCr),0.00) AS amount ,(CASE WHEN COALESCE(cos.name,'NA') = 'NA' THEN CONCAT('X-',COALESCE(cos.name,'NA')) ELSE COALESCE(cos.name,'NA') END) AS Costcenter
+FROM fact_acct fa
+	LEFT JOIN c_elementvalue ev ON fa.account_id = ev.c_elementvalue_id
+	LEFT JOIN sfcbr_tree_acounting_v ta ON ta.id = ev.c_elementvalue_id
+	LEFT JOIN c_costcenter cos ON fa.c_costcenter_id = cos.c_costcenter_id
+WHERE fa.dateacct BETWEEN $P{datefrom} AND $P{dateto}
+AND fa.factaccttype <> 'R'
+AND fa.factaccttype <> 'C'
+AND fa.factaccttype = 'N'
+AND fa.isactive = 'Y'
+AND ta.p6 = $P{account_t}
+AND fa.ad_org_id = (CASE WHEN $P{ad_org_id} = '0' THEN fa.ad_org_id ELSE $P{ad_org_id} END )
+AND (cos.c_costcenter_id IS NULL OR cos.c_costcenter_id = (CASE WHEN $P{C_Costcenter_ID} IS NULL THEN cos.c_costcenter_id ELSE $P{C_Costcenter_ID} END))
+AND (CASE WHEN ($P{C_Costcenter_ID} IS NOT NULL AND cos.c_costcenter_id IS NULL) THEN FALSE ELSE TRUE END)
+GROUP BY cos.name,ta.p6,ta.P5,ta.p4,ta.p3,ta.p2,ta.p1,ev.accounttype
+ORDER BY ta.p6,ta.P5,ta.p4,ta.p3,ta.p2,ta.p1)
+union all
+(
+SELECT 0.00 AS amount,
+       (CASE WHEN COALESCE(ub2.name,'NA') = 'NA' THEN CONCAT('X-',COALESCE(ub2.name,'NA')) ELSE COALESCE(ub2.name,'NA') END) AS Costcenter
+FROM (
+            SELECT DISTINCT cos.name, cos.c_costcenter_id
+            FROM fact_acct fa
+            LEFT JOIN c_costcenter cos ON fa.c_costcenter_id = cos.c_costcenter_id
+	WHERE (cos.c_costcenter_id IS NULL OR cos.c_costcenter_id = (CASE WHEN $P{C_Costcenter_ID} IS NULL THEN cos.c_costcenter_id ELSE $P{C_Costcenter_ID} END ))
+AND (CASE WHEN ($P{C_Costcenter_ID} IS NOT NULL AND cos.c_costcenter_id IS NULL) THEN FALSE ELSE TRUE END)
+          ) ub2)) as sq
+GROUP BY sq.Costcenter
+ORDER BY sq.Costcenter]]>
 	</queryString>
 	<field name="amount" class="java.math.BigDecimal"/>
 	<field name="costcenter" class="java.lang.String"/>

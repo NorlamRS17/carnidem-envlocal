@@ -438,7 +438,7 @@ enyo.kind({
         this.$.exactbutton.show();
       }
       if ((this.receipt.get('orderType') === 2 || (this.receipt.get('isLayaway') && this.receipt.get('orderType') !== 3)) && _.isUndefined(this.receipt.get('paidInNegativeStatusAmt'))) {
-        //this.$.layawayaction.show();
+        this.$.layawayaction.show();
       } else if (this.receipt.get('orderType') === 3 && _.isUndefined(this.receipt.get('paidInNegativeStatusAmt'))) {
         this.$.layawayaction.hide();
       } else if (!_.isUndefined(this.receipt.get('paidInNegativeStatusAmt'))) {

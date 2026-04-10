@@ -9,4 +9,8 @@
       <oldValue><![CDATA[@IsDepreciated@='Y']]></oldValue>
       <newValue><![CDATA[@IsDepreciated@='Y' & @EM_Ssam_Typeofchange@='']]></newValue>
     </columnDataChange>
+    <columnDataChange tablename="AD_TABLE" columnname="ACCTCLASSNAME" pkRow="643A10788DE848AAA433B79C8157710A">
+      <oldValue><![CDATA[ec.com.sidesoft.budget.payroll.accounting.DocBudgetCertificate]]></oldValue>
+      <newValue><![CDATA[ec.com.sidesoft.accounting.purchase.template.payroll.DocBudgetCertificate]]></newValue>
+    </columnDataChange>
   </vector>

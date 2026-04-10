@@ -31,7 +31,6 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.openbravo.base.exception.OBException;
 import org.openbravo.base.secureApp.HttpSecureAppServlet;
-import org.openbravo.base.secureApp.LoginHandler;
 import org.openbravo.base.secureApp.LoginUtils;
 import org.openbravo.base.secureApp.VariablesSecureApp;
 import org.openbravo.client.application.ApplicationConstants;
@@ -112,25 +111,9 @@ public class UserInfoWidgetActionHandler extends BaseActionHandler implements Po
     if (!newPwd.equals(confirmPwd)) {
       return createErrorResponse("currentPwd", "UINAVBA_UnequalPwd");
     }
-	if (!LoginHandler.isModuleInstalled("ec.com.sidesoft.user.advanced.security")) {
-		if (!passwordStrengthChecker.isStrongPassword(newPwd)) {
-			return createErrorResponse("newPwd", "CPPasswordNotStrongEnough");
-		}
-	} else {
-		String hashedPassword = FormatUtilities.sha1Base64(newPwd);
-		if (LoginHandler.isPasswordReused(user.getUsername(), hashedPassword)) {
-			return createErrorResponse("newPwd", "SSUAS_DifferentPassword");
-		}
-		if (!passwordStrengthChecker.isStrongPassword(newPwd)) {
-			String hql = "select s.passwordLength from SSUAS_security_config s";
-			Long passwordLength = (Long) OBDal.getInstance().getSession().createQuery(hql).setMaxResults(1)
-					.uniqueResult();
-			String message = Utility.messageBD(new DalConnectionProvider(false), "SSUAS_PasswordNotStrongEnough",
-					OBContext.getOBContext().getLanguage().getLanguage());
-			message = message.replace("@lenght@", String.valueOf(passwordLength));
-			return createErrorResponse("newPwd", message);
-		}
-	}
+    if (!passwordStrengthChecker.isStrongPassword(newPwd)) {
+      return createErrorResponse("newPwd", "CPPasswordNotStrongEnough");
+    }
     user.setPassword(FormatUtilities.sha1Base64(newPwd));
     OBDal.getInstance().flush();
     return ApplicationConstants.ACTION_RESULT_SUCCESS;

@@ -77,147 +77,118 @@
 		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[WITH
-usuario AS (
-  SELECT ad_user_id, UPPER(name) AS name
-  FROM ad_user
-  WHERE ad_user_id = $P{AD_USER_ID}
-),
-cuenta_d AS (
-  SELECT c_elementvalue_id, UPPER(name) AS name, value
-  FROM c_elementvalue
-  WHERE c_elementvalue_id = $P{ACCOUNTFROM} OR $P{ACCOUNTFROM} IS NULL
-  ORDER BY value ASC LIMIT 1
-),
-cuenta_h AS (
-  SELECT c_elementvalue_id, UPPER(name) AS name, value
-  FROM c_elementvalue
-  WHERE c_elementvalue_id = $P{ACCOUNTTO} OR $P{ACCOUNTTO} IS NULL
-  ORDER BY value DESC LIMIT 1
-),
-doctype_signatures AS (
-  SELECT
-    dt.name AS doctype_name,
-    spd.line,
-    UPPER(spd.name) AS sign_name
-  FROM c_doctype dt
-  LEFT JOIN scsdc_signaturesperdoc spd
-         ON dt.c_doctype_id = spd.c_doctype_id
-  WHERE dt.name = 'LIBRO MAYOR DETALLADO'
-)
-SELECT
-	COALESCE(fac.cuenta_desde, '') AS cuenta_desde,
-  	COALESCE(fac.cuenta_hasta, '') AS cuenta_hasta,
-	u.name AS usuario,
-	to_char(NOW(), 'DD-MM-YYYY HH24:MI:SS') AS fecha_actual,
-	fac.value,
-	fac.name,
-	fac.dateacct,
-	SUM(amtacctdr) AS amtacctdr,
-	SUM(amtacctcr) AS amtacctcr,
-	(SUM(amtacctdr) - SUM(amtacctcr)) AS total,
-	fac.fact_acct_group_id,
-	MIN(fac.description) AS description,
-	totalacctdr,
-	totalacctcr,
-	(totalacctdr - totalacctcr) AS totalacctsub,
-	0 AS previousdebit,
-	0 AS previouscredit,
-	0 AS previoustotal,
-    0 AS finaldebit,
-	0 AS finalcredit,
-	0 AS finaltotal,
-	TO_CHAR(DATEACCT,'J') AS dateacctnumber,
-	fac.ad_org_id,
-	fac.nameorg,
-	CASE WHEN (SELECT em_sacgld_noshow_client FROM c_elementvalue WHERE c_elementvalue_id = fac.value_id) = 'Y' THEN ''
-	ELSE fac.bpname END AS bpname,
-	(SELECT sign_name FROM doctype_signatures WHERE line = 10) AS elaborado_por,
-  	(SELECT sign_name FROM doctype_signatures WHERE line = 40) AS autorizado_por,
-  	(SELECT sign_name FROM doctype_signatures WHERE line = 20) AS revisado_por,
-  	(SELECT sign_name FROM doctype_signatures WHERE line = 30) AS aprobado_por,
-	fac.trans_documentno,
-	fac.trans_description,
-	fac.costcenter,
-	fac.trans_reference,
-	fac.tablename,
-	fac.user1,
-	fac.user2,
-	CASE WHEN TRIM(fac.trans_sequentialno) != '' THEN
-		trans_sequentialno
-	ELSE trans_documentno END AS transactionno
-FROM
-(SELECT
-	COALESCE(evf.name, '') AS cuenta_desde,
-  	COALESCE(evt.name, '') AS cuenta_hasta,
-	fac.account_id AS value_id,
-	fac.acctvalue AS value,
-	fac.acctdescription AS name,
-	fac.dateacct,
-	fac.amtacctdr,
-	fac.amtacctcr,
-	fac.fact_acct_group_id,
-	fac.description,
-	CASE WHEN fac.amtacctdr <> 0 THEN 'Y' ELSE 'N' END AS isdebit,
-	fac.ad_org_id,
-	UPPER(org.name) AS nameorg,
-	COALESCE(ts.totalacctdr, 0) AS totalacctdr,
-	COALESCE(ts.totalacctcr,0) AS totalacctcr,
-	bp.name AS bpname,
-	sacgld_factacct_docn(tn.tablename, fac.record_id,'es_ES') AS trans_documentno,
-	sacgld_factacct_des(tn.tablename, fac.record_id,'es_ES') AS trans_description,
-	sacgld_factacct_ref(tn.tablename, fac.record_id,'es_ES') AS trans_reference,
-	sacgld_factacct_transno(tn.tablename, fac.record_id,'es_ES') AS trans_sequentialno,
-	cc.name AS costcenter,
-	tn.tablename,
-	us1.name AS user1,
-	us2.name AS user2
-FROM fact_acct fac
-	LEFT JOIN ad_org org ON org.ad_org_id = fac.ad_org_id
-	LEFT JOIN c_bpartner bp ON bp.c_bpartner_id = fac.c_bpartner_id
-	LEFT JOIN ad_table tn ON tn.ad_table_id = fac.ad_table_id
-	LEFT JOIN c_costcenter cc ON cc.c_costcenter_id = fac.c_costcenter_id
-	LEFT JOIN user1 us1 ON us1.user1_id = fac.user1_id
-	LEFT JOIN fin_payment fp2 ON fp2.fin_payment_id = fac.record_id
-	LEFT JOIN user2 us2 ON us2.user2_id = fp2.user2_id
-	LEFT JOIN cuenta_d evf ON TRUE
-	LEFT JOIN cuenta_h evt ON TRUE
-	LEFT JOIN (
-		SELECT account_id,
-        	SUM(amtacctdr) AS totalacctdr,
-         	SUM(amtacctcr) AS totalacctcr
-  		FROM fact_acct
-  		WHERE dateacct < $P{DATEFROM}
-  		GROUP BY account_id
-	) ts ON ts.account_id = fac.account_id
-	LEFT JOIN(
-		SELECT account_id, record_id2, SUM(amtacctdr - amtacctcr) AS SUM
-		FROM fact_acct f1
-		WHERE 5 = 5
-			GROUP BY account_id, record_id2
-	) f2 ON fac.account_id = f2.account_id AND fac.record_id2 = f2.record_id2
-WHERE 3 = 3
-AND dateacct >= $P{DATEFROM} AND dateacct <= $P{DATETO}
-AND fac.account_id IN (
-	SELECT c_elementvalue_id
-  	FROM c_elementvalue
-	WHERE (value >= (SELECT value FROM cuenta_d))
-    AND (value <= (SELECT value FROM cuenta_h))
-)
-AND (fac.c_bpartner_id = $P{PARTNERID} OR $P{PARTNERID} IS NULL)
-AND (cc.c_costcenter_id = $P{c_costcenter_id} OR $P{c_costcenter_id} IS NULL)
-) fac
-LEFT JOIN cuenta_d evf ON TRUE
-LEFT JOIN cuenta_h evt ON TRUE
-LEFT JOIN usuario u ON TRUE
-WHERE 6 = 6
-GROUP BY u.name,fac.cuenta_desde,fac.cuenta_hasta,fac.costcenter, fac.value, fac.name, fac.value_id, fac.dateacct, fac.fact_acct_group_id, fac.isdebit,
-fac.ad_org_id, fac.nameorg, fac.totalacctdr, fac.totalacctcr, fac.trans_reference, fac.trans_documentno,
-fac.trans_description, fac.tablename, fac.user1, fac.user2, fac.trans_sequentialno,
-CASE WHEN (SELECT em_sacgld_noshow_client FROM c_elementvalue WHERE c_elementvalue_id = fac.value_id) = 'Y' THEN ''
-ELSE fac.bpname END
-HAVING SUM(fac.amtacctdr) - SUM(fac.amtacctcr) <> 0
-ORDER BY fac.value, fac.name, fac.value_id, fac.dateacct, fac.fact_acct_group_id, fac.isdebit]]>
+		<![CDATA[SELECT
+	COALESCE((SELECT UPPER(name) FROM c_elementvalue WHERE c_elementvalue_id=$P{ACCOUNTFROM}),'') AS cuenta_desde,
+	COALESCE((SELECT UPPER(name) FROM c_elementvalue WHERE c_elementvalue_id=$P{ACCOUNTTO}),'') AS cuenta_hasta,
+	(SELECT UPPER(name) FROM ad_user WHERE ad_user_id=$P{AD_USER_ID}) AS usuario
+	,to_char(NOW(), 'DD-MM-YYYY HH24:MI:SS') AS fecha_actual
+	, value, name, dateacct,
+              SUM(AMTACCTDR) AS amtacctdr, SUM(AMTACCTCR) AS amtacctcr, (SUM(AMTACCTDR)-SUM(AMTACCTCR)) AS total,
+              FACT_ACCT_GROUP_ID, -- id,
+              MIN(DESCRIPTION) AS description,
+              totalacctdr, totalacctcr
+	   , (totalacctdr-totalacctcr) AS totalacctsub,
+              0 AS previousdebit, 0 AS previouscredit, 0 AS previoustotal,
+              0 AS finaldebit, 0 AS finalcredit, 0 AS finaltotal,
+              TO_CHAR(DATEACCT,'J') AS dateacctnumber,
+                AD_ORG_ID,
+	    NAMEORG
+	    , CASE
+		WHEN (SELECT em_sacgld_noshow_client FROM C_ElementValue WHERE C_ElementValue_id = value_id) = 'Y' THEN ''
+		ELSE bpname
+	END as bpname
+          --, pdname, PJNAME
+	,(SELECT UPPER(spd.name) FROM c_doctype AS dt LEFT JOIN scsdc_signaturesperdoc AS spd ON (dt.c_doctype_id=spd.c_doctype_id AND spd.line = 10) WHERE dt.name='LIBRO MAYOR DETALLADO') AS elaborado_por
+	,(SELECT UPPER(spd.name) FROM c_doctype AS dt LEFT JOIN scsdc_signaturesperdoc AS spd ON (dt.c_doctype_id=spd.c_doctype_id AND spd.line = 40) WHERE dt.name='LIBRO MAYOR DETALLADO') AS autorizado_por
+	,(SELECT UPPER(spd.name) FROM c_doctype AS dt LEFT JOIN scsdc_signaturesperdoc AS spd ON (dt.c_doctype_id=spd.c_doctype_id AND spd.line = 20) WHERE dt.name='LIBRO MAYOR DETALLADO') AS revisado_por
+          ,(SELECT UPPER(spd.name) FROM c_doctype AS dt LEFT JOIN scsdc_signaturesperdoc AS spd ON (dt.c_doctype_id=spd.c_doctype_id AND spd.line = 30) WHERE dt.name='LIBRO MAYOR DETALLADO') AS aprobado_por
+	      ,trans_documentno, trans_description , costcenter , trans_reference , tablename , user1, user2
+		  , CASE WHEN trim(trans_sequentialno) != '' THEN
+		  	trans_sequentialno
+			ELSE trans_documentno
+			END as transactionno
+          FROM
+            (SELECT FACT_ACCT.ACCOUNT_ID AS value_id, FACT_ACCT.ACCTVALUE AS VALUE, FACT_ACCT.ACCTDESCRIPTION AS NAME,
+                DATEACCT, AMTACCTDR, AMTACCTCR,
+                FACT_ACCT_GROUP_ID, FACT_ACCT.ACCOUNT_ID AS ID, FACT_ACCT.DESCRIPTION,
+                CASE WHEN AMTACCTDR <> 0 THEN 'Y' ELSE 'N' END AS ISDEBIT,
+                FACT_ACCT.AD_ORG_ID,
+	      UPPER(AD_ORG.NAME) AS NAMEORG,
+	      COALESCE(totalacctdr, 0) AS totalacctdr, COALESCE(totalacctcr,0) AS totalacctcr,
+	      C_BPARTNER.name AS bpname,
+	     -- M_PRODUCT.name AS pdname,
+	     -- C_PROJECT.name AS PJNAME,
+ 	      FACT_ACCT.ad_table_id,
+	      FACT_ACCT.record_id,
+	      (sacgld_factacct_docn((
+		SELECT t.tablename
+		FROM ad_table AS t
+		WHERE t.ad_table_id=FACT_ACCT.ad_table_id), FACT_ACCT.record_id,'es_ES')) AS trans_documentno,
+	      (sacgld_factacct_des((
+		SELECT t.tablename
+		FROM ad_table AS t
+		WHERE t.ad_table_id=FACT_ACCT.ad_table_id), FACT_ACCT.record_id,'es_ES')) AS trans_description
+        , (sacgld_factacct_ref((
+		SELECT t.tablename
+		FROM ad_table AS t
+		WHERE t.ad_table_id=FACT_ACCT.ad_table_id), FACT_ACCT.record_id,'es_ES')) AS trans_reference
+		, (sacgld_factacct_transno((
+		SELECT t.tablename
+		FROM ad_table AS t
+		WHERE t.ad_table_id=FACT_ACCT.ad_table_id), FACT_ACCT.record_id,'es_ES')) AS trans_sequentialno
+        , coce.name as costcenter,
+	--coc.name as costcenter,
+		tablename,
+	uss1.name as user1,
+	--us1.name as user1,
+		us2.name as user2
+	FROM FACT_ACCT
+		LEFT JOIN ad_table tbl on tbl.ad_table_id = FACT_ACCT.ad_table_id
+		LEFT JOIN c_costcenter coce on coce.c_costcenter_id = FACT_ACCT.c_costcenter_id
+ 	    -- LEFT JOIN c_costcenter coc on coc.c_costcenter_id = (sacgld_costcenter( tbl.tablename , (sacgld_factacct_docn((
+ 	    --     SELECT t.tablename
+ 	    --     FROM ad_table AS t
+ 	    --     WHERE t.ad_table_id=FACT_ACCT.ad_table_id), FACT_ACCT.record_id,'es_ES')) )	)
+		LEFT JOIN User1 uss1 on uss1.User1_ID = FACT_ACCT.User1_ID
+		LEFT JOIN (select fp.FIN_Payment_id, ue.name from FIN_Payment fp
+		left join user2 ue ON ue.user2_id = fp.user2_id
+		) us2 ON us2.FIN_Payment_id = FACT_ACCT.record_id
+		LEFT JOIN C_BPARTNER ON FACT_ACCT.C_BPARTNER_ID = C_BPARTNER.C_BPARTNER_ID
+		LEFT JOIN M_PRODUCT ON FACT_ACCT.M_PRODUCT_ID = M_PRODUCT.M_PRODUCT_ID
+		LEFT JOIN C_PROJECT ON FACT_ACCT.C_PROJECT_ID = C_PROJECT.C_PROJECT_ID
+		LEFT JOIN(
+			select account_id, record_id2, sum(amtacctdr-amtacctcr) as sum
+			from fact_acct f1
+			where 5=5
+			group by account_id, record_id2
+		) f2 ON fact_acct.account_id = f2.account_id and fact_acct.record_id2 = f2.record_id2
+	   LEFT JOIN AD_ORG ON FACT_ACCT.AD_ORG_ID=AD_ORG.AD_ORG_ID
+  	   LEFT JOIN (
+  		SELECT account_id, SUM(AMTACCTDR) AS totalacctdr, SUM(AMTACCTCR) AS totalacctcr
+		FROM FACT_ACCT
+		WHERE DATEACCT < $P{DATEFROM}
+		GROUP BY ACCOUNT_ID, ACCTVALUE
+   	 ) s ON s.account_id=FACT_ACCT.ACCOUNT_ID
+
+            WHERE  3=3 AND dateacct>=$P{DATEFROM} AND dateacct<=$P{DATETO} AND FACT_ACCT.account_id IN (
+	      SELECT c_elementvalue_id
+                FROM C_ELEMENTVALUE
+                WHERE (value >= (  select value from c_elementvalue where c_elementvalue_id = $P{ACCOUNTFROM}) OR $P{ACCOUNTFROM} IS NULL) AND (value <= (  select value from c_elementvalue where c_elementvalue_id = $P{ACCOUNTTO})  OR $P{ACCOUNTTO} IS NULL))
+	        AND (FACT_ACCT.C_BPARTNER_ID=$P{PARTNERID} OR $P{PARTNERID} IS NULL)
+		AND (coce.c_costcenter_id = $P{c_costcenter_id} OR $P{c_costcenter_id} IS NULL )
+	  ) D
+            WHERE 6=6
+            GROUP BY costcenter, VALUE, NAME, ID, DATEACCT, FACT_ACCT_GROUP_ID,
+            ISDEBIT, AD_ORG_ID, NAMEORG, totalacctdr, totalacctcr, trans_reference
+            --, pdname, PJNAME
+            , trans_documentno, trans_description
+            , ad_table_id, record_id , costcenter , tablename , user1 , user2, trans_sequentialno
+, CASE
+WHEN (SELECT em_sacgld_noshow_client FROM C_ElementValue WHERE C_ElementValue_id = value_id) = 'Y' THEN ''
+ELSE bpname
+END
+HAVING SUM(AMTACCTDR) - SUM(AMTACCTCR) <> 0
+ORDER  BY VALUE, NAME, ID, DATEACCT,  FACT_ACCT_GROUP_ID, ISDEBIT]]>
 	</queryString>
 	<field name="cuenta_desde" class="java.lang.String"/>
 	<field name="cuenta_hasta" class="java.lang.String"/>

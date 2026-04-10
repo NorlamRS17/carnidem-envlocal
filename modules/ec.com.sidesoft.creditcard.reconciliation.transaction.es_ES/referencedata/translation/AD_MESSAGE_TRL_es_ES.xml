@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
-  <row id="235E5C2AA3EA4B059FC831F601A30194" trl="Y">
-    <value column="MsgText" isTrl="Y" original="No match found for any transaction: User does not match.">No se ha hecho match con ninguna Transaccion: Usuario no coincide.</value>
-    <value column="MsgTip" isTrl="N" original=""/>
-  </row>
-  <row id="9E23A25BBAC04C60A03D8CA842012248" trl="Y">
-    <value column="MsgText" isTrl="Y" original="No match found for any transaction: Cost center does not match.">No se ha hecho match con ninguna Transaccion: Centro de costo no coincide.</value>
-    <value column="MsgTip" isTrl="N" original=""/>
-  </row>
-  <row id="C409523A3D4F42AE9F717B955BFB3EAB" trl="Y">
-    <value column="MsgText" isTrl="Y" original="No match found for any transaction: amount value does not match.">No se ha hecho match con ninguna Transaccion: valor de importe no coincide.</value>
-    <value column="MsgTip" isTrl="N" original=""/>
-  </row>
-  <row id="D6E274E389AB476298144B8412FF6695" trl="Y">
-    <value column="MsgText" isTrl="Y" original="No match found for any transaction.">No se ha hecho match con ninguna Transaccion.</value>
-    <value column="MsgTip" isTrl="N" original=""/>
-  </row>
   <row id="E47FD92F7DBF435BA94BA8BE17ECC2A8" trl="Y">
     <value column="MsgText" isTrl="Y" original="You cannot delete a completed record or one with lines already processed.">No se puede borrar un registro completado o con lineas ya procesadas.</value>
     <value column="MsgTip" isTrl="N" original=""/>

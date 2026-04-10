@@ -7,7 +7,6 @@ import org.openbravo.erpCommon.ad_callouts.SimpleCallout;
 import org.openbravo.model.ad.utility.Sequence;
 import org.openbravo.model.common.enterprise.DocumentType;
 
-@SuppressWarnings("deprecation")
 public class SL_Movement_Doctype extends SimpleCallout {
   private static final long serialVersionUID = 1L;
 

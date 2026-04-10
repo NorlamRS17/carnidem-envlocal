@@ -10,7 +10,6 @@ import org.openbravo.client.kernel.event.EntityPersistenceEventObserver;
 import org.openbravo.model.ad.utility.Sequence;
 import org.openbravo.model.financialmgmt.assetmgmt.Asset;
 
-@SuppressWarnings("deprecation")
 public class UpdateSequenceNumberEvent extends EntityPersistenceEventObserver {
 
   private static Entity[] entities = { ModelProvider.getInstance().getEntity(Asset.ENTITY_NAME) };

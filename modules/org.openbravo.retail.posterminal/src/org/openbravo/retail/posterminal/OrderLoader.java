@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.CallableStatement;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -266,43 +269,43 @@ public class OrderLoader extends POSDataSynchronizationProcess
       order = OBDal.getInstance().get(Order.class, jsonorder.getString("id"));
 
       if (order != null) {
-        final Date loaded = POSUtils.dateFormatUTC.parse(jsonorder.getString("loaded"));
-        Date updated = OBMOBCUtils.convertToUTC(order.getUpdated());
-        
-        /**
-         * 15665 - SOPORTE - GLPI - 6699 - Error en NC
-         * Se modifica la fecha de actualizacion del pedido para que no se quede en errores.
-         * Datos fuera de fecha, las  reservas no pueden ser actualizadas. Verifique el error en la ventana Errores al importar pedidos desde el TPV.
-         */
-		if (!(loaded.compareTo(updated) >= 0)) {
-			try {
-				long diffdates = Math.abs(updated.getTime() - loaded.getTime());
-				long diffInHours = TimeUnit.MILLISECONDS.toHours(diffdates);
-				diffInHours = diffInHours + 1;
-				Date currentDate = order.getUpdated();
-				if (currentDate != null) {
-					// Restar las horas a currentDate
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(currentDate);
-					cal.add(Calendar.HOUR, -(int)diffInHours);
-					Date newDate = cal.getTime();
+          final Date loaded = POSUtils.dateFormatUTC.parse(jsonorder.getString("loaded"));
+          Date updated = OBMOBCUtils.convertToUTC(order.getUpdated());
+          
+          /**
+           * 15665 - SOPORTE - GLPI - 6699 - Error en NC
+           * Se modifica la fecha de actualizacion del pedido para que no se quede en errores.
+           * Datos fuera de fecha, las  reservas no pueden ser actualizadas. Verifique el error en la ventana Errores al importar pedidos desde el TPV.
+           */
+  		if (!(loaded.compareTo(updated) >= 0)) {
+  			try {
+  				long diffdates = Math.abs(updated.getTime() - loaded.getTime());
+  				long diffInHours = TimeUnit.MILLISECONDS.toHours(diffdates);
+  				diffInHours = diffInHours + 1;
+  				Date currentDate = order.getUpdated();
+  				if (currentDate != null) {
+  					// Restar las horas a currentDate
+  					Calendar cal = Calendar.getInstance();
+  					cal.setTime(currentDate);
+  					cal.add(Calendar.HOUR, -(int)diffInHours);
+  					Date newDate = cal.getTime();
 
-					// Guardar la nueva fecha en el pedido
-					order.setUpdated(newDate);
-					OBDal.getInstance().save(order);
-					updated = OBMOBCUtils.convertToUTC(order.getUpdated());
-				}
-			} catch (Exception e) {
-				log.warn("Error al actualizar los datos fuera de fecha: " + e.getMessage());
-			}
-		}
-        
-        if (!(loaded.compareTo(updated) >= 0)) {
-          throw new OutDatedDataChangeException(Utility.messageBD(new DalConnectionProvider(false),
-              "OBPOS_outdatedLayaway", OBContext.getOBContext().getLanguage().getLanguage()));
+  					// Guardar la nueva fecha en el pedido
+  					order.setUpdated(newDate);
+  					OBDal.getInstance().save(order);
+  					updated = OBMOBCUtils.convertToUTC(order.getUpdated());
+  				}
+  			} catch (Exception e) {
+  				log.warn("Error al actualizar los datos fuera de fecha: " + e.getMessage());
+  			}
+  		}
+          
+          if (!(loaded.compareTo(updated) >= 0)) {
+            throw new OutDatedDataChangeException(Utility.messageBD(new DalConnectionProvider(false),
+                "OBPOS_outdatedLayaway", OBContext.getOBContext().getLanguage().getLanguage()));
+          }
         }
-      }
-
+        
       if (!isQuotation && !jsonorder.getBoolean("isLayaway")) {
         verifyCashupStatus(jsonorder);
       }
@@ -529,8 +532,11 @@ public class OrderLoader extends POSDataSynchronizationProcess
         if (log.isDebugEnabled()) {
           t3 = System.currentTimeMillis();
         }
-
-        if (createShipment) {
+	
+	Boolean customIsLayaway = jsonorder.getBoolean("isLayaway");
+	int customOrderType =  jsonorder.getInt("orderType");
+	customIsLayaway = (customIsLayaway) || (customOrderType == 2);
+        if (createShipment && PreferenceToValidateStock() && !customIsLayaway) {
           // Stock manipulation
 
           JSONArray jsonorderrev = jsonorder.getJSONArray("payments");
@@ -1860,7 +1866,13 @@ public class OrderLoader extends POSDataSynchronizationProcess
     order.setTransactionDocument((DocumentType) OBDal.getInstance().getProxy("DocumentType",
         jsonorder.getString("documentType")));
     order.setAccountingDate(order.getOrderDate());
-    order.setScheduledDeliveryDate(order.getOrderDate());
+    if (jsonorder.has("scheduledDeliveryDate") && order != null) {
+	    String scheduledDeliveryDateStr = jsonorder.getString("scheduledDeliveryDate");
+	    String onlyDate = scheduledDeliveryDateStr.substring(0, 10);
+	    LocalDate localDate = LocalDate.parse(onlyDate, DateTimeFormatter.ISO_LOCAL_DATE);
+	    Date scheduledDeliveryDate = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	    order.setScheduledDeliveryDate(scheduledDeliveryDate);
+	}
     order.setPartnerAddress(OBDal.getInstance().getProxy(Location.class,
         jsonorder.getJSONObject("bp").getString("shipLocId")));
     order.setInvoiceAddress(OBDal.getInstance().getProxy(Location.class,
@@ -2936,15 +2948,16 @@ public class OrderLoader extends POSDataSynchronizationProcess
       Entity paymentEntity = ModelProvider.getInstance().getEntity(FIN_Payment.class);
 
       String paymentDocNo;
-      //if (useOrderDocumentNoForRelatedDocs) {
-      //  final int paymentCount = countPayments(order);
+      if (useOrderDocumentNoForRelatedDocs) {
+        final int paymentCount = countPayments(order);
         paymentDocNo = order.getDocumentNo();
-      //  if (paymentCount > 0) {
-      //    paymentDocNo = paymentDocNo + "-" + paymentCount;
-      //  }
-      //} else {
+        if (paymentCount > 0) {
+          paymentDocNo = paymentDocNo + "-" + paymentCount;
+        }
+      } else {
       //  paymentDocNo = getDocumentNo(paymentEntity, null, paymentDocType);
-      //}
+        paymentDocNo = order.getDocumentNo();////
+      }
       if (payment.has("reversedPaymentId") && payment.getString("reversedPaymentId") != null) {
         paymentDocNo = "*R*" + paymentDocNo;
       }
@@ -3016,6 +3029,30 @@ public class OrderLoader extends POSDataSynchronizationProcess
         reversedPayment.setReversedPayment(finPayment);
         OBDal.getInstance().save(reversedPayment);
       }
+      
+      //Tarjetas - 19270-ESB - OB- SOPORTE NO GUARDA INFORMACIÓN DE TRASNFERENCIA
+      try {
+		if (payment != null && payment.has("recap") && finPayment != null) {
+			String recap = payment.getString("recap");
+			if (recap != null) {
+				finPayment.setReferenceNo(recap);
+			}
+		}
+      } catch (Exception e) {
+    	  throw new OBException("Por favor volver a intentar, error al guardar información del metodo pago.");
+      }
+      
+      //Transferencia - 19270-ESB - OB- SOPORTE NO GUARDA INFORMACIÓN DE TRASNFERENCIA
+      try {
+		if (payment != null && payment.has("referenceno") && finPayment != null) {
+			String referenceno = payment.getString("referenceno");
+			if (referenceno != null) {
+				finPayment.setReferenceNo(referenceno);
+			}
+		}
+      } catch (Exception e) {
+    	  throw new OBException("Por favor volver a intentar, error al guardar información del metodo pago.");
+      }
 
       OBDal.getInstance().save(finPayment);
 
@@ -3040,6 +3077,34 @@ public class OrderLoader extends POSDataSynchronizationProcess
           transaction.setObposAppCashup(cashup);
         }
       }
+      
+      //19270-ESB - OB- SOPORTE NO GUARDA INFORMACIÓN DE TRASNFERENCIA
+      try {
+		if (finPayment != null && finPayment.getReferenceNo() != null && payment != null && payment.has("recap")) {
+			// Tarjetas
+			String recap = finPayment.getReferenceNo();
+			List<FIN_FinaccTransaction> transactions = finPayment.getFINFinaccTransactionList();
+			if (recap != null) {
+				for (FIN_FinaccTransaction transaction : transactions) {
+					transaction.setSsccrRecapno(recap);
+					transaction.setSscccinReference(recap);
+				}
+			}
+		} else if (finPayment != null && finPayment.getReferenceNo() != null && payment != null && payment.has("referenceno")) {
+			// Transferencia
+			String referenceno = finPayment.getReferenceNo();
+			List<FIN_FinaccTransaction> transactions = finPayment.getFINFinaccTransactionList();
+			if (referenceno != null) {
+				for (FIN_FinaccTransaction transaction : transactions) {
+					transaction.setSscccinReference(referenceno);
+				}
+			}
+		}
+      }catch(Exception e) {
+    	  throw new OBException("Por favor volver a intentar, error al guardar información del metodo pago.");
+      }
+  
+  
     } finally {
       OBContext.restorePreviousMode();
     }
@@ -3211,6 +3276,18 @@ public class OrderLoader extends POSDataSynchronizationProcess
     } finally {
       OBContext.restorePreviousMode();
     }
+  }
+  
+  public boolean PreferenceToValidateStock() {
+	boolean PreferenceToValidateStock = false;
+	try {
+		PreferenceToValidateStock = "Y".equals(Preferences.getPreferenceValue("OBPOSSV_EnableStockValidation", true,
+				OBContext.getOBContext().getCurrentClient(), OBContext.getOBContext().getCurrentOrganization(),
+				OBContext.getOBContext().getUser(), OBContext.getOBContext().getRole(), null));
+	} catch (PropertyException e1) {
+		log.debug("Error getting OBPOSSV_EnableStockValidation preference: " + e1.getMessage(), e1);
+	}
+	return PreferenceToValidateStock;
   }
 
 }

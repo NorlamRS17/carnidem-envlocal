@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RptC_Purchase_iva" pageWidth="2592" pageHeight="1727" orientation="Landscape" columnWidth="2532" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="70dd374e-75fd-4516-8747-3c04ec2651bb">
-	<property name="ireport.zoom" value="1.3636363636363658"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.1961500000000043"/>
+	<property name="ireport.x" value="3477"/>
 	<property name="ireport.y" value="0"/>
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -13,36 +13,133 @@
 	<parameter name="Dateto" class="java.util.Date"/>
 	<parameter name="Docstatus" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select TO_CHAR($P{Datefrom}::DATE,'YYYY-MM-DD')
-datefrom,
-TO_CHAR($P{Dateto}::DATE,'YYYY-MM-DD') dateto,
-a.fecha_registro,
-a.numero_ident,
-(select name from  c_bpartner where taxid=a.numero_ident) as name,
-a.tipo_comprobante,
-(select name from sswh_livelihoodt where value = a.tipo_comprobante) as tipdoc,
-a.codigo_compra as codigo_compra,
-CASE WHEN ct.DocBaseType = 'APC' AND b.base_bienes > 0 THEN (b.base_bienes)*-1 ELSE b.base_bienes END as base_bienes,
-CASE WHEN ct.DocBaseType = 'APC' AND base_servicios > 0 THEN (base_servicios)*-1 ELSE base_servicios END as base_servicios,
-CASE WHEN ct.DocBaseType = 'APC' AND a.monto_iva > 0 THEN (a.monto_iva)*-1 ELSE a.monto_iva END as monto_iva,
-CASE WHEN ct.DocBaseType = 'APC' AND a.base_iva_cero > 0 THEN (a.base_iva_cero)*-1 ELSE a.base_iva_cero END as base_iva_cero,
-CASE WHEN ct.DocBaseType = 'APC' AND a.base_no_iva > 0 THEN (a.base_no_iva)*-1 ELSE a.base_no_iva END as base_no_iva,
-CASE WHEN ct.DocBaseType = 'APC' AND a.base_iva_doce > 0 THEN (a.base_iva_doce)*-1 ELSE a.base_iva_doce END as base_iva_doce,
-ref_retencion,
-typedoc,
-a.poreference,
-autorizacion,
-(select name from sswh_codelivelihoodt where value = a.cod_sustento) as code_sustento
-,coalesce(A.BASE_EXCENTA,0) as BASE_EXCENTA
-from sswh_purchasedetail_nats a
-left join (
-select sum(base_bienes) as base_bienes,sum(base_servicios) as base_servicios,codigo_compra
-from sswh_purchase_detprod_nats group by codigo_compra) b on a.codigo_compra = b.codigo_compra
-left join c_invoice inv on inv.c_invoice_id = a.c_invoice_id
-left join C_DocType ct on ct.c_doctype_id = inv.c_doctype_id
-where (to_date(fecha_registro,'dd-MM-yyyy') between $P{Datefrom} and $P{Dateto})
-and ('Y' = (case when $P{Docstatus} = 'Y' THEN case when a.posted = 'Y' then 'Y' else 'N'  end ELSE case when a.posted <> 'Y' then 'Y' else 'N' end END) or $P{Docstatus} is null)
-and a.tipo_comprobante<>'00']]>
+		<![CDATA[SELECT
+    TO_CHAR($P{Datefrom}::date, 'YYYY-MM-DD') datefrom,
+    TO_CHAR($P{Dateto}::date, 'YYYY-MM-DD') dateto,
+    a.fecha_registro,
+    a.numero_ident,
+    (
+        SELECT
+            name
+        FROM
+            c_bpartner
+        WHERE
+            taxid = b.taxid) AS name,
+    a.tipo_comprobante,
+    (
+        SELECT
+            name
+        FROM
+            sswh_livelihoodt
+        WHERE
+            value = a.tipo_comprobante) AS tipdoc,
+    a.codigo_compra AS codigo_compra,
+    CASE WHEN ct.DocBaseType = 'APC'
+        AND b.base_bienes > 0 THEN
+        (b.base_bienes) * -1
+    ELSE
+        b.base_bienes
+    END AS base_bienes,
+    CASE WHEN ct.DocBaseType = 'APC'
+        AND base_servicios > 0 THEN
+        (base_servicios) * -1
+    ELSE
+        base_servicios
+    END AS base_servicios,
+    CASE WHEN ct.DocBaseType = 'APC'
+        AND a.monto_iva > 0 THEN
+        (a.monto_iva) * -1
+    ELSE
+        a.monto_iva
+    END AS monto_iva,
+    CASE WHEN ct.DocBaseType = 'APC'
+        AND a.base_iva_cero > 0 THEN
+        (a.base_iva_cero) * -1
+    ELSE
+        a.base_iva_cero
+    END AS base_iva_cero,
+    CASE WHEN ct.DocBaseType = 'APC'
+        AND a.base_no_iva > 0 THEN
+        (a.base_no_iva) * -1
+    ELSE
+        a.base_no_iva
+    END AS base_no_iva,
+    CASE WHEN ct.DocBaseType = 'APC'
+        AND a.base_iva_doce > 0 THEN
+        (a.base_iva_doce) * -1
+    ELSE
+        a.base_iva_doce
+    END AS base_iva_doce,
+    ref_retencion,
+    typedoc,
+    a.poreference,
+    autorizacion,
+    (
+        SELECT
+            name
+        FROM
+            sswh_codelivelihoodt
+        WHERE
+            value = a.cod_sustento) AS code_sustento,
+    coalesce(A.BASE_EXCENTA, 0) AS BASE_EXCENTA
+FROM
+    sswh_purchasedetail_nats a
+    LEFT JOIN (
+        SELECT
+            sum(base_bienes) AS base_bienes,
+            sum(base_servicios) AS base_servicios,
+            codigo_compra,
+            c_bpartner_id,
+            taxid,
+            c_doctype_id
+        FROM
+            sswh_purchase_detprod_nats
+        WHERE (to_date(dateacct, 'dd-MM-yyyy') BETWEEN $P{Datefrom} AND $P{Dateto})
+        GROUP BY
+            codigo_compra,
+            c_bpartner_id,
+            taxid,
+            c_doctype_id) b ON a.codigo_compra = b.codigo_compra
+    LEFT JOIN c_invoice inv ON inv.c_invoice_id = a.c_invoice_id
+    LEFT JOIN C_DocType ct ON ct.c_doctype_id = inv.c_doctype_id
+WHERE (to_date(fecha_registro, 'dd-MM-yyyy') BETWEEN $P{Datefrom} AND $P{Dateto})
+    AND ('Y' = (
+            CASE WHEN $P{Docstatus} = 'Y' THEN
+                CASE WHEN a.posted = 'Y' THEN
+                    'Y'
+                ELSE
+                    'N'
+                END
+            ELSE
+                CASE WHEN a.posted <> 'Y' THEN
+                    'Y'
+                ELSE
+                    'N'
+                END
+            END)
+        OR $P{Docstatus} IS NULL)
+    AND a.tipo_comprobante <> '00'
+    GROUP BY
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20]]>
 	</queryString>
 	<field name="datefrom" class="java.lang.String"/>
 	<field name="dateto" class="java.lang.String"/>

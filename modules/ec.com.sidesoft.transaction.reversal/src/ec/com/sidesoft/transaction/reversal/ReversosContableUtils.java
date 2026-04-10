@@ -13,7 +13,6 @@ import org.openbravo.dal.service.OBDal;
 import org.openbravo.erpCommon.utility.SequenceIdData;
 import org.openbravo.model.financialmgmt.accounting.AccountingFact;
 
-@SuppressWarnings("deprecation")
 public class ReversosContableUtils {
 
   private static final Logger log4j = Logger.getLogger(ReversosContableUtils.class);

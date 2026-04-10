@@ -120,16 +120,6 @@
     <value column="PO_Name" isTrl="N" original=""/>
     <value column="PO_PrintName" isTrl="N" original=""/>
   </row>
-  <row id="AC7E91D90FF04BBFBB9D92A95A5173E7" trl="Y">
-    <value column="Name" isTrl="Y" original="Not allow close cash in zero">No permitir cierre de caja en cero</value>
-    <value column="PrintName" isTrl="Y" original="Not allow close cash in zero">No permitir cierre de caja en cero</value>
-    <value column="Description" isTrl="N" original=""/>
-    <value column="Help" isTrl="N" original=""/>
-    <value column="PO_Description" isTrl="N" original=""/>
-    <value column="PO_Help" isTrl="N" original=""/>
-    <value column="PO_Name" isTrl="N" original=""/>
-    <value column="PO_PrintName" isTrl="N" original=""/>
-  </row>
   <row id="DFC2299D000F475D8B39B37D0432534F" trl="N">
     <value column="Name" isTrl="N" original="Sscccin_Invoice_Doctype_ID">Sscccin_Invoice_Doctype_ID</value>
     <value column="PrintName" isTrl="N" original="Sscccin_Invoice_Doctype_ID">Sscccin_Invoice_Doctype_ID</value>
