@@ -44,6 +44,8 @@
     <FIELD id="fieldMaintScheduledId" attribute="value">maMaintScheduledId</FIELD>
     <FIELD id="fieldScheduledMaintenance">maintscheduled</FIELD>
     <FIELD id="fieldScheduledDate">scheduleddate</FIELD>
+    <FIELD id="fieldScheduledDateStart">em_scma_start_periodicity</FIELD>
+    <FIELD id="fieldScheduledDateEnd">em_scma_end_periodicity</FIELD>
     <FIELD id="fieldDone" attribute="name" replace="xx">maMaintScheduledId</FIELD>
     <FIELD id="fieldResult" attribute="name" replace="xx">maMaintScheduledId</FIELD>
     <FIELD id="fieldUsedTime" attribute="name" replace="xx">maMaintScheduledId</FIELD>

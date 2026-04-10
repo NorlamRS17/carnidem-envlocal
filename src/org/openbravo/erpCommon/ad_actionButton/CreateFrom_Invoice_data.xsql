@@ -159,7 +159,7 @@
              C_ORDER o JOIN m_pricelist pl ON o.m_pricelist_id = pl.m_pricelist_id,
          (
           SELECT ol.c_order_id, ol.c_orderline_id, ol.qtyordered, COALESCE(il.qty,0) qtyinvoiced, COALESCE(iol.qty,0) qtydelivered,
-           ol.qtyordered + COALESCE(iol.qty,0) - COALESCE(il.qty,0) qty
+           ol.qtyordered - COALESCE(il.qty,0) qty
           FROM c_orderline ol
            JOIN sinvmin_square_bill sb ON sb.c_orderline_id = ol.c_orderline_id
            LEFT JOIN (
@@ -174,7 +174,7 @@
             WHERE ad_table_id = '319' AND c_invoiceline_id IS NULL
             GROUP BY c_orderline_id
            ) iol ON iol.c_orderline_id = ol.c_orderline_id
-          WHERE sb.ad_table_id = '259' AND ol.qtyordered + COALESCE(iol.qty,0) - COALESCE(il.qty,0) > 0
+          WHERE sb.ad_table_id = '259' AND ol.qtyordered - COALESCE(il.qty,0) > 0
          ) sb
         WHERE o.C_ORDER_ID = ic.C_ORDER_ID 
         AND ic.AD_Client_ID IN ('1') 
@@ -271,7 +271,7 @@
         C_INVOICE_CANDIDATE_V ic,   C_ORDER o, C_ORDERLINE l, M_PRODUCT p,
          (
          SELECT ol.c_order_id, ol.c_orderline_id, ol.qtyordered, COALESCE(il.qty,0) qtyinvoiced, COALESCE(iol.qty,0) qtydelivered,
-          ol.qtyordered + COALESCE(iol.qty,0) - COALESCE(il.qty,0) qty
+          ol.qtyordered - COALESCE(il.qty,0) qty
          FROM c_orderline ol
           JOIN sinvmin_square_bill sb ON sb.c_orderline_id = ol.c_orderline_id
           LEFT JOIN (
@@ -286,7 +286,7 @@
            WHERE ad_table_id = '319' AND c_invoiceline_id IS NULL
            GROUP BY c_orderline_id
           ) iol ON iol.c_orderline_id = ol.c_orderline_id
-         WHERE sb.ad_table_id = '259' AND ol.qtyordered + COALESCE(iol.qty,0) - COALESCE(il.qty,0) > 0
+         WHERE sb.ad_table_id = '259' AND ol.qtyordered - COALESCE(il.qty,0) > 0
         ) ol
         WHERE l.C_UOM_ID=uom.C_UOM_ID
         AND o.C_ORDER_ID = ic.C_ORDER_ID 
@@ -394,7 +394,7 @@
         C_UOM uom,  M_PRODUCT p  ,c_currency cur, c_order o,
          (
           SELECT ol.c_order_id, ol.c_orderline_id, ol.qtyordered, COALESCE(il.qty,0) qtyinvoiced, COALESCE(iol.qty,0) qtydelivered,
-           ol.qtyordered + COALESCE(iol.qty,0) - COALESCE(il.qty,0) qty
+           ol.qtyordered - COALESCE(il.qty,0) qty
           FROM c_orderline ol
            JOIN sinvmin_square_bill sb ON sb.c_orderline_id = ol.c_orderline_id
            LEFT JOIN (
@@ -409,7 +409,7 @@
             WHERE ad_table_id = '319' AND c_invoiceline_id IS NULL
             GROUP BY c_orderline_id
            ) iol ON iol.c_orderline_id = ol.c_orderline_id
-          WHERE sb.ad_table_id = '259' AND ol.qtyordered + COALESCE(iol.qty,0) - COALESCE(il.qty,0) > 0
+          WHERE sb.ad_table_id = '259' AND ol.qtyordered - COALESCE(il.qty,0) > 0
          ) ol
         WHERE cur.C_CURRENCY_ID=l.C_CURRENCY_ID AND l.C_UOM_ID=uom.C_UOM_ID
         AND l.C_Order_ID=o.C_Order_ID

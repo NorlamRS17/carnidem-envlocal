@@ -24,7 +24,7 @@
     <SqlMethodComment></SqlMethodComment>
     <Sql>
       <![CDATA[
-        SELECT MA_Maint_Scheduled_ID, AD_COLUMN_IDENTIFIER(TO_CHAR('MA_Maint_Scheduled'), TO_CHAR(MA_Maint_Scheduled_ID), TO_CHAR(?)) AS maintscheduled, scheduledDate
+        SELECT MA_Maint_Scheduled_ID, AD_COLUMN_IDENTIFIER(TO_CHAR('MA_Maint_Scheduled'), TO_CHAR(MA_Maint_Scheduled_ID), TO_CHAR(?)) AS maintscheduled, scheduledDate,TO_CHAR(em_scma_start_periodicity, 'HH24:MI:SS') as em_scma_start_periodicity,TO_CHAR(em_scma_end_periodicity, 'HH24:MI:SS') as em_scma_end_periodicity
         FROM MA_Maint_Scheduled 
         WHERE scheduleddate >= TO_DATE(?)
           AND confirmed = 'Y'

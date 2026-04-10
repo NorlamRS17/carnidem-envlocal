@@ -153,7 +153,7 @@ public class AttributeSetInstanceValue {
     OBError myMessage = null;
     myMessage = new OBError();
     myMessage.setTitle("");
-    myMessage.setType("Success");
+    myMessage.setType("Success"); 
     myMessage.setMessage(Utility.messageBD(conProv, "Success", vars.getLanguage()));
     AttributeSetInstanceValueData[] data = AttributeSetInstanceValueData.select(conProv,
         strAttributeSet);
@@ -196,7 +196,7 @@ public class AttributeSetInstanceValue {
       }
       if (data[0].isguaranteedate.equals("Y")) {
           description_first += (description_first.equals("") ? "" : "_") + guaranteedate;
-        }
+        } 
       if (data[0].emCsljJuliandate.equals("Y")) {
           description_first += (description_first.equals("") ? "" : "_") + juliandate;
         }
@@ -226,9 +226,10 @@ public class AttributeSetInstanceValue {
             org.getId(), vars.getUser(), data[0].mAttributesetId, serno, lot, guaranteedate, "",
             locked, lockDescription,juliandate);
       }
-      if (hasToUpdate) {
+      if (hasToUpdate) { 
         if (!data[0].elementname.equals("")) {
-          for (int i = 0; i < data.length; i++) {
+          for (int i = 0; i < data.length; i++) { 
+        	String cslljJuliandate=data[i].emCsljJuliandate;
             String strValue = attributeValues.get(replace(data[i].elementname));
             if ((strValue == null || strValue.equals("")) && data[i].ismandatory.equals("Y")) {
               throw new ServletException("Request parameter required: "
@@ -241,12 +242,12 @@ public class AttributeSetInstanceValue {
               strDescValue = AttributeSetInstanceValueData.selectAttributeValue(conProv, strValue);
             if (!strNewInstance.equals("")) {
               if (AttributeSetInstanceValueData.update(conn, conProv, vars.getUser(),
-                  (data[i].islist.equals("Y") ? strValue : ""), strDescValue, strNewInstance,
-                  data[i].mAttributeId) == 0) {
+                  (cslljJuliandate.equals("N") && data[i].islist.equals("Y") ? strValue : ""), strDescValue, strNewInstance,
+                  data[i].mAttributeId) == 0) { 
                 String strNewAttrInstance = SequenceIdData.getUUID();
                 AttributeSetInstanceValueData.insert(conn, conProv, strNewAttrInstance,
-                    strNewInstance, data[i].mAttributeId, client.getId(), org.getId(),
-                    vars.getUser(), (data[i].islist.equals("Y") ? strValue : ""), strDescValue);
+                    strNewInstance, data[i].mAttributeId, client.getId(), org.getId(), 
+                    vars.getUser(),(cslljJuliandate.equals("N") && data[i].islist.equals("Y") ? strValue : ""), strDescValue);
               }
             } else {
               if (AttributeSetInstanceValueData.update(conn, conProv, vars.getUser(),

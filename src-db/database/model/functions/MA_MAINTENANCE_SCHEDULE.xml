@@ -136,7 +136,14 @@
           FROM MA_Maint_Scheduled
           WHERE MA_Maintenance_ID=Cur_Periodicity.MA_Maintenance_ID
             AND SCHEDULEDDATE=v_Date;
-          IF NOT(v_Count!=0 OR(Cur_Periodicity.ExcludeWeekend='Y' AND(C_GET_ISOWEEK_DAY(v_Date)=6 OR C_GET_ISOWEEK_DAY(v_Date)=7))) THEN
+          IF NOT(v_Count!=0 OR(Cur_Periodicity.ExcludeWeekend='Y' AND(C_GET_ISOWEEK_DAY(v_Date)=6 OR C_GET_ISOWEEK_DAY(v_Date)=7))
+		  ------------------------------------AÑADIR FUNCIONALIDAD PARA TOMAR SOLO FIN DE SEMANA
+							  OR (
+								    Cur_Periodicity.em_scma_isweekend_maintenance = 'Y'
+								    AND (C_GET_ISOWEEK_DAY(v_Date) NOT IN (6, 7))
+								  )
+		  ----------------------------------------------------------------------------------------------------------------------
+		  ) THEN
             IF(v_Maint.MA_Machine_Type_ID IS NOT NULL AND v_Maint.Explode='Y') THEN
               FOR Cur_Machine IN
                 (SELECT MA_Machine_ID
@@ -152,14 +159,14 @@
                     MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                     Created, Createdby, Updated, Updatedby,
                     MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                    Scheduleddate, Confirmed, Shift, Description
+                    Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                   )
                   VALUES
                   (
                     v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                     now(), v_AD_User_ID, now(), v_AD_User_ID,
                     v_Record_ID, Cur_Machine.MA_Machine_ID, NULL, v_Maint.Maintenance_Type,
-                    v_Date, 'N', Cur_Periodicity.Shift, v_Maint.description
+                    v_Date, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                   )
                   ;
                 v_InsertCount:=v_InsertCount + 1;
@@ -172,14 +179,14 @@
                   MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                   Created, Createdby, Updated, Updatedby,
                   MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                  Scheduleddate, Confirmed, Shift, Description
+                  Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                 )
                 VALUES
                 (
                   v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                   now(), v_AD_User_ID, now(), v_AD_User_ID,
                   v_Record_ID, v_Maint.MA_Machine_ID, v_Maint.MA_Machine_Type_ID, v_Maint.Maintenance_Type,
-                  v_Date, 'N', Cur_Periodicity.Shift, v_Maint.description
+                  v_Date, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                 )
                 ;
               v_InsertCount:=v_InsertCount + 1;
@@ -215,14 +222,14 @@
                     MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                     Created, Createdby, Updated, Updatedby,
                     MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                    Scheduleddate, Confirmed, Shift, Description
+                    Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                   )
                   VALUES
                   (
                     v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                     now(), v_AD_User_ID, now(), v_AD_User_ID,
                     v_Record_ID, Cur_Machine.MA_Machine_ID, NULL, v_Maint.Maintenance_Type,
-                    v_Date, 'N', Cur_Periodicity.Shift, v_Maint.description
+                    v_Date, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                   )
                   ;
                 v_InsertCount:=v_InsertCount + 1;
@@ -235,14 +242,14 @@
                   MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                   Created, Createdby, Updated, Updatedby,
                   MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                  Scheduleddate, Confirmed, Shift, Description
+                  Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                 )
                 VALUES
                 (
                   v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                   now(), v_AD_User_ID, now(), v_AD_User_ID,
                   v_Record_ID, v_Maint.MA_Machine_ID, v_Maint.MA_Machine_Type_ID, v_Maint.Maintenance_Type,
-                  v_Date, 'N', Cur_Periodicity.Shift, v_Maint.description
+                  v_Date, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                 )
                 ;
               v_InsertCount:=v_InsertCount + 1;
@@ -264,6 +271,14 @@
           ELSIF(Cur_Periodicity.ExcludeWeekend='Y' AND C_GET_ISOWEEK_DAY(v_Date)=7) THEN
             v_DateInt:=v_Date +1;
           END IF;
+		  ----------------------------------------------------------------------
+		  IF(Cur_Periodicity.em_scma_isweekend_maintenance='Y' AND C_GET_ISOWEEK_DAY(v_Date) NOT IN (6, 7)) THEN
+            v_DateInt := v_Date + (6 - C_GET_ISOWEEK_DAY(v_Date));
+		  ELSE
+			-- Ya es sábado o domingo, no se mueve
+			v_DateInt := v_Date;
+          END IF;
+		  ----------------------------------------------------------------------
           SELECT count(*)
           INTO v_Count
           FROM MA_Maint_Scheduled
@@ -285,14 +300,14 @@
                     MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                     Created, Createdby, Updated, Updatedby,
                     MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                    Scheduleddate, Confirmed, Shift, Description
+                    Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                   )
                   VALUES
                   (
                     v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                     now(), v_AD_User_ID, now(), v_AD_User_ID,
                     v_Record_ID, Cur_Machine.MA_Machine_ID, NULL, v_Maint.Maintenance_Type,
-                    v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description
+                    v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                   )
                   ;
                 v_InsertCount:=v_InsertCount + 1;
@@ -305,14 +320,14 @@
                   MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                   Created, Createdby, Updated, Updatedby,
                   MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                  Scheduleddate, Confirmed, Shift, Description
+                  Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                 )
                 VALUES
                 (
                   v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                   now(), v_AD_User_ID, now(), v_AD_User_ID,
                   v_Record_ID, v_Maint.MA_Machine_ID, v_Maint.MA_Machine_Type_ID, v_Maint.Maintenance_Type,
-                  v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description
+                  v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                 )
                 ;
               v_InsertCount:=v_InsertCount + 1;
@@ -336,6 +351,14 @@
           ELSIF(Cur_Periodicity.ExcludeWeekend='Y' AND C_GET_ISOWEEK_DAY(v_Date)=7) THEN
             v_DateInt:=v_Date +1;
           END IF;
+		  ----------------------------------------------------------------------
+		  IF(Cur_Periodicity.em_scma_isweekend_maintenance='Y' AND C_GET_ISOWEEK_DAY(v_Date) NOT IN (6, 7)) THEN
+            v_DateInt := v_Date + (6 - C_GET_ISOWEEK_DAY(v_Date));
+		  ELSE
+			-- Ya es sábado o domingo, no se mueve
+			v_DateInt := v_Date;
+          END IF;
+		  ----------------------------------------------------------------------
           SELECT count(*)
           INTO v_Count
           FROM MA_Maint_Scheduled
@@ -357,14 +380,14 @@
                     MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                     Created, Createdby, Updated, Updatedby,
                     MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                    Scheduleddate, Confirmed, Shift, Description
+                    Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                   )
                   VALUES
                   (
                     v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                     now(), v_AD_User_ID, now(), v_AD_User_ID,
                     v_Record_ID, Cur_Machine.MA_Machine_ID, NULL, v_Maint.Maintenance_Type,
-                    v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description
+                    v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                   )
                   ;
                 v_InsertCount:=v_InsertCount + 1;
@@ -377,14 +400,14 @@
                   MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                   Created, Createdby, Updated, Updatedby,
                   MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                  Scheduleddate, Confirmed, Shift, Description
+                  Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                 )
                 VALUES
                 (
                   v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                   now(), v_AD_User_ID, now(), v_AD_User_ID,
                   v_Record_ID, v_Maint.MA_Machine_ID, v_Maint.MA_Machine_Type_ID, v_Maint.Maintenance_Type,
-                  v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description
+                  v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                 )
                 ;
               v_InsertCount:=v_InsertCount + 1;
@@ -407,6 +430,14 @@
           ELSIF(Cur_Periodicity.ExcludeWeekend='Y' AND C_GET_ISOWEEK_DAY(v_Date)=7) THEN
             v_DateInt:=v_Date +1;
           END IF;
+		  ----------------------------------------------------------------------
+		  IF(Cur_Periodicity.em_scma_isweekend_maintenance='Y' AND C_GET_ISOWEEK_DAY(v_Date) NOT IN (6, 7)) THEN
+            v_DateInt := v_Date + (6 - C_GET_ISOWEEK_DAY(v_Date));
+		  ELSE
+			-- Ya es sábado o domingo, no se mueve
+			v_DateInt := v_Date;
+          END IF;
+		  ----------------------------------------------------------------------
           SELECT count(*)
           INTO v_Count
           FROM MA_Maint_Scheduled
@@ -428,14 +459,14 @@
                     MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                     Created, Createdby, Updated, Updatedby,
                     MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                    Scheduleddate, Confirmed, Shift, Description
+                    Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                   )
                   VALUES
                   (
                     v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                     now(), v_AD_User_ID, now(), v_AD_User_ID,
                     v_Record_ID, Cur_Machine.MA_Machine_ID, NULL, v_Maint.Maintenance_Type,
-                    v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description
+                    v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                   )
                   ;
                 v_InsertCount:=v_InsertCount + 1;
@@ -448,14 +479,14 @@
                   MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                   Created, Createdby, Updated, Updatedby,
                   MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                  Scheduleddate, Confirmed, Shift, Description
+                  Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                 )
                 VALUES
                 (
                   v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                   now(), v_AD_User_ID, now(), v_AD_User_ID,
                   v_Record_ID, v_Maint.MA_Machine_ID, v_Maint.MA_Machine_Type_ID, v_Maint.Maintenance_Type,
-                  v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description
+                  v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                 )
                 ;
               v_InsertCount:=v_InsertCount + 1;
@@ -478,6 +509,14 @@
           ELSIF(Cur_Periodicity.ExcludeWeekend='Y' AND C_GET_ISOWEEK_DAY(v_Date)=7) THEN
             v_DateInt:=v_Date +1;
           END IF;
+		  ----------------------------------------------------------------------
+		  IF(Cur_Periodicity.em_scma_isweekend_maintenance='Y' AND C_GET_ISOWEEK_DAY(v_Date) NOT IN (6, 7)) THEN
+            v_DateInt := v_Date + (6 - C_GET_ISOWEEK_DAY(v_Date));
+		  ELSE
+			-- Ya es sábado o domingo, no se mueve
+			v_DateInt := v_Date;
+          END IF;
+		  ----------------------------------------------------------------------
           SELECT count(*)
           INTO v_Count
           FROM MA_Maint_Scheduled
@@ -499,14 +538,14 @@
                     MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                     Created, Createdby, Updated, Updatedby,
                     MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                    Scheduleddate, Confirmed, Shift, Description
+                    Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                   )
                   VALUES
                   (
                     v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                     now(), v_AD_User_ID, now(), v_AD_User_ID,
                     v_Record_ID, Cur_Machine.MA_Machine_ID, NULL, v_Maint.Maintenance_Type,
-                    v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description
+                    v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                   )
                   ;
                 v_InsertCount:=v_InsertCount + 1;
@@ -519,14 +558,14 @@
                   MA_Maint_Scheduled_ID, AD_Client_ID, AD_Org_ID, Isactive,
                   Created, Createdby, Updated, Updatedby,
                   MA_Maintenance_ID, MA_Machine_ID, MA_Machine_Type_ID, Maintenance_Type,
-                  Scheduleddate, Confirmed, Shift, Description
+                  Scheduleddate, Confirmed, Shift, Description,em_scma_start_periodicity,em_scma_end_periodicity
                 )
                 VALUES
                 (
                   v_MA_Maint_Scheduled, v_Client_ID, v_Org_ID, 'Y',
                   now(), v_AD_User_ID, now(), v_AD_User_ID,
                   v_Record_ID, v_Maint.MA_Machine_ID, v_Maint.MA_Machine_Type_ID, v_Maint.Maintenance_Type,
-                  v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description
+                  v_DateInt, 'N', Cur_Periodicity.Shift, v_Maint.description,Cur_Periodicity.em_scma_start,Cur_Periodicity.em_scma_end
                 )
                 ;
               v_InsertCount:=v_InsertCount + 1;
