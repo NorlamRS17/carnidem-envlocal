@@ -5,9 +5,13 @@ on:
     branches: [ "main" ]
 
 env:
-  # El repositorio BASE (Platform/Core) - Se sincroniza a la raíz
+  # Repositorio BASE (Platform/Core). Punto de partida antes de los merges.
   CORE_REPO: "NorlamRS17/OpenbravoEstandar18Q3.5CoreMarlon"
-  
+  # Cores adicionales: git merge en este orden sobre el resultado anterior (misma idea que MODULE_REPOS).
+  # Vacío = solo CORE_REPO, clone superficial. Con entradas = clone completo + un merge por línea (main o master).
+  CORE_MERGE_REPOS: >-
+    NorlamRS17/CarnidemCore
+
   # LISTA DE MÓDULOS (Se inyectan en /modules)
   MODULE_REPOS: >-
     NorlamRS17/Estandar24Q1
@@ -49,19 +53,60 @@ jobs:
           # =========================================================
           echo "════════════════════════════════════════════════════" >> $MSG_FILE
           echo "📦 CORE: $(basename $CORE_REPO)" >> $MSG_FILE
+          for M in $CORE_MERGE_REPOS; do
+            echo "   + merge: $(basename "$M")" >> $MSG_FILE
+          done
           echo "════════════════════════════════════════════════════" >> $MSG_FILE
-          
+
+          # ¿Hay al menos un core extra para fusionar? (lista escalable como MODULE_REPOS)
+          HAS_CORE_MERGE=0
+          for _check in $CORE_MERGE_REPOS; do
+            HAS_CORE_MERGE=1
+            break
+          done
+
           echo ">>> Procesando CORE: $CORE_REPO"
-          
-          # Clonamos el Core en carpeta temporal
-          git clone --depth 50 "https://$TOKEN@github.com/$CORE_REPO.git" temp_core
-          
-          # Extraemos datos para el reporte
+          # Sin --depth si hay merges: el shallow clone suele impedir ancestro común.
+          if [ "$HAS_CORE_MERGE" -eq 1 ]; then
+            git clone "https://$TOKEN@github.com/$CORE_REPO.git" temp_core
+          else
+            git clone --depth 50 "https://$TOKEN@github.com/$CORE_REPO.git" temp_core
+          fi
+
           cd temp_core
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           HASH_CORE=$(git rev-parse --short HEAD)
           LOGS_CORE=$(git log -n 5 --pretty=format:"   • %h | %s (%an)")
-          echo "📌 Versión: $HASH_CORE" >> ../$MSG_FILE
+          echo "📌 Base (HEAD): $HASH_CORE" >> ../$MSG_FILE
           echo "$LOGS_CORE" >> ../$MSG_FILE
+
+          # Un git merge por cada repo en CORE_MERGE_REPOS (orden = capas encima de la base)
+          MERGE_IDX=0
+          for MERGE_REPO in $CORE_MERGE_REPOS; do
+            MERGE_IDX=$((MERGE_IDX + 1))
+            REMOTE_NAME="merge-src-${MERGE_IDX}"
+            echo "" >> ../$MSG_FILE
+            echo ">>> git merge [$MERGE_IDX]: $MERGE_REPO"
+            git remote add "$REMOTE_NAME" "https://$TOKEN@github.com/$MERGE_REPO.git"
+            MERGED=0
+            MERGE_BRANCH=""
+            if git fetch "$REMOTE_NAME" main && git rev-parse --verify "$REMOTE_NAME/main" >/dev/null 2>&1; then
+              git merge "$REMOTE_NAME/main" --no-edit -m "ci: merge ${MERGE_REPO} (main) into core stack"
+              MERGED=1
+              MERGE_BRANCH=main
+            elif git fetch "$REMOTE_NAME" master && git rev-parse --verify "$REMOTE_NAME/master" >/dev/null 2>&1; then
+              git merge "$REMOTE_NAME/master" --no-edit -m "ci: merge ${MERGE_REPO} (master) into core stack"
+              MERGED=1
+              MERGE_BRANCH=master
+            fi
+            if [ "$MERGED" -ne 1 ]; then
+              echo "ERROR: $MERGE_REPO no tiene rama main ni master accesible."
+              exit 1
+            fi
+            echo "📌 Tras merge $(basename "$MERGE_REPO") ($MERGE_BRANCH): $(git rev-parse --short HEAD)" >> ../$MSG_FILE
+            git remote remove "$REMOTE_NAME"
+          done
           echo "" >> ../$MSG_FILE
           cd ..
 
