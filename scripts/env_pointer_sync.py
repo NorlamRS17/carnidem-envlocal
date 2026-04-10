@@ -188,6 +188,10 @@ def apply_delta(
 ) -> None:
     if old_sha == new_sha:
         return
+    # Sin SHA previo o repo fuente recién sustituido: volcar árbol completo de esa fuente.
+    if not (old_sha or "").strip():
+        full_sync_rsync(token, slug, dest_root, kind=kind)
+        return
     url = clone_url(token, slug)
     with tempfile.TemporaryDirectory(prefix="carnidem_delta_") as td:
         wd = Path(td) / "w"
@@ -347,18 +351,26 @@ def main() -> int:
             file=sys.stderr,
         )
         return 1
+    effective_stored: list[str] = []
     for i, (a, b) in enumerate(zip(prev, spec)):
-        if a.get("repo") != b["repo"] or a.get("type") != b["type"]:
+        if a.get("type") != b["type"]:
             print(
-                f"Orden o repos distintos en índice {i}: {a} vs {b}. "
-                "Ajusta last_commits.json o haz bootstrap de nuevo.",
+                f"Tipo distinto en índice {i}: {a} vs {b}. "
+                "Revisa last_commits.json o borra el archivo para bootstrap.",
                 file=sys.stderr,
             )
             return 1
+        if a.get("repo") != b["repo"]:
+            print(
+                f"⚠️  Índice {i}: fuente cambió de {a.get('repo')} → {b['repo']}. "
+                "Se hará resync completo de esa entrada (no diff entre repos distintos).",
+                file=sys.stderr,
+            )
+            effective_stored.append("")
+        else:
+            effective_stored.append(str(a.get("sha", "")))
 
-    stored = [str(p.get("sha", "")) for p in prev]
-
-    if all(stored[i] == remote_shas[i] for i in range(len(spec))):
+    if all(effective_stored[i] == remote_shas[i] for i in range(len(spec))):
         lines_msg.append("✅ Sin cambios en remotos; no se sincroniza nada.")
         write_commit_message(msg_path, lines_msg + ["", "[skip ci]"])
         sanitize_modules_modules(repo_b)
@@ -367,16 +379,18 @@ def main() -> int:
 
     lines_msg.append("📦 Aplicando deltas (jerarquía core → capas → módulos):")
     for i, s in enumerate(spec):
-        if stored[i] == remote_shas[i]:
+        if effective_stored[i] == remote_shas[i]:
             continue
         repo = s["repo"]
         kind = s["type"]
         dest = repo_b if kind in ("core", "layer") else repo_b / "modules"
-        lines_msg.append(f"  • {kind} {repo}: {stored[i][:7]}..{remote_shas[i][:7]}")
+        old_s = effective_stored[i]
+        short_old = (old_s[:7] if len(old_s) >= 7 else old_s) or "∅"
+        lines_msg.append(f"  • {kind} {repo}: {short_old}..{remote_shas[i][:7]}")
         apply_delta(
             token,
             repo,
-            stored[i],
+            old_s,
             remote_shas[i],
             dest,
             kind=kind,
