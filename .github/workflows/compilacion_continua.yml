@@ -1,0 +1,159 @@
+name: Sync Multi-Repo System (Scalable)
+
+on:
+  push:
+    branches: [ "main" ]
+
+env:
+  # El repositorio BASE (Platform/Core) - Se sincroniza a la raíz
+  CORE_REPO: "NorlamRS17/OpenbravoEstandar18Q3.5CoreMarlon"
+  
+  # LISTA DE MÓDULOS (Se inyectan en /modules)
+  MODULE_REPOS: >-
+    NorlamRS17/Estandar24Q1
+    NorlamRS17/SidesoftProfesionalProduccion
+    NorlamRS17/Carnidem_Marlon
+
+
+jobs:
+  merge-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout del Destino (Tu Repo Actual)
+      - name: Checkout Destination
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+          path: repo-b
+          fetch-depth: 0
+          submodules: false
+
+      # 2. EL SCRIPT MAESTRO (Maneja N Repositorios)
+      - name: Procesar Multiples Repositorios
+        id: process_repos
+        run: |
+          # CONFIGURACION INICIAL
+          TOKEN="${{ secrets.API_TOKEN_GITHUB }}"
+          DEST_MODULES="./repo-b/modules"
+          MSG_FILE="./commit_message.txt"
+          
+          # Iniciamos el archivo de mensaje
+          echo "🚀 SYNC: ${{ github.repository }} Build #${{ github.run_number }}" > $MSG_FILE
+          echo "📅 Fecha: $(date -u +'%Y-%m-%d %H:%M UTC')" >> $MSG_FILE
+          echo "🔗 Ref: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $MSG_FILE
+          echo "" >> $MSG_FILE
+
+          # =========================================================
+          # FASE 1: PROCESAR EL CORE (Repo Base)
+          # =========================================================
+          echo "════════════════════════════════════════════════════" >> $MSG_FILE
+          echo "📦 CORE: $(basename $CORE_REPO)" >> $MSG_FILE
+          echo "════════════════════════════════════════════════════" >> $MSG_FILE
+          
+          echo ">>> Procesando CORE: $CORE_REPO"
+          
+          # Clonamos el Core en carpeta temporal
+          git clone --depth 50 "https://$TOKEN@github.com/$CORE_REPO.git" temp_core
+          
+          # Extraemos datos para el reporte
+          cd temp_core
+          HASH_CORE=$(git rev-parse --short HEAD)
+          LOGS_CORE=$(git log -n 5 --pretty=format:"   • %h | %s (%an)")
+          echo "📌 Versión: $HASH_CORE" >> ../$MSG_FILE
+          echo "$LOGS_CORE" >> ../$MSG_FILE
+          echo "" >> ../$MSG_FILE
+          cd ..
+
+          # SINCRONIZACION CORE -> DESTINO
+          # 1. Limpiamos submódulos fantasma en destino
+          cd repo-b
+          git rm --cached modules >/dev/null 2>&1 || true
+          rm -f .gitmodules
+          cd ..
+          
+          # 2. Rsync del Core (Borra todo lo que no sea Core en la raíz, protegiendo modules)
+          echo "   -> Sincronizando Archivos Core..."
+          rsync -a --delete ./temp_core/ ./repo-b/ \
+            --exclude='.git' --exclude='.github' --exclude='.last_core_sync' --exclude='commit_message.txt' --exclude='.gitignore'
+
+          # 3. Preparamos la carpeta modules limpia (Reset)
+          rm -rf $DEST_MODULES
+          mkdir -p $DEST_MODULES
+          
+          # 4. Copiamos los módulos propios del Core (si el repo core los trae en modules/)
+          if [ -d "./temp_core/modules" ]; then
+            echo "   -> Copiando modules/ desde el Core..."
+            rsync -a ./temp_core/modules/ $DEST_MODULES/ --exclude='.git'
+          else
+            echo "   -> El Core no tiene carpeta modules/; se continúa solo con módulos externos."
+          fi
+          
+          # Limpieza temporal
+          rm -rf temp_core
+
+
+          # =========================================================
+          # FASE 2: BUCLE DE MÓDULOS (Itera sobre la lista)
+          # =========================================================
+          echo "════════════════════════════════════════════════════" >> $MSG_FILE
+          echo "🧩 BIBLIOTECA DE MÓDULOS EXTERNOS" >> $MSG_FILE
+          echo "════════════════════════════════════════════════════" >> $MSG_FILE
+
+          # Convertimos la variable de entorno en un array
+          for REPO in $MODULE_REPOS; do
+            NAME=$(basename $REPO)
+            echo ">>> Procesando Módulo: $NAME"
+            
+            # Clonamos (Recursive por si tiene submódulos)
+            # Usamos --depth 10 para que sea rápido pero tenga algo de historia
+            git clone --depth 10 --recursive "https://$TOKEN@github.com/$REPO.git" "temp_$NAME"
+            
+            # Datos para el reporte
+            cd "temp_$NAME"
+            LAST_COMMIT=$(git log -n 1 --pretty=format:"%h - %s (%an)")
+            echo "🔹 $NAME: $LAST_COMMIT" >> ../$MSG_FILE
+            cd ..
+            
+            # Lógica Inteligente de Copia
+            # Si el repo tiene carpeta 'modules', copiamos SU contenido.
+            # Si no, copiamos el repo entero (asumiendo que es el módulo).
+            if [ -d "./temp_$NAME/modules" ]; then
+                echo "   -> Inyectando subcarpeta modules de $NAME..."
+                rsync -a "./temp_$NAME/modules/" "$DEST_MODULES/" --exclude='.git'
+            else
+                echo "   -> Inyectando raíz de $NAME..."
+                rsync -a "./temp_$NAME/" "$DEST_MODULES/" --exclude='.git' --exclude='.gitignore' --exclude='README.md'
+            fi
+            
+            # Borramos la copia temporal para ahorrar espacio
+            rm -rf "temp_$NAME"
+          done
+
+          # Cierre del mensaje
+          echo "" >> $MSG_FILE
+          echo "✅ STATUS: Sincronización Masiva Exitosa" >> $MSG_FILE
+          echo "[skip ci]" >> $MSG_FILE
+          
+          # Movemos el mensaje al repo destino
+          mv $MSG_FILE repo-b/commit_message.txt
+          
+          # Sanitización Final (Eliminar .git ocultos en modules)
+          find $DEST_MODULES -name ".git" -type d -exec rm -rf {} +
+
+      # 3. Commit y Push Final
+      - name: Commit y Push
+        run: |
+          cd repo-b
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add .
+          
+          if [[ -n $(git status -s) ]]; then
+            git commit -q -F commit_message.txt
+            echo "Subiendo cambios..."
+            git push -q origin main
+          else
+            echo "Todo al día."
+          fi
