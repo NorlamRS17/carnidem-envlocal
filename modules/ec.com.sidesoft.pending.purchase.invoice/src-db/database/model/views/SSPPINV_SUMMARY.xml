@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+  <database name="VIEW SSPPINV_SUMMARY">
+    <view name="SSPPINV_SUMMARY"><![CDATA[SELECT bp.c_bpartner_id AS ssppinv_summary_id, i.ad_org_id, i.ad_client_id, '100' AS createdby, now() AS created, '100' AS updatedby, now() AS updated, 'Y' AS isactive, bp.c_bpartner_id, bp.taxid AS bptaxid, bp.name AS bpname, sum(arp.grandtotal) AS totalpending, (SELECT COALESCE(sum(si.amount), 0) AS "coalesce" FROM ssppinv_selectedinvoices si WHERE si.c_bpartner_id = bp.c_bpartner_id) AS totalselectedinvoices, 'GPP' AS generatepaymentproposal FROM sswh_acct_receivab_payab_v arp LEFT JOIN c_bpartner bp ON bp.c_bpartner_id = arp.c_bpartner_id JOIN c_invoice i ON i.c_invoice_id = arp.c_invoice_id WHERE arp.isclient = 'N' GROUP BY bp.c_bpartner_id, i.ad_org_id, i.ad_client_id, bp.taxid, bp.name HAVING sum(arp.grandtotal) < '-0.01' OR sum(arp.grandtotal) > 0.01 ORDER BY bp.name]]></view>
+  </database>

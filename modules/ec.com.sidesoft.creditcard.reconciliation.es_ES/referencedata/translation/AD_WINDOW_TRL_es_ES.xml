@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="002722B2A1104415B425F16F4703C0E3" trl="N">
+    <value column="Name" isTrl="N" original="Finnancial Transaction POS">Finnancial Transaction POS</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="1FD0EB8CE6A14C039219A58E6E4F90D4" trl="N">
+    <value column="Name" isTrl="Y" original="Processor Banck">Banco Procesador</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4D3F023BBBF9440B8529E8C432E1D600" trl="N">
+    <value column="Name" isTrl="Y" original="Types of credit">Tipos de Crédito</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="79B8280CB9304AF89EE49015FF322B86" trl="N">
+    <value column="Name" isTrl="Y" original="Cards types">Tipos de Tarjeta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8A82EB0025234AF8BDAA6D8C095BC7DB" trl="N">
+    <value column="Name" isTrl="Y" original="POS Card Reconciliation">Conciliación de Tarjetas POS</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="912034ECDC1D4CFEB2F1F49AFFD1A6F7" trl="N">
+    <value column="Name" isTrl="Y" original="General Configuration">Configuración General</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F224FD58E5C34C6FB1CDFF3C360EEF1E" trl="N">
+    <value column="Name" isTrl="Y" original="Card matching configuration">Configuración conciliación de tarjetas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

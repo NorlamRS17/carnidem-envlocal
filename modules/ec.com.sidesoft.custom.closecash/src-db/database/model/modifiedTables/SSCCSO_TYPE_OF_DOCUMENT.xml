@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SSCCSO_TYPE_OF_DOCUMENT">
+    <table name="SSCCSO_TYPE_OF_DOCUMENT" primaryKey="SSCCSO_TYPE_OF_DOC_KEY">
+      <index name="EM_SCCC_TDOCSETUP_IDX" unique="false">
+        <index-column name="SCCC_SETUP_ID"/>
+      </index>
+    </table>
+  </database>

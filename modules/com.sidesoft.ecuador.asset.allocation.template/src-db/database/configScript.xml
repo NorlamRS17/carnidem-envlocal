@@ -1,0 +1,283 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.21792"/>
+    <columnRequiredChange tableName="A_ASSET" columnName="EM_SSAL_C_DOCTYPE_ID">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnDataChange tablename="AD_MENU" columnname="NAME" pkRow="7AF5ED8335DA40B69DB7515D67D24ECF">
+      <oldValue><![CDATA[Financial Account]]></oldValue>
+      <newValue><![CDATA[Financial Accounts]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="8047">
+      <oldValue><![CDATA[F6E343E77DA249559AEF8651D595E880]]></oldValue>
+      <newValue><![CDATA[3837163B5337495AB684ED78C0C63E31]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="8057">
+      <oldValue><![CDATA[10]]></oldValue>
+      <newValue><![CDATA[14]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="NAME" pkRow="7FF2234748F3844FE040007F01003861">
+      <oldValue><![CDATA[Client]]></oldValue>
+      <newValue><![CDATA[Organization]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="NAME" pkRow="B8CD44FF19E3491DB14C0383FFF23428">
+      <oldValue><![CDATA[Payment Detail]]></oldValue>
+      <newValue><![CDATA[Fin_Payment_Detail_V_ID]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8038">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8039">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8040">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8041">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8042">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8043">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8044">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8045">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8046">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8047">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8048">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8049">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8050">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8051">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8052">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8053">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8054">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8055">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8056">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8057">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8058">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8059">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8060">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8061">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8062">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8063">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8064">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8065">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8066">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8067">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8068">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8069">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8070">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8071">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8072">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8073">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8126">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801060">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801061">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801062">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801063">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801064">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801067">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801068">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801171">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801172">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801173">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801174">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801176">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801177">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801178">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="801179">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802831">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802832">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802876">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802877">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="0A3235D673F6438887E3337B615A5E52">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="123ECC9DA80E47D6BBE8D3C8E9ACC59C">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="3808ABE5D08E4650A2DE65596DB61F49">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8D12C15133384D35903CD2C561BF17B1">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="B35E5E5548A143928E45AAB4057B37F6">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="B6F7DFE37DE044508D62A681ECF8E411">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="DA4B2E75BBC1455D98C6F45FF3DD2F8A">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="E65B23843227486A99BAC4C2074C258C">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Ssal_Lowstatus@='LW']]></newValue>
+    </columnDataChange>
+  </vector>

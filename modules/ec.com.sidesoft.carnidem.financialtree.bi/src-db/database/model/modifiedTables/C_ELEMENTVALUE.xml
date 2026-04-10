@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_ELEMENTVALUE">
+    <table name="C_ELEMENTVALUE" primaryKey="C_ELEMENTVALUE_KEY">
+      <column name="EM_SCFT_ACCOUNT_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default><![CDATA[NULL]]></default>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

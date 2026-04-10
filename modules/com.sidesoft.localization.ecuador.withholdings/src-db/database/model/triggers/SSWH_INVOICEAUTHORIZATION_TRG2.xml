@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSWH_INVOICEAUTHORIZATION_TRG2">
+    <trigger name="SSWH_INVOICEAUTHORIZATION_TRG2" table="C_INVOICE" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[   V_Applies_Withholding        VARCHAR2(1);    
+   V_Isrefund        VARCHAR2(1);    
+
+BEGIN
+    
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+
+  IF (INSERTING OR UPDATING) THEN
+
+    IF (:new.em_sswh_c_doctype_id is not null AND (:new.em_sswh_authorization is null OR :new.em_sswh_authorization = '')) THEN
+
+      RAISE_APPLICATION_ERROR(-20000, '@SSWH_WithholdingUnauthorized@');
+
+    END IF;
+
+    
+    SELECT Isrefund INTO V_Isrefund FROM Sswh_Livelihoodt WHERE Sswh_Livelihoodt_ID = :new.EM_Sswh_Livelihood;
+    SELECT Applies_Withholding INTO V_Applies_Withholding FROM SSWH_Codelivelihoodt WHERE SSWH_Codelivelihoodt_ID = :new.EM_Sswh_Codelivelihood;
+
+    IF( V_Isrefund = 'Y' AND V_Applies_Withholding = 'Y' ) THEN
+      IF(:new.EM_Sswh_Livelihood is null OR :new.EM_Sswh_Codelivelihood is  null OR :new.em_sswh_c_doctype_id is  null)THEN
+        RAISE_APPLICATION_ERROR(-20000, '@SSWH_ApplieWithhLivelihood@');
+      END IF;
+	END IF;
+
+    IF( V_Isrefund = 'Y' AND V_Applies_Withholding = 'N'  ) THEN
+      IF(:new.em_sswh_c_doctype_id is not null)THEN
+        RAISE_APPLICATION_ERROR(-20000, '@SSWH_ApplieWithhLivelihood@');
+      END IF;
+	END IF;
+
+  END IF;
+    
+  END SSWH_INVOICEAUTHORIZATION_TRG2
+]]></body>
+    </trigger>
+  </database>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0BC914AD5FEF45AA8003504F8FFD2081" trl="N">
+    <value column="Name" isTrl="N" original="Sssv_Standarvalidations_ID">Sssv_Standarvalidations_ID</value>
+    <value column="PrintName" isTrl="N" original="Sssv_Standarvalidations_ID">Sssv_Standarvalidations_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E777CA2FDF124CE6955353053CA6C245" trl="Y">
+    <value column="Name" isTrl="Y" original="Sssv_Description">Descripcion Funcionalidad</value>
+    <value column="PrintName" isTrl="Y" original="Sssv_Description">Descripcion Funcionalidad</value>
+    <value column="Description" isTrl="N" original="">Descripcion Funcionalidad</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F573705E340A49DB856E916B187C1DC3" trl="Y">
+    <value column="Name" isTrl="Y" original="Sssv_Trgname">Nombre Trigger</value>
+    <value column="PrintName" isTrl="Y" original="Sssv_Trgname">Nombre Trigger</value>
+    <value column="Description" isTrl="N" original="">Nombre Trigger</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

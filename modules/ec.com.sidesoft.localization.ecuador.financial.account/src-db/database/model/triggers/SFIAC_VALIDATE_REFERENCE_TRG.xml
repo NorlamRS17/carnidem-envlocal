@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SFIAC_VALIDATE_REFERENCE_TRG">
+    <trigger name="SFIAC_VALIDATE_REFERENCE_TRG" table="FIN_PAYMENT" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	v_validation NUMBER;
+	v_type CHAR;
+	V_receipt CHAR;
+	v_docstatus VARCHAR;
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+	SELECT type INTO v_type FROM FIN_Financial_Account WHERE Fin_Financial_Account_ID = :new.Fin_Financial_Account_ID;
+	V_receipt := :new.isreceipt;
+	v_docstatus := :new.status;
+  	
+  	IF UPDATING THEN
+		IF v_docstatus != 'RPR' OR v_docstatus != 'RDNC' THEN 	  
+		IF v_type = 'B' AND V_receipt = 'Y' THEN
+			SELECT Count(*) into v_validation from fin_payment 
+			where referenceno = :new.referenceno 
+			and Fin_Financial_Account_ID = :new.Fin_Financial_Account_ID
+			AND fin_payment_id != :new.fin_payment_id;
+			IF v_validation != 0 THEN
+				RAISE_APPLICATION_ERROR(-20000, 'Número de referencia registrado en otra transacción');
+			END IF;
+		END IF;
+			RETURN NEW;
+		END IF;
+	END IF;
+	
+	IF INSERTING THEN 
+		IF v_docstatus <> 'RDNC' THEN
+		IF v_type = 'B' AND V_receipt = 'Y' THEN
+			SELECT Count(*) into v_validation 
+			from fin_payment 
+			where referenceno = :new.referenceno 
+			and Fin_Financial_Account_ID = :new.Fin_Financial_Account_ID
+			AND fin_payment_id != :new.fin_payment_id;
+			IF v_validation != 0 THEN
+				RAISE_APPLICATION_ERROR(-20000, 'Número de referencia registrado en otra transacción');
+			END IF;
+		END IF;
+		END IF;
+		   RETURN NEW;
+	END IF;
+END SFIAC_VALIDATE_REFERENCE_TRG
+]]></body>
+    </trigger>
+  </database>

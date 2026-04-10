@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER ECSWC_WITHHOLDING_CANCEL_TRG">
+    <trigger name="ECSWC_WITHHOLDING_CANCEL_TRG" table="ECSWC_WITHHOLDING_CANCEL" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[
+ v_count NUMBER:=0;
+ v_AmtRes NUMBER;
+ 
+BEGIN
+    
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF; 
+
+  IF (DELETING)THEN
+		RAISE_APPLICATION_ERROR(-20000, '@ecswc_delete_withholding_cancel@') ;
+  END IF;
+
+  END ECSWC_WITHHOLDING_CANCEL_TRG
+]]></body>
+    </trigger>
+  </database>

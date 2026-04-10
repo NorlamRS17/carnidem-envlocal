@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ *************************************************************************
+ * The contents of this file are subject to the Openbravo  Public  License
+ * Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+ * Version 1.1  with a permitted attribution clause; you may not  use this
+ * file except in compliance with the License. You  may  obtain  a copy of
+ * the License at http://www.openbravo.com/legal/license.html
+ * Software distributed under the License  is  distributed  on  an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+ * License for the specific  language  governing  rights  and  limitations
+ * under the License.
+ * The Original Code is Openbravo ERP.
+ * The Initial Developer of the Original Code is Openbravo SLU
+ * All portions are Copyright (C) 2001-2006 Openbravo SLU
+ * All Rights Reserved.
+ * Contributor(s):  FI > (Oracle fixes)
+ ************************************************************************
+-->
+
+
+
+
+
+<SqlClass name="SswhRptcWithCardData" package="com.sidesoft.localization.ecuador.withholdings.create_xml" accessModifier="public">
+   <SqlClassComment></SqlClassComment>
+
+  <SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[ 
+        SELECT
+            year,
+            month,
+            taxidtype,
+            taxid,
+            relatedpart,
+            codetrxt,
+            iselectronic,
+            SUM(vouchers_number) AS vouchers_number,
+            '0.00' AS basenogiva,
+            '0.00' AS baseimp,
+            '0.00' AS baseimpg,
+            '0.00' AS montoiva,
+            '0.00' AS montoice,
+            SUM(ret_iva) ret_iva,
+            SUM(ret_ren) ret_ren,
+            codeats
+        FROM (
+            SELECT
+                CAST(EXTRACT(YEAR FROM whc.date_doc) AS varchar) AS year,
+                CAST(EXTRACT(MONTH FROM whc.date_doc) AS varchar) AS month,
+                CASE WHEN bp.EM_Sswh_Taxidtype = 'R' THEN
+                    '04'
+                ELSE
+                    '05'
+                END AS taxidtype,
+                bp.TaxID,
+                CASE WHEN txp.Relatedpart = 'Y' THEN
+                    'SI'
+                ELSE
+                    'NO'
+                END AS Relatedpart,
+                trxt.code AS codetrxt,
+                CASE WHEN trxt.Iselectronic = 'Y' THEN
+                    'E'
+                ELSE
+                    'F'
+                END iselectronic,
+                whc.Vouchers_Number,
+                whc.Withh_Vat AS ret_iva,
+                whc.Withh_Rent AS ret_ren,
+                fpm.EM_Sswh_Codeats AS codeats
+            FROM
+                sswh_withh_card_credit whc
+                JOIN c_bpartner bp ON bp.c_bpartner_id = whc.c_bpartner_id
+                JOIN SSWH_Taxpayer txp ON txp.SSWH_Taxpayer_id = bp.EM_SSWH_Taxpayer_ID
+                JOIN Sswh_Transaction_Type trxt ON trxt.Sswh_Transaction_Type_ID = whc.Sswh_Transaction_Type_ID
+                JOIN FIN_Paymentmethod fpm ON fpm.FIN_Paymentmethod_ID = whc.FIN_Paymentmethod_ID
+            WHERE
+                whc.status = 'CO'
+                AND CAST(EXTRACT(YEAR FROM whc.date_doc) AS varchar) = ?
+                AND CAST(EXTRACT(MONTH FROM whc.date_doc) AS varchar) = ?) x
+        GROUP BY
+            TaxID,
+            year,
+            month,
+            taxidtype,
+            relatedpart,
+            codetrxt,
+            iselectronic,
+            codeats
+]]>
+    </Sql>
+    <Parameter name="year"/>
+    <Parameter name="month"/>
+  </SqlMethod>
+
+</SqlClass>

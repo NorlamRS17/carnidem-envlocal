@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FACT_ACCT">
+    <table name="FACT_ACCT" primaryKey="FACT_ACCT_KEY">
+      <index name="EM_SFIAC_FACT_ACCT_ACCOUNT" unique="false">
+        <index-column name="ACCOUNT_ID"/>
+      </index>
+      <index name="EM_SFIAC_FACT_SCHEMA" unique="false">
+        <index-column name="C_PERIOD_ID"/>
+        <index-column name="AD_ORG_ID"/>
+        <index-column name="C_ACCTSCHEMA_ID"/>
+      </index>
+      <index name="EM_SFIAC_FACTACCT_ACCOUNT" unique="false">
+        <index-column name="AD_ORG_ID"/>
+        <index-column name="C_ACCTSCHEMA_ID"/>
+        <index-column name="C_PERIOD_ID"/>
+        <index-column name="ACCOUNT_ID"/>
+        <index-column name="FACTACCTTYPE"/>
+        <index-column name="FACT_ACCT_GROUP_ID"/>
+        <index-column name="ACCTVALUE"/>
+        <index-column name="ACCTDESCRIPTION"/>
+        <index-column name="C_BPARTNER_ID"/>
+        <index-column name="M_PRODUCT_ID"/>
+        <index-column name="A_ASSET_ID"/>
+        <index-column name="C_TAX_ID"/>
+        <index-column name="C_PROJECT_ID"/>
+        <index-column name="C_ACTIVITY_ID"/>
+        <index-column name="USER1_ID"/>
+        <index-column name="USER2_ID"/>
+        <index-column name="C_CAMPAIGN_ID"/>
+        <index-column name="C_SALESREGION_ID"/>
+        <index-column name="AMTACCTDR"/>
+        <index-column name="AMTACCTCR"/>
+      </index>
+      <index name="EM_SFIAC_FACTACCT_TYPE_GROUP" unique="false">
+        <index-column name="AD_ORG_ID"/>
+        <index-column name="C_ACCTSCHEMA_ID"/>
+        <index-column name="FACTACCTTYPE"/>
+        <index-column name="FACT_ACCT_GROUP_ID"/>
+        <index-column name="ACCOUNT_ID"/>
+        <index-column name="C_PERIOD_ID"/>
+        <index-column name="ACCTVALUE"/>
+        <index-column name="ACCTDESCRIPTION"/>
+      </index>
+      <index name="EM_SFIAC_FACTACCTFACTTYPE_GR" unique="false">
+        <index-column name="FACTACCTTYPE"/>
+        <index-column name="FACT_ACCT_GROUP_ID"/>
+      </index>
+    </table>
+  </database>

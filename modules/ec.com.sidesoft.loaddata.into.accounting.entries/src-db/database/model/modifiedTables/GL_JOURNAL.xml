@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE GL_JOURNAL">
+    <table name="GL_JOURNAL" primaryKey="GL_JOURNAL_KEY">
+      <column name="EM_SLIAE_LOADACCT" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

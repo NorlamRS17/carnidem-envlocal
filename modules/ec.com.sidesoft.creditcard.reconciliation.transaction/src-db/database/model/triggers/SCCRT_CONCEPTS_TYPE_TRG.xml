@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SCCRT_CONCEPTS_TYPE_TRG">
+    <trigger name="SCCRT_CONCEPTS_TYPE_TRG" table="SCCRT_CONCEPTS" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+existing_count NUMBER;
+
+BEGIN
+
+  IF AD_isTriggerEnabled()='N' THEN RETURN;
+  END IF;
+
+	IF INSERTING OR UPDATING THEN
+	
+		SELECT COUNT(*) INTO existing_count
+		FROM sccrt_concepts
+		WHERE type = :NEW.type
+		AND Ssccr_Processor_Banck_ID = :NEW.Ssccr_Processor_Banck_ID
+		AND sccrt_concepts_id <> :NEW.sccrt_concepts_id;
+
+        IF existing_count > 0 THEN
+            RAISE_APPLICATION_ERROR(-20000, '@No se permite duplicar el tipo de Retencion@');
+        END IF;
+		
+    END IF;
+
+	
+  END SCCRT_CONCEPTS_TYPE_TRG
+]]></body>
+    </trigger>
+  </database>

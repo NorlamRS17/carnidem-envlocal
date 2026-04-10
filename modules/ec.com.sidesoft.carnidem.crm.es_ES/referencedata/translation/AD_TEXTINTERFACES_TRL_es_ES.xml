@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="0B3EE51047FB4BAEB61FDBD7105482AE" trl="N">
+    <value column="Text" isTrl="N" original="Mayor">Mayor</value>
+  </row>
+  <row id="1214D86CABE046B6AF1E03073D74A72D" trl="N">
+    <value column="Text" isTrl="N" original="En caso de auditoria interna o externa: No Conformidad">En caso de auditoria interna o externa: No Conformidad</value>
+  </row>
+  <row id="160911B27E0C41578A4AA7BA63E35BF0" trl="N">
+    <value column="Text" isTrl="N" original="Crítica">Crítica</value>
+  </row>
+  <row id="1A00AA78B0A94A12AE92110AE830F1BA" trl="N">
+    <value column="Text" isTrl="N" original="Auditoría Externa">Auditoría Externa</value>
+  </row>
+  <row id="1DB8D681070842DEA6CC8CDA5051BAB1" trl="N">
+    <value column="Text" isTrl="N" original="VERSIÓN: 01">VERSIÓN: 01</value>
+  </row>
+  <row id="2C2444C6155E4843B32A62D1727492D3" trl="N">
+    <value column="Text" isTrl="N" original="Auditoría Interna">Auditoría Interna</value>
+  </row>
+  <row id="344563F6E43B4FF98596DCD848BA6767" trl="N">
+    <value column="Text" isTrl="N" original="SOLICITUD DE ACCIÓN CORRECTIVA - SAC">SOLICITUD DE ACCIÓN CORRECTIVA - SAC</value>
+  </row>
+  <row id="35AC41B43A8A4F729F0A417EC0E09A6F" trl="N">
+    <value column="Text" isTrl="N" original="CÓDIGO: PSGI.02R01">CÓDIGO: PSGI.02R01</value>
+  </row>
+  <row id="3A2F5A148D484066987B3CBB50C81A18" trl="N">
+    <value column="Text" isTrl="N" original="Descripción del Problema o No conformidad:">Descripción del Problema o No conformidad:</value>
+  </row>
+  <row id="4C8D7AB143414A21B81FD1B3B0E0A04D" trl="N">
+    <value column="Text" isTrl="N" original="N">N</value>
+  </row>
+  <row id="507E1A5BFD804206B6E413F56ACC1A82" trl="N">
+    <value column="Text" isTrl="N" original="Fecha cumplimiento:">Fecha cumplimiento:</value>
+  </row>
+  <row id="54B789E641064A6B9B2BEBC21FC44469" trl="N">
+    <value column="Text" isTrl="N" original="DE">DE</value>
+  </row>
+  <row id="615BA06577AD4E6B9B38E5CFC908535F" trl="N">
+    <value column="Text" isTrl="N" original="No">No</value>
+  </row>
+  <row id="6A207BC2201947D39C4DFC6123E85EA5" trl="N">
+    <value column="Text" isTrl="N" original="No conformidad Cerrada:">No conformidad Cerrada:</value>
+  </row>
+  <row id="72A23D1B40BB44029C21CE16B8BAD451" trl="N">
+    <value column="Text" isTrl="N" original="Menor">Menor</value>
+  </row>
+  <row id="7337C2BB408F44EEAACAB2B0D65C1742" trl="N">
+    <value column="Text" isTrl="N" original="M">M</value>
+  </row>
+  <row id="7353C541250B42C2A74BB43D587DE5E2" trl="N">
+    <value column="Text" isTrl="N" original="Correción Tomada:">Correción Tomada:</value>
+  </row>
+  <row id="78E7E43456734C8BA98132646A375E09" trl="N">
+    <value column="Text" isTrl="N" original="Cláusula de la norma:">Cláusula de la norma:</value>
+  </row>
+  <row id="79F3A45C9B84448A85E53FCD01DEC861" trl="N">
+    <value column="Text" isTrl="N" original="dd 'de' MMMM 'de' yyyy">dd 'de' MMMM 'de' yyyy</value>
+  </row>
+  <row id="7BA69C328B3A44C1B7B694F8D026DCF4" trl="N">
+    <value column="Text" isTrl="N" original="Fecha:">Fecha:</value>
+  </row>
+  <row id="8202C2EE5DFF48B68CC49DFEB28F359A" trl="N">
+    <value column="Text" isTrl="N" original="C">C</value>
+  </row>
+  <row id="86F8A30930444F9CA19269BE8B79A8F9" trl="N">
+    <value column="Text" isTrl="N" original="es">es</value>
+  </row>
+  <row id="879A1066BD9D4424B20D8F894AAB5019" trl="N">
+    <value column="Text" isTrl="N" original="Otro">Otro</value>
+  </row>
+  <row id="925529C4E52145B79DA52BA88AAC2F80" trl="N">
+    <value column="Text" isTrl="N" original="Acción Correctiva Propuesta:">Acción Correctiva Propuesta:</value>
+  </row>
+  <row id="9615A28877434154813B69614C0E23E7" trl="N">
+    <value column="Text" isTrl="N" original="Verificación de la Acción Correctiva">Verificación de la Acción Correctiva</value>
+  </row>
+  <row id="9F4396EE2D784114BF3DC55D0CE86172" trl="N">
+    <value column="Text" isTrl="N" original="Firma:">Firma:</value>
+  </row>
+  <row id="A213DA664CAC402C860F0A7BD7531107" trl="N">
+    <value column="Text" isTrl="N" original="PROCESO: GESTIÓN DE SISTEMAS INTEGRADOS">PROCESO: GESTIÓN DE SISTEMAS INTEGRADOS</value>
+  </row>
+  <row id="BE2425A685EE435399BC5D2A7B986B6B" trl="N">
+    <value column="Text" isTrl="N" original="Producto no conforme">Producto no conforme</value>
+  </row>
+  <row id="CAD65DF7755542E6989E9676A9308714" trl="N">
+    <value column="Text" isTrl="N" original="Si">Si</value>
+  </row>
+  <row id="CBB374A66EE34BA38CF0A5877C643D15" trl="N">
+    <value column="Text" isTrl="N" original="Desviación de indicadores de proceso">Desviación de indicadores de proceso</value>
+  </row>
+  <row id="D247A07442584D608128A5B1F7F41D0A" trl="N">
+    <value column="Text" isTrl="N" original="Desviación de PRPO">Desviación de PRPO</value>
+  </row>
+  <row id="D7D3572163524CC2AC5AB75D18F5071A" trl="N">
+    <value column="Text" isTrl="N" original="SAC N.">SAC N.</value>
+  </row>
+  <row id="DE00DC68532E4C5091CEDD996E0DBBEA" trl="N">
+    <value column="Text" isTrl="N" original="Análisis de Causa Raíz:">Análisis de Causa Raíz:</value>
+  </row>
+  <row id="DFEC95D589B747D8A1510AE0614E60B1" trl="N">
+    <value column="Text" isTrl="N" original="Queja de Cliente">Queja de Cliente</value>
+  </row>
+  <row id="E1EE603D3048445DAA29972F7F16C664" trl="N">
+    <value column="Text" isTrl="N" original="Auditado:">Auditado:</value>
+  </row>
+  <row id="E42E4045718B43BC92A4F723B5ADC895" trl="N">
+    <value column="Text" isTrl="N" original="Desviación de PCC">Desviación de PCC</value>
+  </row>
+  <row id="F10F5BD9485C4248B7958ED5060AFC4E" trl="N">
+    <value column="Text" isTrl="N" original="Auditor:">Auditor:</value>
+  </row>
+  <row id="F53F93D615784BD78249D19AB3612735" trl="N">
+    <value column="Text" isTrl="N" original="PÁGINA">PÁGINA</value>
+  </row>
+  <row id="F5A491ED249B4C11A934B61B125B651C" trl="N">
+    <value column="Text" isTrl="N" original="FECHA:">FECHA:</value>
+  </row>
+  <row id="F5E0C7A754A146D983FE47A5C6C01C76" trl="N">
+    <value column="Text" isTrl="N" original="ES">ES</value>
+  </row>
+</compiereTrl>

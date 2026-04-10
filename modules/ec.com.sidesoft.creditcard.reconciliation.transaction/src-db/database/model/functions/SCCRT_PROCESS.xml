@@ -1,0 +1,325 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SCCRT_PROCESS">
+    <function name="SCCRT_PROCESS" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[/*************************************************************************
+  * The contents of this file are subject to the Compiere Public
+  * License 1.1 ("License"); You may not use this file except in
+  * compliance with the License. You may obtain a copy of the License in
+  * the legal folder of your Openbravo installation.
+  * Software distributed under the License is distributed on an
+  * "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+  * implied. See the License for the specific language governing rights
+  * and limitations under the License.
+  * The Original Code is  Compiere  ERP  Solution
+  * The Initial Developer of the Original Code is Jorg Janke and ComPiere, Inc.
+  * Portions created by Jorg Janke are Copyright (C) 1999-2001 Jorg Janke,
+  * parts created by ComPiere are Copyright (C) ComPiere, Inc.;
+  * All Rights Reserved.
+  * Contributor(s): Rodney Jacome
+  * Contributions are Copyright (C) 2001-2011 Openbravo, S.L.U.
+  *
+  * Specifically, this derivative work is based upon the following Compiere
+  * file and version.
+
+  ************************************************************************/
+    -- Logistic
+    v_ResultStr VARCHAR2(2000):='';
+    v_Message VARCHAR2(2000):='';
+    v_Record_ID VARCHAR2(32);
+
+    -- Parameter
+    -- Audit
+    v_AD_Client_ID VARCHAR2(32);
+    v_AD_ORG_ID VARCHAR2(32);
+    v_AD_USER_ID VARCHAR2(32);
+    TYPE RECORD IS REF CURSOR;
+    Cur_Parameter RECORD;
+    Cur_PosCardRecLine RECORD;
+	Cur_PosCardRecSum RECORD;
+    Cur_PosCardRecRemove RECORD;
+    
+    -- Parameter Variables
+    v_fin_financial_account_to VARCHAR2(32);
+    v_fin_financial_account_from VARCHAR2(32);
+    v_fin_payment_schedule_id VARCHAR2(32);
+    v_payment_id VARCHAR2(32);
+    v_c_doctype_id VARCHAR2(32);
+    v_sspch_payment_plan_id VARCHAR2(32);
+    v_currency_id VARCHAR2(32);
+    v_glitem_id VARCHAR2(32);
+	v_name VARCHAR(400);
+	v_name_from VARCHAR(400);
+	v_name_to VARCHAR(400);
+	v_depositdesc VARCHAR2(60);
+    
+    v_Trx_Type VARCHAR2(60);
+    v_description VARCHAR2(255);
+    
+    v_date_payment DATE;
+    v_start_date DATE;
+    v_end_date DATE;
+    
+    v_depositamt NUMBER:=0;
+    v_line NUMBER:=10;
+    v_insert_lines NUMBER:=0;
+    v_cont_remove NUMBER:=0;
+    v_AgainProcess NUMBER:=0;
+    v_validation NUMBER:=0;
+    v_referencedup NUMBER:=0;
+    
+    v_NextNo_F VARCHAR2(32);
+    
+    assigned BOOLEAN;
+	
+	-- RARC
+	vDocumentNo			VARCHAR2(60);
+	vTotal			 NUMBER;
+    vDepositAmount	 NUMBER;
+	vReconciled			VARCHAR2(1);
+  BEGIN
+    --  Update AD_PInstance
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Processing ' || p_PInstance_ID) ;
+    v_ResultStr:='PInstanceNotFound';
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'Y', NULL, NULL) ;
+  BEGIN --BODY
+    -- Get Parameters
+    v_ResultStr:='ReadingParameters';
+    FOR Cur_Parameter IN
+      (SELECT i.Record_ID, i.ad_user_id, i.ad_org_id, i.ad_client_id,*
+      FROM AD_PInstance i
+      WHERE i.AD_PInstance_ID=p_PInstance_ID
+      )
+    LOOP
+      v_Record_ID := Cur_Parameter.Record_ID;
+      v_AD_Client_ID := Cur_Parameter.ad_client_id;
+      v_AD_ORG_ID := Cur_Parameter.ad_org_id;
+      v_AD_USER_ID := Cur_Parameter.ad_user_id;
+    END LOOP; -- Get Parameter
+    DBMS_OUTPUT.PUT_LINE('  Record_ID=' || v_Record_ID) ;
+    v_ResultStr:='GetEntityType';
+
+	-- HEAD VAR
+	Select 	spc.fin_financial_account_from_id	, spc.fin_financial_account_to_id	, spc.start_date	, spc.end_date	
+  , spc.date_payment 	, coalesce(o.c_currency_id,'100')	,o.ad_org_id
+		, spc.documentno
+		Into v_fin_financial_account_from	, v_fin_financial_account_to		, v_start_date		, v_end_date	
+    , v_date_payment	, v_currency_id	,v_AD_ORG_ID
+		, vDocumentNo
+	From ssccr_pos_card_rec spc
+		join ad_org o on o.ad_org_id  =spc.ad_org_id
+	Where spc.ssccr_pos_card_rec_id = v_Record_ID;
+
+	--FIN_Financial_Account from and to
+	select ffa.name, ffa2.name 
+	Into v_name_from, v_name_to
+	from ssccr_pos_card_rec spc
+	left join FIN_Financial_Account ffa on ffa.FIN_Financial_Account_id = spc.fin_financial_account_from_id
+	left join FIN_Financial_Account ffa2 on ffa2.FIN_Financial_Account_id = spc.fin_financial_account_to_id
+	Where spc.ssccr_pos_card_rec_id = v_Record_ID;
+
+	-- ELiminar registros  que no se concilian.
+	DELETE FROM ssccr_pos_card_rec_line where ssccr_pos_card_rec_id = v_Record_ID And reconciled = 'N'; 
+	DELETE FROM ssccr_pos_card_rec_sum where ssccr_pos_card_rec_id = v_Record_ID And reconciled = 'N';
+	
+	-- CREAR REGISTROS EN CUENTAS FINANCIERAS
+	FOR Cur_PosCardRecSum IN (	
+		SELECT 
+		substring(spcr.description from 'Multilote:s*(.*)') as multilote,
+		fat.ad_org_id,
+		spcrl.deposit_amount, spcrl.type, spcrl.ssccr_processor_banck_id, spcrl.confirmation_no, pb.name as "name_processor_bank"
+		,ssccr_pos_card_rec_line_id as line
+		,null as fin_finacc_transsaction_id
+		, fat.c_costcenter_id, fat.user1_id
+		, spcrl.em_sccrt_referencecode
+		, spcrl.Recap, spcrl.Lot
+		, spcrl.confirmation_no
+		FROM ssccr_pos_card_rec_line  spcrl
+		JOIN Ssccr_Pos_Card_Rec spcr ON spcr.Ssccr_Pos_Card_Rec_id = spcrl.Ssccr_Pos_Card_Rec_id
+		JOIN ssccr_processor_banck pb on pb.ssccr_processor_banck_id=spcrl.ssccr_processor_banck_id
+		JOIN fin_finacc_transaction fat ON fat.fin_finacc_transaction_id = spcrl.group_id
+		WHERE spcrl.ssccr_pos_card_rec_id = v_Record_ID
+		
+		UNION
+		
+		SELECT substring(spcr.description from 'Multilote:s*(.*)') as multilote,
+		max(fat.ad_org_id) as ad_org_id,
+        SUM(spcrl.deposit_amount) as deposit_amount,
+        MAX(spcrl.type) as type,
+        MAX(spcrl.ssccr_processor_banck_id) as ssccr_processor_banck_id,
+        MAX(spcrl.confirmation_no) as confirmation_no,
+        MAX(pb.name) as "name_processor_bank",
+        'G' as line,
+        MAX(spcrl.fin_finacc_transsaction_id) as fin_finacc_transsaction_id,
+        MAX(fat.c_costcenter_id) as c_costcenter_id,
+        MAX(fat.user1_id) as user1_id,
+        MAX(spcrl.em_sccrt_referencecode) as em_sccrt_referencecode,
+        MAX(spcrl.Recap) as Recap,
+        MAX(spcrl.Lot) as Lot,
+        MAX(spcrl.confirmation_no) as confirmation_no
+		FROM ssccr_pos_card_rec_line  spcrl
+    	JOIN Ssccr_Pos_Card_Rec spcr ON spcr.Ssccr_Pos_Card_Rec_id = spcrl.Ssccr_Pos_Card_Rec_id
+		JOIN ssccr_processor_banck pb on pb.ssccr_processor_banck_id=spcrl.ssccr_processor_banck_id
+		JOIN fin_finacc_transaction fat ON fat.fin_finacc_transaction_id = spcrl.group_id
+		WHERE spcrl.ssccr_pos_card_rec_id = v_Record_ID 
+		and spcrl.type ='B'
+		GROUP BY multilote
+	) LOOP
+		--Obtiene el concepto
+		Select csc.c_glitem_id, cgl.name
+			INTO  v_glitem_id, v_name
+		From sccrt_concepts csc
+			Join C_Glitem cgl on cgl.C_Glitem_id = csc.C_Glitem_id
+		Where csc.type = Cur_PosCardRecSum.type
+			And csc.ssccr_processor_banck_id = Cur_PosCardRecSum.ssccr_processor_banck_id;
+		--Fin obtiene el concepto
+		
+		v_depositamt	:= ROUND(Cur_PosCardRecSum.deposit_amount, 2);
+		
+		if(v_glitem_id is null)Then
+			RAISE_APPLICATION_ERROR(-20000,'No hay configuración para el concepto contable.');
+		End IF;
+
+		v_payment_id	:= get_uuid();
+		v_Trx_Type	:= 'BPW';--Pago
+		v_line		:= (COALESCE((select max(line) from fin_finacc_transaction 
+    where fin_financial_account_id = v_fin_financial_account_from),0) + 10);
+
+		--PWNC -- Pago y reintegro
+		If(v_depositamt <> 0 AND Cur_PosCardRecSum.line<>'G')Then
+
+		v_description := 'Lote: '|| Cur_PosCardRecSum.lot || ' - ' || v_name|| ' - ' || v_name_from || ' - ' ||vDocumentNo ||'.';
+		
+			INSERT INTO fin_finacc_transaction (
+				fin_finacc_transaction_id, ad_client_id, ad_org_id, createdby, updatedby,
+				dateacct, statementdate, trxtype, depositamt, fin_financial_account_id,
+				c_currency_id, line, status, c_glitem_id, em_aprm_processed,
+				processed, posted, paymentamt, em_ssccr_reconciliation_no, em_ssccr_rec_sum_line,
+				c_costcenter_id, user1_id, em_ssccr_pos_card_rec_id, EM_Ssccr_Recapno, EM_Ssccr_Lot,
+				em_sscccin_reference,description,em_ssccr_reconciled
+			) VALUES (
+				v_payment_id, v_AD_Client_ID, Cur_PosCardRecSum.ad_org_id, v_AD_USER_ID, v_AD_USER_ID,
+				v_date_payment, v_date_payment, v_Trx_Type, 0, v_fin_financial_account_from,
+				v_currency_id, v_line, 'PWNC', v_glitem_id, 'R',
+				'Y', 'N', v_depositamt, vDocumentNo, Cur_PosCardRecSum.line,
+				Cur_PosCardRecSum.c_costcenter_id, Cur_PosCardRecSum.user1_id, v_Record_ID,
+				Cur_PosCardRecSum.Recap, Cur_PosCardRecSum.Lot, COALESCE(Cur_PosCardRecSum.confirmation_no,''),
+				--COALESCE(Cur_PosCardRecSum.em_sccrt_referencecode,'') --Descripcion
+				COALESCE(v_description,''),'Y'
+			);
+
+		update fin_financial_account set
+			  currentbalance =  currentbalance - v_depositamt
+			Where  fin_financial_account_id = v_fin_financial_account_from;
+		v_insert_lines := v_insert_lines + 1;
+		End If;
+	
+		v_payment_id	:= get_uuid();
+		v_line		:= (COALESCE((select max(line) from fin_finacc_transaction 
+    where fin_financial_account_id = v_fin_financial_account_to),0) + 10);
+		v_Trx_Type	:= 'BPD';--Cobro
+		--RDNC -- Cobrado y depositado
+		If(Cur_PosCardRecSum.type = 'B' AND Cur_PosCardRecSum.line='G')Then
+
+		v_description := 'Lote: '|| Cur_PosCardRecSum.lot || ' - ' || v_name|| ' - ' || v_name_to || ' - ' ||vDocumentNo ||'.';
+			--v_description := Cur_PosCardRecSum.confirmation_no||' / '|| Cur_PosCardRecSum.name_processor_bank;
+			v_depositdesc := Cur_PosCardRecSum.em_sccrt_referencecode || ' / '||Cur_PosCardRecSum.confirmation_no;
+			if(v_depositamt <> 0)Then
+				INSERT INTO fin_finacc_transaction (
+					fin_finacc_transaction_id, ad_client_id, ad_org_id, createdby, updatedby,
+					dateacct, statementdate, trxtype, depositamt, fin_financial_account_id,
+					c_currency_id, line, status, c_glitem_id, em_aprm_processed,
+					processed, posted, description, em_sscccin_reference, em_ssccr_reconciliation_no,
+					c_costcenter_id, user1_id, 
+					EM_Ssccr_Recapno, EM_Ssccr_Lot, em_ssccr_pos_card_rec_id,em_ssccr_reconciled
+				) VALUES (
+					v_payment_id, v_AD_Client_ID, Cur_PosCardRecSum.ad_org_id, v_AD_USER_ID, v_AD_USER_ID,
+					v_date_payment, v_date_payment, v_Trx_Type, v_depositamt, v_fin_financial_account_to,
+					v_currency_id, v_line, 'RDNC', v_glitem_id, 'R',
+					'Y', 'N', COALESCE(v_description, Cur_PosCardRecSum.em_sccrt_referencecode), COALESCE(v_depositdesc, Cur_PosCardRecSum.confirmation_no), vDocumentNo,
+					Cur_PosCardRecSum.c_costcenter_id, Cur_PosCardRecSum.user1_id, 
+					Cur_PosCardRecSum.Recap, Cur_PosCardRecSum.Lot, v_Record_ID,'Y'
+				);
+				update fin_financial_account set
+					  currentbalance =  currentbalance + v_depositamt
+				Where  fin_financial_account_id = v_fin_financial_account_to;
+			End If;			
+			v_insert_lines := v_insert_lines + 1;
+		End IF;
+	End Loop; -- END Cur_PosCardRecSum
+	
+	if(v_insert_lines > 0)Then
+		update ssccr_pos_card_rec set status = 'RE' Where ssccr_pos_card_rec_id = v_Record_ID;
+	End IF;-- END (v_insert_lines > 0)
+	 
+    v_Message:='@RowsInserted@=' || v_insert_lines ;
+
+	-- CAMBIAR A CONCILIADO REGISTROS DE LA CUENTA FINANCIERA
+	FOR Cur_PosCardRecLine IN (
+		SELECT pcrl.c_invoice_id, pcrl.fin_payment_id, pcrl.Confirmation_No, pcr.ssccr_pos_card_rec_id
+		, COALESCE(fin_finacc_transsaction_id,group_id) fin_finacc_transsaction_id, em_sccrt_generate_special as generate_special
+		FROM ssccr_pos_card_rec_line pcrl
+			JOIN ssccr_pos_card_rec pcr ON pcr.ssccr_pos_card_rec_id = pcrl.ssccr_pos_card_rec_id
+			Join ssccr_processor_banck pb on pb.ssccr_processor_banck_id=pcrl.ssccr_processor_banck_id
+		WHERE pcrl.ssccr_pos_card_rec_id = v_Record_ID
+		and coalesce(fin_finacc_transsaction_id,group_id,'ND') <>'ND'
+	) LOOP
+		if Cur_PosCardRecLine.Confirmation_No is not null then 
+            select count(*) into v_referencedup from ssccr_pos_card_rec_line 
+            where Confirmation_No = Cur_PosCardRecLine.Confirmation_No and ssccr_pos_card_rec_id <> Cur_PosCardRecLine.ssccr_pos_card_rec_id;
+            if v_referencedup > 0 then
+                raise exception '%', '@ssccr_duplicateConfirmarion@'; --OBTG:-20000--
+            end if;
+        end if;
+        
+		Select COUNT(*)
+			INTO v_AgainProcess
+		From ssccr_pos_card_rec_line 
+		Where  (fin_payment_id IS NOT NULL AND fin_payment_id = Cur_PosCardRecLine.fin_payment_id) 
+    OR (fin_payment_id is null AND c_invoice_id = Cur_PosCardRecLine.c_invoice_id);
+		
+		v_AgainProcess:=4;
+		If(COALESCE(v_AgainProcess,0)=4 and coalesce(Cur_PosCardRecLine.fin_finacc_transsaction_id,'ND')<>'ND')Then
+		
+			SELECT ROUND(total,2), ROUND(SUM(deposit_amount),2) INTO vTotal, vDepositAmount
+			FROM ssccr_card_rec_summary_v
+			WHERE fin_finacc_transaction_id = Cur_PosCardRecLine.fin_finacc_transsaction_id
+			GROUP BY total;
+			
+			vReconciled := 'N';
+			IF vDepositAmount > vTotal AND Cur_PosCardRecLine.generate_special = 'N' THEN
+				RAISE EXCEPTION '%', 'El Importe Depósito total ['||vDepositAmount
+					||'] supera el importe del depósito ['||vTotal||'] en la cuenta financiera'; --OBTG:-20000--
+			ELSEIF vDepositAmount = vTotal THEN
+				vReconciled := 'Y';
+			END IF;
+
+			update fin_finacc_transaction set em_ssccr_reconciled = vReconciled,
+				em_ssccr_reconciliation_no = vDocumentNo, em_ssccr_pos_card_rec_id = v_Record_ID
+			Where statementdate Between v_start_date and v_end_date
+				And fin_financial_account_id = v_fin_financial_account_from
+				And em_ssccr_reconciled = 'N'
+				and fin_finacc_transaction_id= Cur_PosCardRecLine.fin_finacc_transsaction_id;
+		End IF;-- END (COALESCE(v_AgainProcess,0)=4)
+		
+	END LOOP; -- Get Cur_PosCardRecLine
+	
+    --<<FINISH_PROCESS>>
+    
+    --  Update AD_PInstance
+    DBMS_OUTPUT.PUT_LINE('Updating PInstance - Finished ' || v_Message) ;
+    AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, v_Message) ;
+   RETURN;
+  END; --BODY
+EXCEPTION
+WHEN OTHERS THEN
+  v_ResultStr:= '@ERROR=' || SQLERRM;
+  DBMS_OUTPUT.PUT_LINE(v_ResultStr) ;
+  AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 0, v_ResultStr) ;
+  RETURN;
+END SCCRT_PROCESS
+]]></body>
+    </function>
+  </database>

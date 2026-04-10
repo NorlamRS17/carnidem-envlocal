@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="c_sales_reconcile_general_ivatable" columnCount="5" printOrder="Horizontal" pageWidth="500" pageHeight="30" columnWidth="100" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Error" uuid="ce0f476d-2b27-4820-9f7a-2f3cff80df9f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<parameter name="BASE_DESIGN" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="c_invoice_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT ivas.rate, coalesce(taxiva.taxamt, 0.00) as taxamt
+FROM (
+  SELECT rate
+  FROM c_tax
+  WHERE rate > 0 AND istaxdeductable = 'Y'
+) AS ivas
+LEFT JOIN (
+  SELECT taxamt, ct.rate
+  FROM c_tax ct
+  INNER JOIN c_invoicetax cit ON ct.c_tax_id = cit.c_tax_id
+  WHERE ct.rate > 0 AND ct.istaxdeductable = 'Y'
+  AND cit.c_invoice_id IN ($P{c_invoice_id})
+) AS taxiva ON ivas.rate = taxiva.rate
+order by ivas.rate;]]>
+	</queryString>
+	<field name="taxamt" class="java.math.BigDecimal"/>
+	<group name="taxamt">
+		<groupExpression><![CDATA[$F{taxamt}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="100" height="15" isPrintWhenDetailOverflows="true" uuid="8bd85536-57a6-4cc6-8008-3d19c9fa5d0d"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{taxamt}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

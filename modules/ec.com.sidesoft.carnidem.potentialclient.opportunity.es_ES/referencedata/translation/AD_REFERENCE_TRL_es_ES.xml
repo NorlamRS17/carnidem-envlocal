@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="02802D944B9F4197998AAE979DB65D32" trl="Y">
+    <value column="Name" isTrl="Y" original="Crpco_RefBusinessline">Línea de Negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="0F6868CE5C4149DB94806FA44BDF6462" trl="Y">
+    <value column="Name" isTrl="Y" original="Crpco_Ref_Activitytime">Tiempo de Actividad del Negocio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="758F9C7CA58242619B37AB40D2BBB021" trl="N">
+    <value column="Name" isTrl="N" original="Crpco_RefActivtyType">Crpco_RefActivtyType</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="76D2D80D3E2C47D9BED8A6E0677ABCF8" trl="Y">
+    <value column="Name" isTrl="Y" original="Crpco_Ref_Locstatus">Estado del Local</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

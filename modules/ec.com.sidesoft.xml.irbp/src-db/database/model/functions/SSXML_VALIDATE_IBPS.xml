@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSXML_VALIDATE_IBPS">
+    <function name="SSXML_VALIDATE_IBPS" type="VARCHAR">
+      <parameter name="p_initdate" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_enddate" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vResult VARCHAR2(2000) := '';
+    Cur_Data RECORD;
+
+    v_msg VARCHAR(200) =  'OK';
+	BEGIN
+    
+    DELETE FROM ssxml_data_xml_ibp;
+
+        FOR Cur_Data IN ( 
+           select mp.name, mp.M_PRODUCT_ID,
+            mp.Em_Slplag_Prodclasif , mp.Em_Slplag_Brand , mp.Em_Slplag_Prodcap,
+            mp.Em_Slplag_Irbpunit , mp.Em_Slplag_Galcohol, 
+            mpm.Presirbp    , mt.movementtype 
+            from m_transaction mt
+            JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+            LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+            where mt.movementdate >= TO_DATE(p_initdate, 'YYYY-MM-DD' ) and mt.movementdate < TO_DATE( p_enddate, 'YYYY-MM-DD' )
+            AND mpm.em_ssxml_xml_ats = 'Y' AND mt.movementtype in ( 'I+', 'C-', 'P+' )
+             AND mp.IsBOM = 'N'
+            GROUP BY 1,2,3,4,5,6,7,8,9 ORDER BY mp.name 
+
+        )LOOP
+
+        IF (Cur_Data.Em_Slplag_Prodclasif IS NULL OR  
+        Cur_Data.Em_Slplag_Brand IS NULL OR  
+        Cur_Data.Em_Slplag_Prodcap IS NULL OR  
+        Cur_Data.Em_Slplag_Irbpunit IS NULL OR  
+        Cur_Data.Em_Slplag_Galcohol IS NULL OR  
+        Cur_Data.Presirbp IS NULL   ) THEN 
+
+        RAISE_APPLICATION_ERROR(-20000, 'El producto ' || Cur_Data.name || ' requiere la siguiente configuración: Clasificacion Producto, marca, Capacidad producto, Unidad Naexo IRBP, Grado Alcohol, Tipo envase IRBP.') ;
+          
+          
+        END IF;
+
+        END LOOP;
+	
+    RETURN v_msg;
+END SSXML_VALIDATE_IBPS
+]]></body>
+    </function>
+  </database>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="731E6F4E848B4F3DA148E33682CC8B7C" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssdr_Matchconfirmdate">Match Confirm Date</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssdr_Matchconfirmdate">Match Confirm Date</value>
+    <value column="Description" isTrl="N" original="">Match Confirm Date</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="84DFBB17FCB043ED9D28E429296C81A7" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssdr_Datedeposit">Confirmación depósito</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssdr_Datedeposit">Confirmación depósito</value>
+    <value column="Description" isTrl="N" original="">Confirmación depósito</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D31A10DA77F6439DADDE0D4979DBDD7C" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssdr_Fin_Payment_ID">Cobro Relacionado</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssdr_Fin_Payment_ID">Cobro Relacionado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="D6AC96AB0F1A494C951B968421E380CF" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssdr_Referenceno">No. Referencia correcto</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssdr_Referenceno">No. Referencia correcto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

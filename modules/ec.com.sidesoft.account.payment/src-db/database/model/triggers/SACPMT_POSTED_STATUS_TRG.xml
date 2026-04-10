@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SACPMT_POSTED_STATUS_TRG">
+    <trigger name="SACPMT_POSTED_STATUS_TRG" table="FIN_PAYMENT" fires="before" insert="false" update="true" delete="false" foreach="row">
+      <body><![CDATA[	vCheck NUMBER;
+	vReferenceNo VARCHAR2(2000) ;
+	vStatus VARCHAR2(2000) ;
+	vPaymentId VARCHAR2(2000) ;
+
+	vPaymentMethod RECORD;
+BEGIN
+
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+	
+	IF TG_OP IN ('UPDATE') AND :OLD.posted = 'N' AND :NEW.posted = 'D' AND :NEW.status = 'RPAE' THEN
+        :NEW.posted := 'N';
+		:NEW.processing ='Y';
+	END IF;
+	
+	IF TG_OP IN ('UPDATE') AND :OLD.status = 'RPAE' AND  :NEW.status != 'RPAE' AND :NEW.processing ='Y' AND :NEW.posted != 'Y' THEN
+        :NEW.posted := 'N';
+		:NEW.processing ='N';
+	END IF;
+	
+    END SACPMT_POSTED_STATUS_TRG
+]]></body>
+    </trigger>
+  </database>

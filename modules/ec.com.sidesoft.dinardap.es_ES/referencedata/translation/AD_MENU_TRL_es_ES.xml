@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="0CFC8765C5C24751AE35C06F6E3F84C2" trl="N">
+    <value column="Name" isTrl="Y" original="Term of period operations">Plazo de operaciones del periodo</value>
+    <value column="Description" isTrl="Y" original="Term of period operations">Plazo de operaciones del periodo</value>
+  </row>
+  <row id="2283229E84994A59963A914F70B97129" trl="N">
+    <value column="Name" isTrl="Y" original="Period operations">Operaciones por periodo</value>
+    <value column="Description" isTrl="Y" original="Period operations">Operaciones por periodo</value>
+  </row>
+  <row id="4B1B9B6BFA87456DB8CA9C7A42626419" trl="N">
+    <value column="Name" isTrl="Y" original="Operations cut">Operaciones por corte</value>
+    <value column="Description" isTrl="Y" original=""/>
+  </row>
+  <row id="51F2F838B1BF4C1B96818ED906B0544D" trl="N">
+    <value column="Name" isTrl="Y" original="Credits Information (Dinardap)">Información de Créditos (Dinardap)</value>
+    <value column="Description" isTrl="Y" original="Credits Information (Dinardap)">Información de Créditos (Dinardap)</value>
+  </row>
+  <row id="89445C3BD9F743D8BEA3B6896BCB3CAC" trl="N">
+    <value column="Name" isTrl="Y" original="Term of operations period delinquency">Plazo de operaciones morosidad del periodo</value>
+    <value column="Description" isTrl="Y" original="Term of operations period delinquency">Plazo de operaciones morosidad del periodo</value>
+  </row>
+</compiereTrl>

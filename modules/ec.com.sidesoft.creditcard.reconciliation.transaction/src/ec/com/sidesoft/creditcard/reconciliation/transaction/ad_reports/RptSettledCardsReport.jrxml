@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RptSettledCardsReport" pageWidth="1100" pageHeight="726" orientation="Landscape" columnWidth="1060" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fee87fa3-fa31-4d12-b6ec-b6c6116f298c">
+	<property name="ireport.zoom" value="1.5000000000000024"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="org.openbravo.dal.core.OBContext"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Org_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[OBContext.getOBContext().getCurrentOrganization().getId()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="User_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[OBContext.getOBContext().getUser().getId()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DATE" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+    to_char(now(),'dd/MM/yyyy') as "fecha_movimiento",
+    (select $P{DATE} from dual) as fecha,
+    (select name from ad_org where ad_org_id = $P{Org_ID} ) as organization,
+    (select name from ad_user where ad_user_id = $P{User_ID} ) as usuario,
+    pcr.Date_Payment,
+    pcr.Documentno,
+    MAX(pcrl.lot) AS lote,
+    MAX(pcrl.recap) AS recap,
+    SUM(CASE WHEN pcrl.Type = 'B' THEN pcrl.deposit_amount ELSE 0 END) AS acreditvalue,
+    SUM(CASE WHEN pcrl.Type = 'C' THEN pcrl.deposit_amount ELSE 0 END) AS commision,
+    SUM(CASE WHEN pcrl.Type = 'IW' THEN pcrl.deposit_amount ELSE 0 END) AS retrent,
+    SUM(CASE WHEN pcrl.Type = 'VW' THEN pcrl.deposit_amount ELSE 0 END) AS retiva,
+    SUM(CASE WHEN pcrl.Type = 'IVA' THEN pcrl.deposit_amount ELSE 0 END) AS iva,
+    max(em_sccrt_liquidated) as liquidado
+FROM
+    Ssccr_Pos_Card_Rec pcr
+LEFT JOIN
+    Ssccr_Pos_Card_Rec_Line pcrl ON pcrl.Ssccr_Pos_Card_Rec_id = pcr.Ssccr_Pos_Card_Rec_id
+WHERE
+    pcrl.Ssccr_Pos_Card_Rec_id = pcr.Ssccr_Pos_Card_Rec_id
+    and (TRUNC(pcr.Date_Payment::date) = $P{DATE} or TRUNC($P{DATE}::date) is null)
+GROUP BY
+    pcr.Documentno, pcr.Date_Payment
+ORDER by
+    pcr.Date_Payment;]]>
+	</queryString>
+	<field name="fecha_movimiento" class="java.lang.String"/>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="organization" class="java.lang.String"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="date_payment" class="java.sql.Timestamp"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="lote" class="java.lang.String"/>
+	<field name="recap" class="java.lang.String"/>
+	<field name="acreditvalue" class="java.math.BigDecimal"/>
+	<field name="commision" class="java.math.BigDecimal"/>
+	<field name="retrent" class="java.math.BigDecimal"/>
+	<field name="retiva" class="java.math.BigDecimal"/>
+	<field name="iva" class="java.math.BigDecimal"/>
+	<field name="liquidado" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="118" splitType="Stretch">
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="200" height="60" uuid="e8e39e6d-29fb-41e6-88fc-5d152018c316"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $P{Org_ID})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="75" width="100" height="28" uuid="3b50d6a0-a5f3-4e49-b596-d1176c939595">
+					<printWhenExpression><![CDATA[$P{DATE} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Seleccionada:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="200" y="0" width="650" height="60" uuid="c34d01ff-458a-45d3-a2d3-04cef4941a4c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REPORTE LIQUIDACIÓN TARJETAS POS"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="300" height="15" uuid="cb9d4a63-a949-4803-ae76-6ef27b858ca0"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="103" width="300" height="15" uuid="bf39c833-fc4c-420a-a075-f34c3354c31a"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="75" width="200" height="28" uuid="e6cd0cd0-2e9e-4831-ae09-e0dfa6af95a2"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{DATEFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="850" y="0" width="210" height="118" uuid="b677ae5f-3d5d-4577-8261-a7fb8c0cc5dd"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA["<b>Fecha: </b><br>"+$F{fecha_movimiento}
++"<br><b>Usuario: </b><br>"+$F{usuario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="630" y="0" width="110" height="35" uuid="d616ff2c-781a-481e-97ec-97672febf26f"/>
+				<box>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Ret. IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="740" y="0" width="110" height="35" uuid="84796af4-74f2-4d0b-8578-cfc18cd9985d"/>
+				<box>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[IVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="100" height="35" uuid="b964f345-50ed-4d36-9a01-cb9c1280ca25"/>
+				<box>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Lote]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="35" uuid="8c8ffb5b-8140-4189-b25d-8641cb304220"/>
+				<box>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Recap]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="520" y="0" width="110" height="35" uuid="da19b4cb-5e6e-48ed-9cec-e065b6ee5489"/>
+				<box>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Ret. Renta]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="110" height="35" uuid="567bbd01-4f3a-4981-8149-0165ae70e206"/>
+				<box>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Valor Acreditado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="35" uuid="bc6c88a4-4a66-41c0-a0b6-783c7fab06d8"/>
+				<box>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Fecha Deposito Banco]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="0" width="110" height="35" uuid="677ee394-febc-406d-b336-6ec3b23c57f4"/>
+				<box>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Comisión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="850" y="0" width="122" height="35" uuid="b752e985-a72d-4509-9411-1bee3627299e"/>
+				<box>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Referencia Deposito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="972" y="0" width="88" height="35" uuid="3cc4e692-e15f-4f73-b39f-71b7d01ef32b"/>
+				<box>
+					<topPen lineWidth="1.5"/>
+					<leftPen lineWidth="1.5"/>
+					<bottomPen lineWidth="1.5"/>
+					<rightPen lineWidth="1.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[Liquidado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="2a1f24f7-6ac0-44b1-9c49-ab79a2219731"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{date_payment}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{DATEFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="100" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="84878b13-8581-4ec6-82f4-baa85e1ea281"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{lote}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="200" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="0d9afe03-600e-4602-891f-d2579d74d703"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{lote}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="300" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="b8d70df8-5781-4ff2-b35d-babc64d73a8f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{acreditvalue}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="410" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="3d3a6916-392c-47e9-b6d5-ef198edf8fa1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{commision}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="520" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="52551c48-0bc5-452c-88ce-52f4f1cd209c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{retrent}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="630" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="7b617774-d897-44ab-b5c1-d302ffa28dac"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{retiva}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="740" y="0" width="110" height="20" isPrintWhenDetailOverflows="true" uuid="983ee637-7e80-4c19-ae19-fcdd0eae647a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{iva}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="850" y="0" width="122" height="20" isPrintWhenDetailOverflows="true" uuid="0710e480-d0cb-44f0-84ba-3cb69557a9c0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="972" y="0" width="88" height="20" isPrintWhenDetailOverflows="true" uuid="dc1e7bdf-b0fa-4e21-847d-68e5fd89f444"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{liquidado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<noData>
+		<band height="20">
+			<textField>
+				<reportElement x="410" y="0" width="220" height="20" uuid="62243ffb-6936-49f5-85df-14ba242f6b76"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{DATE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>

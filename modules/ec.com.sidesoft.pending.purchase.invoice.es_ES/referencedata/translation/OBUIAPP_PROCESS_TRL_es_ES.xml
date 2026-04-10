@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUIAPP_PROCESS" version="">
+  <row id="76CD4FE8E2A7439699E6FF0D9246E1D3" trl="N">
+    <value column="Name" isTrl="Y" original="Pass Selected">Pasar Seleccionados</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="944FF8C65570466ABB06456B800C061F" trl="Y">
+    <value column="Name" isTrl="Y" original="Generate Payment Proposal">Generar Propuesta de Pago</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

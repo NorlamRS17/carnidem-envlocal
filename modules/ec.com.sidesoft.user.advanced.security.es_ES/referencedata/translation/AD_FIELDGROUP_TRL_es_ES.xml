@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_FIELDGROUP" version="">
+  <row id="132AE6BE7A0F46D2A9024CA4C5855224" trl="Y">
+    <value column="Name" isTrl="Y" original="Block Login Attempts">Bloqueos Ingreso Fallido</value>
+  </row>
+  <row id="13613DE7F0964CBBA2090CAD89B3914D" trl="Y">
+    <value column="Name" isTrl="Y" original="Expiration">Caducidad</value>
+  </row>
+  <row id="F1A4FC62C476482CB83A3E8FABB7A11F" trl="Y">
+    <value column="Name" isTrl="Y" original="Inactivity">Inactividad</value>
+  </row>
+</compiereTrl>

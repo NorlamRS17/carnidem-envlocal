@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="099977AEA4044572AB6389ED90929B10" trl="Y">
+    <value column="Name" isTrl="Y" original="Load Lines">Cargar Lineas</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="167503A0F47447D7AF0E1F8294C58C3A" trl="Y">
+    <value column="Name" isTrl="Y" original="Draft">Borrador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="301E646A3223430ABE66E04F1EC79A50" trl="Y">
+    <value column="Name" isTrl="Y" original="Complete">Completado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="351FC229DEC9412D941A4010328616CC" trl="Y">
+    <value column="Name" isTrl="Y" original="Ready to Process">Listo para Procesar</value>
+    <value column="Description" isTrl="Y" original="Ready to Process">Listo para Procesar</value>
+  </row>
+  <row id="5D1A1E9719C9439FAEB7C62AB88E0A41" trl="Y">
+    <value column="Name" isTrl="Y" original="Accepted">En Proceso</value>
+    <value column="Description" isTrl="Y" original="Accepted">En Proceso</value>
+  </row>
+  <row id="7D76504DFFDF492A9F51E035B39319C2" trl="Y">
+    <value column="Name" isTrl="Y" original="AP Payment Daily Closing">AP Cobro Cierre Diario</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C3838C3FB0C443B39CBC595A2014C487" trl="Y">
+    <value column="Name" isTrl="Y" original="Process">Procesar</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

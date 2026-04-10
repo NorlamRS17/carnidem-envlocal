@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="1906515A42BF44128B14BE833D7128B5" trl="Y">
+    <value column="Name" isTrl="N" original="Lista Lotes">Lista Lotes</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2225320427FA4FF98A4780CEE008231C" trl="N">
+    <value column="Name" isTrl="N" original="crprod_transactions">crprod_transactions</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="3F2870EECF71431B90D7376B7AA417CA" trl="Y">
+    <value column="Name" isTrl="Y" original="Crprod_Ref_Movement">Movimiento entre almacenes</value>
+    <value column="Description" isTrl="N" original="">Movimiento entre almacenes</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6E441AA4CFBD43BB9CE5E6A95C3D3653" trl="N">
+    <value column="Name" isTrl="Y" original="CRPROD_ParamsAndStatus"> CRPROD_ParamsAndStatus</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="88ADB9E4639E4F01A4B00B700FD06437" trl="N">
+    <value column="Name" isTrl="N" original="Product Production Y">Product Production Y</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A0058979978A4CBC8739F50C2645704E" trl="N">
+    <value column="Name" isTrl="N" original="em_crprod_tb_workpart">Parte de Fabricación</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_PAYMENT">
+    <table name="FIN_PAYMENT" primaryKey="FIN_PAYMENT_KEY">
+      <index name="EM_SFIAC_FIN_PAYMENT_DATE" unique="false">
+        <index-column name="AD_CLIENT_ID"/>
+        <index-column name="PAYMENTDATE"/>
+      </index>
+      <index name="EM_SFIAC_FIN_PAYMENT_POSTED" unique="false">
+        <index-column name="AD_CLIENT_ID"/>
+        <index-column name="POSTED"/>
+      </index>
+      <index name="EM_SFIAC_FIN_PAYMENT_STATUS" unique="false">
+        <index-column name="AD_CLIENT_ID"/>
+        <index-column name="STATUS"/>
+      </index>
+    </table>
+  </database>

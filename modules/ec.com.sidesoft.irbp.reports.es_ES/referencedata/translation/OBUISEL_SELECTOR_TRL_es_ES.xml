@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUISEL_SELECTOR" version="">
+  <row id="377E9025E4EB46FE8843525D673A8AD0" trl="Y">
+    <value column="Name" isTrl="Y" original="Product">Producto</value>
+    <value column="Description" isTrl="N" original="">Producto</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B09B1D35A0D7466C9E51C53789E5060D" trl="Y">
+    <value column="Name" isTrl="Y" original="name">Tipo de envase</value>
+    <value column="Description" isTrl="N" original="">Tipo de envase</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

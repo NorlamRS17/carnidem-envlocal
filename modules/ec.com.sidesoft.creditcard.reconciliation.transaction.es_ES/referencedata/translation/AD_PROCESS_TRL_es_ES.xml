@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="0253C043B7134457B8C76C5C81328017" trl="Y">
+    <value column="Name" isTrl="Y" original="Card Reconciliation Detail">Detalle Conciliaciones Tarjetas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="1D720732938543B7ADD91B688F5A2505" trl="N">
+    <value column="Name" isTrl="N" original="Sccrt_Match_Lines">Sccrt_Match_Lines</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5523CFE2A7A149DF894C9CDD4A18DB88" trl="Y">
+    <value column="Name" isTrl="Y" original="Generate CR">Crear CT</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8106E3EA35664F5F8610CAE4E80BFFB0" trl="Y">
+    <value column="Name" isTrl="Y" original="Settled cards report POS">Reporte Liquidación Tarjetas POS</value>
+    <value column="Description" isTrl="Y" original="Settled cards report POS">Reporte Liquidación Tarjetas POS</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B19B18483684465CBDF0E165B2AF47B6" trl="N">
+    <value column="Name" isTrl="N" original="Card Settlement Loading ">Card Settlement Loading </value>
+    <value column="Description" isTrl="N" original="Insert Card Settlement Loading Transaction Lines">Insert Card Settlement Loading Transaction Lines</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="B908241B06FA402BBBE071A689E75E31" trl="N">
+    <value column="Name" isTrl="N" original="sccrt_update_lines">sccrt_update_lines</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F0EAD7BD0B0F4BFEA2CD28031955300C" trl="Y">
+    <value column="Name" isTrl="Y" original="Process">Procesar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

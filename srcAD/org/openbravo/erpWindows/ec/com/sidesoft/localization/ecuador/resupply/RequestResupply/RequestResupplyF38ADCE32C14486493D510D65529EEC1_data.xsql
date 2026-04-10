@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SqlClass id="class" name="RequestResupplyF38ADCE32C14486493D510D65529EEC1Data" package="org.openbravo.erpWindows.ec.com.sidesoft.localization.ecuador.resupply.RequestResupply">
+  <SqlClassComment>WAD Generated class</SqlClassComment>
+
+  <SqlMethod name="dummy" type="preparedStatement" return="multiple">
+    <Sql>
+      SELECT '' AS dummy from DUAL
+    </Sql>
+  </SqlMethod>
+
+
+
+
+  <SqlMethod name="updateDocAction" type="preparedStatement" return="rowCount">
+    <Sql><![CDATA[
+        UPDATE ssrs_resupply
+        SET docaction = ? 
+        WHERE ssrs_resupply.Ssrs_Resupply_ID = ?
+    ]]></Sql>
+    <Parameter name="docaction"></Parameter>
+    <Parameter id="paramKey" name="ssrsResupplyId"></Parameter>
+  </SqlMethod>
+
+
+
+
+</SqlClass>

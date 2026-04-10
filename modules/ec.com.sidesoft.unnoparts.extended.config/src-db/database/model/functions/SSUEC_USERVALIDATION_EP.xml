@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSUEC_USERVALIDATION_EP">
+    <function name="SSUEC_USERVALIDATION_EP" type="NULL">
+      <parameter name="p_ep_instance" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[TYPE RECORD IS REF CURSOR;
+    Cur_Params RECORD;
+    rOrder RECORD;
+    cOrderLine RECORD;
+	consulta TEXT;
+	trgActive VARCHAR(5);
+	v_count	NUMBER:=0;
+	V_inv	NUMBER:=0;
+    
+    p_record_id VARCHAR(60);
+    p_docAction VARCHAR(60);
+    p_user VARCHAR(60);
+    v_ResultStr VARCHAR2(2000):='';
+    vDescription VARCHAR(255):='';
+ 
+BEGIN
+
+    FOR Cur_Params IN (
+        SELECT *
+        FROM ad_ep_instance_para
+        WHERE ad_ep_instance_id = p_ep_instance
+    ) LOOP
+        IF cur_params.parametername = 'DocAction' THEN
+            p_docaction := Cur_Params.p_string;
+        ELSIF (cur_params.parametername = 'Record_ID') THEN
+            p_record_id := cur_params.p_string;
+        ELSIF (cur_params.parametername = 'User') THEN
+            p_user := cur_params.p_string;
+        END IF;
+		
+    END LOOP;
+	
+	SELECT isactive 
+	INTO trgActive
+	FROM sssv_standarvalidations
+	where upper(sssv_trgname) = Upper('ssuec_UserValidation_ep');
+	
+	IF trgActive = 'Y' THEN
+		--Validamos si la transaccion es Factura de venta
+		select count(c_invoice_id) 
+		INTO V_inv
+		from c_invoice 
+		where issotrx = 'Y'
+		AND c_invoice_id = p_record_id;
+		
+		IF V_inv > 0 THEN
+
+			select 
+			count(au.ad_user_id) 
+			into v_count
+			from ad_user au
+			LEFT JOIN ssuec_userconfigext suce on suce.ad_user_id = au.ad_user_id
+			LEFT JOIN ssuec_actions sa on suce.ssuec_userconfigext_id = sa.ssuec_userconfigext_id
+			LEFT JOIN ad_ref_list arl on arl.ad_ref_list_id = sa.ad_ref_list_id
+			where
+			sa.isactive = 'Y'
+			AND suce.ad_process_id = '111' -- Identifcicador proceso <Procesar Factura>
+			AND arl.value = p_docaction;
+		
+			IF v_count > 0 THEN
+				IF p_user NOT IN (select 
+					distinct
+					au.ad_user_id 
+					from ad_user au
+					LEFT JOIN ssuec_userconfigext suce on suce.ad_user_id = au.ad_user_id
+					LEFT JOIN ssuec_actions sa on suce.ssuec_userconfigext_id = sa.ssuec_userconfigext_id
+					LEFT JOIN ad_ref_list arl on arl.ad_ref_list_id = sa.ad_ref_list_id
+					where
+					sa.isactive = 'Y'
+					AND suce.ad_process_id = '111' -- Identifcicador proceso <Procesar Factura>
+					AND arl.value = p_docaction 
+				) THEN
+				
+					RAISE_APPLICATION_ERROR(-20000, 'Usuario no autorizado para reactivar documentos, revise configuracion extendida de Usuario ');
+			
+				END IF;
+			END IF;
+			
+		END IF;
+
+	-- RAISE_APPLICATION_ERROR(-20000, p_user || ' - '|| p_record_id);
+
+	END IF;
+    
+    EXCEPTION WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('ssuec_UserValidation_ep exception: '|| v_ResultStr);
+    RAISE;
+END SSUEC_USERVALIDATION_EP
+]]></body>
+    </function>
+  </database>

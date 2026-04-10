@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="05341DFC56564D359005FA1457391E7D" trl="N">
+    <value column="Name" isTrl="Y" original="Detailed Vacation Report per employee">Reporte Detallado de Vacaciones por empleado</value>
+    <value column="Description" isTrl="N" original="">Reporte Detallado de Vacaciones por empleado</value>
+  </row>
+  <row id="6FD8F63C50474EA995C1B79A14934B1B" trl="N">
+    <value column="Name" isTrl="Y" original="Individual Payroll Report by Employee">Reporte Nómina Individual por Empleado</value>
+    <value column="Description" isTrl="N" original="">Reporte Nómina Individual por Empleado</value>
+  </row>
+</compiereTrl>

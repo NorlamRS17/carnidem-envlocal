@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPCH_PDC_VALIDATIONS_TRG">
+    <trigger name="SSPCH_PDC_VALIDATIONS_TRG" table="SSPCH_POSTDATED_CHECKS" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[
+
+/*************************************************************************
+* The contents of this file are subject to the Openbravo  Public  License
+* Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+* Version 1.1  with a permitted attribution clause; you may not  use this
+* file except in compliance with the License. You  may  obtain  a copy of
+* the License at http://www.openbravo.com/legal/license.html
+* Software distributed under the License  is  distributed  on  an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+* License for the specific  language  governing  rights  and  limitations
+* under the License.
+* The Original Code is Openbravo ERP.
+* The Initial Developer of the Original Code is Openbravo SLU
+* All portions are Copyright (C) 2011 Openbravo SLU
+* All Rights Reserved.
+* Contributor(s):  ______________________________________.
+************************************************************************/
+  v_processed   		CHAR(1);
+  v_check_from  		VARCHAR2(200);
+  v_check_up 			VARCHAR2(200);
+  v_ssfi_banktransfer_id 	VARCHAR2(34);
+  vAux NUMBER;
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+ --Check if trying to move object from module not in dev
+  IF (INSERTING OR UPDATING ) THEN
+	If(round(:NEW.total_checks,2) <= round(0,2))Then
+		RAISE_APPLICATION_ERROR(-20000, 'El campo Total Cheques es menos a debe ser mayor a 0.');
+	End IF;
+  END IF;
+  
+END SSPCH_PDC_VALIDATIONS_TRG
+]]></body>
+    </trigger>
+  </database>

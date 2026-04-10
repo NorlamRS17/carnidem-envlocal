@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPIV_ANNULMENT_STATUS">
+    <trigger name="SSPIV_ANNULMENT_STATUS" table="FIN_PAYMENT" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[    vStatus VARCHAR2(60);
+BEGIN
+    IF (DELETING) THEN
+        SELECT status INTO vStatus FROM fin_payment WHERE fin_payment_id=:OLD.fin_payment_id;
+        IF (vStatus = 'RPVOID') THEN
+            RAISE_APPLICATION_ERROR(-20000, '@sspiv_error_process@') ;
+        END IF;
+    END IF;
+    RETURN OLD;
+    IF DELETING THEN RETURN OLD; ELSE RETURN NEW; END IF;
+END SSPIV_ANNULMENT_STATUS
+]]></body>
+    </trigger>
+  </database>

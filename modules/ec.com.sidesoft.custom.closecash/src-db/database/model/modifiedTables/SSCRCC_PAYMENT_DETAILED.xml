@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SSCRCC_PAYMENT_DETAILED">
+    <table name="SSCRCC_PAYMENT_DETAILED" primaryKey="SSCRCC_PAYMENT_DETAILED_KEY">
+      <index name="EM_SCCC_PDET_IDX" unique="false">
+        <index-column name="EM_SSCCCIN_DEPOSIT"/>
+        <index-column name="FIN_FINANCIAL_ACCOUNT_ID"/>
+      </index>
+      <index name="EM_SCCC_PDETAILED_LINE_IDX" unique="false">
+        <index-column name="SCCC_CASH_CLOUSURELINE_ID"/>
+      </index>
+    </table>
+  </database>

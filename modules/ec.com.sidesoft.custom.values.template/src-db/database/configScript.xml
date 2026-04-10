@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_COLUMN" columnname="DEFAULTVALUE" pkRow="3550">
+      <oldValue><![CDATA[@#Date@]]></oldValue>
+      <newValue><![CDATA[@SQL=SELECT NOW() FROM DUAL]]></newValue>
+    </columnDataChange>
+  </vector>

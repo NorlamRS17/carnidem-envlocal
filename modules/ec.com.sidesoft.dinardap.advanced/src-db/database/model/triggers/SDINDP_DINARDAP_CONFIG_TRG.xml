@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SDINDP_DINARDAP_CONFIG_TRG">
+    <trigger name="SDINDP_DINARDAP_CONFIG_TRG" table="SDINDP_DINARDAP_CONFIG" fires="before" insert="true" update="false" delete="true" foreach="row">
+      <body><![CDATA[
+	vCheck NUMBER;
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF INSERTING THEN
+		
+		SELECT COUNT(*) INTO vCheck FROM sdindp_dinardap_config;
+        IF vCheck > 0 THEN
+        
+            RAISE_APPLICATION_ERROR(-20000, 'Sólo se permite 1 línea de configuración');
+        
+        END IF;
+		
+	END IF;
+
+	IF DELETING THEN
+
+		RAISE_APPLICATION_ERROR(-20000, 'Acción no permitida');
+
+	END IF;
+
+	END SDINDP_DINARDAP_CONFIG_TRG
+]]></body>
+    </trigger>
+  </database>

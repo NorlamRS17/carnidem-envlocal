@@ -1,0 +1,251 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSPRODP_GENERATE_MOVEMENT">
+    <function name="SSPRODP_GENERATE_MOVEMENT" type="NULL">
+      <parameter name="pinstanceid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[
+DECLARE
+    pInstance     RECORD;
+    vMessageOK    VARCHAR(2000) := '';
+    vMessageError VARCHAR(2000) := '';
+    vRecordID     VARCHAR(32);
+    vUserID       VARCHAR(32);
+    vRecord       RECORD;
+    vTmp          RECORD;
+    vProduct      RECORD;
+    vStock        RECORD;
+    vMovementID   VARCHAR(32);
+    vLocatorID    VARCHAR(32);
+    vCheck        NUMERIC(2, 0) := 0;
+    vLine         NUMERIC;
+    vDocumentno   VARCHAR(32);
+    vHasJulian    VARCHAR(1);
+    vRemaining    NUMERIC;
+    vMovementQty  NUMERIC;
+    vToConsume    NUMERIC;
+    vMessageWarn  VARCHAR(2000) := '';
+    vShortageCount INTEGER := 0;
+    vPinstanceResult NUMERIC := 1;
+    vMaxNamesInMsg INTEGER := 8;
+    vLineProdLabel VARCHAR(500);
+    vFirstConsumeLoc VARCHAR(32);
+
+BEGIN
+    -- Marcar pinstance en proceso (La plantilla agregara el PERFORM)
+    AD_UPDATE_PINSTANCE(pinstanceid, NULL, 'Y', NULL, NULL);
+
+    BEGIN
+        -- Obtener parametros
+        FOR pInstance IN (
+            SELECT i.record_id, i.ad_user_id
+            FROM ad_pinstance i
+            LEFT JOIN ad_pinstance_para p ON i.ad_pinstance_id = p.ad_pinstance_id
+            WHERE i.ad_pinstance_id = pinstanceid
+            ORDER BY p.seqno
+        )
+        LOOP
+            vRecordID := pInstance.record_id;
+            vUserID   := pInstance.ad_user_id;
+        END LOOP;
+
+        SELECT * INTO vRecord FROM ma_workrequirement WHERE ma_workrequirement_id = vRecordID;
+
+        SELECT ad_sequence_doc('DocumentNo_M_Movement', vRecord.ad_client_id, 'Y') INTO vDocumentno;
+
+        INSERT INTO m_movement (
+            m_movement_id, ad_client_id, ad_org_id, createdby, updatedby, 
+            name, description, movementdate, documentno, em_ssfin_ma_workreq_id
+        )
+        VALUES (
+            get_uuid(),
+            vRecord.ad_client_id,
+            vRecord.ad_org_id,
+            vUserID,
+            vUserID,
+            to_char(now(), 'DD-MM-YYYY HH24:MI:SS') || ' - ORDEN FABRICACION ' || vRecord.documentno,
+            vRecord.documentno,
+            now(),
+            vDocumentno,
+            vRecord.ma_workrequirement_id
+        )
+        RETURNING m_movement_id INTO vMovementID;
+
+        FOR vTmp IN (
+            SELECT * FROM ma_wrphase WHERE ma_workrequirement_id = vRecordID ORDER BY seqno
+        )
+        LOOP
+            FOR vProduct IN (
+                SELECT fp.*, pr.name AS m_product_name, pr.value AS m_product_value, pr.m_attributeset_id
+                FROM ma_wrphaseproduct fp
+                JOIN m_product pr ON pr.m_product_id = fp.m_product_id
+                WHERE fp.ma_wrphase_id = vTmp.ma_wrphase_id AND fp.productiontype = '-'
+            )
+            LOOP
+                SELECT m_locator_id INTO vLocatorID
+                FROM m_product_org WHERE m_product_id = vProduct.m_product_id
+                ORDER BY created DESC LIMIT 1;
+
+                IF vLocatorID IS NULL THEN
+                    vMessageError := 'No locator para producto ' || COALESCE(
+                        NULLIF(trim(COALESCE(vProduct.m_product_name, '')), ''),
+                        NULLIF(trim(COALESCE(vProduct.m_product_value, '')), ''),
+                        vProduct.m_product_id
+                    );
+                    AD_UPDATE_PINSTANCE(pinstanceid, NULL, 'N', 0, vMessageError);
+                    RETURN;
+                END IF;
+
+                vMovementQty := round(vTmp.quantity * vProduct.movementqty, 3);
+                vRemaining   := vMovementQty;
+                vFirstConsumeLoc := NULL;
+
+                SELECT COALESCE(a.em_cslj_juliandate, 'N') INTO vHasJulian
+                FROM m_product p
+                LEFT JOIN m_attributeset a ON p.m_attributeset_id = a.m_attributeset_id
+                WHERE p.m_product_id = vProduct.m_product_id;
+
+                IF vHasJulian = 'Y' THEN
+                    FOR vStock IN (
+                        SELECT msd.m_attributesetinstance_id, msd.m_locator_id, 
+                               SUM(msd.qtyonhand) AS qtyonhand, mas.em_cslj_datejulian, mas.guaranteedate
+                        FROM m_storage_detail msd
+                        LEFT JOIN m_attributesetinstance mas ON mas.m_attributesetinstance_id = msd.m_attributesetinstance_id
+                        WHERE msd.m_product_id = vProduct.m_product_id
+                          AND msd.m_locator_id = vLocatorID AND msd.qtyonhand <> 0
+                        GROUP BY msd.m_attributesetinstance_id, msd.m_locator_id, mas.em_cslj_datejulian, mas.guaranteedate
+                        ORDER BY 
+                            CASE WHEN LENGTH(TRIM(COALESCE(mas.em_cslj_datejulian, ''))) > 0 
+                                      AND TRIM(COALESCE(mas.em_cslj_datejulian, '')) <> '0' 
+                                 THEN 0 ELSE 1 END,
+                            CASE WHEN LENGTH(TRIM(COALESCE(mas.em_cslj_datejulian, ''))) > 0 
+                                      AND TRANSLATE(TRIM(COALESCE(mas.em_cslj_datejulian, '')), '0123456789', '          ') = '' 
+                                     THEN CAST(TRIM(COALESCE(mas.em_cslj_datejulian, '')) AS INTEGER) 
+                                     ELSE 999999 END,
+                            mas.guaranteedate
+                    )
+                    LOOP
+                        EXIT WHEN vRemaining <= 0;
+                        IF COALESCE(vStock.qtyonhand, 0) <= 0 THEN CONTINUE; END IF;
+
+                        vToConsume := LEAST(vRemaining, vStock.qtyonhand);
+                        SELECT COALESCE(MAX(line), 0) + 10 INTO vLine FROM m_movementline WHERE m_movement_id = vMovementID;
+
+                        INSERT INTO m_movementline (
+                            m_movementline_id, ad_client_id, ad_org_id, createdby, updatedby,
+                            m_movement_id, m_locator_id, m_locatorto_id, m_product_id, line,
+                            movementqty, m_attributesetinstance_id, c_uom_id, c_aum, aumqty, em_sprli_identifier
+                        ) VALUES (
+                            get_uuid(), vRecord.ad_client_id, vRecord.ad_org_id, vUserID, vUserID,
+                            vMovementID, vStock.m_locator_id, vProduct.em_spatmp_inventory_location,
+                            vProduct.m_product_id, vLine, vToConsume, vStock.m_attributesetinstance_id,
+                            vProduct.c_uom_id, vProduct.c_uom_id, 0, vProduct.m_product_value
+                        );
+
+                        IF vFirstConsumeLoc IS NULL THEN
+                            vFirstConsumeLoc := vStock.m_locator_id;
+                        END IF;
+
+                        vRemaining := vRemaining - vToConsume;
+                        vCheck := 1;
+                    END LOOP;
+                ELSE
+                    FOR vStock IN (
+                        SELECT msd.m_attributesetinstance_id, msd.m_locator_id, SUM(msd.qtyonhand) AS qtyonhand, mas.guaranteedate
+                        FROM m_storage_detail msd
+                        LEFT JOIN m_attributesetinstance mas ON mas.m_attributesetinstance_id = msd.m_attributesetinstance_id
+                        WHERE msd.m_product_id = vProduct.m_product_id
+                          AND msd.m_locator_id = vLocatorID AND msd.qtyonhand <> 0
+                        GROUP BY msd.m_attributesetinstance_id, msd.m_locator_id, mas.guaranteedate
+                        ORDER BY mas.guaranteedate ASC NULLS LAST
+                    )
+                    LOOP
+                        EXIT WHEN vRemaining <= 0;
+                        IF COALESCE(vStock.qtyonhand, 0) <= 0 THEN CONTINUE; END IF;
+
+                        vToConsume := LEAST(vRemaining, vStock.qtyonhand);
+                        SELECT COALESCE(MAX(line), 0) + 10 INTO vLine FROM m_movementline WHERE m_movement_id = vMovementID;
+
+                        INSERT INTO m_movementline (
+                            m_movementline_id, ad_client_id, ad_org_id, createdby, updatedby,
+                            m_movement_id, m_locator_id, m_locatorto_id, m_product_id, line,
+                            movementqty, m_attributesetinstance_id, c_uom_id, c_aum, aumqty, em_sprli_identifier
+                        ) VALUES (
+                            get_uuid(), vRecord.ad_client_id, vRecord.ad_org_id, vUserID, vUserID,
+                            vMovementID, vStock.m_locator_id, vProduct.em_spatmp_inventory_location,
+                            vProduct.m_product_id, vLine, vToConsume, vStock.m_attributesetinstance_id,
+                            vProduct.c_uom_id, vProduct.c_uom_id, 0, vProduct.m_product_value
+                        );
+
+                        IF vFirstConsumeLoc IS NULL THEN
+                            vFirstConsumeLoc := vStock.m_locator_id;
+                        END IF;
+
+                        vRemaining := vRemaining - vToConsume;
+                        vCheck := 1;
+                    END LOOP;
+                END IF;
+
+                IF vMovementQty > 0 AND vRemaining > 0 THEN
+                    SELECT COALESCE(MAX(line), 0) + 10 INTO vLine FROM m_movementline WHERE m_movement_id = vMovementID;
+
+                    INSERT INTO m_movementline (
+                        m_movementline_id, ad_client_id, ad_org_id, createdby, updatedby,
+                        m_movement_id, m_locator_id, m_locatorto_id, m_product_id, line,
+                        movementqty, m_attributesetinstance_id, c_uom_id, c_aum, aumqty, em_sprli_identifier
+                    ) VALUES (
+                        get_uuid(), vRecord.ad_client_id, vRecord.ad_org_id, vUserID, vUserID,
+                        vMovementID, COALESCE(vFirstConsumeLoc, vLocatorID), vProduct.em_spatmp_inventory_location,
+                        vProduct.m_product_id, vLine, round(vRemaining, 3), '0',
+                        vProduct.c_uom_id, vProduct.c_uom_id, 0, vProduct.m_product_value
+                    );
+
+                    vCheck := 1;
+                    vShortageCount := vShortageCount + 1;
+                    vLineProdLabel := COALESCE(
+                        NULLIF(trim(COALESCE(vProduct.m_product_name, '')), ''),
+                        NULLIF(trim(COALESCE(vProduct.m_product_value, '')), ''),
+                        vProduct.m_product_id
+                    );
+                    IF length(COALESCE(vMessageWarn, '')) < 1700 AND vShortageCount <= vMaxNamesInMsg THEN
+                        vMessageWarn := COALESCE(vMessageWarn, '')
+                            || CASE WHEN trim(COALESCE(vMessageWarn, '')) = '' THEN '' ELSE ' • ' END
+                            || vLineProdLabel;
+                    END IF;
+                END IF;
+            END LOOP;
+        END LOOP;
+
+        IF vCheck = 0 THEN
+            vMessageError := 'No existen productos para generar el movimiento';
+            AD_UPDATE_PINSTANCE(pinstanceid, NULL, 'N', 0, vMessageError);
+            RETURN;
+        END IF;
+
+        UPDATE ma_workrequirement SET em_ssprodp_movement_id = vMovementID WHERE ma_workrequirement_id = vRecordID;
+        vMessageOK := 'Generado movimiento: ' || vDocumentno;
+        vPinstanceResult := 1;
+        IF vShortageCount > 0 THEN
+            IF vShortageCount > vMaxNamesInMsg THEN
+                vMessageWarn := COALESCE(vMessageWarn, '') || ' • (+' || (vShortageCount - vMaxNamesInMsg)::text || ' más)';
+            END IF;
+            IF trim(COALESCE(vMessageWarn, '')) = '' THEN
+                vMessageWarn := vShortageCount::text || ' producto(s)';
+            END IF;
+            vMessageOK := vMessageOK || ' | No existe suficiente stock para: ' || vMessageWarn
+                || '. Revise y valide la disponibilidad';
+            vPinstanceResult := 2;
+        END IF;
+        IF length(vMessageOK) > 2000 THEN
+            vMessageOK := substring(vMessageOK from 1 for 1997) || '...';
+        END IF;
+        AD_UPDATE_PINSTANCE(pinstanceid, NULL, 'N', vPinstanceResult, vMessageOK);
+
+    EXCEPTION WHEN OTHERS THEN
+        vMessageError := 'ERROR=' || SQLERRM;
+        AD_UPDATE_PINSTANCE(pinstanceid, NULL, 'N', 0, vMessageError);
+    END;
+END SSPRODP_GENERATE_MOVEMENT
+]]></body>
+    </function>
+  </database>

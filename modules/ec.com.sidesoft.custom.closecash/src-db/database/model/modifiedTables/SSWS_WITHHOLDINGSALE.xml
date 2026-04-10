@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SSWS_WITHHOLDINGSALE">
+    <table name="SSWS_WITHHOLDINGSALE" primaryKey="SSWS_WITHHOLDINGSALE_KEY">
+      <index name="EM_SCCC_WITHHOLDING_FLTR_IDX" unique="false">
+        <index-column name="AD_ORG_ID"/>
+        <index-column name="CREATEDBY"/>
+        <index-column name="DOCSTATUS"/>
+      </index>
+    </table>
+  </database>

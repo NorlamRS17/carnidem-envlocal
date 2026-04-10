@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SSCCCIN_INVOICE_DOCTYPE">
+    <table name="SSCCCIN_INVOICE_DOCTYPE" primaryKey="SSCCCIN_IDT_KEY">
+      <index name="EM_SCCC_INVDOCSETUP_IDX" unique="false">
+        <index-column name="SCCC_SETUP_ID"/>
+      </index>
+    </table>
+  </database>

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="801558">
+      <oldValue><![CDATA[158]]></oldValue>
+      <newValue><![CDATA[30E2989F40D14FE780E6459D7E1ACEC7]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="802027">
+      <oldValue><![CDATA[64CC6AF8C49F44398DB3833428D8F440]]></oldValue>
+      <newValue/>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="802030">
+      <oldValue><![CDATA[147]]></oldValue>
+      <newValue><![CDATA[C5CB47F5AFE64C24991600711396B283]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_CALLOUT_ID" pkRow="802201">
+      <oldValue><![CDATA[157]]></oldValue>
+      <newValue><![CDATA[011DDDA6811A43B19FFFA890D03E2A07]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="2959">
+      <oldValue><![CDATA[95]]></oldValue>
+      <newValue><![CDATA[70]]></newValue>
+    </columnDataChange>
+  </vector>

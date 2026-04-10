@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE MA_CCP">
+    <table name="MA_CCP" primaryKey="MA_CCP_KEY">
+      <column name="EM_CRPROD_VO" primaryKey="false" required="false" type="DECIMAL" size="30,2" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="17A0268862214035AB232AFFD6FD050B" trl="Y">
+    <value column="Name" isTrl="Y" original="Load Lines">Cargar líneas</value>
+    <value column="Description" isTrl="Y" original="Load Lines">Cargar líneas</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="75BDBA6366F349EB84D46C0443F8B398" trl="Y">
+    <value column="Name" isTrl="Y" original="Generate TXT">Generar TXT</value>
+    <value column="Description" isTrl="Y" original="Generate TXT">Generar TXT</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="7DEEFF79E0CD43AEB624DBDBA9F8AE29" trl="Y">
+    <value column="Name" isTrl="Y" original="Debug Info">Depurar información</value>
+    <value column="Description" isTrl="Y" original="Debug Info">Depurar información</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

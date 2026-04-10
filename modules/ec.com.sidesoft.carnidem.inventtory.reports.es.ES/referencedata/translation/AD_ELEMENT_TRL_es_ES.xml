@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="4776CD729FCB44039603710E52069B19" trl="Y">
+    <value column="Name" isTrl="Y" original="Sscir_DateTo">Fecha Hasta</value>
+    <value column="PrintName" isTrl="Y" original="Sscir_DateTo">Fecha Hasta</value>
+    <value column="Description" isTrl="N" original="">Fecha Hasta</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original="Sscir_DateTo">Sscir_DateTo</value>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="5D745C8EF0874124A32D5DFBC21BCF10" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Sscir_Printmvnt">Imprimir Reporte de Movimientos</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sscir_Printmvnt">Imprimir Reporte de Movimientos</value>
+    <value column="Description" isTrl="N" original="">Imprimir Reporte de Movimientos</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DC9352A60B4E4E6B96E43678E61945AA" trl="Y">
+    <value column="Name" isTrl="Y" original="Sscir_DateFrom">Fecha Desde</value>
+    <value column="PrintName" isTrl="Y" original="Sscir_DateFrom">Fecha Desde</value>
+    <value column="Description" isTrl="N" original="">Fecha Desde</value>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original="Sscir_DateFrom">Sscir_DateFrom</value>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

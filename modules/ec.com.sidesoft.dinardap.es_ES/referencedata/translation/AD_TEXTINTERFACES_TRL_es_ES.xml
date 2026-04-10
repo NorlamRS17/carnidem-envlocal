@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="048B9B3B95104ABAB082892B299892CF" trl="N">
+    <value column="Text" isTrl="N" original="CLIENTES">CLIENTES</value>
+  </row>
+  <row id="0533DB8368114D3BB25D94A7358EF837" trl="N">
+    <value column="Text" isTrl="N" original="TOTAL CARTERA PERIODO">TOTAL CARTERA PERIODO</value>
+  </row>
+  <row id="1FD6FFE388B043F283392DD86B68FA2D" trl="N">
+    <value column="Text" isTrl="N" original="OPERACIONES PERIODO">OPERACIONES PERIODO</value>
+  </row>
+  <row id="3A7630BBBDB34C029C6F21F1D1E003B2" trl="N">
+    <value column="Text" isTrl="N" original="HASTA:">HASTA:</value>
+  </row>
+  <row id="42968D63677C4396B2CA4DE7A71DC989" trl="N">
+    <value column="Text" isTrl="N" original="DEL:">DEL:</value>
+  </row>
+  <row id="52C8FB0FCB4D414CA279C023D5D60238" trl="N">
+    <value column="Text" isTrl="N" original="PLAZO DE OPERACIONES DE PERIODO">PLAZO DE OPERACIONES DE PERIODO</value>
+  </row>
+  <row id="5FBADE39244346D18E4A8B76F8AEEA39" trl="N">
+    <value column="Text" isTrl="N" original="DÍAS MORA">DÍAS MORA</value>
+  </row>
+  <row id="7B97243357B0469F9ADECA278B3E467E" trl="N">
+    <value column="Text" isTrl="N" original="PLAZO PROMEDIO">PLAZO PROMEDIO</value>
+  </row>
+  <row id="7EB527125A634045B06629A5C244089A" trl="N">
+    <value column="Text" isTrl="N" original="PLAZO PROMEDIO">PLAZO PROMEDIO</value>
+  </row>
+  <row id="7FA164A42BC54E14B14C329FFDF30743" trl="N">
+    <value column="Text" isTrl="N" original="TOTAL CARTERA PERIODO">TOTAL CARTERA PERIODO</value>
+  </row>
+  <row id="8A6402B812A64E19996A0F351F8E7446" trl="N">
+    <value column="Text" isTrl="N" original="MONTO PENDIENTE">MONTO PENDIENTE</value>
+  </row>
+  <row id="9245A4B954854172BD1B3D21C1262E04" trl="N">
+    <value column="Text" isTrl="N" original="DEL:">DEL:</value>
+  </row>
+  <row id="97A1EB2D0D41492A85075C22E396CE78" trl="N">
+    <value column="Text" isTrl="N" original="CLIENTES PERIODO">CLIENTES PERIODO</value>
+  </row>
+  <row id="9B326BD8CC474F21BD64388304611483" trl="N">
+    <value column="Text" isTrl="N" original="PLAZO MAXIMO">PLAZO MAXIMO</value>
+  </row>
+  <row id="9E26E9D08E5F4675B0C62A7F9244C9E9" trl="N">
+    <value column="Text" isTrl="N" original="DEL:">DEL:</value>
+  </row>
+  <row id="A3026FD4C8CC4A25B30F8FB4173B5AC7" trl="N">
+    <value column="Text" isTrl="N" original="HASTA:">HASTA:</value>
+  </row>
+  <row id="B1B6FF207C744EDBB759A0073E1EC815" trl="N">
+    <value column="Text" isTrl="N" original="OPERACIONES DE PERIODO">OPERACIONES DE PERIODO</value>
+  </row>
+  <row id="B2F9A5A8ECA9429D91158B703882FBDA" trl="N">
+    <value column="Text" isTrl="N" original="PLAZO DE OPERACIONES MOROSIDAD DE PERIODO">PLAZO DE OPERACIONES MOROSIDAD DE PERIODO</value>
+  </row>
+  <row id="B3FDE25623024A089B67A2FD6CDD8D17" trl="N">
+    <value column="Text" isTrl="N" original="HASTA:">HASTA:</value>
+  </row>
+  <row id="BDB9788F0A78485E83101BBFA87FD5DF" trl="N">
+    <value column="Text" isTrl="N" original="DEL:">DEL:</value>
+  </row>
+  <row id="C4EA4922CBFE49CB9D3AD82FD4417DC3" trl="N">
+    <value column="Text" isTrl="N" original="CLIENTES CORTE">CLIENTES CORTE</value>
+  </row>
+  <row id="D9E19F646F8648B59F7BF58B5C935543" trl="N">
+    <value column="Text" isTrl="N" original="OPERACIONES CORTE">OPERACIONES CORTE</value>
+  </row>
+  <row id="ECC56E6DF031413EAA10DE119E2F3C8F" trl="N">
+    <value column="Text" isTrl="N" original="HASTA:">HASTA:</value>
+  </row>
+  <row id="F9CE52D4D025422882D0B2CA36D1CCA6" trl="N">
+    <value column="Text" isTrl="N" original="SALDO CORTE">SALDO CORTE</value>
+  </row>
+  <row id="FEC702BA67CA4F6BA59860C6D8254D3E" trl="N">
+    <value column="Text" isTrl="N" original="OPERACIONES DE CORTE">OPERACIONES DE CORTE</value>
+  </row>
+</compiereTrl>

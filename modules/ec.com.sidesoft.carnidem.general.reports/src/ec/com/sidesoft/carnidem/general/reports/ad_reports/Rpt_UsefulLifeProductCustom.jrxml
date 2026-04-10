@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_UsefulLifeProduct" pageWidth="1200" pageHeight="595" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="1172" leftMargin="14" rightMargin="14" topMargin="14" bottomMargin="14" isSummaryWithPageHeaderAndFooter="true" uuid="cfaf7223-c06e-4591-8e0f-b406a2336150">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="1525"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<style name="colorimetria">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{userful_life} >= 0 && $F{userful_life} < 19]]></conditionExpression>
+			<style mode="Opaque" backcolor="#E74C3C"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{userful_life} >= 19 && $F{userful_life} < 50]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F39C12"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{userful_life} >= 50 && $F{userful_life} < 71]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F1C40F"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{userful_life} >= 71]]></conditionExpression>
+			<style mode="Opaque" backcolor="#2ECC71"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="DATEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERDECIMAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_DESIGN" class="java.lang.String">
+		<defaultValueExpression><![CDATA["/home/openbravo/Escritorio/reportes/4435/ec.com.sidesoft.sanfelipe.inventory/ec.com.sidesoft.sanfelipe.inventory/src"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SOURCE_PATH" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="M_Product_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DateTo" class="java.util.Date">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="colorimetry" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="colorimetry_condition" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[$P{colorimetry} != null ?
+($P{colorimetry}.equals("lt") ? "trunc(x.userful_life) between 20 and 50":
+ $P{colorimetry}.equals("rw") ?"trunc(x.userful_life) between 51 and 70" :
+ $P{colorimetry}.equals("apt") ?"trunc(x.userful_life) between 71 and 100" :
+ $P{colorimetry}.equals("lst") ?"trunc(x.userful_life) between 0 and 19":"1=1" ):"1=1"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="M_Warehouse_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Org_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="User_ID" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="UserName" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/openbravo/Escritorio/reportes/4435/ec.com.sidesoft.sanfelipe.inventory/src"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT *,
+  CASE
+    WHEN $P{colorimetry}='lt' THEN 'Limite'
+    WHEN $P{colorimetry}='rw' THEN 'Revisión'
+    WHEN $P{colorimetry}='apt' THEN 'Adecuado'
+    WHEN $P{colorimetry}='lst' THEN 'Pérdida'
+    ELSE 'Todos'
+  END AS val_color,
+  CASE
+    WHEN round(x.userful_life) BETWEEN 20 AND 50 THEN 'Limite'
+    WHEN round(x.userful_life) BETWEEN 51 AND 70 THEN 'Revisión'
+    WHEN round(x.userful_life) BETWEEN 71 AND 100 THEN 'Adecuado'
+    WHEN round(x.userful_life) BETWEEN 0 AND 19 THEN 'Pérdida'
+  END AS texto_color
+FROM (
+  SELECT
+    p.ad_org_id,
+    TO_CHAR(NOW(),'dd/mm/yyyy HH24:MI:SS') AS fecha_impresion,
+  TO_CHAR(NOW(),'dd/mm/yyyy') AS fecha_actual,
+    trim(p.value) AS code,
+    trim(p.name) AS product,
+    trim(p.m_product_id) AS product_id,
+    sum (qtyonhand) AS qty,
+    round((to_number(qtyonhand) - to_number(reservedqty)),2) AS qtyact,
+    reservedqty,
+    uom.name AS unit,
+    CASE
+      WHEN COALESCE(ms.guaranteedays,0) = 0 THEN null
+      ELSE abs(DATE_PART('day', (pp.endtime + COALESCE(ms.guaranteedays,0)) - NOW()) * 100 / NULLIF(ms.guaranteedays,0))
+    END AS userful_life,
+    l.m_locator_id AS locator_id,
+    w.name AS bodega,
+    op.name AS org_name,
+    mt.m_attributesetinstance_id AS attributesetinstance_id,
+    mt.description AS lote,
+    pp.endtime AS fabricacion,
+    pp.endtime + COALESCE(ms.guaranteedays,0) AS fven,
+    DATE_PART('day', (pp.endtime + COALESCE(ms.guaranteedays,0)) - NOW()) AS dven,
+    COALESCE(ms.guaranteedays,0) AS dgarantiav
+  FROM
+    m_production pt
+    LEFT JOIN m_productionplan pp ON pp.m_production_id = pt.m_production_id
+    LEFT JOIN m_productionline pl ON pl.m_productionplan_id = pp.m_productionplan_id
+    JOIN m_storage_detail sd ON sd.m_product_id = pl.m_product_id AND sd.m_attributesetinstance_id = pl.m_attributesetinstance_id
+    LEFT JOIN m_attributesetinstance mt ON mt.m_attributesetinstance_id = sd.m_attributesetinstance_id
+    JOIN m_locator l ON l.m_locator_id = sd.m_locator_id
+    JOIN m_warehouse w ON w.m_warehouse_id = l.m_warehouse_id
+    JOIN m_product p ON p.m_product_id = sd.m_product_id
+    JOIN m_attributeset ms ON ms.m_attributeset_id = p.m_attributeset_id
+    JOIN ad_org org ON org.ad_org_id = p.ad_org_id
+    JOIN c_uom_trl uom ON uom.c_uom_id = p.c_uom_id AND uom.ad_language = 'es_ES'
+    LEFT JOIN (
+      SELECT org.name
+      FROM ad_org_tree ot
+      JOIN ad_org org ON org.ad_org_id=ot.ad_org_id
+      WHERE levelno=2 AND ad_parent_org_id='0' AND org.ad_orgtype_id = '1'
+    ) op ON 1=1
+  WHERE
+    qtyonhand <> 0
+    AND p.issold='Y'
+    AND p.isstocked='Y'
+    AND p.producttype='I'
+    AND pt.issotrx = 'N'
+    AND (p.m_product_id=$P{M_Product_ID} OR $P{M_Product_ID} IS NULL)
+    AND (w.m_warehouse_id = COALESCE($P{M_Warehouse_ID}, w.m_warehouse_id) OR $P{M_Warehouse_ID} IS NULL)
+group by p.ad_org_id, p.value, p.name, p.m_product_id, sd.qtyonhand,sd.reservedqty, uom.name, ms.guaranteedays, pp.endtime, w.name,
+op.name, mt.m_attributesetinstance_id, l.m_locator_id
+  ORDER BY w.name, pp.endtime, p.value
+) x
+WHERE $P!{colorimetry_condition};]]>
+	</queryString>
+	<field name="ad_org_id" class="java.lang.String"/>
+	<field name="fecha_impresion" class="java.lang.String"/>
+	<field name="fecha_actual" class="java.lang.String"/>
+	<field name="code" class="java.lang.String"/>
+	<field name="product" class="java.lang.String"/>
+	<field name="product_id" class="java.lang.String"/>
+	<field name="qty" class="java.math.BigDecimal"/>
+	<field name="qtyact" class="java.math.BigDecimal"/>
+	<field name="reservedqty" class="java.math.BigDecimal"/>
+	<field name="unit" class="java.lang.String"/>
+	<field name="userful_life" class="java.lang.Double"/>
+	<field name="locator_id" class="java.lang.String"/>
+	<field name="bodega" class="java.lang.String"/>
+	<field name="org_name" class="java.lang.String"/>
+	<field name="attributesetinstance_id" class="java.lang.String"/>
+	<field name="lote" class="java.lang.String"/>
+	<field name="fabricacion" class="java.sql.Timestamp"/>
+	<field name="fven" class="java.sql.Date"/>
+	<field name="dven" class="java.lang.Double"/>
+	<field name="dgarantiav" class="java.math.BigDecimal"/>
+	<field name="val_color" class="java.lang.String"/>
+	<field name="texto_color" class="java.lang.String"/>
+	<variable name="REPORT_PAGE" class="java.lang.Integer" resetType="None" incrementType="Page">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="94" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="199" y="29" width="774" height="20" uuid="e28cfd32-9697-4785-bf53-ff6bc995cc12"/>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REPORTE DE VIDA UTIL PRODUCTO"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="199" height="49" uuid="ac061346-e7cc-47ce-9f82-6fe837f84ddb"/>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="49" width="199" height="15" uuid="84c59759-11cd-4bd7-b5e9-15427f0f9ce7"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA DE CORTE:"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="64" width="199" height="15" uuid="5fb15441-c772-4594-829e-5089bc94743d"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CÓDIGO:"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="574" y="49" width="145" height="15" uuid="f026bb81-9c8d-4923-9636-206c74dfee24"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SEMAFORO VIDA UTIL:"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="719" y="64" width="453" height="15" uuid="7d69b5bb-80e8-4d50-82fe-018ef33de59c"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{M_Warehouse_ID} == null ? "TODAS" :$F{bodega}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="574" y="64" width="145" height="15" uuid="d8b17bf7-ceec-4bd4-9fe6-06560cd70d07"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ALMACEN:"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="719" y="49" width="453" height="15" uuid="8429ebd1-4636-4583-ae71-940f508e6b02"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{colorimetry} == null ? "TODOS" :$F{val_color}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="79" width="199" height="15" uuid="afb56ead-f53c-404a-8770-f28b59ca5e67"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PRODUCTO:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="972" y="0" width="200" height="49" uuid="e1901054-a575-4eed-9b9b-0653ac638e96"/>
+				<textElement markup="html">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>Fecha de Impresión: </b><br>"+$F{fecha_impresion}
++"<br><b>Usuario: </b><br>"+$P{UserName}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="199" y="49" width="375" height="15" uuid="af3ff116-9a92-4d41-8840-8b2244c39479"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_actual}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{DATEFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="199" y="64" width="375" height="15" uuid="33be391f-8741-40fa-bff4-04e6e8b42861"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{M_Product_ID} == null ? "" :$F{code}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="199" y="79" width="973" height="15" uuid="24a212a2-ebf2-41c9-9307-c1fb8e29c828"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{M_Product_ID} == null ? "TODOS" :$F{product}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="199" y="0" width="774" height="29" uuid="ab2b7eb2-2960-437b-b1e0-664d60c2e83a"/>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{org_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="263" y="0" width="76" height="30" uuid="5de17d4c-d953-4c5a-a050-5a6e24dfc757"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["LOTE"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="339" y="0" width="48" height="30" uuid="c6fa9d96-5a4e-49ec-93c8-54df7c2d387f"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["UNIDAD MEDIDA"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="507" y="0" width="60" height="30" uuid="b12cd8f9-3ef7-4aa0-9721-74a669048894"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DISPONIBLE NETO "]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="642" y="0" width="75" height="30" uuid="d73064d6-5015-4d63-b079-2eafed8063f6"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA DE CADUCIDAD"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="717" y="0" width="70" height="30" uuid="7b298f0b-fec0-41e8-a29e-a0b091e0d543"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DIAS PARA CADUCIDAD"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="787" y="0" width="50" height="30" uuid="96db79de-4200-42ea-a48e-bbf762ec708b"/>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["% VIDA UTIL"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="837" y="0" width="80" height="30" uuid="f086b84e-4147-4636-96a2-45bb83cfc75e"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SEMAFORO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="917" y="0" width="107" height="30" uuid="4aed2c59-5866-4c40-ae90-54e0711062bd"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PROMEDIO DE VENTAS 8 ULTIMAS SEMANAS"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1024" y="0" width="148" height="30" uuid="f47a153a-7a05-43cf-82f5-a561ad65c70c"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PROYECCION DISPONIBLE SEMANAL"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="387" y="0" width="60" height="30" uuid="97cf42bf-ac83-43d0-96b1-fed782e8441c"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DISPONIBLE"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="567" y="0" width="75" height="30" uuid="f22a38c2-3e13-4f8d-bfcb-a00863dc4308"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA ELABORACIÓN"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="0" width="72" height="30" uuid="41a3231d-e6d1-4461-aa5f-73a3aad0de9c"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CODIGO:"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="152" y="0" width="111" height="30" uuid="38953c04-b2fe-4b04-981f-85a1bf564fb8"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PRODUCTO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="447" y="0" width="60" height="30" uuid="36edab54-6541-4b13-9a81-9a5015adc35f"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DISPONIBLE RESERVADO"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="80" height="30" uuid="02a5db24-97fd-4b09-b8b3-57570254c375"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75"/>
+					<leftPen lineWidth="0.75"/>
+					<bottomPen lineWidth="0.75"/>
+					<rightPen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ALMACEN"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="263" y="0" width="76" height="15" isPrintWhenDetailOverflows="true" uuid="9ddcb1e2-8296-4468-afa2-65f6c081fea3"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lote}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="339" y="0" width="48" height="15" isPrintWhenDetailOverflows="true" uuid="ee4242bf-b12e-485c-84f4-b4de1a7d8311"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unit}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="387" y="0" width="60" height="15" isPrintWhenDetailOverflows="true" uuid="42f2b8c7-23c2-4edf-842f-67afc68e5854"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="447" y="0" width="60" height="15" isPrintWhenDetailOverflows="true" uuid="6dde9648-efcd-4ff5-963f-e97a32f86c22"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reservedqty}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="567" y="0" width="75" height="15" isPrintWhenDetailOverflows="true" uuid="819df1a7-f37c-4ae6-be6d-8c27f45f0909"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fabricacion}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{DATEFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="642" y="0" width="75" height="15" isPrintWhenDetailOverflows="true" uuid="e5b0cf61-4d6d-40b5-af00-f50903ea3c8f"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fven}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{DATEFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="717" y="0" width="70" height="15" isPrintWhenDetailOverflows="true" uuid="73a2a1e2-7284-414d-8daa-9758e960c4ed"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dven}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="787" y="0" width="50" height="15" isPrintWhenDetailOverflows="true" uuid="ebefc9e5-0cbb-477d-b32e-a0a424258044"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{userful_life}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+				<reportElement style="colorimetria" stretchType="RelativeToBandHeight" x="837" y="0" width="80" height="15" isPrintWhenDetailOverflows="true" uuid="c0642f2b-1beb-4afc-9f01-280456ad7bbf"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="80" y="0" width="72" height="15" isPrintWhenDetailOverflows="true" uuid="472e46b8-fb80-4174-ad6a-775339459bfd"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="507" y="0" width="60" height="15" isPrintWhenDetailOverflows="true" uuid="ccae388c-43ec-4b00-82d4-f7c07de0189f"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtyact}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="837" y="0" width="80" height="15" isPrintWhenDetailOverflows="true" uuid="75d659b9-544a-4839-a3aa-228c585671a1"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{texto_color}]]></textFieldExpression>
+				<patternExpression><![CDATA[$P{NUMBERFORMAT}.toPattern()]]></patternExpression>
+			</textField>
+			<subreport>
+				<reportElement x="917" y="0" width="255" height="15" uuid="221465c1-7745-4d03-a36f-d2cbaa4a208d"/>
+				<subreportParameter name="qtyact">
+					<subreportParameterExpression><![CDATA[$F{qtyact}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="User_ID">
+					<subreportParameterExpression><![CDATA[$P{User_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DateTo">
+					<subreportParameterExpression><![CDATA[$P{DateTo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NUMBERFORMAT">
+					<subreportParameterExpression><![CDATA[$P{NUMBERFORMAT}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="BASE_WEB">
+					<subreportParameterExpression><![CDATA[$P{BASE_DESIGN}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="M_Product_ID">
+					<subreportParameterExpression><![CDATA[$F{product_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="UserName">
+					<subreportParameterExpression><![CDATA[$P{UserName}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="Org_ID">
+					<subreportParameterExpression><![CDATA[$F{ad_org_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SOURCE_PATH">
+					<subreportParameterExpression><![CDATA[$P{SOURCE_PATH}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="lote">
+					<subreportParameterExpression><![CDATA[$F{lote}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="locator_id">
+					<subreportParameterExpression><![CDATA[$F{locator_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="colorimetry_condition">
+					<subreportParameterExpression><![CDATA[$P{colorimetry_condition}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="colorimetry">
+					<subreportParameterExpression><![CDATA[$P{colorimetry}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NUMBERDECIMAL">
+					<subreportParameterExpression><![CDATA[$P{NUMBERDECIMAL}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="M_Warehouse_ID">
+					<subreportParameterExpression><![CDATA[$P{M_Warehouse_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="attributesetinstance_id">
+					<subreportParameterExpression><![CDATA[$F{attributesetinstance_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="DATEFORMAT">
+					<subreportParameterExpression><![CDATA[$P{DATEFORMAT}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/carnidem/general/reports/ad_reports/Rpt_UsefulLifeProduct_lineCustom.jasper"]]></subreportExpression>
+			</subreport>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="152" y="0" width="111" height="15" isPrintWhenDetailOverflows="true" uuid="8e11c4dc-888d-4a08-a677-878ed7d0a605"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="80" height="15" isPrintWhenDetailOverflows="true" uuid="c9308c93-6dc4-46ec-a475-ea65e7dbc62f"/>
+				<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="2">
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bodega}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="15">
+			<textField evaluationTime="Auto">
+				<reportElement x="0" y="0" width="1172" height="15" uuid="ff08c30a-d1cc-450c-916f-cc1efc6f46e9"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>PAG. </b>" + $V{REPORT_PAGE} + " / "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="15">
+			<textField evaluationTime="Auto">
+				<reportElement x="0" y="0" width="1172" height="15" uuid="c21d689d-dfe4-461f-936a-93bdf069b98c"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>PAG. </b>" + $V{REPORT_PAGE} + " / "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

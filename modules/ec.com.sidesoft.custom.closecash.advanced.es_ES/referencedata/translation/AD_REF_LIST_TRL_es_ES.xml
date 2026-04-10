@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="150517CCDC9E4A4E8EBEE2EB8AAE504E" trl="N">
+    <value column="Name" isTrl="Y" original="Does Not Apply">No aplica</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="22FCE982EE334B468B8DA13BD25E660B" trl="Y">
+    <value column="Name" isTrl="Y" original="Card">Tarjeta</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="301048B8B3F94DC2B31A7B8364E3C0AF" trl="Y">
+    <value column="Name" isTrl="Y" original="Restaurant">Restaurante</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3723B04FCF1D4CE59C92F4AEFCDCE055" trl="Y">
+    <value column="Name" isTrl="Y" original="Ice cream shop">Heladería</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7115872772F943D8AE0F25B978210E45" trl="Y">
+    <value column="Name" isTrl="Y" original="Check">Cheque</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="74DD0CA76CB747A1B980B32514BC0D76" trl="Y">
+    <value column="Name" isTrl="N" original="Medianet">Medianet</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7EFA5EC6E48F476EAFFE3B620FBEE7A1" trl="Y">
+    <value column="Name" isTrl="Y" original="Cash">Efectivo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A6DEB993FBF54C998E1C5AF3DED7B9AC" trl="Y">
+    <value column="Name" isTrl="Y" original="Withholding">Retención</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="AB85F47CDC4444E18C4A048A98486DC6" trl="Y">
+    <value column="Name" isTrl="N" original="Datafast">Datafast</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

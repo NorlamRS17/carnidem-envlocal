@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="56B55FEF8D014E599499C46E92620EA0" trl="Y">
+    <value column="Name" isTrl="Y" original="Pos Generate NC">Pos Generacion NC</value>
+    <value column="Description" isTrl="Y" original="Pos Generate NC">Pos Generacion NC</value>
+    <value column="Help" isTrl="Y" original="Updating of records after credit memo creation based on the information of the invoice passed as a parameter.">Actualizacion de los registros despues de la creacion de la nota de credito en base a la informacion de la factura pasada como parametro</value>
+  </row>
+  <row id="DA24D1ADE0B84618A630FC12002E7495" trl="Y">
+    <value column="Name" isTrl="Y" original="Pre Generate NC">Pre Generacion NC</value>
+    <value column="Description" isTrl="Y" original="Pre Generate NC">Pre Generacion NC</value>
+    <value column="Help" isTrl="Y" original="Validations or data checking before credit note creation based on invoice information passed as a parameter">Validaciones o comprobacion de datos antes de la creacion de la nota de credito en base a la informacion de la factura pasada como parametro.</value>
+  </row>
+  <row id="FE7E37DEB4DF42F5853377E45E31A159" trl="Y">
+    <value column="Name" isTrl="Y" original="Generate NC">Generar NC</value>
+    <value column="Description" isTrl="Y" original="Generate NC">Generar NC</value>
+    <value column="Help" isTrl="Y" original="Generate NC">Generar NC</value>
+  </row>
+</compiereTrl>

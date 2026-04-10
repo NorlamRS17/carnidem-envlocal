@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_PAYMENT_CREDIT">
+    <table name="FIN_PAYMENT_CREDIT" primaryKey="FIN_PAYMENT_CREDIT_KEY">
+      <index name="EM_SSFI_FIN_PYMT_CREDIT_USED" unique="false">
+        <index-column name="FIN_PAYMENT_ID_USED"/>
+        <index-column name="FIN_PAYMENT_CREDIT_ID"/>
+        <index-column name="AMOUNT"/>
+      </index>
+    </table>
+  </database>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="97C60DE2C2174D458350E4D58F937E81" trl="N">
+    <value column="MsgText" isTrl="N" original="No se puede realizar el guardado de este registro, ya que los checks de &quot;Excluir fin de semana&quot; y &quot;Mantenimiento en fines de semana&quot; están activos, solo puede estar uno de los dos activos.">No se puede realizar el guardado de este registro, ya que los checks de "Excluir fin de semana" y "Mantenimiento en fines de semana" están activos, solo puede estar uno de los dos activos.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

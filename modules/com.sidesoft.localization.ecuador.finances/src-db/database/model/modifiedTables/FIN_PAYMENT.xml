@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_PAYMENT">
+    <table name="FIN_PAYMENT" primaryKey="FIN_PAYMENT_KEY">
+      <column name="EM_SSFI_DESCRIPTION" primaryKey="false" required="false" type="VARCHAR" size="1000" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <index name="EM_SSFI_FIN_PYMT_GENERAL" unique="false">
+        <index-column name="FIN_PAYMENT_ID"/>
+        <index-column name="C_BPARTNER_ID"/>
+        <index-column name="C_DOCTYPE_ID"/>
+        <index-column name="C_COSTCENTER_ID"/>
+      </index>
+      <index name="EM_SSFI_FIN_PYMT_SALDO" unique="false">
+        <index-column name="ISRECEIPT"/>
+        <index-column name="AMOUNT"/>
+        <index-column name="STATUS"/>
+        <index-column name="PAYMENTDATE"/>
+        <index-column name="GENERATED_CREDIT"/>
+        <index-column name="C_BPARTNER_ID"/>
+        <whereClause><![CDATA[ISRECEIPT='Y' AND amount <> 0]]></whereClause>
+      </index>
+    </table>
+  </database>

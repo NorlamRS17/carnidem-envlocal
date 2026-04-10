@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0425D1AEEE534ACCB0455A232AD2EE96" trl="Y">
+    <value column="Name" isTrl="Y" original="Ending Date">Fecha hasta</value>
+    <value column="PrintName" isTrl="Y" original="Ending Date">Fecha hasta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="129ADC2D458A4F09AFB365331FB10EB0" trl="Y">
+    <value column="Name" isTrl="Y" original="User/Contact">Usuario/Contacto</value>
+    <value column="PrintName" isTrl="Y" original="User/Contact">Usuario/Contacto</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="25F6396CC94843A78F65D6D9AA392E3C" trl="Y">
+    <value column="Name" isTrl="Y" original="Only Billed">Solo facturados</value>
+    <value column="PrintName" isTrl="Y" original="Only Billed">Solo facturados</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="649BAA5272054514B013F33A51CA641D" trl="N">
+    <value column="Name" isTrl="N" original="Sinvmin_Square_Bill_ID">Sinvmin_Square_Bill_ID</value>
+    <value column="PrintName" isTrl="N" original="Sinvmin_Square_Bill_ID">Sinvmin_Square_Bill_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="803936D3A5C14B17860E1CD91B07E5BA" trl="Y">
+    <value column="Name" isTrl="Y" original="Output type">Formato de salida</value>
+    <value column="PrintName" isTrl="Y" original="Output type">Formato de salida</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="97360CF6539E426C9D3C7D521BCED16D" trl="Y">
+    <value column="Name" isTrl="Y" original="Starting Date">Desde la fecha</value>
+    <value column="PrintName" isTrl="Y" original="Starting Date">Desde la fecha</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

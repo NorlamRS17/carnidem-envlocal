@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSXML_EMB_IBP">
+    <function name="SSXML_EMB_IBP" type="NUMERIC">
+      <parameter name="p_initdate" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_enddate" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_m_product_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_group" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_codeimp" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_codecountry" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_movementqty NUMBER;
+
+BEGIN
+    IF(p_group = 'PI') THEN 
+
+        select COALESCE(ROUND(SUM(mt.movementqty) , 2 ), 0)
+        INTO v_movementqty
+        from m_transaction mt 
+        LEFT JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+        LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+        LEFT JOIN M_ProductionLine mpl ON mpl.M_ProductionLine_ID = mt.M_ProductionLine_ID 
+        LEFT JOIN M_ProductionPlan mpp ON mpp.M_ProductionPlan_ID = mpl.M_ProductionPlan_ID
+        JOIN M_Production mpr ON mpr.M_Production_ID = mpp.M_Production_ID
+        where mpr.movementdate >= TO_DATE(p_initDate,  'YYYY-MM-DD') and mpr.movementdate < TO_DATE(p_endDate, 'YYYY-MM-DD')
+        AND mpm.em_ssxml_xml_ats = 'Y'
+        AND mt.movementtype = 'P+'
+        AND mt.m_product_id = p_m_product_id
+        AND mpr.issotrx = 'N'
+        AND mpp.processed = 'Y';
+    
+    END IF;
+
+    IF(p_group = 'PC') THEN 
+            SELECT  COALESCE(ROUND(SUM(movementqty) , 2 ), 0) 
+            INTO v_movementqty
+            FROM (
+                select ( mp.Em_Slplag_Prodclasif ||'-'|| mp.Em_Slplag_Brand ||'-'|| mp.Em_Slplag_Prodcap||'-'||
+                    mp.Em_Slplag_Irbpunit ||'-'|| mp.Em_Slplag_Galcohol ||'-'||    mpm.Presirbp) , 
+                COALESCE(mt.movementqty, 2 ) as movementqty
+            from m_transaction mt 
+            LEFT JOIN m_product mp ON mp.m_product_id = mt.m_product_id
+            LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+            LEFT JOIN M_ProductionLine mpl ON mpl.M_ProductionLine_ID = mt.M_ProductionLine_ID 
+            LEFT JOIN M_ProductionPlan mpp ON mpp.M_ProductionPlan_ID = mpl.M_ProductionPlan_ID
+            JOIN M_Production mpr ON mpr.M_Production_ID = mpp.M_Production_ID
+            where mpr.movementdate >= TO_DATE(p_initDate,  'YYYY-MM-DD') and mpr.movementdate < TO_DATE(p_endDate, 'YYYY-MM-DD')
+            AND mpm.em_ssxml_xml_ats = 'Y'
+            AND mt.movementtype = 'P+'
+            AND ( p_codeImp||'-'|| mp.Em_Slplag_Prodclasif ||'-'|| mp.Em_Slplag_Brand ||'-'|| mpm.Presirbp ||'-'|| mp.Em_Slplag_Prodcap||'-'||
+                mp.Em_Slplag_Irbpunit ||'-'|| p_codeCountry ||'-'|| mp.Em_Slplag_Galcohol ) = p_m_product_id
+            AND mpr.issotrx = 'N'
+            AND mpp.processed = 'Y'
+            ) tmp;
+
+            
+
+    END IF;
+
+RETURN COALESCE(v_movementqty, 0 );
+END SSXML_EMB_IBP
+]]></body>
+    </function>
+  </database>

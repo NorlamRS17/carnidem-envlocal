@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="3E1425B755034CEEB5FF6EB70687101F" trl="N">
+    <value column="Name" isTrl="Y" original="Payroll">Nòmina</value>
+    <value column="PrintName" isTrl="Y" original="Payroll">Nòmina</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4E69935AEC52413ABC2F1014B6FAAFAC" trl="N">
+    <value column="Name" isTrl="Y" original="LIQUIDATION">Liquidaciòn</value>
+    <value column="PrintName" isTrl="Y" original="LIQUIDATION">Liquidaciòn</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8CEFB3347CFD4227B0A82067EB8CF17D" trl="N">
+    <value column="Name" isTrl="Y" original="Employee">Empleado</value>
+    <value column="PrintName" isTrl="Y" original="Employee">Empleado</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

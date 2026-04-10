@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+  <database name="VIEW SCFT_C_CTA_NIVEL_2_V">
+    <view name="SCFT_C_CTA_NIVEL_2_V"><![CDATA[SELECT c_elementvalue.elementlevel, c_elementvalue.c_elementvalue_id AS cta_nivel_2, c_elementvalue.name AS name_2, c_elementvalue.value AS nivel_2, ad_treenode.parent_id AS padre FROM c_elementvalue LEFT JOIN ad_treenode ON c_elementvalue.c_elementvalue_id = ad_treenode.node_id WHERE ad_treenode.ad_tree_id = '7D59BBFB20034668BFAE02146880197D' AND (ad_treenode.parent_id IN (SELECT SCFT_C_CTA_NIVEL_1_V.cta_nivel_1 FROM SCFT_C_CTA_NIVEL_1_V))]]></view>
+  </database>

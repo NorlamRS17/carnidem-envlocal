@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSDQSI_PENDING_INCOME_STATUS">
+    <trigger name="SSDQSI_PENDING_INCOME_STATUS" table="SSDQSI_QUOTA_DETAIL_LINE" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[    vStatus VARCHAR2(300);
+BEGIN
+    IF (DELETING) THEN
+        SELECT qd.state INTO vStatus FROM ssdqsi_quota_detail_line as qdl
+        inner join ssdqsi_quota_detail qd on  qdl.ssdqsi_quota_detail_id=qd.ssdqsi_quota_detail_id  
+        WHERE ssdqsi_quota_detail_line_id=:OLD.ssdqsi_quota_detail_line_id;
+        IF (vStatus = 'SSDQSI_PR') THEN
+            RAISE_APPLICATION_ERROR(-20000, '@ssdqsi_error_process_line@') ;
+        END IF;
+    END IF;
+    RETURN OLD;
+    END SSDQSI_PENDING_INCOME_STATUS
+]]></body>
+    </trigger>
+  </database>

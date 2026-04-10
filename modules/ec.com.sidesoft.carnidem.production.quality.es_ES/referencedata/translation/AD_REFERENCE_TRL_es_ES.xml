@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="6B8AF41C5C624034840F993F342D321B" trl="N">
+    <value column="Name" isTrl="N" original="Quality Control Type Carnidem">Quality Control Type Carnidem</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="BCCB449D03E34449ADA77601AFF56669" trl="Y">
+    <value column="Name" isTrl="Y" original="crprqy_paramsstatus">Estados</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

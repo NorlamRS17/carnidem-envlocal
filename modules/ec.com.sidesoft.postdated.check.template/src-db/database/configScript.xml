@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <removeTriggerChange triggerName="SSRS_PROD_ATTIB_TRG"/>
+    <columnDataChange tablename="AD_FIELD" columnname="AD_FIELDGROUP_ID" pkRow="8C5329776D38432DA2E1ABA44CBE60C2">
+      <oldValue/>
+      <newValue><![CDATA[5DDED8C71B6A484C8D5A1553FB8899EA]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="8C5329776D38432DA2E1ABA44CBE60C2">
+      <oldValue><![CDATA[61]]></oldValue>
+      <newValue><![CDATA[150]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="860788C972264BF680590205576E227D">
+      <oldValue><![CDATA[2090]]></oldValue>
+      <newValue><![CDATA[2130]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="BAB24A0E082743F380F01AF7F376F115">
+      <oldValue><![CDATA[2100]]></oldValue>
+      <newValue><![CDATA[2140]]></newValue>
+    </columnDataChange>
+  </vector>

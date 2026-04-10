@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SCCA_PROCESSLINES2">
+    <function name="SCCA_PROCESSLINES2" type="NULL">
+      <parameter name="v_recordid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="v_adclientid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="v_organizationid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="v_user_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="v_closingdate" type="TIMESTAMP" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="v_conceptid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="v_namesetup" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="v_costcenterid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="v_validate" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_FinancialAccount VARCHAR2(32);
+  TYPE RECORD IS REF CURSOR;
+  Cur_ClousureLines RECORD;
+    -- Parameter Variables
+  v_typeacct  	VARCHAR2(10);
+  v_paymentamt  NUMBER;
+  v_depositamt NUMBER;
+  v_status	VARCHAR2(10);
+BEGIN
+
+BEGIN 
+
+    IF (v_validate = 'Y') THEN 	
+	    FOR Cur_ClousureLines IN
+	      (SELECT * FROM scca_cash_clousureline2 WHERE sccc_cash_clousure_id =v_RecordId ORDER BY order_number)
+	    LOOP
+		IF Cur_ClousureLines.amount <> 0 THEN
+		
+			v_FinancialAccount:=null;
+			SELECT pm.fin_financial_account_id into v_FinancialAccount FROM sccc_payment_method pm
+			INNER JOIN sccc_setup ss ON ss.sccc_setup_id = pm.sccc_setup_id
+			WHERE pm.fin_paymentmethod_id = Cur_ClousureLines.fin_paymentmethod_id 
+			AND pm.typeaccount =Cur_ClousureLines.typeaccount
+			AND ss.ad_org_id =(SELECT ad_org_id from sccc_cash_clousure where  sccc_cash_clousure_id = Cur_ClousureLines.sccc_cash_clousure_id);
+
+			IF (v_FinancialAccount IS NULL) THEN
+				RAISE_APPLICATION_ERROR(-20000, '@SCCC_PYMNMETHOD_NOTFOUND@');
+			END IF;
+			
+		END IF;
+	    END LOOP;
+    END IF;
+
+    IF (v_validate <> 'Y') THEN 
+
+	    FOR Cur_ClousureLines IN
+	      (SELECT * FROM scca_cash_clousureline2 WHERE sccc_cash_clousure_id =v_RecordId ORDER BY order_number)
+	    LOOP
+		IF Cur_ClousureLines.amount <> 0 THEN
+		
+			v_FinancialAccount:=null;
+			SELECT pm.fin_financial_account_id into v_FinancialAccount FROM sccc_payment_method pm
+			INNER JOIN sccc_setup ss ON ss.sccc_setup_id = pm.sccc_setup_id
+			WHERE pm.fin_paymentmethod_id = Cur_ClousureLines.fin_paymentmethod_id 
+			AND pm.typeaccount =Cur_ClousureLines.typeaccount
+			AND ss.ad_org_id =(SELECT ad_org_id from sccc_cash_clousure where  sccc_cash_clousure_id = Cur_ClousureLines.sccc_cash_clousure_id);
+
+			v_typeacct := NULL;
+			IF (Cur_ClousureLines.Typeaccount= 'INC') THEN
+				v_typeacct:= 'BPD';
+				v_paymentamt:= 0;
+				v_depositamt:= Cur_ClousureLines.amount;
+				v_status:='RPR';
+			ELSE
+				v_typeacct:= 'BPW';
+				v_paymentamt:= Cur_ClousureLines.amount;
+				v_depositamt:= 0;
+				v_status:= 'PPM';
+			END IF;
+
+			--INSERCIÓN EN LÍNEAS DE CUENTA FINANCIERA
+			INSERT INTO fin_finacc_transaction(
+			    fin_finacc_transaction_id, ad_client_id, ad_org_id, created, 
+			    createdby, updated, updatedby, isactive, c_currency_id, fin_financial_account_id, 
+			    line, dateacct, c_glitem_id, status, paymentamt, 
+			    depositamt, processed, processing, posted,
+			    trxtype, statementdate, description,c_costcenter_id,em_sccc_iscashclousure,EM_Aprm_Processed, em_sccc_cash_clousure_id)
+			VALUES (get_uuid(), v_AdClientID, v_OrganizationId, now(), 
+			    v_User_ID, now(), v_User_ID, 'Y', '100', v_FinancialAccount, 
+			   (SELECT COALESCE(MAX(line),0)+10 FROM  fin_finacc_transaction WHERE fin_finacc_transaction_ID = v_FinancialAccount ),  v_ClosingDate, v_ConceptID, v_status, v_paymentamt, 
+			    v_depositamt, 'N', 'N', 'N', 
+			    v_typeacct, v_ClosingDate, v_NameSetup, v_CostCenterID,'Y','P',v_RecordId);
+
+		END IF;
+	    END LOOP; 
+
+    END IF;
+ 
+END; --BODY
+  EXCEPTION
+  WHEN OTHERS THEN
+    RAISE;
+END SCCA_PROCESSLINES2
+]]></body>
+    </function>
+  </database>

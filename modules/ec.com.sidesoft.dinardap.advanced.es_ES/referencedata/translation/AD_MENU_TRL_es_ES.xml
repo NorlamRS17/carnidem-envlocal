@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="0E53A1737C3047B3800587DAEBF681B8" trl="Y">
+    <value column="Name" isTrl="Y" original="Dinardap Information">Información Dinardap</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="444C5085ECF445A5A0B7B4572EC54DBA" trl="N">
+    <value column="Name" isTrl="N" original="Dinardap">Dinardap</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="5E074782DE514467AAEC50589686ACB9" trl="Y">
+    <value column="Name" isTrl="Y" original="Transactions">Transacciones</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="5F5E539E72064850BA73B373F6004BBF" trl="Y">
+    <value column="Name" isTrl="Y" original="Dinardap general parameters">Parámetros generales Dinardap</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="6A250A9CED994D06819ED14C57994238" trl="Y">
+    <value column="Name" isTrl="Y" original="Setup">Configuración</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

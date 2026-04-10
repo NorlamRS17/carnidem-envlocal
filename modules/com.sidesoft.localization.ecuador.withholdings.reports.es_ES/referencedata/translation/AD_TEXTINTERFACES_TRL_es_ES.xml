@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="1B2278B64B1C4E03867564305A027AC9" trl="N">
+    <value column="Text" isTrl="N" original="PAGO">PAGO</value>
+  </row>
+  <row id="1F7D156C1B964F4BA425EFC6A20C207D" trl="N">
+    <value column="Text" isTrl="N" original="SALDO">SALDO</value>
+  </row>
+  <row id="2AD11B7E61034E3A9103FC648199D296" trl="N">
+    <value column="Text" isTrl="N" original="&lt;br&gt;&lt;b&gt;Usuario: &lt;/b&gt;&lt;br&gt;">&lt;br&gt;&lt;b&gt;Usuario: &lt;/b&gt;&lt;br&gt;</value>
+  </row>
+  <row id="358A0384DCFC4C4C9E2FFA37C9FDA44B" trl="N">
+    <value column="Text" isTrl="N" original="FACTURA">FACTURA</value>
+  </row>
+  <row id="3A73B96CDF6244078CD980493974D05E" trl="N">
+    <value column="Text" isTrl="N" original="&lt;b&gt;Fecha de Impresión: &lt;/b&gt;&lt;br&gt;">&lt;b&gt;Fecha de Impresión: &lt;/b&gt;&lt;br&gt;</value>
+  </row>
+  <row id="5C7449CEF3694BB0BC4B169E01901093" trl="N">
+    <value column="Text" isTrl="N" original="FECHA HASTA:">FECHA HASTA:</value>
+  </row>
+  <row id="5FCB7F8C525D4E79851E95DDEEC8640C" trl="N">
+    <value column="Text" isTrl="N" original="ORGANIZACIÓN">ORGANIZACIÓN</value>
+  </row>
+  <row id="62337A34194B4C04A695FA5E46866684" trl="N">
+    <value column="Text" isTrl="N" original="TOTAL GENERAL :">TOTAL GENERAL :</value>
+  </row>
+  <row id="6D5BD392275D4FCB98C2F774B8E52FBB" trl="N">
+    <value column="Text" isTrl="N" original="FECHA VENC">FECHA VENC</value>
+  </row>
+  <row id="72F6EEB29F7248BBB8CE7E1141D1C415" trl="N">
+    <value column="Text" isTrl="N" original="DIAS A VENCER Y VENCIDOS">DIAS A VENCER Y VENCIDOS</value>
+  </row>
+  <row id="74992E886B0240ADA6EC00E2B662B56A" trl="N">
+    <value column="Text" isTrl="N" original="RUC">RUC</value>
+  </row>
+  <row id="7B93942B90B840BDA2F63C51C2D65621" trl="N">
+    <value column="Text" isTrl="N" original="ESTADO CXP - DETALLADO">ESTADO CXP - DETALLADO</value>
+  </row>
+  <row id="85620B70F2F1447F8832F2C66906EB0B" trl="N">
+    <value column="Text" isTrl="N" original="CATEGORIA PROVEEDOR">CATEGORIA PROVEEDOR</value>
+  </row>
+  <row id="A66537E279514E8DAA494D706D7F1600" trl="N">
+    <value column="Text" isTrl="N" original="TIPO">TIPO</value>
+  </row>
+  <row id="B5E3238453E14520B38CCCC6D81E15FF" trl="N">
+    <value column="Text" isTrl="N" original="DESCRIPCIÓN">DESCRIPCIÓN</value>
+  </row>
+  <row id="BBB63420E4F848EEA5D2B5F27D6F58ED" trl="N">
+    <value column="Text" isTrl="N" original="FECHA">FECHA</value>
+  </row>
+  <row id="BCAC8E7F8BA847769D91A9C6A982B18C" trl="N">
+    <value column="Text" isTrl="N" original="TERCERO">TERCERO</value>
+  </row>
+  <row id="D85322742D534B49A3A28B405288EBD8" trl="N">
+    <value column="Text" isTrl="N" original="VALOR">VALOR</value>
+  </row>
+  <row id="EB3B1131382644F4BE8C036780EC39E9" trl="N">
+    <value column="Text" isTrl="N" original="TOTAL :">TOTAL :</value>
+  </row>
+  <row id="FBF20A8DE501472088395F3DFDC7A116" trl="N">
+    <value column="Text" isTrl="N" original="DIAS CREDITO">DIAS CREDITO</value>
+  </row>
+</compiereTrl>

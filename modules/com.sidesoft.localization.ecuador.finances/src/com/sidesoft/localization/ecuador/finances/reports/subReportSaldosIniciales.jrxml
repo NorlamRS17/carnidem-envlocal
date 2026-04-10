@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subReportSaldosIniciales" pageWidth="56" pageHeight="20" columnWidth="56" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2ed8cf7d-83c1-4764-ae4f-2ebb606687d4">
+	<property name="ireport.zoom" value="2.357947691000002"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DateFrom" class="java.util.Date">
+		<defaultValueExpression><![CDATA[new Date()]]></defaultValueExpression>
+	</parameter>
+	<parameter name="M_Product_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SaldoInicial" class="java.lang.String"/>
+	<parameter name="saldo" class="java.math.BigDecimal">
+		<defaultValueExpression><![CDATA[new BigDecimal("0")]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select coalesce(sum(mt.movementqty), 0) as sumasaldoi , coalesce (sum (mt.transactioncost), 0) as costot
+     from m_transaction mt
+     where mt.m_product_id = $P{M_Product_ID}
+       and mt.movementdate < $P{DateFrom};]]>
+	</queryString>
+	<field name="sumasaldoi" class="java.math.BigDecimal"/>
+	<field name="costot" class="java.math.BigDecimal"/>
+	<variable name="producto_COUNT" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{sumasaldoi}]]></variableExpression>
+		<initialValueExpression><![CDATA[new BigDecimal("0")]]></initialValueExpression>
+	</variable>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="56" height="20" uuid="515e6ebf-6771-48f9-aa26-6a58b730e99f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sumasaldoi}.add($P{saldo} != null? $P{saldo} : new BigDecimal("0"))]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

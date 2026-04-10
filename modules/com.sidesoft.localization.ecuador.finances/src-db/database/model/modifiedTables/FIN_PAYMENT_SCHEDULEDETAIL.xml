@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_PAYMENT_SCHEDULEDETAIL">
+    <table name="FIN_PAYMENT_SCHEDULEDETAIL" primaryKey="FIN_PAYMENT_SCHEDULEDETAIL_KEY">
+      <index name="EM_SSFI_FIN_PYMT_SCHED_DET" unique="false">
+        <index-column name="FIN_PAYMENT_DETAIL_ID"/>
+        <index-column name="AMOUNT"/>
+      </index>
+    </table>
+  </database>

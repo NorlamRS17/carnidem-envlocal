@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnSizeChange tablename="MA_MAINT_SCHEDULED" columnname="OBSERVATION" newSize="3000" oldSize="255"/>
+    <columnSizeChange tablename="MA_MEASURE_VALUES" columnname="V_STRING" newSize="4000" oldSize="60"/>
+    <columnDataChange tablename="AD_COLUMN" columnname="FIELDLENGTH" pkRow="802310">
+      <oldValue><![CDATA[60]]></oldValue>
+      <newValue><![CDATA[4000]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802640">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802645">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802647">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802648">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802649">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802650">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802651">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802652">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802653">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="FIELDLENGTH" pkRow="802654">
+      <oldValue><![CDATA[255]]></oldValue>
+      <newValue><![CDATA[3000]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802654">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802655">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802656">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISIDENTIFIER" pkRow="802671">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISSESSIONATTR" pkRow="802671">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802673">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802674">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802679">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802680">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802681">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802782">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="802783">
+      <oldValue/>
+      <newValue><![CDATA[@EM_Scma_Docstatus@='AP']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TAB" columnname="AD_PROCESS_ID" pkRow="965B2EE3597041BF9E815EA4E0683B6B">
+      <oldValue/>
+      <newValue><![CDATA[5979D219125E4AD0823DCB57048BF7EC]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLENGTH" pkRow="100A3CAFB02A43E3A96D90BEA04AA87D">
+      <oldValue><![CDATA[255]]></oldValue>
+      <newValue><![CDATA[3000]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLENGTH" pkRow="4C42F8528C15471D8963B090BE24DA2F">
+      <oldValue><![CDATA[60]]></oldValue>
+      <newValue><![CDATA[4000]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="SEQNO" pkRow="E8F9EBE4CA2348B59C78DF61D0B1A48F">
+      <oldValue><![CDATA[20]]></oldValue>
+      <newValue><![CDATA[40]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_TABLE" columnname="ACCESSLEVEL" pkRow="800067">
+      <oldValue><![CDATA[3]]></oldValue>
+      <newValue><![CDATA[7]]></newValue>
+    </columnDataChange>
+  </vector>

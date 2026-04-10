@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_UsefulLifeProduct" pageWidth="255" pageHeight="85" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="245" leftMargin="10" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="cfaf7223-c06e-4591-8e0f-b406a2336150">
+	<property name="ireport.zoom" value="1.9965000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<parameter name="DATEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+		<defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="NUMBERDECIMAL" class="java.lang.Integer" isForPrompting="false">
+		<defaultValueExpression><![CDATA[2]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_WEB" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SOURCE_PATH" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select mm.name,mm.movementdate::date,concat(mwr.documentno, ' - ', mwr.Launchdate::date) as orden_fabricacion,mp.documentno,  ROUND(COALESCE(SUM(mml.movementqty), 0), 6) as cantidad_mov
+from m_movement mm
+left join MA_WorkRequirement mwr on mwr.MA_WorkRequirement_id = mm.EM_Ssfin_Ma_Workreq_ID
+left join M_ProductionPlan mpp on mpp.M_ProductionPlan_id=mm.em_crprod_prodplan_id
+left join m_production mp on mp.m_production_id=mpp.m_production_id
+left join M_ProductionLine prodline on prodline.M_ProductionPlan_id=mpp.M_ProductionPlan_id and prodline.productiontype='+'
+left join m_movementline mml on mml.m_movement_id=mm.m_movement_id
+where mm.m_movement_id=$P{DOCUMENT_ID}
+group by  mm.name,mm.movementdate,mwr.documentno,mwr.Launchdate,mp.documentno]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<field name="movementdate" class="java.sql.Date"/>
+	<field name="orden_fabricacion" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="cantidad_mov" class="java.math.BigDecimal"/>
+	<variable name="REPORT_PAGE" class="java.lang.Integer" resetType="None" incrementType="Page">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<detail>
+		<band height="85">
+			<staticText>
+				<reportElement x="0" y="0" width="79" height="18" uuid="b06eeb5d-598d-4e38-8432-a2125b9ec900"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Nombre premezcla funcional:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="79" y="0" width="111" height="18" isPrintWhenDetailOverflows="true" uuid="6067ad38-34af-4b39-a120-87e71b24c3ad"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="31" width="79" height="18" uuid="7353a0b8-5b21-4731-9683-19f4648db190"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="49" width="79" height="18" uuid="c8272fd5-61fa-450b-9c4d-32df0fc20758"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Orden De fabricación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="67" width="79" height="18" uuid="a217433c-c89c-4d6d-b7aa-405e8706f2f5"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Parte:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="79" y="31" width="111" height="18" isPrintWhenDetailOverflows="true" uuid="c677d3ac-0034-4cd8-90f7-adfb7dc7621a"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{movementdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="18" width="190" height="13" uuid="f5c9ee62-ea89-4628-aa52-0560a09d445a"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="79" y="49" width="111" height="18" isPrintWhenDetailOverflows="true" uuid="3f64db3b-8602-4969-95d2-8c73571dc628"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{orden_fabricacion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="79" y="67" width="111" height="18" isPrintWhenDetailOverflows="true" uuid="6cfd8960-8920-45d1-9ac6-73c9ad1f669a"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{documentno}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="190" y="0" width="55" height="85" isPrintWhenDetailOverflows="true" uuid="a6105cee-c690-4ad9-ab44-77c0e0a11f49"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidad_mov}+ "\nKG"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

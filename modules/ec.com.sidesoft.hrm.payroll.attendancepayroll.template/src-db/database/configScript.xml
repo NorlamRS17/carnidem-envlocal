@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_PROCESS" columnname="JRNAME" pkRow="8481D546CE9B4C29BCB9E5A183827E9A">
+      <oldValue><![CDATA[@basedesign@/com/sidesoft/hrm/payroll/ad_Reports/RptSspr_VacationStatementByEmployee.jrxml]]></oldValue>
+      <newValue><![CDATA[@basedesign@/ec/com/sidesoft/hrm/payroll/attendancepayroll/ad_reports/RptSspr_VacationStatementByEmployee.jrxml]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="JRNAME" pkRow="B5170DE3EA0B4D4FBEAB4FD19BEB8A6A">
+      <oldValue><![CDATA[@basedesign@/com/sidesoft/hrm/payroll/ad_Reports/Rptm_IndividualPayrollNomina.jrxml]]></oldValue>
+      <newValue><![CDATA[@basedesign@/ec/com/sidesoft/hrm/payroll/attendancepayroll/ad_reports/Rptm_IndividualPayrollNomina.jrxml]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="AD_REFERENCE_ID" pkRow="3FEB44B4D7464521B3AF3FA410CDA892">
+      <oldValue><![CDATA[19]]></oldValue>
+      <newValue><![CDATA[18]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="AD_REFERENCE_VALUE_ID" pkRow="3FEB44B4D7464521B3AF3FA410CDA892">
+      <oldValue/>
+      <newValue><![CDATA[F571F46517A94DB5B2CB70A4EFA0650B]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="AD_VAL_RULE_ID" pkRow="3FEB44B4D7464521B3AF3FA410CDA892">
+      <oldValue/>
+      <newValue><![CDATA[8BC0BC0A4B494B0D913CB7BAEFEE5A2D]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_PROCESS_PARA" columnname="FIELDLENGTH" pkRow="3FEB44B4D7464521B3AF3FA410CDA892">
+      <oldValue><![CDATA[0]]></oldValue>
+      <newValue><![CDATA[20]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_VAL_RULE" columnname="CODE" pkRow="8BC0BC0A4B494B0D913CB7BAEFEE5A2D">
+      <oldValue><![CDATA[c_bpartner.isemployee='Y']]></oldValue>
+      <newValue><![CDATA[(C_BPARTNER.ISEMPLOYEE = 'Y' AND C_BPARTNER.C_BPARTNER_ID in (
+	SELECT AU.C_BPARTNER_ID 
+	FROM AD_ROLE AROLE
+	JOIN AD_USER_ROLES AUR ON AROLE.AD_ROLE_ID = AUR.AD_ROLE_ID 
+	JOIN AD_USER AU ON AU.AD_USER_ID = AUR.AD_USER_ID
+	WHERE AU.AD_USER_ID = @#AD_USER_ID@
+	) 
+ 	and (coalesce((select 1 
+			 from ad_user u 
+			 where u.ad_user_id = @#AD_USER_ID@
+			 and u.em_shpapr_adminassis = 'Y'
+			), 0) = 0
+		 )
+)
+OR
+(C_BPARTNER.ISEMPLOYEE = 'Y' 
+ 	and (coalesce((select 1 
+			 from ad_user u 
+			 where u.ad_user_id = @#AD_USER_ID@
+			 and u.em_shpapr_adminassis = 'Y'
+			), 0) = 1
+		 )
+)]]></newValue>
+    </columnDataChange>
+  </vector>

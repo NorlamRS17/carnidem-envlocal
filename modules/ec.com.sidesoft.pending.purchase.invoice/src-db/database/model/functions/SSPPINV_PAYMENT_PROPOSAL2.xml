@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSPPINV_PAYMENT_PROPOSAL2">
+    <function name="SSPPINV_PAYMENT_PROPOSAL2" type="VARCHAR">
+      <parameter name="vids" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="vuserid" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[vRecordID VARCHAR2(32);
+	vRecord RECORD;
+	vSetting RECORD;
+	vDocumentNo VARCHAR2(60);
+	vScheduleDetailID VARCHAR2(32);
+	vAmount NUMBER:= 0;
+BEGIN
+	BEGIN
+		--Obtenemos la configuracion para crear propuestas de pago
+		SELECT * INTO vSetting FROM ssppinv_setting WHERE isactive='Y' LIMIT 1;
+		IF vSetting.ssppinv_setting_id IS NULL THEN
+			RAISE_APPLICATION_ERROR(-20000, 'No existe configuracion para crear la propuesta de pago');
+		END IF;
+
+		--Obtenemos el secuencial para el numero de documento
+		ad_sequence_doctype(vSetting.c_doctype_id, vSetting.ad_client_id, 'Y', vDocumentNo);
+		
+		--Creamos la cabecera de la propuesta de pago
+		INSERT INTO fin_payment_proposal (
+			fin_payment_proposal_id,
+			ad_org_id,
+			ad_client_id,
+			createdby,
+			updatedby,
+			c_doctype_id,
+			documentno,
+			paymentdate,
+			fin_financial_account_id,
+			fin_paymentmethod_id,
+			c_currency_id,
+			em_slpp_payment_doctype_id,
+			isreceipt,
+			status,
+			processed,
+			processing,
+			duedate,
+			em_aprm_process_proposal,
+			em_aprm_executepayment
+		) VALUES (
+			get_uuid(),
+			vSetting.ad_org_id,
+			vSetting.ad_client_id,
+			vUserID,
+			vUserID,
+			vSetting.c_doctype_id,
+			vDocumentNo,
+			now(),
+			vSetting.fin_financial_account_id,
+			vSetting.fin_paymentmethod_id,
+			vSetting.c_currency_id,
+			vSetting.payment_doctype_id,
+			'N',
+			'RPAP',
+			'N',
+			'N',
+			now(),
+			'G',
+			'N'
+		) RETURNING fin_payment_proposal_id INTO vRecordID;
+
+		--Iteramos las facturas seleccionadas
+		FOR vRecord IN (
+			SELECT * FROM ssppinv_selectedinvoices WHERE ssppinv_selectedinvoices_id IN (SELECT unnest(string_to_array(vIds, '|')))
+		) LOOP
+			--Obtenermos la linea del detalle del plan de pago con el valor pendiente
+			SELECT fin_payment_scheduledetail_id INTO vScheduleDetailID
+			FROM fin_payment_scheduledetail AS psd
+				JOIN fin_payment_schedule AS ps ON ps.fin_payment_schedule_id=psd.fin_payment_schedule_invoice
+			WHERE ps.c_invoice_id=vRecord.c_invoice_id AND fin_payment_detail_id IS NULL AND psd.isinvoicepaid='N';
+
+			--Creamos las lineas de la propuesta de pago
+			INSERT INTO fin_payment_prop_detail (
+				fin_payment_prop_detail_id,
+				ad_org_id,
+				ad_client_id,
+				createdby,
+				updatedby,
+				fin_payment_proposal_id,
+				fin_payment_scheduledetail_id,
+				amount
+			) VALUES (
+				get_uuid(),
+				vSetting.ad_org_id,
+				vSetting.ad_client_id,
+				vUserID,
+				vUserID,
+				vRecordID,
+				vScheduleDetailID,
+				vRecord.amount
+			);
+			
+			vAmount := vAmount + vRecord.amount;
+		END LOOP;
+		
+		--Actualizamos el importe de la cabecera
+		UPDATE fin_payment_proposal
+			SET amount=vAmount
+		WHERE fin_payment_proposal_id=vRecordID;
+
+		--Limpiamos las lineas de las facturas seleccionadas
+		DELETE FROM ssppinv_selectedinvoices;
+
+		RETURN 'OK';
+	END;
+	EXCEPTION WHEN OTHERS THEN
+	RETURN SQLERRM;
+END SSPPINV_PAYMENT_PROPOSAL2
+]]></body>
+    </function>
+  </database>

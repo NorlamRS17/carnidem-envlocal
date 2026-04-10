@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="A13D19673CE8431AAAB8184EFEEB17E3" trl="N">
+    <value column="Name" isTrl="N" original="XML IRBP - Organization">XML IRBP - Organization</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A202417EF3D6482FB1234045D1E6B9B3" trl="N">
+    <value column="Name" isTrl="N" original="Year XML IRBP">Year XML IRBP</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DD23F8F61A9D4666B1167EC686A4792B" trl="N">
+    <value column="Name" isTrl="N" original="List Group IRBP XML">List Group IRBP XML</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="FB01B17020C942D488E298F8BC31FBCD" trl="N">
+    <value column="Name" isTrl="N" original="XML IRBP OPEN_PERIOD">XML IRBP OPEN_PERIOD</value>
+    <value column="Description" isTrl="N" original="XML IRBP OPEN_PERIOD">XML IRBP OPEN_PERIOD</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

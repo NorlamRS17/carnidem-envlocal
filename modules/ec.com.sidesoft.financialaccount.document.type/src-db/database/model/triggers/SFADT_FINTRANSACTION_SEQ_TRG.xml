@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SFADT_FINTRANSACTION_SEQ_TRG">
+    <trigger name="SFADT_FINTRANSACTION_SEQ_TRG" table="FIN_FINACC_TRANSACTION" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	
+	vTypeDocID	Character varying;
+	vSequenceName	VARCHAR2(60);
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF TG_OP IN ('INSERT', 'UPDATE') THEN
+    
+		IF :NEW.posted IS NOT NULL AND :NEW.posted = 'Y' AND :NEW.em_sfadt_accsequence IS NULL THEN
+			
+			Select sas.c_doctype_id into vTypeDocID from c_acctschema_table cat
+			JOIN sfadt_acc_sequences sas ON sas.c_acctschema_table_id = cat.c_acctschema_table_id
+			JOIN fin_financial_account ffa ON ffa.fin_financial_account_id = :NEW.fin_financial_account_id
+			Where cat.ad_table_id = (Select ad_table_id from ad_table where tablename = 'FIN_Finacc_Transaction') 
+			AND ffa.type = sas.type 
+			AND sas.trxtype = :NEW.trxtype LIMIT 1;
+			
+			IF vTypeDocID IS NOT NULL THEN
+			 	SELECT s.name INTO vSequenceName
+				FROM ad_sequence s
+					JOIN c_doctype dt ON dt.docnosequence_id = s.ad_sequence_id
+				WHERE dt.c_doctype_id = vTypeDocID;
+
+				IF vSequenceName IS NULL THEN
+					:NEW.em_sfadt_accsequence := NULL;
+					:NEW.EM_Sfadt_C_Doctype_ID:= NULL;
+				ELSE
+					SELECT ad_sequence_doc(vSequenceName, :NEW.ad_client_id, 'Y') INTO :NEW.em_sfadt_accsequence;
+					:NEW.EM_Sfadt_C_Doctype_ID:= vTypeDocID;
+				END IF;
+			END IF;
+			
+            
+        END IF;
+		
+		
+	END IF;
+
+	END SFADT_FINTRANSACTION_SEQ_TRG
+]]></body>
+    </trigger>
+  </database>

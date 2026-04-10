@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_DOCTYPE">
+    <table name="C_DOCTYPE" primaryKey="C_DOCTYPE_KEY">
+      <column name="EM_SCNSA_AUTOMATIC_GENERATE_NC" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCNSA_DESCRIPTION" primaryKey="false" required="false" type="VARCHAR" size="255" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SCNSA_DOC_NC_AUTOMATIC" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="C_DOCTYPE" name="EM_SCNSA_DOCNC_AUTOMATIC">
+        <reference local="EM_SCNSA_DOC_NC_AUTOMATIC" foreign="C_DOCTYPE_ID"/>
+      </foreign-key>
+    </table>
+  </database>

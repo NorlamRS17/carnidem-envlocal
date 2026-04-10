@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_PERIOD">
+    <table name="C_PERIOD" primaryKey="C_PERIOD_KEY">
+      <index name="EM_SFIAC_PERIOD_YEAR_PERIOD" unique="false">
+        <index-column name="C_YEAR_ID"/>
+        <index-column name="C_PERIOD_ID"/>
+      </index>
+    </table>
+  </database>

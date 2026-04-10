@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="2FE73EF4262D4A3395CB87E813505B25" trl="N">
+    <value column="Name" isTrl="N" original="Account_Type_list">Account_Type_list</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="360E3E4FE6C8454C87B93DE42FF69BDD" trl="N">
+    <value column="Name" isTrl="N" original="elementvalue_selector">elementvalue_selector</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5A27139E6EF748A5A4F4461B1107978D" trl="N">
+    <value column="Name" isTrl="N" original="Scft_Acctclassif_ref">Scft_Acctclassif_ref</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="776DCF728B74457E9DB6EADDC28603D6" trl="N">
+    <value column="Name" isTrl="N" original="scft_account_element">scft_account_element</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F79C371C950D4718873C1FD030D9313A" trl="N">
+    <value column="Name" isTrl="N" original="scft_element_reference">scft_element_reference</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

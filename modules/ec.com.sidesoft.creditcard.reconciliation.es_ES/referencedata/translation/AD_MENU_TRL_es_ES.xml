@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="0CBF4646756B466589BAE62FECAC7D7F" trl="Y">
+    <value column="Name" isTrl="Y" original="Setup">Configuración</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="12C38A739661418DB5EEB80E91231356" trl="Y">
+    <value column="Name" isTrl="Y" original="Analysis Tools">Herramientas de análisis</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="21B053CFAA7747B68705D93AE9BC9A51" trl="Y">
+    <value column="Name" isTrl="Y" original="Transactions">Transacciones</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="27EDE0DB966644599DABC225B04FD8AB" trl="N">
+    <value column="Name" isTrl="Y" original="Processor Banck">Banco Procesador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="2DB151031EA94A5E86816BDC154E684D" trl="N">
+    <value column="Name" isTrl="Y" original="Types of credit">Tipos de Crédito</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="61EB9BA2E457411D9E10E93C2AE8F9A3" trl="N">
+    <value column="Name" isTrl="Y" original="Card matching configuration">Configuración conciliación de tarjetas</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="82297A42E98F4F5899D233C5D3E0C696" trl="N">
+    <value column="Name" isTrl="Y" original="General Configuration">Configuración General</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="9A6FD8DB3E1E4C8783249B84EFA8EAE1" trl="Y">
+    <value column="Name" isTrl="Y" original="Creditcard Reconciliation">Conciliación de Tarjetas</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A3D0E9C0784F47E7B009D5960EAB71D2" trl="N">
+    <value column="Name" isTrl="Y" original="POS Card Reconciliation">Conciliación de Tarjetas POS</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A6A793E7FF994DCF9C525A618023B189" trl="N">
+    <value column="Name" isTrl="Y" original="Cards types">Tipos de Tarjeta</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_ELEMENTVALUE">
+    <table name="C_ELEMENTVALUE" primaryKey="C_ELEMENTVALUE_KEY">
+      <index name="EM_SFIAC_ELEM_ACCT_ID" unique="false">
+        <index-column name="C_ELEMENTVALUE_ID"/>
+        <index-column name="ACCOUNTTYPE"/>
+      </index>
+      <index name="EM_SFIAC_ELEMENTVALUE_TYPE_ID" unique="false">
+        <index-column name="ACCOUNTTYPE"/>
+        <index-column name="C_ELEMENTVALUE_ID"/>
+      </index>
+    </table>
+  </database>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MODULE" version="">
+  <row id="91A72CA28656435F822FEFB4C5226998" trl="N">
+    <value column="Description" isTrl="N" original="Control withholding are eliminated">Control withholding are eliminated</value>
+    <value column="Help" isTrl="N" original="This module was created for ticket 15856, which requests control of the withholdings that are eliminated by saving their information in a tab in the supplier invoice window.">This module was created for ticket 15856, which requests control of the withholdings that are eliminated by saving their information in a tab in the supplier invoice window.</value>
+    <value column="License" isTrl="N" original="&quot;Commons Clause&quot; License Condition v1.0 &#10;&#10;The Software is provided under the Apache License 2.0. &#10;&#10;However, the rights granted under this license do not include, and the licensee shall not have the right to, sell, lease, or distribute for a fee without explicit permission from the author. "/>
+    <value column="Updateinfo" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER CSLJ_JULYDAY_CREATED_TRG">
+    <trigger name="CSLJ_JULYDAY_CREATED_TRG" table="M_ATTRIBUTESETINSTANCE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[  v_year        int;
+  v_julianday   int;
+  v_last2digits int;
+BEGIN
+    -- Si no tiene valor, generar EM_Cslj_DateJulian
+    IF :NEW.em_cslj_datejulian IS NULL OR TRIM(:NEW.em_cslj_datejulian) = '' THEN
+        -- Año actual
+        v_year := EXTRACT(YEAR FROM CURRENT_DATE);
+        -- Día juliano (día del año)
+        v_julianday := EXTRACT(DOY FROM CURRENT_DATE);
+        -- Últimos 2 dígitos del año
+        v_last2digits := MOD(v_year, 100);
+
+        -- Construir el valor como "YYDDD"
+        :NEW.em_cslj_datejulian := lpad(v_last2digits::text, 2, '0') 
+                               || lpad(v_julianday::text, 3, '0');
+    
+        -- Concatenar al campo description
+        :NEW.description := COALESCE(:NEW.description, '') 
+                       || '' 
+                       || :NEW.em_cslj_datejulian;
+
+    END IF;
+
+    -- Devolver el registro dependiendo de la operación
+    IF DELETING THEN 
+        RETURN OLD; 
+    ELSE 
+        RETURN NEW; 
+    END IF; 
+END CSLJ_JULYDAY_CREATED_TRG
+]]></body>
+    </trigger>
+  </database>

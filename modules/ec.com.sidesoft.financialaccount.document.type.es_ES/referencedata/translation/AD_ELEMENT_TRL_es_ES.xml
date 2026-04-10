@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="5CCFEB1292FD4FC2A8F9874168337672" trl="N">
+    <value column="Name" isTrl="N" original="Sfadt_Acc_Sequences_ID">Sfadt_Acc_Sequences_ID</value>
+    <value column="PrintName" isTrl="N" original="Sfadt_Acc_Sequences_ID">Sfadt_Acc_Sequences_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="638C1E0B37A345C5A7947204331539C9" trl="Y">
+    <value column="Name" isTrl="Y" original="Type of financial account">Tipo cta financiera</value>
+    <value column="PrintName" isTrl="Y" original="Type of financial account">Tipo cta financiera</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6F8DF5882BC34772818163BB08DFC830" trl="Y">
+    <value column="Name" isTrl="Y" original="Documentno">Secuencia</value>
+    <value column="PrintName" isTrl="Y" original="Documentno">Secuencia</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CDDFB055D4C14169A1442F66047B98DE" trl="Y">
+    <value column="Name" isTrl="Y" original="C_Doctype">Tipo de documento</value>
+    <value column="PrintName" isTrl="Y" original="C_Doctype">Tipo de documento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E7A828BF44504CE489FEC2D7C408F444" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Sfadt_Accsequence">Secuencia</value>
+    <value column="PrintName" isTrl="Y" original="Sequence">Secuencia</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

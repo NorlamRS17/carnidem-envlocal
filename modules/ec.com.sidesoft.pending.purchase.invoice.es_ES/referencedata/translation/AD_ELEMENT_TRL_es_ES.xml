@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="0BCF23DFB0E94A63A08FEB37F1A50F4E" trl="N">
+    <value column="Name" isTrl="N" original="Ssppinv_Summary_ID">Ssppinv_Summary_ID</value>
+    <value column="PrintName" isTrl="Y" original="Ssppinv_Pending_Invoices_ID">Ssppinv_Summary_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1097B6BC29BE45A09C10BB8AA2AD11CA" trl="Y">
+    <value column="Name" isTrl="Y" original="Total Selected Invoices">Total Facturas Seleccionadas</value>
+    <value column="PrintName" isTrl="Y" original="Total Selected Invoices">Total Facturas Seleccionadas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="28835CB92F1342B3A46377674A5C40F8" trl="Y">
+    <value column="Name" isTrl="Y" original="Pass Selected">Pasar Seleccionados</value>
+    <value column="PrintName" isTrl="Y" original="Pass Selected">Pasar Seleccionados</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="398CDFCF419F4B648F540D2AACE30346" trl="N">
+    <value column="Name" isTrl="N" original="Ssppinv_Selectedinvoices_ID">Ssppinv_Selectedinvoices_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssppinv_Selectedinvoices_ID">Ssppinv_Selectedinvoices_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="499BA2D7D4B14A38B52C28D812F4CCDA" trl="N">
+    <value column="Name" isTrl="N" original="Ssppinv_Setting_ID">Ssppinv_Setting_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssppinv_Setting_ID">Ssppinv_Setting_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="53CC1AE73BA74D2D863DD2BDF171D05F" trl="Y">
+    <value column="Name" isTrl="Y" original="Total Pending">Total Pendiente</value>
+    <value column="PrintName" isTrl="Y" original="Total Pending">Total Pendiente</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="60EF5EA035D84F10B6B5028A9B3A7079" trl="N">
+    <value column="Name" isTrl="N" original="Bpname">Bpname</value>
+    <value column="PrintName" isTrl="N" original="Bpname">Bpname</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6C6865093C9F41728F375E5417AEAA91" trl="Y">
+    <value column="Name" isTrl="Y" original="Payment Doctype">Tipo de Documento Pagos</value>
+    <value column="PrintName" isTrl="Y" original="Payment Doctype">Tipo de Documento Pagos</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="DB9A2B8599D3481D80EA9AD29F8A5CCE" trl="Y">
+    <value column="Name" isTrl="Y" original="Generate Payment Proposal">Generar Propuesta de Pago</value>
+    <value column="PrintName" isTrl="Y" original="Generate Payment Proposal">Generar Propuesta de Pago</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F68689846D174B33B1C90998CC4EB76A" trl="N">
+    <value column="Name" isTrl="N" original="Ssppinv_Summary2_V_ID">Ssppinv_Summary2_V_ID</value>
+    <value column="PrintName" isTrl="N" original="Ssppinv_Summary2_V_ID">Ssppinv_Summary2_V_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FAD8D7019DA04A8AA92709F68B7D5903" trl="N">
+    <value column="Name" isTrl="N" original="Bptaxid">Bptaxid</value>
+    <value column="PrintName" isTrl="N" original="Bptaxid">Bptaxid</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

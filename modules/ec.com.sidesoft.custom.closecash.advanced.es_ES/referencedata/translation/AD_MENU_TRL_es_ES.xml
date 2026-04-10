@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MENU" version="">
+  <row id="167943C133134CC6B41E0D184351459C" trl="Y">
+    <value column="Name" isTrl="Y" original="Cards Settlement">Liquidación de tarjetas</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3429F09AFE2B4BEC84D1857DAB8300DA" trl="Y">
+    <value column="Name" isTrl="Y" original="Analysis Tools">Herramientas de análisis</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="80642D060856489BAA45E1FDD7C1D6C2" trl="Y">
+    <value column="Name" isTrl="Y" original="Cash Clousure Report">Reporte cierre de caja</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F477AEE17C3E4C10967099673767491F" trl="Y">
+    <value column="Name" isTrl="Y" original="Cards Settlement Report">Reporte liquidación de tarjetas</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

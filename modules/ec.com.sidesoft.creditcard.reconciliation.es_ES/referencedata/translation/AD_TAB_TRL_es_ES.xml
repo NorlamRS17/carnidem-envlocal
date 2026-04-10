@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="0F31B73FC0EF4FDC845BDABD8E8B5C23" trl="N">
+    <value column="Name" isTrl="Y" original="Processor Banck">Banco Procesador</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="1312CA1E5736440F8C2D961EDA090D93" trl="N">
+    <value column="Name" isTrl="Y" original="POS Card Reconciliation">Conciliación de Tarjetas POS</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="1E4A691927F2483CB05E110CA749DBFE" trl="N">
+    <value column="Name" isTrl="N" original="Line">Line</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="435BBA9986D54228B4940372B5E51998" trl="N">
+    <value column="Name" isTrl="N" original="Finnancial Transaction POS">Finnancial Transaction POS</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="4A5FF4E44F2846109B8B776431922394" trl="N">
+    <value column="Name" isTrl="Y" original="General Configuration">Configuración General</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6CB6E3108A014819BD4230382E596D27" trl="N">
+    <value column="Name" isTrl="Y" original="Withholdings">Retenciónes</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8362CD34DBFD4F048C08A13FF0AD0B6B" trl="N">
+    <value column="Name" isTrl="Y" original="Cards types">Tipos de Tarjeta</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8D9AD1F380584B1FB9A1D88826A4E11F" trl="N">
+    <value column="Name" isTrl="Y" original="Card  matching configuration">Configuración conciliación de tarjetas</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8F9908FDFDAD45449FC9EB2D22ADDD09" trl="N">
+    <value column="Name" isTrl="Y" original="Lines">Lineas</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="AF180CFE243E418CA46B56F9771D612F" trl="Y">
+    <value column="Name" isTrl="Y" original="Log Cards">Log Tarjetas</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D306F6C3691B422F83997B4AE39327FA" trl="N">
+    <value column="Name" isTrl="Y" original="Types of credit">Tipos de Crédito</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D57A85A88C5E42239FB164376D9B64C7" trl="N">
+    <value column="Name" isTrl="Y" original="Summary">Resumen</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

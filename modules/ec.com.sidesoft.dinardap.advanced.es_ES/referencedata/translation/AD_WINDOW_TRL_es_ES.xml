@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="2011E35A246F4A70824DA2FE3B3B42F7" trl="Y">
+    <value column="Name" isTrl="Y" original="Dinardap general parameters">Parámetros generales Dinardap</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="D4C47212972C49B98E99FEC511F4B52D" trl="Y">
+    <value column="Name" isTrl="Y" original="Dinardap Information">Información Dinardap</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER CRPCO_OPLOST_TRG">
+    <trigger name="CRPCO_OPLOST_TRG" table="OPCRM_OPPORTUNITIES" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	
+	vTypeDocID	Character varying;
+
+BEGIN
+
+	IF AD_isTriggerEnabled() = 'N' THEN RETURN;END IF;
+
+	IF (INSERTING OR UPDATING) THEN
+			
+			IF :NEW.opportstatus = 'LOST' AND (:NEW.description IS NULL) THEN
+			 	RAISE_APPLICATION_ERROR(-20000, '@No se puede guardar los cambios. La oportunidad ha sido marcada como “Perdido”, por lo tanto, debe ingresar el motivo en el campo “Descripción o Novedades” antes de continuar.@');
+			END IF;
+			
+	END IF;
+
+	END CRPCO_OPLOST_TRG
+]]></body>
+    </trigger>
+  </database>

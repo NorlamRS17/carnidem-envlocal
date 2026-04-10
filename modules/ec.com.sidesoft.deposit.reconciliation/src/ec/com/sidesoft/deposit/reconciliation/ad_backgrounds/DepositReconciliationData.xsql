@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SqlClass name="DepositReconciliationData" package="ec.com.sidesoft.deposit.reconciliation.ad_backgrounds" accessModifier="public">
+   <SqlClassComment></SqlClassComment>
+
+  <SqlMethod name="select" type="preparedStatement" return="multiple">
+    <SqlMethodComment></SqlMethodComment>
+    <Sql>
+      <![CDATA[
+	SELECT fin_payment_id,fin_bankstatementline_id 
+	FROM fin_payment p
+	JOIN fin_bankstatementline bl on p.referenceno = COALESCE(bl.em_ssdr_referenceno,bl.referenceno) 
+	WHERE p.status = 'RPAE' 
+	AND bl.em_ssdr_fin_payment_id is null 
+	AND TO_DATE(bl.datetrx) = TO_DATE(p.paymentdate)
+	AND COALESCE(bl.cramount,0) = COALESCE(p.amount,0)
+	ORDER BY p.paymentdate,p.referenceno,p.documentno
+      ]]>
+    </Sql>
+  </SqlMethod>
+
+</SqlClass>

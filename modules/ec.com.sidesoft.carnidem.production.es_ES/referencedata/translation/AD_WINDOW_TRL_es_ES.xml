@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="2E4F9E7B130D489CAF323F54571E7A7C" trl="Y">
+    <value column="Name" isTrl="Y" original="Quality Control Point 2">Monitoreo de Seguridad y Calidad MSC</value>
+    <value column="Description" isTrl="Y" original="Define quality control check points to be used for testing the product quality at any point in the production process.">Monitoreo de Seguridad y Calidad MSC</value>
+    <value column="Help" isTrl="N" original="Define quality control check points to be used for testing the product quality at any point in the production process.">Define quality control check points to be used for testing the product quality at any point in the production process.</value>
+  </row>
+  <row id="A62660F0C9D942F58E848A1712D78BA6" trl="Y">
+    <value column="Name" isTrl="Y" original="Quality Control Report 2">Toma de Datos MSC</value>
+    <value column="Description" isTrl="N" original="Create and edit measurements and report findings at predefined checkpoints.  The goal is to ensure output quality during production.">Create and edit measurements and report findings at predefined checkpoints.  The goal is to ensure output quality during production.</value>
+    <value column="Help" isTrl="N" original="Create and edit measurements and report findings at predefined checkpoints.  The goal is to ensure output quality during production.">Create and edit measurements and report findings at predefined checkpoints.  The goal is to ensure output quality during production.</value>
+  </row>
+</compiereTrl>

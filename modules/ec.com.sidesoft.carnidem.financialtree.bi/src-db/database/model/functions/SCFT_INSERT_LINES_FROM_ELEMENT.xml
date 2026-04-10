@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SCFT_INSERT_LINES_FROM_ELEMENT">
+    <function name="SCFT_INSERT_LINES_FROM_ELEMENT" type="NULL">
+      <parameter name="p_pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_c_elementvalue_id varchar(32);
+    v_count_insert NUMBER;
+    v_record_id varchar(32);
+    v_org_id varchar(32);
+	v_acctclasif varchar(32);
+	v_accounttype_element varchar(60);
+	v_description varchar(200);
+	v_elementvalue_id varchar(32);
+	
+    cur_param RECORD;
+    cur_cta_id RECORD;
+	
+BEGIN
+    -- Obtener record_id del proceso (registro desde el cual se ejecutó)
+    SELECT record_id INTO v_record_id
+    FROM ad_pinstance
+    WHERE ad_pinstance_id = p_pinstance_id;
+	
+    -- Leer parámetros del proceso
+    FOR cur_param IN
+    SELECT
+        p.parametername,
+        p.p_string
+    FROM
+        ad_pinstance_para p
+    WHERE
+        p.ad_pinstance_id = p_pinstance_id LOOP
+            RAISE NOTICE '%, %', cur_param.parametername, cur_param.p_string;
+            IF cur_param.parametername = 'C_ElementValue_ID' THEN
+                v_c_elementvalue_id := cur_param.p_string;
+            END IF;
+        END LOOP;
+    IF v_c_elementvalue_id IS NULL THEN
+        RAISE_APPLICATION_ERROR(-20000,'El parámetro c_elementvalue_id no fue proporcionado.');
+    END IF;
+    -- Ejecutar el query e insertar registros
+
+	--select ad_org_id into v_org_id
+	--from scft_finan_acct_ind where scft_finan_acct_ind_id=v_record_id;
+
+	select c_elementvalue_id,em_scft_account_id
+	into v_elementvalue_id,v_acctclasif
+	from c_elementvalue where c_elementvalue_id=v_c_elementvalue_id;
+			
+	select accounttype 
+	into v_accounttype_element
+	from c_elementvalue where c_elementvalue_id=v_elementvalue_id;
+        
+
+	select sa.description,sa.ad_org_id
+	into v_description,v_org_id
+	from Scft_Acctclassif sa
+	left join c_elementvalue ce on ce.accounttype=sa.account_type
+	where ce.accounttype=v_accounttype_element
+	group by sa.Scft_Acctclassif_id;
+
+	/*select sa.Scft_Acctclassif_id,sa.description
+	into v_acctclasif,v_description
+	from c_elementvalue ce
+	left join Scft_Acctclassif sa on ce.accounttype=sa.account_type
+	where ce.accounttype=v_accounttype_element
+	group by sa.Scft_Acctclassif_id;*/
+	
+	IF v_acctclasif IS NULL THEN
+        RAISE_APPLICATION_ERROR(-20000,'@scft_existrows@');
+	END IF;
+
+    FOR cur_cta_id IN (
+        SELECT
+            cta
+        FROM (
+            SELECT
+                CASE WHEN cta_element_4 = 'S' THEN
+                    cta_nivel_4
+                END AS cta
+            FROM
+                scft_C_CTA_ESTRUCTURA_2_V
+            WHERE
+                cta_nivel_2 = v_elementvalue_id
+                OR cta_nivel_3 = v_elementvalue_id
+                OR cta_nivel_3 = v_elementvalue_id
+                OR cta_nivel_4 = v_elementvalue_id
+                OR cta_nivel_5 = v_elementvalue_id
+                OR cta_nivel_6 = v_elementvalue_id
+                OR cta_nivel_7 = v_elementvalue_id
+                OR cta_nivel_8 = v_elementvalue_id) AS total
+        WHERE
+            total.cta IS NOT NULL
+        UNION
+        SELECT
+            *
+        FROM (
+            SELECT
+                CASE WHEN cta_element_5 = 'S' THEN
+                    cta_nivel_5
+                END AS cta
+            FROM
+                scft_C_CTA_ESTRUCTURA_2_V
+            WHERE
+                cta_nivel_2 = v_elementvalue_id
+                OR cta_nivel_3 = v_elementvalue_id
+                OR cta_nivel_3 = v_elementvalue_id
+                OR cta_nivel_4 = v_elementvalue_id
+                OR cta_nivel_5 = v_elementvalue_id
+                OR cta_nivel_6 = v_elementvalue_id
+                OR cta_nivel_7 = v_elementvalue_id
+                OR cta_nivel_8 = v_elementvalue_id) AS total
+        WHERE
+            total.cta IS NOT NULL
+        UNION
+        SELECT
+            *
+        FROM (
+            SELECT
+                CASE WHEN cta_element_6 = 'S' THEN
+                    cta_nivel_6
+                END AS cta
+            FROM
+                scft_C_CTA_ESTRUCTURA_2_V
+            WHERE
+                cta_nivel_2 = v_elementvalue_id
+                OR cta_nivel_3 = v_elementvalue_id
+                OR cta_nivel_3 = v_elementvalue_id
+                OR cta_nivel_4 = v_elementvalue_id
+                OR cta_nivel_5 = v_elementvalue_id
+                OR cta_nivel_6 = v_elementvalue_id
+                OR cta_nivel_7 = v_elementvalue_id
+                OR cta_nivel_8 = v_elementvalue_id) AS total
+        WHERE
+            total.cta IS NOT NULL
+        UNION
+        SELECT
+            *
+        FROM (
+            SELECT
+                CASE WHEN cta_element_7 = 'S' THEN
+                    cta_nivel_7
+                END AS cta
+            FROM
+                scft_C_CTA_ESTRUCTURA_2_V
+            WHERE
+                cta_nivel_2 = v_elementvalue_id
+                OR cta_nivel_3 = v_elementvalue_id
+                OR cta_nivel_3 = v_elementvalue_id
+                OR cta_nivel_4 = v_elementvalue_id
+                OR cta_nivel_5 = v_elementvalue_id
+                OR cta_nivel_6 = v_elementvalue_id
+                OR cta_nivel_7 = v_elementvalue_id
+                OR cta_nivel_8 = v_elementvalue_id) AS total
+        WHERE
+            total.cta IS NOT NULL
+        UNION
+        SELECT
+            *
+        FROM (
+            SELECT
+                CASE WHEN cta_element_8 = 'S' THEN
+                    cta_nivel_8
+                END AS cta
+            FROM
+                scft_C_CTA_ESTRUCTURA_2_V
+            WHERE
+                cta_nivel_2 = v_elementvalue_id
+                OR cta_nivel_3 = v_elementvalue_id
+                OR cta_nivel_3 = v_elementvalue_id
+                OR cta_nivel_4 = v_elementvalue_id
+                OR cta_nivel_5 = v_elementvalue_id
+                OR cta_nivel_6 = v_elementvalue_id
+                OR cta_nivel_7 = v_elementvalue_id
+                OR cta_nivel_8 = v_elementvalue_id) AS total
+        WHERE
+            total.cta IS NOT NULL)
+        LOOP
+
+		-- Validar si ya existe la cuenta para ese registro
+		IF NOT EXISTS (
+		    SELECT 1 
+		    FROM scft_acct_account 
+		    WHERE scft_finan_acct_ind_id = v_record_id
+		      AND c_elementvalue_id = cur_cta_id.cta
+		) THEN
+		    INSERT INTO public.scft_acct_account 
+		    (scft_acct_account_id, ad_client_id, ad_org_id, isactive, created,
+		    createdby, updated, updatedby, description, c_elementvalue_id, 
+		    scft_acctclassif_id, scft_finan_acct_ind_id,accttype)
+		    VALUES 
+		    (get_uuid (), 'C8B2F3C65E7547E5835C910E4039C86F', v_org_id, 'Y', now(), 
+		    '100', now(), '100', v_description, cur_cta_id.cta,
+		    v_acctclasif, v_record_id,v_accounttype_element);
+		END IF;
+        END LOOP;
+
+  AD_UPDATE_PINSTANCE(p_PInstance_ID, NULL, 'N', 1, 'Los registros se insertaron exitosamente') ;
+END SCFT_INSERT_LINES_FROM_ELEMENT
+]]></body>
+    </function>
+  </database>

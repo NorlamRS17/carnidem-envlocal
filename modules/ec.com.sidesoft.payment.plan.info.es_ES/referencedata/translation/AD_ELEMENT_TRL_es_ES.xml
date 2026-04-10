@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="00611E939C174A96939F860D308501DE" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssppi_Monthly_Surcharge">Recargo mensual</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssppi_Monthly_Surcharge">Recargo mensual</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B2B37812D4B74F738F083B0CCFF81101" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssppi_Interest">Interés</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssppi_Interest">Interés</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="EE10B657999E439EB23BF950976C459F" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssppi_Shareno">Número de cuota</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssppi_Shareno">Número de cuota</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FFDE940BDBF74B9B8520F5BE885E67AA" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssppi_Capital">Capital</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssppi_Capital">Capital</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

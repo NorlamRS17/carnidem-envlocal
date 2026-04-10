@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="1715C3DFAAD94C1B8628D881A6EBBCFF" trl="Y">
+    <value column="Name" isTrl="Y" original="Execute Payment">Realizar Cobro</value>
+    <value column="Description" isTrl="Y" original="Execute Payment">Realizar Cobro</value>
+    <value column="Help" isTrl="Y" original="Execute Payment">Ralizar cobros por montos especificos.</value>
+  </row>
+  <row id="4C9D881D914F4400ADA040213824C763" trl="Y">
+    <value column="Name" isTrl="Y" original="sdcc_ChangeRPTStatus">Listo para Procesar</value>
+    <value column="Description" isTrl="Y" original="sdcc_ChangeRPTStatus">Listo para Procesar</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="86E19D7D7079442AB90BA96019CDA9E4" trl="N">
+    <value column="Name" isTrl="N" original="Generate Schedule detail">Generate Schedule detail</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

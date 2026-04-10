@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSCCR_PROCESSED_TRG">
+    <trigger name="SSCCR_PROCESSED_TRG" table="SSCCR_POS_CARD_REC_LINE" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[
+    /*************************************************************************
+    * The contents of this file are subject to the Compiere Public
+    * License 1.1 ("License"); You may not use this file except in
+    * compliance with the License. You may obtain a copy of the License in
+    * the legal folder of your Openbravo installation.
+    * Software distributed under the License is distributed on an
+    * "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either express or
+    * implied. See the License for the specific language governing rights
+    * and limitations under the License.
+    * The Original Code is  Compiere  ERP &  Business Solution
+    * The Initial Developer of the Original Code is Jorg Janke and ComPiere, Inc.
+    * Portions created by Jorg Janke are Copyright (C) 1999-2001 Jorg Janke,
+    * parts created by ComPiere are Copyright (C) ComPiere, Inc.;
+    * All Rights Reserved.
+    * Contributor(s): Openbravo SLU
+    * Contributions are Copyright (C) 2001-2012 Openbravo, S.L.U.
+    *
+    * Specifically, this derivative work is based upon the following Compiere
+    * file and version.
+    *************************************************************************
+    * $Id: SSREPR_budget_item_tree_trg.sql,v 1.3 2020/03/02 Exp $
+    ***
+    * Title: Budget Item tree
+    * Description:
+    *  - create treenode
+    *  - Se esta afectando directamente los nodos del arbol, validando que exista previamente el arbol y creandolo si no existe.
+    ************************************************************************/
+    
+
+    v_status VARCHAR2(60);
+    
+BEGIN
+
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+    
+	If(DELETING) THEN
+		Select status Into v_status from ssccr_pos_card_rec  where ssccr_pos_card_rec_id = :OLD.ssccr_pos_card_rec_id;
+		If(v_status = 'RE')Then
+			RAISE_APPLICATION_ERROR(-20000, 'No puedes eliminar una trasacción procesada.');
+		END IF;
+	END IF;
+    
+    -- Summary Nodes first
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20000, '@20001@') ;
+END SSCCR_PROCESSED_TRG
+]]></body>
+    </trigger>
+  </database>

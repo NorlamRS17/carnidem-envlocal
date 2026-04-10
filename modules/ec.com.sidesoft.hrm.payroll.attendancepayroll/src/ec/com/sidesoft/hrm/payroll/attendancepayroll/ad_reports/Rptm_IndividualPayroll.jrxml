@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rptm_IndividualPayroll" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="65b8c27b-26e8-4847-a0f3-0dc1c2a27042">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="SUBREP_Rpt_IndividualPayrollIng" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{BASE_DESIGN} + "/src/com/sidesoft/hrm/payroll/ad_Reports/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_DESIGN" class="java.lang.String">
+		<defaultValueExpression><![CDATA["src"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="c_bpartner_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_PERIOD_FROM" class="java.lang.String"/>
+	<parameter name="ISPAYROLL" class="java.lang.String">
+		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ISLIQUIDATION" class="java.lang.String">
+		<defaultValueExpression><![CDATA["N"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="AD_USER_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA["100"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="C_PERIOD_TO" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select a.ad_org_id as "organizationid",
+d.c_bpartner_id as "c_bpartner_id",'SUELDO '||c.name as "period", d.name as "partner",a.totalincome as "totalincome", a.totalexpense as "totalexpense",(a.totalincome - a.totalexpense)AS "totalrecibir" ,
+C.STARTDATE as "startdate",
+case when  b.ispayroll='Y'  and b.isliquidation= 'Y' then repl.enddate
+else c.ENDDATE
+end as "enddate",
+'ROL INDIVIDUAL '||
+case extract(month from C.STARTDATE)
+when 1 then 'ENERO'
+when 2 then 'FEBRERO'
+when 3 then 'MARZO'
+when 4 then 'ABRIL'
+when 5 then 'MAYO'
+when 6 then 'JUNIO'
+when 7 then 'JULIO'
+when 8 then 'AGOSTO'
+when 9 then 'SEPTIEMBRE'
+when 10 then 'OCTUBRE'
+when 11 then 'NOVIEMBRE'
+when 12 then 'DICIEMBRE'
+end || ' ' || c_year.year  as  "mes",
+d.taxid as "cedula",
+b.documentno as "documentno",
+pst.name as "cargo",
+c.name as "periodo",
+sspr_labor_regime.name as "laborregime",
+c_costcenter.name as "costcenter",
+'El valor a recibir se encuentra acreditado en su cuenta ' ||
+
+	case when C_BP_BankAccount.bankaccounttype = 'S' then 'ahorros'
+	     when C_BP_BankAccount.bankaccounttype = 'C' then 'corriente'
+	end  || ' No. ' || C_BP_BankAccount.accountno || ' del ' || upper(ssfi_banktransfer.name)
+as "commentario",
+cbu.name as "usuario", adu.title as "cargousuario",
+'Fecha de Impresión: ' || TO_CHAR(now(),'dd/MM/yyyy HH24:MI:SS') "fecha_impresion"
+from sspr_payroll_ticket a
+left join sspr_payroll b on a.sspr_payroll_id = b.sspr_payroll_id
+left join c_period c on b.c_period_id = c.c_period_id
+left join c_bpartner d on a.c_bpartner_id = d.c_bpartner_id
+left join sspr_contract ct on ct.c_bpartner_id = d.c_bpartner_id and ct.isactive='Y' and ct.enddate >= c.startdate and (c.enddate between ct.startdate and ct.enddate )
+left join sspr_contract_position ctp on ctp.sspr_contract_id = ct.sspr_contract_id and ctp.isactive='Y'
+left join sspr_position pst on ctp.sspr_position_id = pst.sspr_position_id
+left join c_year on c_year.c_year_id = c.c_year_id
+left join sspr_labor_regime on sspr_labor_regime.sspr_labor_regime_id = ct.sspr_labor_regime_id
+left join c_costcenter on c_costcenter.c_costcenter_id = a.em_sprc_costcenter_id
+left join C_BP_BankAccount on C_BP_BankAccount.c_bpartner_id = d.c_bpartner_id and C_BP_BankAccount.em_sspr_ispayroll = 'Y'
+left join ssfi_banktransfer on ssfi_banktransfer.ssfi_banktransfer_id = C_BP_BankAccount.em_ssfi_banktransfer_id
+left join ad_user adu on adu.ad_user_id = b.createdby
+left join c_bpartner cbu on cbu.c_bpartner_id = adu.c_bpartner_id
+left join (
+select
+sp.enddate
+,c_period_id
+,c_bpartner_id
+from sspr_contract sp
+left join c_period cp on   sp.enddate between cp.startdate and cp.enddate
+order by c_bpartner_id
+) repl on repl.c_bpartner_id = a.c_bpartner_id and repl.c_period_id = b.c_period_id
+where
+d.c_bpartner_id= $P{c_bpartner_id}
+and b.ispayroll = $P{ISPAYROLL}
+and b.isliquidation = $P{ISLIQUIDATION}
+and c.startdate>=(select startdate from c_period where c_period_id=$P{C_PERIOD_FROM})
+and c.startdate<=(select startdate from c_period where c_period_id=$P{C_PERIOD_TO})
+order by d.name, c.startdate]]>
+	</queryString>
+	<field name="organizationid" class="java.lang.String"/>
+	<field name="c_bpartner_id" class="java.lang.String"/>
+	<field name="period" class="java.lang.String"/>
+	<field name="partner" class="java.lang.String"/>
+	<field name="totalincome" class="java.math.BigDecimal"/>
+	<field name="totalexpense" class="java.math.BigDecimal"/>
+	<field name="totalrecibir" class="java.math.BigDecimal"/>
+	<field name="startdate" class="java.sql.Timestamp"/>
+	<field name="enddate" class="java.sql.Timestamp"/>
+	<field name="mes" class="java.lang.String"/>
+	<field name="cedula" class="java.lang.String"/>
+	<field name="documentno" class="java.lang.String"/>
+	<field name="cargo" class="java.lang.String"/>
+	<field name="periodo" class="java.lang.String"/>
+	<field name="laborregime" class="java.lang.String"/>
+	<field name="costcenter" class="java.lang.String"/>
+	<field name="commentario" class="java.lang.String"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="cargousuario" class="java.lang.String"/>
+	<field name="fecha_impresion" class="java.lang.String"/>
+	<variable name="subreporting" class="java.lang.String">
+		<variableExpression><![CDATA[$P{BASE_DESIGN} +  "/ec/com/sidesoft/hrm/payroll/attendancepayroll/ad_reports/Rpt_IndividualPayrollIng.jasper"]]></variableExpression>
+	</variable>
+	<variable name="subreportegr" class="java.lang.String">
+		<variableExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/hrm/payroll/attendancepayroll/ad_reports/Rpt_IndividualPayrollIEgr.jasper"]]></variableExpression>
+	</variable>
+	<variable name="subreporttot" class="java.lang.String">
+		<variableExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/hrm/payroll/attendancepayroll/ad_reports/Rpt_IndividualPayrollTot.jasper"]]></variableExpression>
+	</variable>
+	<variable name="subreportimp" class="java.lang.String">
+		<variableExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/hrm/payroll/attendancepayroll/ad_reports/Rpt_IndividualPayrollImportePatronal.jasper"]]></variableExpression>
+	</variable>
+	<variable name="subreportobs" class="java.lang.String">
+		<variableExpression><![CDATA[$P{BASE_DESIGN} + "/ec/com/sidesoft/hrm/payroll/attendancepayroll/ad_reports/Rpt_IndividualPayrollObservation.jasper"]]></variableExpression>
+	</variable>
+	<group name="Group Partner" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{c_bpartner_id}+$F{mes}]]></groupExpression>
+		<groupHeader>
+			<band height="48">
+				<textField>
+					<reportElement x="351" y="3" width="215" height="11" uuid="5a57f9ba-2656-42fe-98bc-7e2ea216ffbc"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{fecha_impresion}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="201">
+				<staticText>
+					<reportElement x="52" y="28" width="96" height="12" uuid="65345197-8be2-481c-8f1e-2deb3b396eb9"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ELABORADO POR]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="351" y="28" width="110" height="12" uuid="d87fa108-6e66-4095-9e7f-e1d22de9baa7"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[RECIBI CONFORME]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="85" width="17" height="12" uuid="095e0c95-3119-40d0-95a2-c9e03fa2fc6e"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CI]]></text>
+				</staticText>
+				<line>
+					<reportElement x="347" y="67" width="164" height="1" uuid="022c2219-b131-44df-9e61-d0756e294a5a"/>
+				</line>
+				<textField isBlankWhenNull="true">
+					<reportElement x="384" y="85" width="113" height="12" uuid="42b5288f-44b0-4c3a-be28-b4e37a9bd618"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+				</textField>
+				<subreport>
+					<reportElement x="369" y="0" width="200" height="25" uuid="934c0b05-1884-4757-89ff-54b30ee8f0a8"/>
+					<subreportParameter name="c_bpartner_id">
+						<subreportParameterExpression><![CDATA[$F{c_bpartner_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="documentno">
+						<subreportParameterExpression><![CDATA[$F{documentno}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$V{subreporttot}]]></subreportExpression>
+				</subreport>
+				<line>
+					<reportElement x="49" y="68" width="164" height="1" uuid="d6a9082b-4a28-4ca1-a859-3f23ae8b31d1"/>
+				</line>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="49" y="99" width="197" height="37" uuid="b3bccd47-8174-469c-84ed-f9e5d6a474a2"/>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{commentario}]]></textFieldExpression>
+				</textField>
+				<subreport>
+					<reportElement x="0" y="150" width="569" height="51" uuid="b1e0c94f-15a5-464c-aa75-5fcaf0c3d604"/>
+					<subreportParameter name="c_bpartner_id">
+						<subreportParameterExpression><![CDATA[$F{c_bpartner_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="documentno">
+						<subreportParameterExpression><![CDATA[$F{documentno}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$V{subreportobs}]]></subreportExpression>
+				</subreport>
+				<subreport>
+					<reportElement x="279" y="101" width="293" height="43" uuid="b939caef-0098-450c-81f2-9296d84acebb"/>
+					<subreportParameter name="c_bpartner_id">
+						<subreportParameterExpression><![CDATA[$F{c_bpartner_id}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="documentno">
+						<subreportParameterExpression><![CDATA[$F{documentno}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$V{subreportimp}]]></subreportExpression>
+				</subreport>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="35" y="72" width="211" height="12" uuid="840302c5-3cfa-42a9-8045-0d0a05db2be2"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="35" y="85" width="211" height="12" uuid="0dc68d2e-1994-4b37-89a0-7e6e05f4a44b"/>
+					<textElement textAlignment="Center">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{cargousuario}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+					<reportElement mode="Transparent" x="324" y="72" width="211" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="34cf46be-bac8-4f49-a45c-334e618f295b"/>
+					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{partner}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="132" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="95" width="277" height="37" uuid="fd2a54f4-004f-4ddf-81ee-b23513ffbf38"/>
+				<subreportParameter name="c_bpartner_id">
+					<subreportParameterExpression><![CDATA[$F{c_bpartner_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="documentno">
+					<subreportParameterExpression><![CDATA[$F{documentno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$V{subreporting}]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="277" y="95" width="293" height="37" uuid="bffe64b3-9ee1-4a74-ac95-f3dacea7751e"/>
+				<subreportParameter name="c_bpartner_id">
+					<subreportParameterExpression><![CDATA[$F{c_bpartner_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="documentno">
+					<subreportParameterExpression><![CDATA[$F{documentno}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$V{subreportegr}]]></subreportExpression>
+			</subreport>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="389" y="20" width="60" height="12" uuid="54ef14fe-749d-49f1-84fc-81c9610aaabc"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{startdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="451" y="20" width="12" height="12" uuid="b6ea240f-3232-459a-a1c9-70a5b163c0c0"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AL]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="321" y="7" width="247" height="12" uuid="81c69f98-5aa8-4c9e-859e-46ccf87dac58"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="321" y="20" width="64" height="12" uuid="3e17b0ab-1414-4803-8183-6c237d3c3994"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERIODO: DEL]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="468" y="20" width="68" height="12" uuid="c23a66b1-8cc2-4748-af0d-2964a910fe0e"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{enddate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="352" y="78" width="47" height="12" uuid="b3330149-25de-4b57-84ee-cc92cd3cf2dd"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cargo:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="402" y="78" width="170" height="12" uuid="e1c9b04e-20ee-498e-96d0-12e98538bda5"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cargo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="402" y="64" width="170" height="12" uuid="d7aa98e4-c757-40ae-86b2-49fe8c4d4526"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costcenter}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="463" y="48" width="70" height="12" uuid="9ee3e0da-5cc0-435d-9202-71f95cc14e39">
+					<printWhenExpression><![CDATA[$P{c_bpartner_id}==null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Número de rol:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="88" y="51" width="124" height="12" uuid="fc58840c-d320-46c5-a452-8667e4c9e1a5"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cedula}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="88" y="78" width="243" height="12" uuid="e499397d-0613-43f9-95f1-a1901aa8f42f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{laborregime}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="88" y="64" width="220" height="12" uuid="ac6bc3c0-180e-49c2-b612-d0533fdcd3e2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{partner}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="536" y="48" width="32" height="12" uuid="3f909b63-37fd-413e-8c35-3991c12bd920">
+					<printWhenExpression><![CDATA[$P{c_bpartner_id}== null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="7" y="5" width="301" height="41" uuid="d384f3fc-839d-4a0a-a6f4-e69443e767a8"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{organizationid})]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="308" y="64" width="91" height="12" uuid="649bfd7c-c0d0-4d58-be4f-73ef91a1121a"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Centro de Costo: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="65" width="57" height="12" uuid="5ebabf22-2816-42c9-bd64-f269fbce5efb"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombres:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="51" width="50" height="12" uuid="d7b6a134-529d-448a-989f-974169c13a28"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="77" width="84" height="12" uuid="1006f3b7-0dec-420a-8574-5e27d9720d68"/>
+				<textElement textAlignment="Left">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Régimen Laboral: ]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

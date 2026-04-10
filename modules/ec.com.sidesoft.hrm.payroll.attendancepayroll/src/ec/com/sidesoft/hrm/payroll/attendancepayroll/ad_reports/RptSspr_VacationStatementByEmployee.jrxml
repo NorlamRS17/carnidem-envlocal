@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RptSspr_VacationStatementByEmployee" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="d58c681d-1231-48f8-8cb7-ab30f2e307a2">
+	<property name="ireport.zoom" value="1.210000000000009"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="org.openbravo.dal.core.OBContext"/>
+	<parameter name="C_BPARTNER_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="User_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[OBContext.getOBContext().getUser().getId()]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select sspr_vacations.ad_org_id as "organizationid",
+	ao.name as "organizacion",
+	c_bpartner.em_sspr_documentno as "identificador",
+	co.name as "centro_costo",
+	c_bpartner.name as "empleado",
+	sspr_vacations.entrydate as "fecha_inicio",
+	sspr_vacations.end_date as "fechahasta",
+	round(sspr_vacations.earneddays,2) + round(sspr_vacations.earneddays_add,2) as "dias_ganados",
+	sspr_vacations.nodaystomados + round(sspr_vacations.Noadditionaltomados,2) as "dias_tomados",
+	round(sspr_vacations.Nodaystotal,2) as "total_dias",
+	to_char(now(),'dd/MM/yyyy') as "fecha_actual"
+from sspr_vacations
+left join c_bpartner on c_bpartner.c_bpartner_id = sspr_vacations.c_bpartner_id
+left join c_costcenter co on co.c_costcenter_id = c_bpartner.em_sspr_costcenter_id
+left join ad_org ao on ao.ad_org_id = sspr_vacations.ad_org_id
+where
+(
+	(sspr_vacations.c_bpartner_id = $P{C_BPARTNER_ID} or $P{C_BPARTNER_ID} is null)
+	AND  C_BPARTNER.EM_SSPR_STATUS = 'A'
+	and (coalesce((select 1
+				 from ad_user u
+				 where u.ad_user_id = $P{User_ID}
+				 and u.em_shpapr_adminassis = 'Y'
+				), 0) = 1
+			 )
+)
+or
+(
+	(sspr_vacations.c_bpartner_id =
+		 (SELECT AU.C_BPARTNER_ID
+			FROM AD_USER AU
+			WHERE AU.AD_USER_ID = $P{User_ID}
+		 )
+	)
+	AND  C_BPARTNER.EM_SSPR_STATUS = 'A'
+	and (coalesce((select 1
+				 from ad_user u
+				 where u.ad_user_id = $P{User_ID}
+				 and u.em_shpapr_adminassis = 'Y'
+				), 0) = 0
+			 )
+)
+order by co.name,c_bpartner.name, sspr_vacations.entrydate]]>
+	</queryString>
+	<field name="organizationid" class="java.lang.String"/>
+	<field name="organizacion" class="java.lang.String"/>
+	<field name="identificador" class="java.lang.String"/>
+	<field name="centro_costo" class="java.lang.String"/>
+	<field name="empleado" class="java.lang.String"/>
+	<field name="fecha_inicio" class="java.sql.Timestamp"/>
+	<field name="fechahasta" class="java.sql.Timestamp"/>
+	<field name="dias_ganados" class="java.math.BigDecimal"/>
+	<field name="dias_tomados" class="java.math.BigDecimal"/>
+	<field name="total_dias" class="java.math.BigDecimal"/>
+	<field name="fecha_actual" class="java.lang.String"/>
+	<variable name="v_tot_dias" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_dias}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="171" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="328" y="115" width="262" height="20" uuid="3c0d1fec-985e-40b9-8746-1101c9596ad5"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["FECHA DE IMPRESIÓN: "+ $F{fecha_actual}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="187" y="73" width="404" height="42" uuid="35c04c6d-6373-4cf1-ad79-cae14f97e095"/>
+				<textElement textAlignment="Center">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTADO DE CUENTAS DE VACACIONES POR EMPLEADO]]></text>
+			</staticText>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="3" y="2" width="184" height="113" uuid="2a3d0766-ca88-43e1-b026-143fa41bebb4"/>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{organizationid})]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="187" y="2" width="403" height="71" uuid="0d14d4c3-a354-47b7-84de-e668ed0eb525"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="17" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{organizacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="343" y="138" width="51" height="33" uuid="e0cb1a03-bd5a-4c6d-86c5-1cf68f1ab841"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA INICIO PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="394" y="138" width="52" height="33" uuid="948656c6-79b2-4da2-ae8a-36997c29ae42"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA FIN PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="446" y="138" width="45" height="33" uuid="bd83f55e-17ee-4701-ad3f-71a3b9289d17"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIAS GANADOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="491" y="138" width="47" height="33" uuid="231e0817-0ca0-4a80-b9f1-284d9f71d722"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DIAS TOMADOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="538" y="138" width="52" height="33" uuid="ffe06c15-7fb0-45d6-9af3-efb00038dfb5"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="54" y="138" width="97" height="33" uuid="690292c3-0e7a-4548-bd49-ffdbc830fba1"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CENTRO DE  COSTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="138" width="51" height="33" uuid="19667d4b-8d02-442c-8a1d-b0aa8ac5af8b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[IDENTIFICADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="138" width="192" height="33" uuid="3143944a-bff6-4b20-b818-378f4b52bf2c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERCERO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="343" y="0" width="51" height="10" uuid="1354d161-e7f8-4d77-a770-99fbdd40fb77"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha_inicio}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="394" y="0" width="52" height="10" uuid="4521bf70-bab3-4933-8e55-e1352eaa5180"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechahasta}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="446" y="0" width="45" height="10" uuid="3e0258d5-b436-4a68-a404-c5c88d99934f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dias_ganados}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="491" y="0" width="47" height="10" uuid="b8c63b0b-0dc6-43cf-a59d-7a66e44a5f4c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dias_tomados}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="538" y="0" width="52" height="10" uuid="cc346def-367d-4d29-bd86-fde2d0519a0a"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_dias}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="55" y="0" width="96" height="10" uuid="91fdbfe0-0a5d-4fec-8843-1ea5eb12ad33"/>
+				<box leftPadding="10">
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{centro_costo}]]></textFieldExpression>
+			</textField>
+			<elementGroup>
+				<line>
+					<reportElement x="3" y="0" width="1" height="10" uuid="82a946aa-371d-455a-8a81-0ef4c887773d"/>
+				</line>
+			</elementGroup>
+			<line>
+				<reportElement x="54" y="0" width="1" height="10" uuid="2d35dec2-c395-4020-a50f-c7c30b345065"/>
+			</line>
+			<line>
+				<reportElement x="151" y="0" width="1" height="10" uuid="bce49008-3862-4562-96da-297fc687e62c"/>
+			</line>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="152" y="0" width="191" height="10" uuid="97ce1ed4-64a3-4b5f-8cca-ecd096f60c4f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{empleado}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="4" y="0" width="50" height="10" uuid="a0845fb5-7236-4281-ba43-8169e7158446"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{identificador}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="538" y="0" width="52" height="20" uuid="21208644-ff23-4c20-a88f-6fe7316c8876"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{v_tot_dias}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="0" width="535" height="20" uuid="5bab38d4-7b03-4a35-a9d2-e8aabd6e1a89"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL DIAS PENDIENTES]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="803151">
+      <oldValue><![CDATA[@IsDepreciated@='Y']]></oldValue>
+      <newValue><![CDATA[@IsDepreciated@='Y' & @EM_Ssam_Typeofchange@!'RE']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="8391231E7A9F4E6294D8B5853185EB83">
+      <oldValue><![CDATA[@IsDepreciated@='Y']]></oldValue>
+      <newValue><![CDATA[@IsDepreciated@='Y' & @EM_Ssam_Typeofchange@='']]></newValue>
+    </columnDataChange>
+  </vector>

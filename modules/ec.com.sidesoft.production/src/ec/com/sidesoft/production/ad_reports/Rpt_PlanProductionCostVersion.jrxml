@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Rpt_PlanProductionCostVersion" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96ce726d-8b9b-4822-8296-2253622c8788">
+	<property name="ireport.zoom" value="1.0000000000000095"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String"/>
+	<parameter name="Org_ID" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="User_ID" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/opt/openbravo/carnidem/modules/ec.com.sidesoft.production/src/ec/com/sidesoft/production/ad_reports/"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+            -- Información de la Versión
+            v.documentno as version_codigo,
+            pp.name as plan_nombre,
+            v.ad_org_id as organizationid,
+
+            -- Información de la Secuencia
+            seq.seqno as secuencia_num,
+            seq.name as secuencia_nombre,
+            seq.ma_sequence_id as secuencia_id,
+
+            -- Centro de Costo (nombre desde MA_CostCenter)
+            cc.name as centro_costo,
+
+            -- Tiempo Estimado (Estimatedtime de MA_Sequence)
+            COALESCE(seq.Estimatedtime, 0) as tiempo_estimado,
+
+            -- MO $/h (desde MA_CostCenter_Version -> MA_CostCenter_Employee -> C_Salary_Category_Cost)
+            COALESCE(
+                (SELECT SUM(cce.quantity * (
+                    SELECT cscc.cost
+                    FROM c_salary_category_cost cscc
+                    WHERE cscc.c_salary_category_id = cce.c_salary_category_id
+                      AND cscc.datefrom <= CURRENT_DATE
+                    ORDER BY cscc.datefrom DESC
+                    LIMIT 1
+                ))
+                FROM ma_costcenter_employee cce
+                WHERE cce.ma_costcenter_version_id = ccv.ma_costcenter_version_id
+                  AND cce.isactive = 'Y'
+                ), 0
+            ) as costo_mo_hora,
+
+            -- Maquinaria $/h (desde MA_CostCenter_Version -> MA_CostCenter_Machine -> MA_Machine_Cost)
+            COALESCE(
+                (SELECT SUM(ccm.use * (
+                    SELECT mc.cost
+                    FROM ma_machine_cost mc
+                    WHERE mc.ma_machine_id = ccm.ma_machine_id
+                      AND mc.validfrom <= CURRENT_DATE
+                      AND mc.isactive = 'Y'
+                    ORDER BY mc.validfrom DESC
+                    LIMIT 1
+                ))
+                FROM ma_costcenter_machine ccm
+                WHERE ccm.ma_costcenter_version_id = ccv.ma_costcenter_version_id
+                  AND ccm.isactive = 'Y'
+                ), 0
+            ) as costo_maq_hora,
+
+            -- Indirectos $/h (desde MA_CostCenter_Version -> MA_CostCenter_IC -> MA_Indirect_Cost_Value)
+            COALESCE(
+                (SELECT SUM(
+                    (SELECT icv.cost
+                    FROM ma_indirect_cost_value icv
+                    WHERE icv.ma_indirect_cost_id = ccic.ma_indirect_cost_id
+                      AND icv.datefrom <= CURRENT_DATE
+                      AND (icv.dateto IS NULL OR icv.dateto >= CURRENT_DATE)
+                      AND icv.isactive = 'Y'
+                    ORDER BY icv.datefrom DESC
+                    LIMIT 1)
+                )
+                FROM ma_costcenter_ic ccic
+                WHERE ccic.ma_costcenter_version_id = ccv.ma_costcenter_version_id
+                  AND ccic.isactive = 'Y'
+                ), 0
+            ) as costo_ind_hora
+
+        FROM ma_processplan_version v
+        JOIN ma_processplan pp ON v.ma_processplan_id = pp.ma_processplan_id
+        JOIN ma_sequence seq ON seq.ma_processplan_version_id = v.ma_processplan_version_id
+        LEFT JOIN ma_process proc ON seq.ma_process_id = proc.ma_process_id
+        LEFT JOIN ma_costcenter cc ON proc.ma_costcenter_id = cc.ma_costcenter_id
+        LEFT JOIN ma_costcenter_version ccv ON cc.ma_costcenter_id = ccv.ma_costcenter_id AND ccv.isactive = 'Y'
+
+        WHERE v.ma_processplan_version_id = $P{DOCUMENT_ID}
+          AND v.isactive = 'Y'
+          AND seq.isactive = 'Y'
+
+        ORDER BY seq.seqno]]>
+	</queryString>
+	<field name="version_codigo" class="java.lang.String"/>
+	<field name="plan_nombre" class="java.lang.String"/>
+	<field name="organizationid" class="java.lang.String"/>
+	<field name="secuencia_num" class="java.math.BigDecimal"/>
+	<field name="secuencia_nombre" class="java.lang.String"/>
+	<field name="secuencia_id" class="java.lang.String"/>
+	<field name="centro_costo" class="java.lang.String"/>
+	<field name="tiempo_estimado" class="java.math.BigDecimal"/>
+	<field name="costo_mo_hora" class="java.math.BigDecimal"/>
+	<field name="costo_maq_hora" class="java.math.BigDecimal"/>
+	<field name="costo_ind_hora" class="java.math.BigDecimal"/>
+	<variable name="costo_maquinaria" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{tiempo_estimado}.multiply($F{costo_maq_hora})]]></variableExpression>
+	</variable>
+	<variable name="costo_mo" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{tiempo_estimado}.multiply($F{costo_mo_hora})]]></variableExpression>
+	</variable>
+	<variable name="costo_indirectos" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$F{tiempo_estimado}.multiply($F{costo_ind_hora})]]></variableExpression>
+	</variable>
+	<variable name="total_secuencia" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{costo_mo}.add($V{costo_maquinaria}).add($V{costo_indirectos})]]></variableExpression>
+	</variable>
+	<variable name="sum_costo_mo" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{costo_mo}]]></variableExpression>
+	</variable>
+	<variable name="sum_costo_maquinaria" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{costo_maquinaria}]]></variableExpression>
+	</variable>
+	<variable name="sum_costo_indirectos" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{costo_indirectos}]]></variableExpression>
+	</variable>
+	<variable name="sum_total_secuencia" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{total_secuencia}]]></variableExpression>
+	</variable>
+	<variable name="sum_total_productos_p" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$V{sum_total_productos_p}]]></variableExpression>
+	</variable>
+	<variable name="costo_total_produccion" class="java.math.BigDecimal">
+		<variableExpression><![CDATA[$V{sum_total_secuencia}.add($V{sum_total_productos_p})]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="62" splitType="Stretch">
+			<staticText>
+				<reportElement x="677" y="46" width="50" height="15" uuid="aa892e53-7c29-4293-937e-b0c1214c10d2"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HORA EMISIÓN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="727" y="47" width="75" height="15" uuid="3a342094-266a-4475-ab0f-9e3c3b1a83d0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("HH:mm:ss").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="677" y="31" width="50" height="15" uuid="ce8f0c89-9695-4822-be16-d44d0ab2971a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA EMISIÓN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="727" y="31" width="75" height="15" uuid="b81f25fe-114f-45a1-aedf-d330bcfdcc29"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="179" y="0" width="498" height="62" uuid="a2008a48-f6b9-4ba7-9139-a0cc6e43132a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COSTOS VERSIÓN DE PLAN DE PRODUCCIÓN]]></text>
+			</staticText>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Top" isUsingCache="true">
+				<reportElement key="image-1" x="0" y="0" width="179" height="62" uuid="74801aee-9521-4c30-b8ff-446e3e8a113b"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal", $F{organizationid})]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement x="179" y="0" width="498" height="35" uuid="29887d1d-748a-4df4-b992-611195ffb52e"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Versión: " + $F{version_codigo} + " - Plan: " + $F{plan_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="727" y="0" width="35" height="15" uuid="2ff3c4f7-0d63-4160-b24c-20f22cde4e0f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="762" y="0" width="40" height="15" uuid="f1f2f3f4-a5a6-b7b8-c9c0-d1d2d3d4d5d6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="677" y="0" width="50" height="15" uuid="568052c9-d0df-4a72-9de5-6e100dad57d8"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PÁGINA:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="124" splitType="Stretch">
+			<subreport>
+				<reportElement x="35" y="104" width="767" height="20" uuid="a1b2c3d4-e5f6-7890-abcd-1234567890ab"/>
+				<subreportParameter name="SECUENCIA_ID">
+					<subreportParameterExpression><![CDATA[$F{secuencia_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SECUENCIA_NOMBRE">
+					<subreportParameterExpression><![CDATA[$F{secuencia_nombre}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="sum_costo_total_producto" toVariable="sum_total_productos_p" calculation="Sum"/>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubReport_ProductosP.jasper"]]></subreportExpression>
+			</subreport>
+			<textField isBlankWhenNull="true">
+				<reportElement x="136" y="58" width="104" height="30" uuid="9b99151a-7b37-48ff-bcab-5872a216e967"/>
+				<box leftPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{centro_costo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement x="593" y="58" width="68" height="30" uuid="c2873a7e-b189-4d8b-b8ed-3377afaf77c2"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{costo_maquinaria}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement x="455" y="58" width="72" height="30" uuid="2015035f-4f5c-4733-b209-a6c03fad814f"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costo_ind_hora}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement x="724" y="58" width="78" height="30" uuid="25be2463-877e-4ad4-84cd-46ecb3e876f9"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_secuencia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement x="240" y="58" width="80" height="30" uuid="eabd37a8-7592-4d37-ae8d-6befeb62db40"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tiempo_estimado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement x="527" y="58" width="66" height="30" uuid="e7cc0c75-7ece-4c54-928f-e47f4c4d96c1"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{costo_mo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement x="320" y="58" width="60" height="30" uuid="98e9171c-b4fe-42cd-865f-23b7df5147ba"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costo_mo_hora}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="58" width="136" height="30" uuid="c2451bce-f9e0-47e7-a092-cb023c02729e"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{secuencia_nombre}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement x="661" y="58" width="63" height="30" uuid="2169d066-19fa-4b33-adc2-79760c76f7d5"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{costo_indirectos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00" isBlankWhenNull="true">
+				<reportElement x="380" y="58" width="75" height="30" uuid="19b0ee24-f393-42c8-8323-7eec20e09451"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{costo_maq_hora}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="527" y="33" width="66" height="25" backcolor="#DFDFDF" uuid="9eaa6b1b-4935-465b-b044-205f30dcefe9"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aporte Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="455" y="33" width="72" height="25" backcolor="#DFDFDF" uuid="53ce94df-e10d-4815-ac2b-5faca58bf57a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Indirectos $/h]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="320" y="33" width="60" height="25" backcolor="#DFDFDF" uuid="4a8527ad-f1f8-4dab-925c-fdbd2adb6a2a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MO $/h]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="33" width="136" height="25" backcolor="#DFDFDF" uuid="81be5994-839a-4d77-87b4-1640f3d9bd7b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Secuencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="593" y="33" width="68" height="25" backcolor="#DFDFDF" uuid="b87047b2-f028-43e1-acc7-2fc37cfe3d4b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aporte Costo Maquinaria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="661" y="33" width="63" height="25" backcolor="#DFDFDF" uuid="e749066a-af82-48ab-a0de-9dcae09eb749"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aporte Costo Indirectos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="136" y="33" width="104" height="25" backcolor="#DFDFDF" uuid="f0e374bf-4a60-484f-9f35-56a7dbdac9b6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Centro de Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="724" y="33" width="78" height="25" backcolor="#DFDFDF" uuid="9990452b-fafe-4b81-a5c8-be65ee06ff11"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Costo estandar]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="380" y="33" width="75" height="25" backcolor="#DFDFDF" uuid="bfdc61bc-caad-4bbd-93f6-c4c4968d49a2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Maquinaria $/h]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="240" y="33" width="80" height="25" backcolor="#DFDFDF" uuid="88fd1793-5b6b-4a77-8104-db7ca6a09a04"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tiempo Estimado]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="802" height="33" uuid="a1a2a3a4-b5b6-c7c8-d9d0-e1e2e3e4e5e6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SECUENCIA " + $F{secuencia_num}.intValue() + ": " + $F{secuencia_nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="115" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="54" width="527" height="20" backcolor="#FFFFFF" uuid="e77ddae0-8e4f-4110-96fb-e107b3c664c7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL SECUENCIAS:]]></text>
+			</staticText>
+			<textField pattern="$#,##0.00">
+				<reportElement mode="Opaque" x="527" y="54" width="66" height="20" backcolor="#FFFFFF" uuid="d9be612d-a232-4595-8f56-ef73b3647c70"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_costo_mo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00">
+				<reportElement mode="Opaque" x="593" y="54" width="68" height="20" backcolor="#FFFFFF" uuid="aa0461a9-9c21-48e4-b59b-12e9590d99d5"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_costo_maquinaria}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00">
+				<reportElement mode="Opaque" x="661" y="54" width="63" height="20" backcolor="#FFFFFF" uuid="b91c0467-430c-4f44-b22f-c5a66d89d2bf"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_costo_indirectos}]]></textFieldExpression>
+			</textField>
+			<textField pattern="$#,##0.00">
+				<reportElement mode="Opaque" x="724" y="54" width="78" height="20" backcolor="#FFFFFF" uuid="fb0f3e18-c7b1-4fdc-8bd8-c6630b00d9ee"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_total_secuencia}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="74" width="724" height="20" backcolor="#FFFFFF" uuid="a1a2a3a4-b5b6-c7c8-d9d0-e1e2e3e4e5e6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL PRODUCTOS P-:]]></text>
+			</staticText>
+			<textField pattern="$#,##0.00">
+				<reportElement mode="Opaque" x="724" y="74" width="78" height="20" backcolor="#FFFFFF" uuid="b2b3b4b5-c6c7-d8d9-e0e1-f2f3f4f5f6f7"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_total_productos_p}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="94" width="724" height="20" backcolor="#FFFFFF" uuid="c3c4c5c6-d7d8-e9e0-f1f2-a3a4a5a6a7a8"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COSTO TOTAL DE PRODUCCIÓN:]]></text>
+			</staticText>
+			<textField evaluationTime="Report" pattern="$#,##0.00">
+				<reportElement mode="Opaque" x="724" y="94" width="78" height="20" backcolor="#FFFFFF" uuid="d4d5d6d7-e8e9-f0f1-a2a3-b4b5b6b7b8b9"/>
+				<box rightPadding="2">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{sum_total_secuencia}.add($V{sum_total_productos_p})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="527" y="29" width="66" height="25" backcolor="#DFDFDF" uuid="b69c4a98-d758-4485-8607-94b6e88db9d8"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aporte Costo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="593" y="29" width="68" height="25" backcolor="#DFDFDF" uuid="782ad337-8276-4ad0-ac34-157e22c875bb"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aporte Costo Maquinaria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="661" y="29" width="63" height="25" backcolor="#DFDFDF" uuid="12b27cab-4aed-4715-b051-25170763e819"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Aporte Costo Indirectos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="724" y="29" width="78" height="25" backcolor="#DFDFDF" uuid="b621c097-275b-4877-a0f6-ac3e0c6baf1f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="0" width="498" height="29" uuid="40fe3d19-0c27-4b84-9ccc-2e13409aff97"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[COSTOS TOTALES]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="03F56AFEAE6349B9940CEA9CC16BBC9A" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Workbedone">Trabajos a realizar</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Workbedone">Trabajos a realizar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="0CBCFBDCBA5749598AFC972C0E613AB6" trl="Y">
+    <value column="Name" isTrl="Y" original="em_scma_start_periodicity">Fecha Inicio</value>
+    <value column="PrintName" isTrl="Y" original="em_scma_start_periodicity">Fecha Inicio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="143B2A82CF5A41BD89B73172173C1590" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Cleandesprod">Se realiza la limpieza y desinfección antes de producir</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Cleandesprod">Se realiza la limpieza y desinfección antes de producir</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="1462700E4E3740318B1B246D1BA06AA4" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_End">Hora Fin</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_End">Hora Fin</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2785A806A49C4C41A7734AA85ACFE4E9" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Correct_Tools">Correcciones</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Correct_Tools">Correcciones</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2EE198621C86452D9DD647AD3187D71F" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Cleanorder">Área limpia y ordenada</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Cleanorder">Área limpia y ordenada</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="306785FC72564E30ADA8AADFDC442847" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Start">Hora Inicio</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Start">Hora Inicio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4AC6F80CA413458C84DAE81B348743C5" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Section_ID">Área del Solicitante</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Section_ID">Área del Solicitante</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4CC055043BBB4D00A42DDA8BCF333B5D" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Btnapprove">Aprobar</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Btnapprove">Aprobar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4F619D1AFBCE4AAB8635E075C15531A4" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Infrastructure">Infraestructura</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Infrastructure">Infraestructura</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="667FE9FB65D2477ABAC5A11A7CF4FE95" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Changeproposal">Fecha propuesta de cambio</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Changeproposal">Fecha propuesta de cambio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="6755F9C1D2804109B9FBF499C0ABD097" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Acceptname">Nombre del Aceptante</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Acceptname">Nombre del Aceptante</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="7A15E1E71B8A4879811D61FF4A68EC71" trl="N">
+    <value column="Name" isTrl="Y" original="EM_Scma_Pollutant">Se encuentran herramientas sueltas, partes de equipos, grasa</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Pollutant">Se encuentran herramientas sueltas, partes de equipos, grasa</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="840A3FDF456B452D9FDD2B5B0190A57A" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Correct_Clean">Correcciones</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Correct_Clean">Correcciones</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="8DAF3817672340E7BA14B42590C9B5A6" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Tempsolution">Solución Temporal</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Tempsolution">Solución Temporal</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="932EB46BA7F34A0EB890908234CE296A" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Area">Área</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Area">Área</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A45A87669D3B4758B09356587C33FAE1" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Actualchange">Fecha real de cambio</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Actualchange">Fecha real de cambio</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="AE06336C919B4B7F9DA888C48AFD0A26" trl="Y">
+    <value column="Name" isTrl="Y" original="em_scma_end_periodicity">Fecha Fin</value>
+    <value column="PrintName" isTrl="Y" original="em_scma_end_periodicity">Fecha Fin</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B5250ECE99984B8483B454824E4765A2" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Docstatus">Estado:</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Docstatus">Estado:</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B8379A577E9F48D4ACF84A40518FE5FB" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Definitivesolution">Solución Definitiva</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Definitivesolution">Solución Definitiva</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="BEEF28BC474B4F1A8EA6DE46B3E9541C" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Applicant">Solicitante</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Applicant">Solicitante</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E5BF2B7FE9D94B06B78CCFCDE126B9E4" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Usedparts">Repuestos usados</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Usedparts">Repuestos usados</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E650B4AF8CF04C31AF52A7228AD721E9" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Correct_Area">Correcciones</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Correct_Area">Correcciones</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FCC065D9266B4871B2B44DBFCA892C07" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Acceptarrangement">Se aceptan los arreglos realizados</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Acceptarrangement">Se aceptan los arreglos realizados</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="FFBA900AD1C043D19A32F1DDC4D0ED9A" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scma_Isweekend_Maintenance">Mantenimiento en fines de semana</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scma_Isweekend_Maintenance">Mantenimiento en fines de semana</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

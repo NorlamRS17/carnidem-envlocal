@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="617238A28D0946E6A48BB7E3D60D51D2" trl="Y">
+    <value column="Name" isTrl="Y" original="Stop">Parada</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssprodp_Stop">Parada</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9D551F0BAE2A4ADD9326FD68D8E8ED58" trl="Y">
+    <value column="Name" isTrl="Y" original="Generate Movement">Generar Movimiento</value>
+    <value column="PrintName" isTrl="Y" original="Generate Movement">Generar Movimiento</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="F7DB0D81B4BD452CB4A9C940B05B1833" trl="Y">
+    <value column="Name" isTrl="Y" original="Movement between warehouses">Movimiento entre almacenes</value>
+    <value column="PrintName" isTrl="Y" original="Movement between warehouses">Movimiento entre almacenes</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

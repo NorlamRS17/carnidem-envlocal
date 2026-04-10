@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_INVOICE">
+    <table name="C_INVOICE" primaryKey="C_INVOICE_KEY">
+      <index name="EM_SCCC_INVOICE_BPARTNER_IDX" unique="false">
+        <index-column name="C_BPARTNER_ID"/>
+      </index>
+      <index name="EM_SCCC_INVOICE_DOCTYPE_IDX" unique="false">
+        <index-column name="C_DOCTYPE_ID"/>
+        <index-column name="ISSOTRX"/>
+      </index>
+      <index name="EM_SCCC_INVOICE_SCNR_IDX" unique="false">
+        <index-column name="EM_SCNR_INVOICE_ID"/>
+      </index>
+      <index name="EM_SCCC_INVOICE_SOTRX_IDX" unique="false">
+        <index-column name="ISSOTRX"/>
+        <index-column name="DATEINVOICED"/>
+      </index>
+    </table>
+  </database>

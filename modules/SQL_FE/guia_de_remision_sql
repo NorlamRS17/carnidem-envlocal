@@ -1,0 +1,22 @@
+SELECT * FROM
+(
+SELECT
+2 ordinal,
+aa.m_inout_id,
+aa.m_inoutline_id,
+au.seqno AS numero,
+' ' AS nombre,
+ab.description AS valor
+FROM m_inoutline aa 
+INNER JOIN m_product a ON a.m_product_id = aa.m_product_id
+INNER JOIN m_inout bb ON aa.m_inout_id = bb.m_inout_id
+INNER JOIN m_attributesetinstance ab ON ab.m_attributesetinstance_id = aa.m_attributesetinstance_id --
+INNER JOIN m_attributeset ats ON ats.m_attributeset_id = ab.m_attributeset_id -- CONJUNTO DE ATRIBUTOS
+INNER JOIN m_attributeinstance ai ON ai.m_attributesetinstance_id = aa.m_attributesetinstance_id -- VALOR ATRIBUTO
+INNER JOIN m_attribute ma ON ai.m_attribute_id = ma.m_attribute_id --NOMBRE ATRIBUTO
+INNER JOIN m_attributeuse au ON  ma.m_attribute_id = au.m_attribute_id AND ats.m_attributeset_id = au.m_attributeset_id--ORDEN ATRIBUTO
+--AND ma.description<>'N'	
+) sq
+WHERE sq.m_inout_id=?
+AND sq.nombre IS NOT NULL AND sq.valor IS NOT NULL  and sq.valor <>''
+ORDER BY sq.m_inout_id, sq.m_inoutline_id, sq.ordinal, sq.numero

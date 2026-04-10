@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER EEI_VLD_INVOICE_NUM_REF">
+    <trigger name="EEI_VLD_INVOICE_NUM_REF" table="C_INVOICE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	v_no_inv_ref  		VARCHAR2(1);    
+	v_reference			VARCHAR2(20);   
+	v_vouchercod		VARCHAR2(20);   
+	v_sub				CHAR(1);		
+ 	v_contador	NUMBER:= 0;
+	v_cantidad	NUMBER:= 0;
+	v_contador2	NUMBER:= 0;
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+	IF (INSERTING OR UPDATING) THEN
+		-- CONSULTAR CHECK SIN REFERENCIA FACTURA
+    	SELECT em_eei_no_reference_invoice INTO v_no_inv_ref
+    	FROM c_doctype  
+    	WHERE c_doctype_id = :new.c_doctypetarget_id;
+    	
+    	--VALIDAR SI ES FACTURA CLIENTE
+    	IF (:new.issotrx = 'Y' AND v_no_inv_ref = 'Y') THEN
+			--VALIDACION CAMPO CODIGO COMPROBANTE
+			v_vouchercod := :new.em_eei_voucher_code;
+			IF v_vouchercod IS NOT NULL THEN
+
+    		FOR i IN 1..length(v_vouchercod)
+			LOOP
+        		v_sub := SUBSTRING(v_vouchercod FROM i FOR 1);
+        		IF v_sub < '0' OR v_sub > '9' THEN
+            		RAISE_APPLICATION_ERROR(-20000, '@EEI_Cod_Voucher_Num@');
+        		END IF;
+    		END LOOP;
+			END IF;
+			--FIN VALIDACION CAMPO CODIGO COMPROBANTE
+			
+			v_sub := 0;
+			
+			--VALIDACION CAMPO NUMERO FACTURA
+			v_reference = :new.em_eei_invoice_num;
+			IF v_reference IS NOT NULL THEN
+
+      		IF (v_reference IS NOT NULL AND COALESCE(v_reference, '0') <> COALESCE('', '0')) THEN
+
+        	FOR v_cantidad IN 1..length(v_reference)
+        	LOOP
+    			v_sub := substr(v_reference, v_cantidad, 1);
+                
+          		IF (v_cantidad = 4 and v_sub = '-' ) THEN
+            		v_contador := v_contador + 1;
+          		ELSIF (v_cantidad = 8 AND v_sub = '-') THEN
+           			v_contador := v_contador + 1;
+          		ELSIF (v_cantidad = 17) THEN
+            		v_contador := v_contador + 1;
+          		ELSIF (v_cantidad > 17) THEN
+            		RAISE_APPLICATION_ERROR(-20000, '@SSWH_NoDocumentNoFormat@');
+          		ELSIF (NOT v_sub IN ('0','1','2','3','4','5','6','7','8','9')) THEN
+            		RAISE_APPLICATION_ERROR(-20000, '@SSWH_NoDocumentNoFormat@');
+          		END IF;
+        	END LOOP;
+			
+			IF (v_contador <> 3) THEN
+				RAISE_APPLICATION_ERROR(-20000, '@SSWH_NoDocumentNoFormat@');
+			END IF;
+			ELSE
+				RAISE_APPLICATION_ERROR(-20000, '@SSWH_NoDocumentNoFormat@');
+			END IF;
+			END IF;
+			--FIN VALIDACION CAMPO NUMERO FACTURA
+    	END IF;
+	END IF;
+
+    END EEI_VLD_INVOICE_NUM_REF
+]]></body>
+    </trigger>
+  </database>

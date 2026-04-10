@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSCCES_GENERATE_DOCNO_TRG">
+    <trigger name="SSCCES_GENERATE_DOCNO_TRG" table="OPCRM_CASES" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[  vTypeDocID VARCHAR;
+  vSequenceName VARCHAR(60);
+BEGIN
+
+  -- Verifica si los triggers están deshabilitados por Openbravo
+  IF AD_isTriggerEnabled() = 'N' THEN
+    IF DELETING THEN RETURN OLD; ELSE RETURN NEW; END IF;
+  END IF;
+
+  -- Solo actúa en INSERT o cuando cambia el tipo de documento
+  IF ((INSERTING) OR (UPDATING AND :OLD.em_sscces_c_doctypetarget_id IS DISTINCT FROM :NEW.em_sscces_c_doctypetarget_id)) THEN
+
+    vTypeDocID := :NEW.em_sscces_c_doctypetarget_id;
+
+    IF vTypeDocID IS NOT NULL THEN
+      -- Buscar el nombre de la secuencia asociada al tipo de documento
+      SELECT s.name
+      INTO vSequenceName
+      FROM ad_sequence s
+      JOIN c_doctype dt ON dt.docnosequence_id = s.ad_sequence_id
+      WHERE dt.c_doctype_id = vTypeDocID;
+
+      -- Si no hay secuencia definida, limpiar campos
+      IF vSequenceName IS NULL THEN
+        :NEW.em_sscces_documentno := NULL;
+        :NEW.em_sscces_c_doctypetarget_id := NULL;
+      ELSE
+        -- Obtener y consumir el siguiente número de la secuencia
+        SELECT ad_sequence_doc(vSequenceName, :NEW.ad_client_id, 'Y')
+        INTO :NEW.em_sscces_documentno;
+      END IF;
+    END IF;
+
+  END IF;
+
+  END SSCCES_GENERATE_DOCNO_TRG
+]]></body>
+    </trigger>
+  </database>

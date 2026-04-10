@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPCH_VALIDATION_TRG">
+    <trigger name="SSPCH_VALIDATION_TRG" table="SSPCH_PAYMENT_PLAN" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[
+
+/*************************************************************************
+* The contents of this file are subject to the Openbravo  Public  License
+* Version  1.1  (the  "License"),  being   the  Mozilla   Public  License
+* Version 1.1  with a permitted attribution clause; you may not  use this
+* file except in compliance with the License. You  may  obtain  a copy of
+* the License at http://www.openbravo.com/legal/license.html
+* Software distributed under the License  is  distributed  on  an "AS IS"
+* basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See the
+* License for the specific  language  governing  rights  and  limitations
+* under the License.
+* The Original Code is Openbravo ERP.
+* The Initial Developer of the Original Code is Openbravo SLU
+* All portions are Copyright (C) 2011 Openbravo SLU
+* All Rights Reserved.
+* Contributor(s):  ______________________________________.
+************************************************************************/
+  v_processed   CHAR(1);
+  currentModuleID  VARCHAR2(32);
+  v_invoiceID  VARCHAR2(32);
+  vAux NUMBER;
+  v_sequence NUMBER;
+BEGIN
+   
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+  If (INSERTING) Then
+  	Select MAX(sequence)
+		Into v_sequence
+	From sspch_payment_plan
+	Where sspch_postdated_checks_id = :NEW.sspch_postdated_checks_id
+			And c_invoice_id = :NEW.c_invoice_id AND fin_payment_schedule_id=:NEW.fin_payment_schedule_id;
+	If (v_sequence is null) Then
+		Select MAX(sequence)
+			Into v_sequence
+		From sspch_payment_plan
+		Where sspch_postdated_checks_id = :NEW.sspch_postdated_checks_id
+			And c_invoice_id = :NEW.c_invoice_id;
+	:NEW.sequence := COALESCE(v_sequence, 0) + 1;
+	ELSE
+	:NEW.sequence := COALESCE(v_sequence, 0);
+  	End If;
+
+	Select sspch_invoice_id
+		Into v_invoiceID
+	From sspch_invoice
+	Where sspch_postdated_checks_id = :NEW.sspch_postdated_checks_id
+		And c_invoice_id = :NEW.c_invoice_id limit 1;
+	:NEW.sspch_invoice_id := v_invoiceID;
+		
+  End If;
+--Check if trying to move object from module not in dev
+  IF (DELETING) THEN
+    select process 
+	Into v_processed
+    From sspch_postdated_checks 
+    Where sspch_postdated_checks_id IN(Select sspch_postdated_checks_id from sspch_invoice  where sspch_invoice_id =:OLD.sspch_invoice_id  );
+    
+	If(v_processed='Y')Then
+		RAISE_APPLICATION_ERROR(-20000, '@Sspch_Processed@');
+	End IF;
+  END IF;
+  
+END SSPCH_VALIDATION_TRG
+]]></body>
+    </trigger>
+  </database>

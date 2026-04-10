@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnRequiredChange tableName="SCCC_CASH_CLOUSURE" columnName="NAME">
+      <required>false</required>
+    </columnRequiredChange>
+    <columnDataChange tablename="AD_PROCESS" columnname="PROCEDURENAME" pkRow="5470B82CC23240498B755FC0346FB728">
+      <oldValue><![CDATA[sccc_clousureprocess]]></oldValue>
+      <newValue><![CDATA[sscrcc_clousureprocess]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="ISMANDATORY" pkRow="3CDC1ED955014C27BFC25FCF1EF03D82">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="556752BF5FA24510BFC59346AE3B5FE4">
+      <oldValue><![CDATA[@DocStatus@='SCCC_PR' | (@DocStatus@='SCCC_RG' & @Scca_Cashier@='Y' & @Scca_Admin@='N')]]></oldValue>
+      <newValue><![CDATA[@DocStatus@='SCCC_PR' | @DocStatus@='SCCC_RG' ]]></newValue>
+    </columnDataChange>
+  </vector>

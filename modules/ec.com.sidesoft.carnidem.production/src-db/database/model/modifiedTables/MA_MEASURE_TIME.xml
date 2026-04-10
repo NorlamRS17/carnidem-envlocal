@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE MA_MEASURE_TIME">
+    <table name="MA_MEASURE_TIME" primaryKey="MA_MEASURE_TIME_KEY">
+      <column name="EM_CRPROD_DESCRIPTION" primaryKey="false" required="false" type="VARCHAR" size="300" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

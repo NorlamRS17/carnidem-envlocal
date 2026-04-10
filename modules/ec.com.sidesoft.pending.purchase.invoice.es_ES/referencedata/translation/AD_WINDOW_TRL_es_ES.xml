@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_WINDOW" version="">
+  <row id="1E155C7EC8E947CA966665F7B758FE46" trl="Y">
+    <value column="Name" isTrl="Y" original="Proposed Payment Configuration">Configuración de Propuesta de Pago</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5CDE9A4F3E704405B4AA546B28C7C618" trl="Y">
+    <value column="Name" isTrl="Y" original="Summary of Pending Payments">Resumen de Pagos Pendientes</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="5FDA6EFAD6144DF6B88A3E635ECFFC64" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scnsa_Generatenc">Generar NC</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scnsa_Generatenc">Generar NC</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9D015F05088447C9B6DFBD938833E402" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scnsa_Description">Descripción NC</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scnsa_Description">Descripción NC</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="A2721B7DCA2D41208867A4D6222AE364" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scnsa_Automatic_Generate_Nc">Generar NC Automática</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scnsa_Automatic_Generate_Nc">Generar NC Automática</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B2EE554A779C4DAE8FA5E71ABFE6FD3F" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Scnsa_Doc_Nc_Automatic">Doc. NC Automática</value>
+    <value column="PrintName" isTrl="Y" original="EM_Scnsa_Doc_Nc_Automatic">Doc. NC Automática</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

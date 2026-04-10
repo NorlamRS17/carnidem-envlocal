@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE C_COSTCENTER">
+    <table name="C_COSTCENTER" primaryKey="C_COSTCENTER_KEY">
+      <index name="EM_SACGLD_COSTCENTER" unique="false">
+        <index-column name="C_COSTCENTER_ID"/>
+      </index>
+    </table>
+  </database>

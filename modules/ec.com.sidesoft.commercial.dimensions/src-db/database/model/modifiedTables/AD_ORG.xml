@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE AD_ORG">
+    <table name="AD_ORG" primaryKey="AD_ORG_KEY">
+      <column name="EM_SSCDIM_DIVISION_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <column name="EM_SSCDIM_C_SALESREGION_ID" primaryKey="false" required="false" type="VARCHAR" size="32" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+      <foreign-key foreignTable="SSCDIM_DIVISION" name="EM_SSCDIM_DIVISION_ID">
+        <reference local="EM_SSCDIM_DIVISION_ID" foreign="SSCDIM_DIVISION_ID"/>
+      </foreign-key>
+      <foreign-key foreignTable="C_SALESREGION" name="EM_SSCDIM_SALESREGION_ID">
+        <reference local="EM_SSCDIM_C_SALESREGION_ID" foreign="C_SALESREGION_ID"/>
+      </foreign-key>
+    </table>
+  </database>

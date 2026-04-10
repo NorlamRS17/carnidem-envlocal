@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+<!--39CC0F372D654F3480F49E1448FE25F8--><AD_VAL_RULE>
+<!--39CC0F372D654F3480F49E1448FE25F8-->  <AD_VAL_RULE_ID><![CDATA[39CC0F372D654F3480F49E1448FE25F8]]></AD_VAL_RULE_ID>
+<!--39CC0F372D654F3480F49E1448FE25F8-->  <AD_CLIENT_ID><![CDATA[0]]></AD_CLIENT_ID>
+<!--39CC0F372D654F3480F49E1448FE25F8-->  <AD_ORG_ID><![CDATA[0]]></AD_ORG_ID>
+<!--39CC0F372D654F3480F49E1448FE25F8-->  <ISACTIVE><![CDATA[Y]]></ISACTIVE>
+<!--39CC0F372D654F3480F49E1448FE25F8-->  <NAME><![CDATA[Ssuec_RefValidation]]></NAME>
+<!--39CC0F372D654F3480F49E1448FE25F8-->  <DESCRIPTION><![CDATA[Reference Validation]]></DESCRIPTION>
+<!--39CC0F372D654F3480F49E1448FE25F8-->  <TYPE><![CDATA[S]]></TYPE>
+<!--39CC0F372D654F3480F49E1448FE25F8-->  <CODE><![CDATA[AD_Ref_List.value in (select value from ad_ref_list where ad_reference_id in
+(
+select max(ad_reference_value_id) from ad_column where ad_process_id = (select ad_process_id from ssuec_userconfigext where ssuec_userconfigext_id = @Ssuec_Userconfigext_ID@ )
+AND ad_reference_value_id is not null
+))
+AND AD_Ref_List.ad_reference_id in (
+select max(ad_reference_value_id) from ad_column where ad_process_id = (select ad_process_id from ssuec_userconfigext where ssuec_userconfigext_id = @Ssuec_Userconfigext_ID@ )
+AND ad_reference_value_id is not null
+)]]></CODE>
+<!--39CC0F372D654F3480F49E1448FE25F8-->  <AD_MODULE_ID><![CDATA[A83244ED7BC147AD884DC44860465F34]]></AD_MODULE_ID>
+<!--39CC0F372D654F3480F49E1448FE25F8--></AD_VAL_RULE>
+
+</data>

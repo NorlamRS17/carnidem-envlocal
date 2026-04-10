@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="04C1637FFF9D47DAA1E5A7696016D704" trl="N">
+    <value column="MsgText" isTrl="Y" original="Confirmation number already exist">Ya existe ese numero de confirmación.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="27FA7B8603844F38BC809F43A8D6966B" trl="N">
+    <value column="MsgText" isTrl="Y" original="There are too many settings in the card reconciliation settings window, with the processing bank:">Existen demasiadas configuraciones en la ventana configuración conciliación de tarjetas, con el banco procesador:</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="8DB37A732F0A4F0DA088A6F4CA5C9038" trl="N">
+    <value column="MsgText" isTrl="Y" original="There is no configuration in the card reconciliation configuration window with the combination of Processor Bank, Card Types and credit type respectively:">No hay configuración en la ventana de configuración conciliación de tarjeta con la combinación de Banco Procesador, Tipos de Tarjeta y tipo de crédito respectivamente:</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="D3CBA77872C94066A45D4FBF3CFAE0EA" trl="N">
+    <value column="MsgText" isTrl="Y" original="The Processing Bank, Card Types and Credit Type fields cannot be empty.">Los campos Banco Procesador, Tipos de Tarjeta y Tipo de Crédito no pueden ser vacíos.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="E1AC453CEBC1469596F1F1E6A52B5876" trl="N">
+    <value column="MsgText" isTrl="Y" original="Deposit number required">Número de depósito requerido</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

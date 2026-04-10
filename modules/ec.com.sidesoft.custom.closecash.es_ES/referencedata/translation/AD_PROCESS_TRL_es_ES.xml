@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="2AEAACCCD70F4CA385942750EC208FBB" trl="N">
+    <value column="Name" isTrl="N" original="PostExtensionPoints CloseCash">PostExtensionPoints CloseCash</value>
+    <value column="Description" isTrl="N" original=" CloseCash"> CloseCash</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="2F09CAACE6E14C8FA56CE0ED4C7582B4" trl="Y">
+    <value column="Name" isTrl="Y" original="Closecash Unprocess">Desprocesar</value>
+    <value column="Description" isTrl="Y" original="Closecash Unprocess">Desprocesar</value>
+    <value column="Help" isTrl="Y" original=" Unprocess">Desprocesar Cierre de Caja</value>
+  </row>
+  <row id="315A7F1FAB4A48E5B93FD89597C0446A" trl="N">
+    <value column="Name" isTrl="Y" original="Record">Registrar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="53D4CF8974724C9B92780120C6EAD0A0" trl="Y">
+    <value column="Name" isTrl="Y" original="Load Lines">Cargar líneas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="5470B82CC23240498B755FC0346FB728" trl="Y">
+    <value column="Name" isTrl="Y" original="Clousure Process">Proceso Cierre de Caja</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="73BC310415EA4DD0A9CB84D84CEF5E52" trl="N">
+    <value column="Name" isTrl="Y" original="Record">Registrar</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="C316EA7BBACC45C2B2E229A1C55269F4" trl="N">
+    <value column="Name" isTrl="N" original="PreExtensionPoints CloseCash">PreExtensionPoints CloseCash</value>
+    <value column="Description" isTrl="N" original=" CloseCash"> CloseCash</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="F5B1A584BF824E3FAC430E032F020F4E" trl="N">
+    <value column="Name" isTrl="Y" original="Process Cash Clousures">Proceso Background Cierre de Caja</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

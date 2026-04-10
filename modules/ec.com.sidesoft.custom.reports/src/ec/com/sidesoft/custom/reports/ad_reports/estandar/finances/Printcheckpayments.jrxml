@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cheques" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="796bdd73-c84c-4702-806d-e07a3d4c838e">
+	<property name="ireport.zoom" value="1.1289478601075549"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="DOCUMENT_ID" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="BASE_WEB" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select (clo.city||', '||to_char(p.EM_Sescr_paymentdate,'YYYY-MM-DD')) as paymentdate
+,upper(coalesce(to_char(SUBSTR(EM_Sescr_Name,1,37))
+,to_char(SUBSTR(cbp.name,1,37)),to_char(' '))) as name
+,p.amount
+,SESCR_convert_numbertoletters(p.amount) as amountletters
+from fin_payment p
+JOIN ad_org org ON org.ad_org_id = p.ad_org_id
+JOIN AD_OrgInfo orgi ON orgi.ad_org_id = org.ad_org_id
+JOIN c_location clo ON clo.c_location_id = orgi.c_location_id
+left join c_bpartner cbp on p.c_bpartner_id=cbp.c_bpartner_id
+where p.fin_payment_id= $P{DOCUMENT_ID}]]>
+	</queryString>
+	<field name="paymentdate" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="amount" class="java.math.BigDecimal"/>
+	<field name="amountletters" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="842" splitType="Stretch">
+			<textField>
+				<reportElement x="65" y="47" width="276" height="21" uuid="220215d1-438e-4061-ab95-10be767c878a"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement x="360" y="47" width="82" height="21" uuid="4b944b3e-c88b-4b42-932c-c46207d16e9e"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="65" y="77" width="387" height="27" uuid="c558a313-9034-48c2-b3e5-e4548af0a880"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amountletters}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement x="50" y="112" width="402" height="21" uuid="487902a5-ec1f-4a3b-b06d-a60a27f65059"/>
+				<textElement>
+					<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paymentdate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

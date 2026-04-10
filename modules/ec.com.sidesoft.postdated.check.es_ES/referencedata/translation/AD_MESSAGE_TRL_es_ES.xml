@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="1DFA6837FF214D0E9EFF38EF1A361EE6" trl="Y">
+    <value column="MsgText" isTrl="Y" original="amount">El total de las lineas no es igual al de la cabecera.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="3D0036C1E26D46BCABEB440F91B0D78E" trl="N">
+    <value column="MsgText" isTrl="Y" original="You cannot delete a transaction in the processed state.">No puedes eliminar una transacción en estado procesado.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="96FFC2B0113442DDA59859D21330E9A0" trl="N">
+    <value column="MsgText" isTrl="Y" original="There are no records to process">No hay registros para procesar.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="AE220495CC0C43668C476961CF1F9FBF" trl="N">
+    <value column="MsgText" isTrl="Y" original="There is already a record with the same number of checks, bank name and invoice.">Ya existe un registro con el mismo número de cheques, nombre de banco y factura.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="AFF23F6CAF6B46F3A0309F0D8DF27609" trl="N">
+    <value column="MsgText" isTrl="Y" original="Related post-dated check.">Cheque posfechado relacionado.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="C0F8FA34A3C449069CC107F1A1892F60" trl="N">
+    <value column="MsgText" isTrl="Y" original="You must load the lines sequentially">Debe  cargar las líneas de manera secuencial</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="DFD32621D75046DF8BBC52F177DC394F" trl="N">
+    <value column="MsgText" isTrl="Y" original="Collections pending to be executed, insufficient value.">Cobros pendientes por ejecutar, valor insuficiente.</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="EEDBE867D5DC45F6A32C705082D25413" trl="N">
+    <value column="MsgText" isTrl="Y" original="Payments Created">Pago/s creado/s</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

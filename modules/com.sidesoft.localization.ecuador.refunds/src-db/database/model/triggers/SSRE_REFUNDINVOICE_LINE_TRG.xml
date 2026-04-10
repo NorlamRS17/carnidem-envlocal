@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSRE_REFUNDINVOICE_LINE_TRG">
+    <trigger name="SSRE_REFUNDINVOICE_LINE_TRG" table="SSRE_REFUNDINVOICELINE" fires="after" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+	--Variables Iniciales para los Cursores
+    v_init NUMBER:= 0;
+    rRefundInvoice RECORD;
+    rRefundInvoiceLine RECORD; 
+
+	--Variables Iniciales para las cantidades
+    totalTaxbase NUMBER:= 0;
+    totalTaxice NUMBER:= 0;
+    totalTaxamt NUMBER:= 0;
+    grandtotalamount NUMBER:= 0;
+    totalUntaxedBasis NUMBER:= 0;
+    totalNotIvaBase NUMBER:= 0;
+    totalExemptBase NUMBER:= 0;
+
+	--Variables Iniciales para los Impuestos de cada linea 
+    v_rate NUMBER:= 0;
+    v_taxdeductable BOOLEAN;
+    v_notiva BOOLEAN;
+    v_exempt BOOLEAN;
+	v_taxid VARCHAR2(32);
+
+BEGIN
+	
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+    -- Condicion para los casos UPDATE e INSERT
+    IF TG_OP IN ('INSERT', 'UPDATE') THEN
+
+        SELECT *         
+        INTO rRefundInvoice
+        FROM ssre_refundinvoiceline WHERE ssre_refundinvoiceline_id = :NEW.ssre_refundinvoiceline_ID;
+			
+		--Desabilitar Trigger Del Registro Padre
+		ALTER TABLE ssre_refundinvoice DISABLE TRIGGER ALL;
+
+        -- Inicializar totales
+        totalTaxbase := 0;
+        totalTaxice := 0;
+        totalTaxamt := 0;
+        grandtotalamount := 0;
+        totalUntaxedBasis := 0;
+        totalNotIvaBase := 0;
+        totalExemptBase := 0;
+
+        FOR rRefundInvoiceLine IN
+            SELECT * FROM ssre_refundinvoiceline
+            WHERE Ssre_Refundinvoice_ID = rRefundInvoice.Ssre_Refundinvoice_ID
+        LOOP
+
+
+			-- Obtener atributos del impuesto
+            SELECT rate, isTaxdeductable, EM_Sswh_Isnoobjectvat, EM_Sswh_Isexempt, C_Tax.C_Tax_ID
+            INTO v_rate, v_taxdeductable, v_notiva, v_exempt, v_taxid
+            FROM C_Tax
+            WHERE C_Tax_ID = rRefundInvoiceLine.C_Tax_ID;
+
+			 -- Acumular valores según condiciones
+            IF v_taxdeductable = true AND v_rate > 0 THEN
+                totalTaxbase := totalTaxbase + COALESCE(rRefundInvoiceLine.taxbase, 0);
+            END IF;
+
+            IF v_notiva = true THEN
+                totalNotIvaBase := totalNotIvaBase + COALESCE(rRefundInvoiceLine.taxbase, 0);
+            END IF;
+
+            IF v_exempt = true THEN
+                totalExemptBase := totalExemptBase + COALESCE(rRefundInvoiceLine.taxbase, 0);
+            END IF;
+
+            totalTaxice := totalTaxice + COALESCE(rRefundInvoiceLine.taxice, 0);
+            totalTaxamt := totalTaxamt + COALESCE(rRefundInvoiceLine.Taxamt, 0);
+            grandtotalamount := grandtotalamount + COALESCE(rRefundInvoiceLine.Grandtotal, 0);
+
+            IF v_taxdeductable = true AND v_rate = 0 THEN
+                totalUntaxedBasis := totalUntaxedBasis + COALESCE(rRefundInvoiceLine.taxbase, 0);
+            END IF;
+
+		END LOOP;
+
+        UPDATE ssre_refundinvoice
+        SET Taxbaserefund = totalTaxbase,
+            Taxbaseamt = totalNotIvaBase,
+            Taxamt = totalTaxamt,
+            Taxice = totalTaxice,
+            Untaxed_Basis = totalUntaxedBasis,
+            Exemptbase = totalExemptBase,
+            Grandtotal = grandtotalamount
+        WHERE ssre_refundinvoice_id = rRefundInvoice.ssre_refundinvoice_id;
+
+		--Habilitar Trigger Del Registro Padre
+		ALTER TABLE ssre_refundinvoice ENABLE TRIGGER ALL;
+
+    END IF;
+
+	END SSRE_REFUNDINVOICE_LINE_TRG
+]]></body>
+    </trigger>
+  </database>

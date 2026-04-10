@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SSXML_BAJA_IBP">
+    <function name="SSXML_BAJA_IBP" type="NUMERIC">
+      <parameter name="p_initdate" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_enddate" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_m_product_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_group" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_codeimp" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <parameter name="p_codecountry" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[v_movementqty NUMBER;
+BEGIN
+
+IF(p_group = 'PI') THEN 
+    select COALESCE(SUM(ABS(mt.MovementQty)) , 0) as MovementQty
+    INTO v_movementqty
+    from m_transaction mt
+    left join m_product mp ON mp.m_product_id = mt.m_product_id
+    LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+    left join m_locator ml on ml.m_locator_id = mt.m_locator_id
+    join m_warehouse mw ON mw.m_warehouse_id = ml.m_warehouse_id
+    JOIN m_inoutline mil ON mil.m_inoutline_id = mt.m_inoutline_id
+    JOIN m_inout mi ON mi.m_inout_ID = mil.m_inout_ID
+    JOIN c_invoiceline cil ON cil.m_inoutline_id = mt.m_inoutline_id --cil.m_inoutline_id = mil.m_inoutline_id
+    JOIN c_invoice ci on ci.c_invoice_id = cil.c_invoice_id
+    JOIN c_doctype dt ON dt.c_doctype_id = ci.c_doctypetarget_id
+    JOIN GL_Category glc ON glc.GL_Category_ID = dt.GL_Category_ID    
+    where mp.m_product_Id = p_m_product_id
+    AND mt.MovementType in ('I+') AND mw.em_SSXML_low_ibp = 'Y'
+    AND ci.dateinvoiced >= TO_DATE(p_initDate,  'YYYY-MM-DD') and ci.dateinvoiced < TO_DATE(p_endDate , 'YYYY-MM-DD')
+    AND mpm.em_ssxml_xml_ats = 'Y';
+END IF;
+
+IF(p_group = 'PC') THEN 
+   select COALESCE(SUM(ABS(mt.MovementQty)) , 0) as MovementQty
+    INTO v_movementqty
+    from m_transaction mt
+    left join m_product mp ON mp.m_product_id = mt.m_product_id
+    LEFT JOIN Slplag_Kindpackage mpm ON mpm.Slplag_Kindpackage_id = mp.EM_Slplag_Mantainpackage_ID
+    left join m_locator ml on ml.m_locator_id = mt.m_locator_id
+    join m_warehouse mw ON mw.m_warehouse_id = ml.m_warehouse_id
+    JOIN m_inoutline mil ON mil.m_inoutline_id = mt.m_inoutline_id
+    JOIN m_inout mi ON mi.m_inout_ID = mil.m_inout_ID
+    JOIN c_invoiceline cil ON cil.m_inoutline_id = mt.m_inoutline_id --cil.m_inoutline_id = mil.m_inoutline_id
+    JOIN c_invoice ci on ci.c_invoice_id = cil.c_invoice_id
+    JOIN c_doctype dt ON dt.c_doctype_id = ci.c_doctypetarget_id
+    JOIN GL_Category glc ON glc.GL_Category_ID = dt.GL_Category_ID    
+    where ( p_codeImp||'-'|| mp.Em_Slplag_Prodclasif ||'-'|| mp.Em_Slplag_Brand ||'-'|| mpm.Presirbp ||'-'|| mp.Em_Slplag_Prodcap||'-'||
+                mp.Em_Slplag_Irbpunit ||'-'|| p_codeCountry ||'-'|| mp.Em_Slplag_Galcohol ) = p_m_product_id
+    AND mt.MovementType in ('I+') AND mw.em_SSXML_low_ibp = 'Y'
+    AND ci.dateinvoiced >= TO_DATE(p_initDate,  'YYYY-MM-DD') and ci.dateinvoiced < TO_DATE(p_endDate , 'YYYY-MM-DD')
+    AND mpm.em_ssxml_xml_ats = 'Y';
+END IF;
+
+
+        
+RETURN COALESCE(v_movementqty, 0 );
+END SSXML_BAJA_IBP
+]]></body>
+    </function>
+  </database>

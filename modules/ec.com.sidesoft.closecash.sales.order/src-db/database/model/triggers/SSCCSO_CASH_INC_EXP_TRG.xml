@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSCCSO_CASH_INC_EXP_TRG">
+    <trigger name="SSCCSO_CASH_INC_EXP_TRG" table="SSCCSO_CASH_INC_EXP" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+    v_Tree_ID VARCHAR2(32);
+    v_tree_exist NUMBER;
+
+  TYPE RECORD IS REF CURSOR;
+    Cur_Defaults RECORD;
+    
+BEGIN
+
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+    
+    IF (UPDATING OR INSERTING) THEN
+    If(:NEW.deposit_amount < 0 OR :NEW.refund_amount < 0)Then
+          RAISE_APPLICATION_ERROR(-20000, '@Ssccso_AmountLessThanZero@');
+
+    End IF;
+    End IF;
+
+    
+    -- Summary Nodes first
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    RAISE_APPLICATION_ERROR(-20000, '@20001@') ;
+END SSCCSO_CASH_INC_EXP_TRG
+]]></body>
+    </trigger>
+  </database>

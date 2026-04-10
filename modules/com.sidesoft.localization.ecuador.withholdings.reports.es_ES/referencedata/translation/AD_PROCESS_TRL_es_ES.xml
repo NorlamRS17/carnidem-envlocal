@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="A42A0463EF8F45EAB90F7B03F564A2E6" trl="Y">
+    <value column="Name" isTrl="Y" original="Account Pay Supplier Category">Estado de cuenta por pagar por  Categoría de Proveedor</value>
+    <value column="Description" isTrl="N" original="Account payable statement by Supplier Category">Account payable statement by Supplier Category</value>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

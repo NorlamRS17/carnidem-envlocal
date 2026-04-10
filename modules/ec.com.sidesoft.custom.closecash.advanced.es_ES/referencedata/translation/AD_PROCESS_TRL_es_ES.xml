@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_PROCESS" version="">
+  <row id="56CE5196C6CC48C59458809BA7C9A010" trl="Y">
+    <value column="Name" isTrl="Y" original="Cards Settlement Report">Reporte liquidación de tarjetas</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8A696257BFD14401BC24EF0F04DAB72A" trl="Y">
+    <value column="Name" isTrl="Y" original="Cash Clousure Report">Reporte cierre de caja</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

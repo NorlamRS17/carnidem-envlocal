@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SFADT_VERIFYFILL_TGR">
+    <trigger name="SFADT_VERIFYFILL_TGR" table="SFADT_ACC_SEQUENCES" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[
+ v_codigo Character varying;
+ v_name Character varying;
+ 
+BEGIN
+
+	IF AD_isTriggerEnabled()='N' THEN RETURN;
+	END IF;	
+
+		IF INSERTING OR UPDATING THEN
+        SELECT t.tablename INTO v_name
+        FROM ad_table t
+        JOIN c_acctschema_table c ON t.ad_table_id = c.ad_table_id
+        WHERE c.c_acctschema_table_id = :NEW.c_acctschema_table_id;
+
+        IF v_name = 'FIN_Finacc_Transaction' THEN
+            IF :NEW.c_doctype_id IS NULL OR :NEW.trxtype IS NULL OR :NEW.type IS NULL THEN
+				RAISE_APPLICATION_ERROR(-20000, '@Todos los campos son obligatorios para la tabla seleccionada.@');
+            END IF;
+        END IF;
+    END IF;
+		
+	END SFADT_VERIFYFILL_TGR
+]]></body>
+    </trigger>
+  </database>

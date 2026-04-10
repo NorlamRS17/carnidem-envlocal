@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SBPC_AMOUNT_ORDER">
+    <function name="SBPC_AMOUNT_ORDER" type="VARCHAR">
+      <parameter name="pinstance_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[-- Logistice
+	v_ResultStr		VARCHAR2(2000) := '';
+	v_Message		VARCHAR2(2000) := '';
+    TYPE RECORD IS REF CURSOR;
+    Cur				RECORD;
+	-- Variables
+	vRecordID		VARCHAR2(32);
+	vOrder			RECORD;
+	vUserID 		VARCHAR2(60);
+    
+BEGIN
+	-- Begin Get Parameters
+	FOR Cur IN (
+		SELECT *
+		FROM ad_ep_instance_para
+		WHERE ad_ep_instance_id = PInstance_ID
+	) LOOP
+		IF Cur.ParameterName = 'Record_ID' THEN
+			vRecordID := Cur.P_String;
+		ELSEIF Cur.ParameterName = 'User' THEN
+			vUserID := Cur.P_String;
+		END IF;	
+	END LOOP;
+	-- Finish Get Parameter
+	
+	--<<BEGIN_PROCESS>>
+
+	SELECT o.c_order_id
+	, o.grandtotal
+	, COALESCE(em_sbpc_invoice_limit_amount,0) AS invoice_limit_amount
+	, COALESCE(bp.name,'') as tercero
+    INTO vOrder
+    FROM c_order o
+	JOIN c_bpartner bp ON bp.c_bpartner_id=o.c_bpartner_id
+    WHERE o.c_order_id = vRecordID AND docstatus='DR' AND issotrx='Y';
+
+	IF vOrder.invoice_limit_amount > 0 AND vOrder.grandtotal > vOrder.invoice_limit_amount THEN
+
+		RAISE_APPLICATION_ERROR(-20000, 'El valor procesado excede al valor permitido para el Tercero: <b>'||vOrder.tercero||'</b>, Valor actual permitido: <b>'||vOrder.invoice_limit_amount||'</b>');
+                  		
+	END IF; 
+
+	--<<FINISH_PROCESS>>
+		
+	RETURN v_ResultStr;
+END SBPC_AMOUNT_ORDER
+]]></body>
+    </function>
+  </database>

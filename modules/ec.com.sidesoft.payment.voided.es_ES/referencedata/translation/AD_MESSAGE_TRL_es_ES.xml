@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MESSAGE" version="">
+  <row id="AB6C70C321F9497F8F16C704B05172F4" trl="Y">
+    <value column="MsgText" isTrl="Y" original="not allowed to delete">No se puede eliminar una vez Anulado</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+  <row id="CA3B8B02AF1E45478264655ABB8CB404" trl="Y">
+    <value column="MsgText" isTrl="Y" original="successful annulment process">El proceso de anulación se realizó con éxito</value>
+    <value column="MsgTip" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

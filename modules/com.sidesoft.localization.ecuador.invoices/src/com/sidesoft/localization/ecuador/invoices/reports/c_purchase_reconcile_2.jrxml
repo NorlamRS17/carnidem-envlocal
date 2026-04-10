@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" isIgnorePagination="true" pageWidth="5000" pageHeight="842" columnWidth="4960" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="922dc9cb-e932-4397-84f6-0f60e549b318">
+    <property name="ireport.zoom" value="0.9090909090909232"/>
+    <property name="ireport.x" value="0"/>
+    <property name="ireport.y" value="0"/>
+    <property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+    <property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+    <property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+    <property name="net.sf.jasperreports.export.xls.white.page.background" value="false"/>
+    <import value="net.sf.jasperreports.engine.*"/>
+    <import value="java.util.*"/>
+    <import value="org.openbravo.dal.core.OBContext"/>
+    <import value="net.sf.jasperreports.engine.data.*"/>
+    <style name="Crosstab Data Text" hAlign="Center"/>
+    <parameter name="AD_USER_ID" class="java.lang.String">
+        <defaultValueExpression><![CDATA[]]></defaultValueExpression>
+    </parameter>
+    <parameter name="Posted" class="java.lang.String">
+        <defaultValueExpression><![CDATA[]]></defaultValueExpression>
+    </parameter>
+    <parameter name="C_BPartner_ID" class="java.lang.String">
+        <defaultValueExpression><![CDATA[]]></defaultValueExpression>
+    </parameter>
+    <parameter name="DateTo" class="java.util.Date">
+        <defaultValueExpression><![CDATA[]]></defaultValueExpression>
+    </parameter>
+    <parameter name="DateFrom" class="java.util.Date">
+        <defaultValueExpression><![CDATA[]]></defaultValueExpression>
+    </parameter>
+    <parameter name="C_DocTypeTarget_ID" class="java.lang.String">
+        <defaultValueExpression><![CDATA[]]></defaultValueExpression>
+    </parameter>
+    <parameter name="AD_Org_ID" class="java.lang.String">
+        <defaultValueExpression><![CDATA[]]></defaultValueExpression>
+    </parameter>
+    <parameter name="UserName" class="java.lang.String">
+        <defaultValueExpression><![CDATA[OBContext.getOBContext().getUser().getUsername()]]></defaultValueExpression>
+    </parameter>
+    <parameter name="NUMBERFORMAT" class="java.text.DecimalFormat" isForPrompting="false">
+        <defaultValueExpression><![CDATA[new DecimalFormat("###,##0.00;-###,##0.00", new DecimalFormatSymbols())]]></defaultValueExpression>
+    </parameter>
+    <parameter name="DATEFORMAT" class="java.text.SimpleDateFormat" isForPrompting="false">
+        <defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy")]]></defaultValueExpression>
+    </parameter>
+    <parameter name="BASE_DESIGN" class="java.lang.String"/>
+    <parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+        <defaultValueExpression><![CDATA[$P{BASE_DESIGN}+"/com/sidesoft/localization/ecuador/invoices/reports/"]]></defaultValueExpression>
+    </parameter>
+    <queryString>
+        <![CDATA[WITH tax_used AS (
+    SELECT DISTINCT t.rate
+    FROM c_tax t
+    JOIN c_invoicetax it ON t.c_tax_id = it.c_tax_id
+    JOIN c_invoice i ON i.c_invoice_id = it.c_invoice_id
+    WHERE t.istaxdeductable = 'Y'
+      AND t.rate > 0 /* EVITA QUE RETENCIONES NEGATIVAS CREEN COLUMNAS DINAMICAS */
+      AND i.dateinvoiced::date BETWEEN $P{DateFrom} AND $P{DateTo}
+      AND i.issotrx = 'N'
+      AND i.docstatus IN ('CO','VO')
+      AND (i.posted = $P{Posted} OR $P{Posted} is null)
+      AND (i.C_doctypetarget_id = $P{C_DocTypeTarget_ID} OR $P{C_DocTypeTarget_ID} is null)
+      AND (i.ad_org_id =$P{AD_Org_ID} OR $P{AD_Org_ID} is null)
+      AND (i.c_bpartner_id = $P{C_BPartner_ID} OR $P{C_BPartner_ID} is null)
+)
+select
+a.poreference as "poreference",
+c.name as "tipo_documento",
+b.name as "tercero",
+b.taxid as "taxid",
+to_date(a.dateinvoiced, 'DD/MM/YYYY') as "dateinvoiced",
+to_date(a.dateacct, 'DD/MM/YYYY') as "dateacct",
+e.name as "c_costcenter",
+h.name as "credito",
+n.name as "pais",
+TO_CHAR((SELECT NAME FROM AD_USER WHERE AD_USER_ID = $P{AD_USER_ID} ))AS "user",
+
+/* COLUMNA 'TOTAL' (Calcula: Base + Todos los IVA = 129.05) */
+(
+    coalesce((select sum(j.taxbaseamt) from c_invoicetax j left join c_tax t2 on j.c_tax_id = t2.c_tax_id where j.c_invoice_id = a.c_invoice_id and t2.rate >= 0 and t2.istaxdeductable = 'Y'),0.00) +
+    coalesce((select sum(j.taxamt) from c_invoicetax j left join c_tax t2 on j.c_tax_id = t2.c_tax_id where j.c_invoice_id = a.c_invoice_id and t2.rate > 0 and t2.istaxdeductable = 'Y'),0.00)
+) * (case when c.isreversal = 'N' AND c.isreturn = 'N' then 1 else -1 end) as "base",
+
+case when c.isreversal = 'N' AND c.isreturn = 'N' then coalesce((select sum(taxbaseamt) from c_invoicetax j left join c_tax t on j.c_tax_id = t.c_tax_id where a.c_invoice_id = j.c_invoice_id and t.rate <> 0 and t.istaxdeductable = 'Y'),0.00) else coalesce((select sum(taxbaseamt) from c_invoicetax j left join c_tax t on j.c_tax_id = t.c_tax_id where a.c_invoice_id = j.c_invoice_id and t.rate <> 0 and t.istaxdeductable = 'Y'),0.00) * -1 end as "basedoce",
+case when c.isreversal = 'N' AND c.isreturn = 'N' then coalesce((select sum(taxbaseamt) from c_invoicetax j left join c_tax t on j.c_tax_id = t.c_tax_id where a.c_invoice_id = j.c_invoice_id and t.rate = 0 and t.istaxdeductable = 'Y'),0.00) else coalesce((select sum(taxbaseamt) from c_invoicetax j left join c_tax t on j.c_tax_id = t.c_tax_id where a.c_invoice_id = j.c_invoice_id and t.rate = 0 and t.istaxdeductable = 'Y'),0.00) * -1 end as "basecero",
+case when c.isreversal = 'N' AND c.isreturn = 'N' then coalesce((select sum(taxamt)*(-1) from c_invoicetax j left join c_tax t on j.c_tax_id = t.c_tax_id where a.c_invoice_id = j.c_invoice_id and t.rate < 0 and t.em_sswh_ats_source='Y'),0.00) else coalesce((select sum(taxamt)*(-1) from c_invoicetax j left join c_tax t on j.c_tax_id = t.c_tax_id where a.c_invoice_id = j.c_invoice_id and t.rate < 0 and t.em_sswh_ats_source='Y'),0.00) * -1 end as "retencion",
+
+/* COLUMNA 'TOTAL SIN RET' (Valor exacto Openbravo = 122.24) */
+case when c.isreversal = 'N' AND c.isreturn = 'N' then a.grandtotal else a.grandtotal * -1 end as "total",
+
+CASE WHEN a.posted = 'Y' THEN 'Y' ELSE 'N' END AS posted,
+case when a.EM_Eei_Status = 'GE' THEN 'GENERADO'
+when a.EM_Eei_Status = 'NR' THEN 'NO RECIBIDO'
+when a.EM_Eei_Status = 'NA' THEN 'NO AUTORIZADO'
+when a.EM_Eei_Status = 'RE' THEN 'RECIBIDO'
+when a.EM_Eei_Status = 'AU' THEN 'AUTORIZADO'
+when a.EM_Eei_Status = 'PP' THEN 'POR PROCESAR'
+when a.EM_Eei_Status = 'NG' THEN 'NO GENERADO' ELSE coalesce (a.EM_Eei_Status,' ' ) END as estado_email,
+case when a.docstatus = 'CO' then 'COMPLETADO'
+when a.docstatus = 'VO' then 'ANULADO'
+when a.docstatus = 'DR' then 'BORRADOR' END as "status",
+ao.name,
+to_date(max(ps.duedate), 'DD/MM/YYYY') as "fecha_ven",
+coalesce(a.EM_Sswh_Withholdingref,' ') as f_reten,
+a.EM_Sswh_Totalwithholdingincome as imp_renta,
+a.EM_Sswh_Totalwithholdingvat as imp_iva,
+coalesce(ci2.POReference,' ') as doc_apli,
+coalesce(a.documentno,' ') as referencia,
+a.c_invoice_id AS "c_invoice_id",
+tx.rate AS "rate",
+tx.tipo_columna AS "tipo_columna",
+tx.amount AS "amount",
+
+/* CALCULO DE TOTALES PARA LA FILA DEL CROSSTAB */
+CASE WHEN ROW_NUMBER() OVER(PARTITION BY a.c_invoice_id ORDER BY tx.tipo_columna, tx.rate) = 1 
+     THEN (case when c.isreversal = 'N' AND c.isreturn = 'N' then coalesce((select sum(taxbaseamt) from c_invoicetax j left join c_tax t on j.c_tax_id = t.c_tax_id where a.c_invoice_id = j.c_invoice_id and t.rate = 0 and t.istaxdeductable = 'Y'),0.00) else coalesce((select sum(taxbaseamt) from c_invoicetax j left join c_tax t on j.c_tax_id = t.c_tax_id where a.c_invoice_id = j.c_invoice_id and t.rate = 0 and t.istaxdeductable = 'Y'),0.00) * -1 end) 
+     ELSE 0.00 END as "basecero_sum",
+
+/* SUMA GLOBAL COLUMNA 'TOTAL' (129.05) */
+CASE WHEN ROW_NUMBER() OVER(PARTITION BY a.c_invoice_id ORDER BY tx.tipo_columna, tx.rate) = 1 
+     THEN (
+         coalesce((select sum(j.taxbaseamt) from c_invoicetax j left join c_tax t2 on j.c_tax_id = t2.c_tax_id where j.c_invoice_id = a.c_invoice_id and t2.rate >= 0 and t2.istaxdeductable = 'Y'),0.00) +
+         coalesce((select sum(j.taxamt) from c_invoicetax j left join c_tax t2 on j.c_tax_id = t2.c_tax_id where j.c_invoice_id = a.c_invoice_id and t2.rate > 0 and t2.istaxdeductable = 'Y'),0.00)
+     ) * (case when c.isreversal = 'N' AND c.isreturn = 'N' then 1 else -1 end)
+     ELSE 0.00 END as "base_sum",
+
+/* SUMA GLOBAL COLUMNA 'TOTAL SIN RET' (122.24) */
+CASE WHEN ROW_NUMBER() OVER(PARTITION BY a.c_invoice_id ORDER BY tx.tipo_columna, tx.rate) = 1 
+     THEN (case when c.isreversal = 'N' AND c.isreturn = 'N' then a.grandtotal else a.grandtotal * -1 end) 
+     ELSE 0.00 END as "total_sum",
+
+CASE WHEN ROW_NUMBER() OVER(PARTITION BY a.c_invoice_id ORDER BY tx.tipo_columna, tx.rate) = 1 
+     THEN a.EM_Sswh_Totalwithholdingincome 
+     ELSE 0.00 END as "imp_renta_sum",
+CASE WHEN ROW_NUMBER() OVER(PARTITION BY a.c_invoice_id ORDER BY tx.tipo_columna, tx.rate) = 1 
+     THEN a.EM_Sswh_Totalwithholdingvat 
+     ELSE 0.00 END as "imp_iva_sum"
+
+from c_invoice a
+left join c_bpartner b on a.c_bpartner_id = b.c_bpartner_id
+left join c_doctype c on a.c_doctype_id = c.c_doctype_id
+left join c_bp_group d on b.c_bp_group_id = d.c_bp_group_id
+left join c_costcenter e on a.c_costcenter_id = e.c_costcenter_id
+left join user1 f on a.user1_id = f.user1_id
+left join user2 g on a.user2_id = g.user2_id
+left join c_paymentterm h on a.c_paymentterm_id = h.c_paymentterm_id
+left join fin_payment_sched_inv_v k on a.c_invoice_id = k.c_invoice_id
+left join c_bpartner_location l on a.c_bpartner_location_id = l.c_bpartner_location_id
+left join c_location m on m.c_location_id = l.c_location_id
+left join c_country n on n.c_country_id = m.c_country_id
+left join ad_org ao on ao.ad_org_id = a.ad_org_id
+left join fin_payment_schedule ps on ps.c_invoice_id = a.c_invoice_id
+left join C_InvoiceTax cti on cti.c_invoice_id=a.c_invoice_id and cti.c_tax_id in
+(select c_tax_id from c_tax where IsTaxDeductable = 'Y' and rate > 0)
+left join c_tax ct on ct.c_tax_id = cti.c_tax_id
+left join c_invoice ci2 on ci2.c_invoice_id = a.em_scnr_invoice_id
+LEFT JOIN LATERAL (
+    SELECT 1 AS tipo_columna, t.rate, t.isdefault,
+           CASE WHEN c.isreversal = 'N' AND c.isreturn = 'N' THEN COALESCE(it.taxbaseamt, 0.00)
+                ELSE COALESCE(it.taxbaseamt, 0.00) * -1 END AS amount
+    FROM c_tax t
+    LEFT JOIN c_invoicetax it ON t.c_tax_id = it.c_tax_id AND it.c_invoice_id = a.c_invoice_id
+    WHERE t.istaxdeductable = 'Y' AND t.rate > 0
+      AND t.rate IN (SELECT rate FROM tax_used)
+    UNION ALL
+    SELECT 2 AS tipo_columna, CAST(-999 AS NUMERIC) AS rate, 'N' AS isdefault,
+           (case when c.isreversal = 'N' AND c.isreturn = 'N' then coalesce((select sum(taxbaseamt) from c_invoicetax j left join c_tax t2 on j.c_tax_id = t2.c_tax_id where a.c_invoice_id = j.c_invoice_id and t2.rate > 0 and t2.istaxdeductable = 'Y'),0.00) else coalesce((select sum(taxbaseamt) from c_invoicetax j left join c_tax t2 on j.c_tax_id = t2.c_tax_id where a.c_invoice_id = j.c_invoice_id and t2.rate > 0 and t2.istaxdeductable = 'Y'),0.00) * -1 end) AS amount
+    UNION ALL
+    SELECT 3 AS tipo_columna, t.rate, t.isdefault,
+           CASE WHEN c.isreversal = 'N' AND c.isreturn = 'N' THEN COALESCE(it.taxamt, 0.00)
+                ELSE COALESCE(it.taxamt, 0.00) * -1 END AS amount
+    FROM c_tax t
+    LEFT JOIN c_invoicetax it ON t.c_tax_id = it.c_tax_id AND it.c_invoice_id = a.c_invoice_id
+    WHERE t.istaxdeductable = 'Y' AND t.rate > 0
+      AND t.rate IN (SELECT rate FROM tax_used)
+) tx ON TRUE
+where a.issotrx = 'N' and (a.docstatus = 'CO' or a.docstatus = 'VO')
+and (a.posted=$P{Posted} or $P{Posted} is null)
+and (a.c_bpartner_id = $P{C_BPartner_ID} or $P{C_BPartner_ID} is null)
+and (a.dateacct between $P{DateFrom} and $P{DateTo})
+and (a.C_doctypetarget_id = $P{C_DocTypeTarget_ID} or $P{C_DocTypeTarget_ID} is null)
+and (a.ad_org_id =$P{AD_Org_ID} or $P{AD_Org_ID} is null)
+GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,21,22,23,24,25,26,27,28, a.c_invoice_id, tx.rate, tx.tipo_columna, tx.amount
+ORDER BY 2,5;]]>
+    </queryString>
+    <field name="poreference" class="java.lang.String"/>
+    <field name="tipo_documento" class="java.lang.String"/>
+    <field name="tercero" class="java.lang.String"/>
+    <field name="taxid" class="java.lang.String"/>
+    <field name="dateinvoiced" class="java.sql.Timestamp"/>
+    <field name="dateacct" class="java.sql.Timestamp"/>
+    <field name="c_costcenter" class="java.lang.String"/>
+    <field name="credito" class="java.lang.String"/>
+    <field name="pais" class="java.lang.String"/>
+    <field name="user" class="java.lang.String"/>
+    <field name="base" class="java.math.BigDecimal"/>
+    <field name="basedoce" class="java.math.BigDecimal"/>
+    <field name="basecero" class="java.math.BigDecimal"/>
+    <field name="retencion" class="java.math.BigDecimal"/>
+    <field name="total" class="java.math.BigDecimal"/>
+    <field name="posted" class="java.lang.String"/>
+    <field name="estado_email" class="java.lang.String"/>
+    <field name="status" class="java.lang.String"/>
+    <field name="name" class="java.lang.String"/>
+    <field name="fecha_ven" class="java.sql.Timestamp"/>
+    <field name="f_reten" class="java.lang.String"/>
+    <field name="imp_renta" class="java.math.BigDecimal"/>
+    <field name="imp_iva" class="java.math.BigDecimal"/>
+    <field name="doc_apli" class="java.lang.String"/>
+    <field name="referencia" class="java.lang.String"/>
+    <field name="c_invoice_id" class="java.lang.String"/>
+    <field name="rate" class="java.math.BigDecimal"/>
+    <field name="tipo_columna" class="java.lang.Integer"/>
+    <field name="amount" class="java.math.BigDecimal"/>
+    <field name="basecero_sum" class="java.math.BigDecimal"/>
+    <field name="base_sum" class="java.math.BigDecimal"/>
+    <field name="total_sum" class="java.math.BigDecimal"/>
+    <field name="imp_renta_sum" class="java.math.BigDecimal"/>
+    <field name="imp_iva_sum" class="java.math.BigDecimal"/>
+
+    <background>
+        <band splitType="Stretch"/>
+    </background>
+    <title>
+        <band height="65" splitType="Stretch">
+            <staticText>
+                <reportElement key="staticText-1" x="210" y="0" width="2350" height="50" uuid="c1c49715-1111-4767-9270-675e75e46d38"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+                </textElement>
+                <text><![CDATA[REPORTES DE COMPRAS POR PERIODO ]]></text>
+            </staticText>
+            <textField isBlankWhenNull="false">
+                <reportElement key="textField" x="1260" y="50" width="100" height="15" uuid="d2139f88-f792-4ef3-89fd-10d323521456"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Right">
+                    <font size="8" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["AL: "]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="false">
+                <reportElement key="textField" x="1060" y="50" width="100" height="15" uuid="b5853d71-a354-41b1-b1f0-788196935cfe"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement textAlignment="Right">
+                    <font size="8" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["DESDE: "]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="false">
+                <reportElement key="textField" x="1360" y="50" width="120" height="15" uuid="c8f53414-69d7-4f38-8918-48db51df5304"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font size="8" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($P{DateTo})]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="false">
+                <reportElement key="textField" x="1160" y="50" width="100" height="15" uuid="6ecc90f5-1531-4855-a03d-6cffa72575e3"/>
+                <box>
+                    <topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                    <rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+                </box>
+                <textElement>
+                    <font size="8" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($P{DateFrom})]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="2800" y="0" width="120" height="50" uuid="c62bfaee-7d1e-4afc-af64-1bc33bf325b1"/>
+                <textElement verticalAlignment="Middle" markup="html">
+                    <font size="8" isBold="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA["<b>Fecha de Impresión: </b><br>"+ new SimpleDateFormat("dd/MM/yyyy hh:mm").format(new Date())
++"<br><b>Usuario: </b><br>"+$P{UserName}]]></textFieldExpression>
+            </textField>
+            <image hAlign="Center" vAlign="Middle">
+                <reportElement x="0" y="0" width="210" height="50" uuid="529b43c1-4ad9-40c1-b7c5-e3b9bea68810"/>
+                <imageExpression><![CDATA[org.openbravo.erpCommon.utility.Utility.showImageLogo("yourcompanylegal","0" )]]></imageExpression>
+            </image>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="19"/>
+    </pageHeader>
+    <summary>
+        <band height="100" splitType="Stretch">
+            <crosstab ignoreWidth="true">
+                <reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="2960" height="75" isPrintWhenDetailOverflows="true" uuid="8a94abc7-5b60-476d-937c-1c744700b0c0"/>
+                <crosstabHeaderCell>
+                    <cellContents>
+                        <staticText>
+                            <reportElement x="0" y="0" width="210" height="50" uuid="ab901041-f4dc-4161-b7ad-5091cbcb02d2"/>
+                            <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                            <textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                            <text><![CDATA[ORGANIZACION]]></text>
+                        </staticText>
+                        <staticText>
+                            <reportElement x="210" y="0" width="150" height="50" uuid="4f9c4ebb-e46f-478d-96d8-069c0bf5f654"/>
+                            <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                            <textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                            <text><![CDATA[TIPO DE DOCUMENTO]]></text>
+                        </staticText>
+                        <staticText>
+                            <reportElement x="360" y="0" width="144" height="50" uuid="3fa175dc-ccd4-4d01-8b3b-0ad36a46d996"/>
+                            <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                            <textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                            <text><![CDATA[RUC]]></text>
+                        </staticText>
+                        <staticText>
+                            <reportElement x="504" y="0" width="176" height="50" uuid="8a1acb47-8a43-477d-b51a-28a589721318"/>
+                            <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                            <textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                            <text><![CDATA[TERCERO]]></text>
+                        </staticText>
+                        <staticText>
+                            <reportElement x="680" y="0" width="110" height="50" uuid="b5a4986a-4777-4fa4-941e-6deef3d79bc1"/>
+                            <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                            <textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                            <text><![CDATA[FECHA]]></text>
+                        </staticText>
+                        <staticText>
+                            <reportElement x="790" y="0" width="70" height="50" uuid="edea9f1c-5de0-4ec5-89f8-6bc62c74eb06"/>
+                            <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                            <textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                            <text><![CDATA[FECHA CONT.]]></text>
+                        </staticText>
+                        <staticText>
+                            <reportElement x="860" y="0" width="100" height="50" uuid="f68e5da1-8d42-4ac0-93c7-537da1861e32"/>
+                            <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                            <textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                            <text><![CDATA[FECHA VENC.]]></text>
+                        </staticText>
+                        <staticText>
+                            <reportElement x="960" y="0" width="100" height="50" uuid="ad23f104-d553-424f-a070-a8c97fc0e881"/>
+                            <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                            <textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                            <text><![CDATA[N° REFERENCIA]]></text>
+                        </staticText>
+                        <staticText>
+                            <reportElement x="1060" y="0" width="100" height="50" uuid="8d2d1fbd-05a3-4ba5-93d0-66895d7547fd"/>
+                            <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                            <textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                            <text><![CDATA[N° DOC.]]></text>
+                        </staticText>
+                        <staticText>
+                            <reportElement x="1160" y="0" width="100" height="50" uuid="d7c105c2-6cdf-4b00-9bd7-f31461eca29e"/>
+                            <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                            <textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                            <text><![CDATA[CENTRO DE COSTOS]]></text>
+                        </staticText>
+                        <staticText>
+                            <reportElement x="1260" y="0" width="100" height="50" uuid="08c115c2-6cdf-4b00-9bd7-f31461eca29e"/>
+                            <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                            <textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                            <text><![CDATA[BASE CERO]]></text>
+                        </staticText>
+                    </cellContents>
+                </crosstabHeaderCell>
+                
+                <rowGroup name="name" width="210" totalPosition="End">
+                    <bucket class="java.lang.String">
+                        <bucketExpression><![CDATA[$F{name}]]></bucketExpression>
+                    </bucket>
+                    <crosstabRowHeader>
+                        <cellContents mode="Opaque">
+                            <box><pen lineWidth="0.5"/></box>
+                            <textField isBlankWhenNull="true">
+                                <reportElement style="Crosstab Data Text" x="0" y="0" width="210" height="25" uuid="ee3eb409-7bc1-49bc-b361-a94ba4a1702c"/>
+                                <box leftPadding="2" rightPadding="2"/>
+                                <textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement>
+                                <textFieldExpression><![CDATA[$V{name}]]></textFieldExpression>
+                            </textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader>
+                        <cellContents mode="Transparent">
+                            <textField>
+                                <reportElement x="1160" y="0" width="100" height="25" uuid="12345678-aaaa-bbbb-cccc-111111111111"/>
+                                <box leftPadding="2" rightPadding="2">
+                                    <pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+                                </box>
+                                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                                <textFieldExpression><![CDATA["TOTAL"]]></textFieldExpression>
+                            </textField>
+                            <textField pattern="###,##0.00;-###,##0.00">
+                                <reportElement x="1260" y="0" width="100" height="25" uuid="87654321-aaaa-bbbb-cccc-222222222222"/>
+                                <box leftPadding="2" rightPadding="2">
+                                    <pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+                                </box>
+                                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement>
+                                <textFieldExpression><![CDATA[$V{m_basecero_sum} != null ? $V{m_basecero_sum} : BigDecimal.ZERO]]></textFieldExpression>
+                            </textField>
+                        </cellContents>
+                    </crosstabTotalRowHeader>
+                </rowGroup>
+                
+                <rowGroup name="tipo_documento" width="150">
+                    <bucket class="java.lang.String"><bucketExpression><![CDATA[$F{tipo_documento}]]></bucketExpression></bucket>
+                    <crosstabRowHeader>
+                        <cellContents mode="Opaque"><box><pen lineWidth="0.5"/></box>
+                            <textField isBlankWhenNull="true"><reportElement style="Crosstab Data Text" x="0" y="0" width="150" height="25" uuid="6e832a8a-a70f-4ffd-895c-3e7238836859"/><box leftPadding="2" rightPadding="2"/><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{tipo_documento}]]></textFieldExpression></textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader><cellContents/></crosstabTotalRowHeader>
+                </rowGroup>
+                <rowGroup name="taxid" width="144">
+                    <bucket class="java.lang.String"><bucketExpression><![CDATA[$F{taxid}]]></bucketExpression></bucket>
+                    <crosstabRowHeader>
+                        <cellContents mode="Opaque"><box><pen lineWidth="0.5"/></box>
+                            <textField isBlankWhenNull="true"><reportElement style="Crosstab Data Text" x="0" y="0" width="144" height="25" uuid="6b45b18d-3f9f-464e-91ad-60087c88bef6"/><box leftPadding="2" rightPadding="2"/><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{taxid}]]></textFieldExpression></textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader><cellContents/></crosstabTotalRowHeader>
+                </rowGroup>
+                <rowGroup name="tercero" width="176">
+                    <bucket class="java.lang.String"><bucketExpression><![CDATA[$F{tercero}]]></bucketExpression></bucket>
+                    <crosstabRowHeader>
+                        <cellContents mode="Opaque"><box><pen lineWidth="0.5"/></box>
+                            <textField isBlankWhenNull="true"><reportElement style="Crosstab Data Text" isPrintRepeatedValues="false" x="0" y="0" width="176" height="25" uuid="3a4f3028-81dd-4a0e-9cf1-78eb9de95467"/><box leftPadding="2" rightPadding="2"/><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{tercero}]]></textFieldExpression></textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader><cellContents/></crosstabTotalRowHeader>
+                </rowGroup>
+                <rowGroup name="dateinvoiced" width="110">
+                    <bucket class="java.util.Date"><bucketExpression><![CDATA[$F{dateinvoiced}]]></bucketExpression></bucket>
+                    <crosstabRowHeader>
+                        <cellContents mode="Opaque"><box><pen lineWidth="0.5"/></box>
+                            <textField pattern="dd/MM/yyyy" isBlankWhenNull="true"><reportElement style="Crosstab Data Text" x="0" y="0" width="110" height="25" uuid="1eef4456-5ab5-44a3-8fcc-f047d57812ae"/><box leftPadding="2" rightPadding="2"/><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{dateinvoiced}]]></textFieldExpression></textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader><cellContents/></crosstabTotalRowHeader>
+                </rowGroup>
+                <rowGroup name="dateacct" width="70">
+                    <bucket class="java.util.Date"><bucketExpression><![CDATA[$F{dateacct}]]></bucketExpression></bucket>
+                    <crosstabRowHeader>
+                        <cellContents mode="Opaque"><box><pen lineWidth="0.5"/></box>
+                            <textField pattern="dd/MM/yyyy" isBlankWhenNull="true"><reportElement style="Crosstab Data Text" x="0" y="0" width="70" height="25" uuid="c89ba2d5-616e-4923-abda-af38a7f8f237"/><box leftPadding="2" rightPadding="2"/><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{dateacct}]]></textFieldExpression></textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader><cellContents/></crosstabTotalRowHeader>
+                </rowGroup>
+                <rowGroup name="fecha_ven" width="100">
+                    <bucket class="java.util.Date"><bucketExpression><![CDATA[$F{fecha_ven}]]></bucketExpression></bucket>
+                    <crosstabRowHeader>
+                        <cellContents mode="Opaque"><box><pen lineWidth="0.5"/></box>
+                            <textField pattern="dd/MM/yyyy" isBlankWhenNull="true"><reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="3cf896e6-a3a0-4fdc-949c-3510b80f9880"/><box leftPadding="2" rightPadding="2"/><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{fecha_ven}]]></textFieldExpression></textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader><cellContents/></crosstabTotalRowHeader>
+                </rowGroup>
+                <rowGroup name="referencia" width="100">
+                    <bucket class="java.lang.String"><bucketExpression><![CDATA[$F{referencia}]]></bucketExpression></bucket>
+                    <crosstabRowHeader>
+                        <cellContents mode="Opaque"><box><pen lineWidth="0.5"/></box>
+                            <textField isBlankWhenNull="true"><reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="1b8e2e3a-5c73-4e00-a595-72b07aea6361"/><box leftPadding="2" rightPadding="2"/><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{referencia}]]></textFieldExpression></textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader><cellContents/></crosstabTotalRowHeader>
+                </rowGroup>
+                <rowGroup name="poreference" width="100">
+                    <bucket class="java.lang.String"><bucketExpression><![CDATA[$F{poreference}]]></bucketExpression></bucket>
+                    <crosstabRowHeader>
+                        <cellContents mode="Opaque"><box><pen lineWidth="0.5"/></box>
+                            <textField isBlankWhenNull="true"><reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="6b065a7a-875d-4eac-b4bd-a0df764d100d"/><box leftPadding="2" rightPadding="2"/><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{poreference}]]></textFieldExpression></textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader><cellContents/></crosstabTotalRowHeader>
+                </rowGroup>
+                <rowGroup name="c_costcenter" width="100">
+                    <bucket class="java.lang.String"><bucketExpression><![CDATA[$F{c_costcenter}]]></bucketExpression></bucket>
+                    <crosstabRowHeader>
+                        <cellContents mode="Opaque"><box><pen lineWidth="0.5"/></box>
+                            <textField isBlankWhenNull="true"><reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="83beb10e-79a2-4acd-a7ae-54e50602bd9f"/><box leftPadding="2" rightPadding="2"/><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{c_costcenter}]]></textFieldExpression></textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader><cellContents/></crosstabTotalRowHeader>
+                </rowGroup>
+                <rowGroup name="base_cero" width="100">
+                    <bucket class="java.lang.String"><bucketExpression><![CDATA[$F{basecero}]]></bucketExpression></bucket>
+                    <crosstabRowHeader>
+                        <cellContents mode="Opaque"><box><pen lineWidth="0.5"/></box>
+                            <textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true"><reportElement style="Crosstab Data Text" x="0" y="0" width="100" height="25" uuid="0ab11cde-79a2-4acd-a7ae-54e50602bd9f"/><box leftPadding="2" rightPadding="2"/><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{basecero}]]></textFieldExpression></textField>
+                        </cellContents>
+                    </crosstabRowHeader>
+                    <crosstabTotalRowHeader><cellContents/></crosstabTotalRowHeader>
+                </rowGroup>
+                
+                <columnGroup name="tipo_columna" height="0" totalPosition="End">
+                    <bucket class="java.lang.Integer"><bucketExpression><![CDATA[$F{tipo_columna}]]></bucketExpression></bucket>
+                    <crosstabColumnHeader><cellContents/></crosstabColumnHeader>
+                    <crosstabTotalColumnHeader>
+                        <cellContents mode="Opaque">
+                            <box><pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/></box>
+                            <staticText><reportElement x="0" y="0" width="120" height="50" uuid="9247a4ba-fae3-4324-8e04-e5d7b35901b5"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[TOTAL]]></text></staticText>
+                            <staticText><reportElement x="120" y="0" width="120" height="50" uuid="821a3037-9c05-47e2-aeeb-3f0f9cc3316f"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[TOTAL SIN RET.]]></text></staticText>
+                            <staticText><reportElement x="240" y="0" width="120" height="50" uuid="f2053776-afc7-4c6d-ab4f-273889506132"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[N° DOC. RETENCION]]></text></staticText>
+                            <staticText><reportElement x="360" y="0" width="120" height="50" uuid="24009bc6-bb80-4f1d-81a6-7ca8347a81c3"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[RET. FTE RENTA]]></text></staticText>
+                            <staticText><reportElement x="480" y="0" width="120" height="50" uuid="0ceda966-fb82-4c39-907d-52f9e2e0c3b0"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[RET. IVA]]></text></staticText>
+                            <staticText><reportElement x="600" y="0" width="120" height="50" uuid="e8fd1236-0e44-49d9-b912-c5b5cbdc7832"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[ESTADO DOC. ELECTRÓNICO]]></text></staticText>
+                            <staticText><reportElement x="720" y="0" width="120" height="50" uuid="52a302ed-bfd3-4f89-881d-b6e0bdfd56bc"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[ESTADO]]></text></staticText>
+                            <staticText><reportElement x="840" y="0" width="120" height="50" uuid="ff0cec08-2704-4bb9-9c71-e424e153f439"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[CONDICION DE PAGO]]></text></staticText>
+                            <staticText><reportElement x="960" y="0" width="120" height="50" uuid="b6de4ed8-80af-4c65-a8e8-f1fbf061eb5f"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[CONTABILIZADO]]></text></staticText>
+                            <staticText><reportElement x="1080" y="0" width="120" height="50" uuid="b6de4ed7-80af-4c15-a8e8-f1fbf061eb5f"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[DOC. APLICADO]]></text></staticText>
+                            <staticText><reportElement x="1200" y="0" width="120" height="50" uuid="b6de4ed8-80af-4c65-a8e8-f1fbf061eb5f"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Center" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[PAÍS]]></text></staticText>
+                        </cellContents>
+                    </crosstabTotalColumnHeader>
+                </columnGroup>
+                
+                <columnGroup name="tipo" height="50" totalPosition="None">
+                    <bucket class="java.lang.Integer"><bucketExpression><![CDATA[$F{rate}.intValue()]]></bucketExpression></bucket>
+                    <crosstabColumnHeader>
+                        <cellContents mode="Opaque">
+                            <box><pen lineWidth="0.5"/></box>
+                            <textField isBlankWhenNull="true">
+                                <reportElement x="0" y="0" width="120" height="50" uuid="c7e5a4c9-3e3f-4f0d-9f3e-111111111111"/>
+                                <box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box>
+                                <textElement textAlignment="Center" verticalAlignment="Middle" markup="html"><font size="9" isBold="true"/></textElement>
+                                <textFieldExpression><![CDATA[$V{tipo_columna}.intValue() == 1 ? "BASE IVA " + $V{tipo} + "%" : ($V{tipo_columna}.intValue() == 2 ? "BASE IVA TOTAL" : "IVA " + $V{tipo} + "%")]]></textFieldExpression>
+                            </textField>
+                        </cellContents>
+                    </crosstabColumnHeader>
+                    <crosstabTotalColumnHeader><cellContents/></crosstabTotalColumnHeader>
+                </columnGroup>
+
+                <measure name="basecero" class="java.math.BigDecimal"><measureExpression><![CDATA[$F{basecero}]]></measureExpression></measure>
+                <measure name="posted" class="java.lang.String"><measureExpression><![CDATA[$F{posted}]]></measureExpression></measure>
+                <measure name="basedoce" class="java.math.BigDecimal"><measureExpression><![CDATA[$F{basedoce}]]></measureExpression></measure>
+                <measure name="imp_renta" class="java.math.BigDecimal"><measureExpression><![CDATA[$F{imp_renta}]]></measureExpression></measure>
+                <measure name="total_ret" class="java.math.BigDecimal"><measureExpression><![CDATA[$F{referencia} != null ? $F{referencia} : BigDecimal.ZERO]]></measureExpression></measure>
+                <measure name="base" class="java.math.BigDecimal"><measureExpression><![CDATA[$F{base} != null ? $F{base} : BigDecimal.ZERO]]></measureExpression></measure>
+                <measure name="credito" class="java.lang.String"><measureExpression><![CDATA[$F{credito}]]></measureExpression></measure>
+                <measure name="status" class="java.lang.String"><measureExpression><![CDATA[$F{status}]]></measureExpression></measure>
+                <measure name="imp_iva" class="java.math.BigDecimal"><measureExpression><![CDATA[$F{imp_iva}]]></measureExpression></measure>
+                <measure name="total" class="java.math.BigDecimal"><measureExpression><![CDATA[$F{total} != null ? $F{total} : BigDecimal.ZERO]]></measureExpression></measure>
+                <measure name="f_reten" class="java.lang.String"><measureExpression><![CDATA[$F{f_reten}]]></measureExpression></measure>
+                <measure name="estado_email" class="java.lang.String"><measureExpression><![CDATA[$F{estado_email}]]></measureExpression></measure>
+                <measure name="rate" class="java.math.BigDecimal"><measureExpression><![CDATA[$F{rate}]]></measureExpression></measure>
+                
+                <measure name="amount_sum" class="java.math.BigDecimal" calculation="Sum"><measureExpression><![CDATA[$F{amount}]]></measureExpression></measure>
+                <measure name="m_basecero_sum" class="java.math.BigDecimal" calculation="Sum"><measureExpression><![CDATA[$F{basecero_sum}]]></measureExpression></measure>
+                <measure name="m_base_sum" class="java.math.BigDecimal" calculation="Sum"><measureExpression><![CDATA[$F{base_sum}]]></measureExpression></measure>
+                <measure name="m_total_sum" class="java.math.BigDecimal" calculation="Sum"><measureExpression><![CDATA[$F{total_sum}]]></measureExpression></measure>
+                <measure name="m_imp_renta_sum" class="java.math.BigDecimal" calculation="Sum"><measureExpression><![CDATA[$F{imp_renta_sum}]]></measureExpression></measure>
+                <measure name="m_imp_iva_sum" class="java.math.BigDecimal" calculation="Sum"><measureExpression><![CDATA[$F{imp_iva_sum}]]></measureExpression></measure>
+                
+                <measure name="pais" class="java.lang.String"><measureExpression><![CDATA[$F{pais}]]></measureExpression></measure>
+                <measure name="doc_apli" class="java.lang.String"><measureExpression><![CDATA[$F{doc_apli}]]></measureExpression></measure>
+                
+                <crosstabCell width="120" height="25">
+                    <cellContents>
+                        <box><pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/></box>
+                        <textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true">
+                            <reportElement x="0" y="0" width="120" height="25" uuid="11111111-247c-4797-8a2c-ee499ca64812"/>
+                            <box leftPadding="2" rightPadding="2"/>
+                            <textElement textAlignment="Right" verticalAlignment="Middle"><font size="8"/></textElement>
+                            <textFieldExpression><![CDATA[$V{amount_sum} != null ? $V{amount_sum} : BigDecimal.ZERO]]></textFieldExpression>
+                        </textField>
+                    </cellContents>
+                </crosstabCell>
+                <crosstabCell width="1320" height="25" columnTotalGroup="tipo_columna">
+                    <cellContents mode="Opaque">
+                        <box><pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/></box>
+                        <textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true"><reportElement x="0" y="0" width="120" height="25" uuid="8f49b88a-2937-49c3-ae7c-d62aaf7b03e5"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{base}]]></textFieldExpression></textField>
+                        <textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true"><reportElement x="120" y="0" width="120" height="25" uuid="5208dff0-c046-47bf-9b4a-8343cfbac063"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{total}]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="240" y="0" width="120" height="25" uuid="1dda2ad4-17d1-4a62-b41e-510e86eba2a1"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{f_reten}]]></textFieldExpression></textField>
+                        <textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true"><reportElement x="360" y="0" width="120" height="25" uuid="0317748c-57b0-48fa-afb4-668a86c9834c"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{imp_renta}]]></textFieldExpression></textField>
+                        <textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true"><reportElement x="480" y="0" width="120" height="25" uuid="617b71e5-6409-469f-af18-9f336094bc9b"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{imp_iva}]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="600" y="0" width="120" height="25" uuid="f952e27d-cb9e-4c59-870c-1a9bc6b67994"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{estado_email}]]></textFieldExpression></textField>
+                        <textField pattern="#,##0.00" isBlankWhenNull="true"><reportElement x="720" y="0" width="120" height="25" uuid="02a0f9a3-c7d4-4afa-aa50-f42fb80b996a"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{status}]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="840" y="0" width="120" height="25" uuid="5c6546e9-7dc3-4b6c-af71-f834526169eb"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{credito}]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="960" y="0" width="120" height="25" uuid="a36e32e9-49f4-4787-bb87-137d87e0a8bc"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{posted}.equals("Y") ? "SI" : "NO"]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="1080" y="0" width="120" height="25" uuid="a36e32e9-49f4-4787-bb87-137d87e0a8bc"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{doc_apli}]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="1200" y="0" width="120" height="25" uuid="a36e32e9-49f4-4787-bb87-137d87e0a8bc"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8"/></textElement><textFieldExpression><![CDATA[$V{pais}]]></textFieldExpression></textField>
+                    </cellContents>
+                </crosstabCell>
+
+                <crosstabCell width="120" height="25" rowTotalGroup="name">
+                    <cellContents mode="Opaque">
+                        <box><pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/></box>
+                        <textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true">
+                            <reportElement x="0" y="0" width="120" height="25" uuid="99999999-247c-4797-8a2c-ee499ca64812"/>
+                            <box leftPadding="2" rightPadding="2"/>
+                            <textElement textAlignment="Right" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement>
+                            <textFieldExpression><![CDATA[$V{amount_sum} != null ? $V{amount_sum} : BigDecimal.ZERO]]></textFieldExpression>
+                        </textField>
+                    </cellContents>
+                </crosstabCell>
+                
+                <crosstabCell width="1320" height="25" rowTotalGroup="name" columnTotalGroup="tipo_columna">
+                    <cellContents mode="Opaque">
+                        <box><pen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/></box>
+                        <textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true"><reportElement x="0" y="0" width="120" height="25" uuid="aaaa1111-2937-49c3-ae7c-d62aaf7b03e5"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[$V{m_base_sum}]]></textFieldExpression></textField>
+                        <textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true"><reportElement x="120" y="0" width="120" height="25" uuid="bbbb2222-c046-47bf-9b4a-8343cfbac063"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[$V{m_total_sum}]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="240" y="0" width="120" height="25" uuid="cccc3333-17d1-4a62-b41e-510e86eba2a1"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[""]]></textFieldExpression></textField>
+                        <textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true"><reportElement x="360" y="0" width="120" height="25" uuid="dddd4444-57b0-48fa-afb4-668a86c9834c"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[$V{m_imp_renta_sum}]]></textFieldExpression></textField>
+                        <textField pattern="###,##0.00;-###,##0.00" isBlankWhenNull="true"><reportElement x="480" y="0" width="120" height="25" uuid="eeee5555-6409-469f-af18-9f336094bc9b"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Right" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[$V{m_imp_iva_sum}]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="600" y="0" width="120" height="25" uuid="ffff6666-cb9e-4c59-870c-1a9bc6b67994"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[""]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="720" y="0" width="120" height="25" uuid="00007777-c7d4-4afa-aa50-f42fb80b996a"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[""]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="840" y="0" width="120" height="25" uuid="11118888-7dc3-4b6c-af71-f834526169eb"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[""]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="960" y="0" width="120" height="25" uuid="22229999-49f4-4787-bb87-137d87e0a8bc"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[""]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="1080" y="0" width="120" height="25" uuid="3333aaaa-49f4-4787-bb87-137d87e0a8bc"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[""]]></textFieldExpression></textField>
+                        <textField isBlankWhenNull="true"><reportElement x="1200" y="0" width="120" height="25" uuid="4444bbbb-49f4-4787-bb87-137d87e0a8bc"/><box leftPadding="2" rightPadding="2"><pen lineWidth="0.5"/></box><textElement textAlignment="Left" verticalAlignment="Middle"><font size="8" isBold="true"/></textElement><textFieldExpression><![CDATA[""]]></textFieldExpression></textField>
+                    </cellContents>
+                </crosstabCell>
+
+            </crosstab>
+        </band>
+    </summary>
+</jasperReport>

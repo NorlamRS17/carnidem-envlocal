@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE MA_PROCESSPLAN_VERSION">
+    <table name="MA_PROCESSPLAN_VERSION" primaryKey="MA_PROCESSPLAN_VERSION_KEY">
+      <column name="EM_SSPROD_PRINTCOST" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default/>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

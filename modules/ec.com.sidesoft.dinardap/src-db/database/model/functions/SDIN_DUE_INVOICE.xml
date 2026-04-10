@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+  <database name="FUNCTION SDIN_DUE_INVOICE">
+    <function name="SDIN_DUE_INVOICE" type="TIMESTAMP">
+      <parameter name="v_invoice_id" type="VARCHAR" mode="in">
+        <default/>
+      </parameter>
+      <body><![CDATA[V_DUEDATE DATE;
+BEGIN
+  SELECT DUEDATE INTO V_DUEDATE 
+  FROM FIN_PAYMENT_SCHEDULE PS, C_INVOICE I
+  WHERE PS.C_INVOICE_ID = I.C_INVOICE_ID AND
+  I.ISSOTRX = 'Y' AND
+  I.DOCUMENTNO = V_INVOICE_ID;
+  RETURN V_DUEDATE;
+END SDIN_DUE_INVOICE
+]]></body>
+    </function>
+  </database>

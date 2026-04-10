@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="54C0D5DDDAE44F4784EE285C4C1B6E74" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Sdea_Isemail">Enviar a email de la Transaccion</value>
+    <value column="PrintName" isTrl="Y" original="EM_Sdea_Isemail">Enviar a email de la Transaccion</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

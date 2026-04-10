@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="002D64512AF14B5D93C8E9982F6D01AF" trl="Y">
+    <value column="Name" isTrl="Y" original=" Outsourced Preventive">Preventivo Tercerizado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="3CCCF7E163D04C99994EA3566EB6C339" trl="Y">
+    <value column="Name" isTrl="Y" original="Outsourced Corrective">Correctivo Tercerizado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="887CC029883047C98D7A01F5CA7774C1" trl="Y">
+    <value column="Name" isTrl="Y" original="DR">Borrador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="DAA6A1F602CE4A35BB7A1B617DEA0F21" trl="Y">
+    <value column="Name" isTrl="Y" original="AP">Aprobado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

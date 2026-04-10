@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSRE_REFUNDINVOICE_AUTO_TRG">
+    <trigger name="SSRE_REFUNDINVOICE_AUTO_TRG" table="SSRE_REFUNDINVOICE" fires="before" insert="true" update="true" delete="false" foreach="row">
+      <body><![CDATA[	v_Count NUMBER;
+BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN RETURN;
+    END IF;
+
+	IF INSERTING OR UPDATING THEN
+		--Validamos que no exista el numero de autorizacion en otra factura
+		SELECT COALESCE(COUNT(RF.*),0) INTO v_Count 
+		FROM ssre_refundinvoice RF
+		WHERE RF.withholdingauthorization = :NEW.withholdingauthorization;
+
+		IF v_Count <> 0 THEN
+			RAISE_APPLICATION_ERROR(-20000, '@SSRE_Duplicate_Authorization@');
+		END IF;
+		RETURN NEW;
+	END IF;
+
+    END SSRE_REFUNDINVOICE_AUTO_TRG
+]]></body>
+    </trigger>
+  </database>

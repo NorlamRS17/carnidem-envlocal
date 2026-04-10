@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSCCES_NC_CLOSE_TRG_FUNC">
+    <trigger name="SSCCES_NC_CLOSE_TRG_FUNC" table="OPCRM_CASES" fires="before" insert="true" update="true" delete="true" foreach="row">
+      <body><![CDATA[  vNewClosed CHAR(1);
+/*
+ * Copyright (C) 2008-2013 Openia S.r.l.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. 
+ */
+BEGIN
+
+  IF AD_isTriggerEnabled() = 'N' THEN 
+    IF DELETING THEN 
+      RETURN OLD; 
+    ELSE 
+      RETURN NEW; 
+    END IF;
+  END IF;
+
+  IF UPDATING AND :OLD.Finished IS DISTINCT FROM :NEW.Finished THEN
+    :NEW.em_sscces_nonconformity_closed := :NEW.Finished;
+  END IF;
+
+  IF DELETING THEN 
+    RETURN OLD; 
+  ELSE 
+    RETURN NEW; 
+  END IF;
+END SSCCES_NC_CLOSE_TRG_FUNC
+]]></body>
+    </trigger>
+  </database>

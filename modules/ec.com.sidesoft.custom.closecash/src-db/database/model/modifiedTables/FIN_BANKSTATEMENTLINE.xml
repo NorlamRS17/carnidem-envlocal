@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE FIN_BANKSTATEMENTLINE">
+    <table name="FIN_BANKSTATEMENTLINE" primaryKey="FIN_BANKSTATEMENTLINE_KEY">
+      <index name="EM_SCCC_FIN_BSLINE_REF_ID" unique="false">
+        <index-column name="REFERENCENO"/>
+        <index-column name="FIN_FINACC_TRANSACTION_ID"/>
+        <index-column name="DATETRX"/>
+      </index>
+    </table>
+  </database>

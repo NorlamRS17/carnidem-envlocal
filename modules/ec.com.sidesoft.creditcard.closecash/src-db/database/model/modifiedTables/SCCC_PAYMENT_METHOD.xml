@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <database name="MODIFIED TABLE SCCC_PAYMENT_METHOD">
+    <table name="SCCC_PAYMENT_METHOD" primaryKey="SCCC_PAYMENT_METHOD_KEY">
+      <column name="EM_SSCRCC_DETAILED" primaryKey="false" required="false" type="CHAR" size="1" autoIncrement="false">
+        <default><![CDATA[N]]></default>
+        <onCreateDefault/>
+      </column>
+    </table>
+  </database>

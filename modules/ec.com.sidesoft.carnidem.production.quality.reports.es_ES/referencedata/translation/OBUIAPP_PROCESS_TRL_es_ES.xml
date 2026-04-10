@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="OBUIAPP_PROCESS" version="">
+  <row id="8449A2A9A2C04048A3EA99B9804627CD" trl="N">
+    <value column="Name" isTrl="Y" original="Quality Report">REPORTE DE SEGURIDAD Y CALIDAD EN MATERIA PRIMA</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="DD4034B54FA74C658518AFBBE2EF8742" trl="N">
+    <value column="Name" isTrl="Y" original="RAW MATERIAL SAFETY AND QUALITY REPORT">RRREPORTE DE SEGURIDAD Y CALIDAD EN MATERIA PRIMA</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

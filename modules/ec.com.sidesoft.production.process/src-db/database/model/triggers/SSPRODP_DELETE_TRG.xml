@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+  <database name="TRIGGER SSPRODP_DELETE_TRG">
+    <trigger name="SSPRODP_DELETE_TRG" table="M_MOVEMENT" fires="before" insert="false" update="false" delete="true" foreach="row">
+      <body><![CDATA[BEGIN
+    
+    IF AD_isTriggerEnabled()='N' THEN
+		IF DELETING THEN
+			RETURN OLD;
+		ELSE
+			RETURN NEW;
+		END IF; 
+    END IF;
+
+    IF DELETING THEN
+      IF (:old.PROCESSED = 'Y') THEN
+        RAISE_APPLICATION_ERROR(-20000, '@20501@') ;
+      END IF;
+	  
+	  UPDATE MA_WorkRequirement SET em_ssprodp_movement_id=null WHERE em_ssprodp_movement_id=:OLD.m_movement_id;
+    END IF;
+    
+	IF DELETING THEN
+		RETURN OLD;
+	ELSE
+		RETURN NEW;
+	END IF; 
+
+END SSPRODP_DELETE_TRG
+]]></body>
+    </trigger>
+  </database>

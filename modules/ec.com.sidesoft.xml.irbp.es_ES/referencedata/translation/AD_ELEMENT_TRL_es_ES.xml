@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="04A1DC81B10B478387E7711FED40C075" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssxml_Gruop_Irbp">Agrupación Anexo IRBP</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssxml_Gruop_Irbp">Agrupación Anexo IRBP</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="73009F7947B04E0EA15E783900A0473A" trl="Y">
+    <value column="Name" isTrl="Y" original="EM_Ssxml_Low_Ibp">Baja producto IBP</value>
+    <value column="PrintName" isTrl="Y" original="EM_Ssxml_Low_Ibp">Baja producto IBP</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

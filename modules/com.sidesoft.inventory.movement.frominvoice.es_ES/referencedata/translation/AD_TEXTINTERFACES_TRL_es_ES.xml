@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TEXTINTERFACES" version="">
+  <row id="006CED99A22A4B81B57E1D059E161B72" trl="N">
+    <value column="Text" isTrl="N" original="Firma Usuario">Firma Usuario</value>
+  </row>
+  <row id="04C86E3DADFC4F8C99D506973C400F76" trl="N">
+    <value column="Text" isTrl="N" original="Código">Código</value>
+  </row>
+  <row id="062A30882D6042E1ACB9A1E2635FC8E4" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Facturada">Cant. Facturada</value>
+  </row>
+  <row id="0649FBF792994852A90B56F5AA66215C" trl="N">
+    <value column="Text" isTrl="N" original="Cant. No facturada">Cant. No facturada</value>
+  </row>
+  <row id="24D6AC20F33D4523BA9DD44A14448F69" trl="N">
+    <value column="Text" isTrl="N" original="Codigo Producto">Codigo Producto</value>
+  </row>
+  <row id="253C3F14C8B845CEB6C1EAE3669F5060" trl="N">
+    <value column="Text" isTrl="N" original="Producto">Producto</value>
+  </row>
+  <row id="2847C405E9A64EFF9C344758CA33322E" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Pedida">Cant. Pedida</value>
+  </row>
+  <row id="2B48DD52193B45168242040865F86651" trl="N">
+    <value column="Text" isTrl="N" original="Unidad">Unidad</value>
+  </row>
+  <row id="2B726E65AB174ADDB59AC16BC2AE7E47" trl="N">
+    <value column="Text" isTrl="N" original="Nº. Factura / N.C">Nº. Factura / N.C</value>
+  </row>
+  <row id="382F898075B842CFBF604471693DD4ED" trl="N">
+    <value column="Text" isTrl="N" original="Fecha factura">Fecha factura</value>
+  </row>
+  <row id="38AF09A148114574A28126312874EE4B" trl="N">
+    <value column="Text" isTrl="N" original="Modelo">Modelo</value>
+  </row>
+  <row id="3C68BBAB791B4EDD979B2BFF2F5C6AF9" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Despachada">Cant. Despachada</value>
+  </row>
+  <row id="3E7A4A1EF5994623A8826995B3FF2763" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Impresión:">Fecha Impresión:</value>
+  </row>
+  <row id="41E49CCEB348499D8E34FE32477C13F0" trl="N">
+    <value column="Text" isTrl="N" original="Fecha pedido">Fecha pedido</value>
+  </row>
+  <row id="42AC2FB6FD8345B2A44A8BD1872132AA" trl="N">
+    <value column="Text" isTrl="N" original="Cant. No despachada">Cant. No despachada</value>
+  </row>
+  <row id="4A9856A716CC41D999BF8032F94F9194" trl="N">
+    <value column="Text" isTrl="N" original="PEDIDOS PENDIENTES DE DESPACHO O FACTURACIÓN">PEDIDOS PENDIENTES DE DESPACHO O FACTURACIÓN</value>
+  </row>
+  <row id="4C5D7BC8DD5C414CA6A657BC55157CF9" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Despachada">Cant. Despachada</value>
+  </row>
+  <row id="5A22916FC227404EA0BAC84EE7FFFCBF" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Despacho">Fecha Despacho</value>
+  </row>
+  <row id="5C8A9924ED544A22A616E0D2A1E97509" trl="N">
+    <value column="Text" isTrl="N" original="Usuario:">Usuario:</value>
+  </row>
+  <row id="63F828B8FE184F15AECC21F146F3B613" trl="N">
+    <value column="Text" isTrl="N" original="Fecha despacho">Fecha despacho</value>
+  </row>
+  <row id="67535F6975D34D4796856125E86678E9" trl="N">
+    <value column="Text" isTrl="N" original="REPORTE DE FACTURAS DE VENTAS SIN DESPACHO">REPORTE DE FACTURAS DE VENTAS SIN DESPACHO</value>
+  </row>
+  <row id="74B16FFF14544B2C8A22B97E259BD500" trl="N">
+    <value column="Text" isTrl="N" original="Total Costo">Total Costo</value>
+  </row>
+  <row id="756BE7F1EABD419882B49C82D9D014DA" trl="N">
+    <value column="Text" isTrl="N" original="Costo">Costo</value>
+  </row>
+  <row id="7941EC7898084D1DB9AD0BDF70680243" trl="N">
+    <value column="Text" isTrl="N" original="Tipo de documento">Tipo de documento</value>
+  </row>
+  <row id="7DD15B58F02F4889B007AD7F6CD93375" trl="N">
+    <value column="Text" isTrl="N" original="Factura">Factura</value>
+  </row>
+  <row id="7E3B40CE27F2435FBDC29303F4CC62C9" trl="N">
+    <value column="Text" isTrl="N" original="Cant. Facturada">Cant. Facturada</value>
+  </row>
+  <row id="7E8A3E8D19F24449895487DBE1580BD1" trl="N">
+    <value column="Text" isTrl="N" original="Firma Tesoreria">Firma Tesoreria</value>
+  </row>
+  <row id="83DE5C64F67947CAAD450B88E04BB124" trl="N">
+    <value column="Text" isTrl="N" original="Hasta:">Hasta:</value>
+  </row>
+  <row id="896A9D9C141842F98AED21A90AB4A2DB" trl="N">
+    <value column="Text" isTrl="N" original="Tot. Despachado">Tot. Despachado</value>
+  </row>
+  <row id="8AB4E7921A634BBD8122E72E784FFBDF" trl="N">
+    <value column="Text" isTrl="N" original="Desde:">Desde:</value>
+  </row>
+  <row id="8FDA6619924F4211B44F2E14275BAE78" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Emisión">Fecha Emisión</value>
+  </row>
+  <row id="9D012E607DCD40AEBACEDCB5B94B0B79" trl="N">
+    <value column="Text" isTrl="N" original="Pedido">Pedido</value>
+  </row>
+  <row id="A2400B639D8840A39856983E91C8818F" trl="N">
+    <value column="Text" isTrl="N" original="Fact. Referenciada">Fact. Referenciada</value>
+  </row>
+  <row id="A2B11844EFBE4EE29A0336DEB3346789" trl="N">
+    <value column="Text" isTrl="N" original="Usuario:">Usuario:</value>
+  </row>
+  <row id="A5C6FB908B014327A5D8EDC4A9CD59B9" trl="N">
+    <value column="Text" isTrl="N" original="Organización">Organización</value>
+  </row>
+  <row id="B7F8748186D949C48FDBF707BE29D697" trl="N">
+    <value column="Text" isTrl="N" original="Tercero">Tercero</value>
+  </row>
+  <row id="B863ED3EF21049CE919FA486D7BA004B" trl="N">
+    <value column="Text" isTrl="N" original="Despacho">Despacho</value>
+  </row>
+  <row id="BE99C8EC08BE449C812559CD817AFF0D" trl="N">
+    <value column="Text" isTrl="N" original="Total Precio">Total Precio</value>
+  </row>
+  <row id="C9415B771A8D4851BA73FAA1CFD1772A" trl="N">
+    <value column="Text" isTrl="N" original="Marca">Marca</value>
+  </row>
+  <row id="CC0847F6DC18418EB21149F90A7CA8D7" trl="N">
+    <value column="Text" isTrl="N" original="Producto">Producto</value>
+  </row>
+  <row id="CEC7E74B00C04DE9A6B4376FE501DC02" trl="N">
+    <value column="Text" isTrl="N" original="Nº Despacho">Nº Despacho</value>
+  </row>
+  <row id="F5D7E3D13DBF43D2B5A8ECF047783179" trl="N">
+    <value column="Text" isTrl="N" original="Precio">Precio</value>
+  </row>
+  <row id="F982731A7F5B405AAE4230EC7326E635" trl="N">
+    <value column="Text" isTrl="N" original="Fecha Imp.:">Fecha Imp.:</value>
+  </row>
+</compiereTrl>

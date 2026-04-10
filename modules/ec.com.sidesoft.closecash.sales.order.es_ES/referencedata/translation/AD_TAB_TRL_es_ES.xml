@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="13EC3D58FC2047549062F503A292C50F" trl="N">
+    <value column="Name" isTrl="Y" original="Management of cash income  and expenses">Gestión de Ingresos y Egresos Caja</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="8C33ADE962054E2D8571513C615809DC" trl="N">
+    <value column="Name" isTrl="Y" original="Type Of Document">Tipo de Documento</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="EEBC1000EDF146579A8DFE96A5BF06BF" trl="N">
+    <value column="Name" isTrl="Y" original="Accounting Concept">Conceptos Contables</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

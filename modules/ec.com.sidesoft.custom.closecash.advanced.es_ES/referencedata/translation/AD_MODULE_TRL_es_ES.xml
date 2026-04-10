@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_MODULE" version="">
+  <row id="EC41700185F2429E8CDF4FB273AECA9A" trl="N">
+    <value column="Description" isTrl="Y" original="Sidesoft Custom Close Cash Advanced">s</value>
+    <value column="Help" isTrl="N" original="Módulo con modificaciones para el módulo &quot;ec.com.sidesoft.custom.closecash.advanced&quot; cierre de caja BackOffice.&#10;Incluye: &#10;* Reporte cierre de caja.&#10;* Ventanana liquidación de tarjetas de crédito&#10;* Procesos de importación de datos de liquidación de tarjetas de crédito"/>
+    <value column="License" isTrl="N" original=""/>
+    <value column="Updateinfo" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

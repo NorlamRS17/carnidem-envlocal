@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<REPORT>
+<template id="class" file="ActionButtonD351B9C7DFF04E4490A16FEB2121B6DE.html"></template>
+
+<PARAMETER id="paramLanguage" name="language" default=""></PARAMETER>
+<PARAMETER id="paramCSS" name="css" attribute="href" replace="Default"></PARAMETER>
+<PARAMETER id="paramCSS_print" name="css" attribute="href" replace="Default"></PARAMETER>
+<PARAMETER id="key" name="key" default="" attribute="value"></PARAMETER>
+<PARAMETER id="form" name="form" default="" attribute="action"></PARAMETER>
+<PARAMETER id="processing" name="processing" default="" attribute="value"></PARAMETER>
+<PARAMETER id="window" name="window" default="" attribute="value"></PARAMETER>
+<PARAMETER id="paramCheck" name="check" default="Y"></PARAMETER>
+<PARAMETER id="paramDirectory" name="directory" default=""></PARAMETER>
+<PARAMETER id="processId" name="processId" default="PROCESS"></PARAMETER>
+<PARAMETER id="trlFormType" name="trlFormType" default="PROCESS"></PARAMETER>
+<PARAMETER id="processName" name="processName" replace="#processName#" default=""></PARAMETER>
+<PARAMETER id="processDescription" name="processDescription" replace="#processDescription#" default=""></PARAMETER>
+<PARAMETER id="processHelp" name="processHelp" replace="#processHelp#" default=""></PARAMETER>
+
+
+<PARAMETER id="buttonOK" name="ok" attribute="onmouseover" replace="xx" default=""></PARAMETER>
+<PARAMETER id="buttonOK" name="ok" attribute="onfocus" replace="xx" default=""></PARAMETER>
+<PARAMETER id="imgButtonOK" name="ok" attribute="alt" replace="xx" default=""></PARAMETER>
+<PARAMETER id="imgButtonOK" name="ok" attribute="title" replace="xx" default=""></PARAMETER>
+<PARAMETER id="tdButtonOK" name="ok"></PARAMETER>
+
+<PARAMETER id="buttonCancel" name="cancel" attribute="onmouseover" replace="xx" default=""></PARAMETER>
+<PARAMETER id="buttonCancel" name="cancel" attribute="onfocus" replace="xx" default=""></PARAMETER>
+<PARAMETER id="imgButtonCancel" name="cancel" attribute="alt" replace="xx" default=""></PARAMETER>
+<PARAMETER id="imgButtonCancel" name="cancel" attribute="title" replace="xx" default=""></PARAMETER>
+<PARAMETER id="tdButtonCancel" name="cancel"></PARAMETER>
+
+
+<PARAMETER id="messageBoxID" name="messageType" attribute="class" replace="yy" default="HIDDEN"></PARAMETER>
+<PARAMETER id="messageBoxIDTitle" name="messageTitle" default=""></PARAMETER>
+<PARAMETER id="messageBoxIDMessage" name="messageMessage" default=""></PARAMETER>
+
+
+
+<PARAMETER id="ad_org" name="ad_org" attribute="value"/>
+<SUBREPORT id="reportad_org" name="reportad_org" report="org/openbravo/erpCommon/reference/List">
+  <ARGUMENT name="parameterListSelected" withId="ad_org"/>
+</SUBREPORT>
+<PARAMETER id="c_doctype" name="c_doctype" attribute="value"/>
+<SUBREPORT id="reportc_doctype" name="reportc_doctype" report="org/openbravo/erpCommon/reference/List">
+  <ARGUMENT name="parameterListSelected" withId="c_doctype"/>
+</SUBREPORT>
+
+  
+  <PARAMETER id="date_start" name="date_start" attribute="value"></PARAMETER>
+  <PARAMETER id="date_start" name="date_start_Format" attribute="displayformat"></PARAMETER>
+  <PARAMETER id="date_start" name="date_start_Format" attribute="saveformat"></PARAMETER>
+
+
+
+  
+  <PARAMETER id="date_end" name="date_end" attribute="value"></PARAMETER>
+  <PARAMETER id="date_end" name="date_end_Format" attribute="displayformat"></PARAMETER>
+  <PARAMETER id="date_end" name="date_end_Format" attribute="saveformat"></PARAMETER>
+
+
+<PARAMETER id="p_category" name="p_category" attribute="value"/>
+<SUBREPORT id="reportp_category" name="reportp_category" report="org/openbravo/erpCommon/reference/List">
+  <ARGUMENT name="parameterListSelected" withId="p_category"/>
+</SUBREPORT>
+<PARAMETER id="m_warehause" name="m_warehause" attribute="value"/>
+<SUBREPORT id="reportm_warehause" name="reportm_warehause" report="org/openbravo/erpCommon/reference/List">
+  <ARGUMENT name="parameterListSelected" withId="m_warehause"/>
+</SUBREPORT>
+<PARAMETER id="ad_user" name="ad_user" attribute="value"/>
+<SUBREPORT id="reportad_user" name="reportad_user" report="org/openbravo/erpCommon/reference/List">
+  <ARGUMENT name="parameterListSelected" withId="ad_user"/>
+</SUBREPORT>
+<PARAMETER id="outputType" name="outputType" attribute="value"/>
+<SUBREPORT id="reportoutputType" name="reportoutputType" report="org/openbravo/erpCommon/reference/List">
+  <ARGUMENT name="parameterListSelected" withId="outputType"/>
+</SUBREPORT>
+
+
+<DISCARD id="discard"></DISCARD>
+
+<LABEL id="lbl::ad_org" name="lbl::ad_org" replace="#ad_org#">ad_orglbl</LABEL>
+<LABEL id="lbl::c_doctype" name="lbl::c_doctype" replace="#c_doctype#">c_doctypelbl</LABEL>
+<LABEL id="lbl::date_start" name="lbl::date_start" replace="#date_start#">date_startlbl</LABEL>
+<LABEL id="lbl::date_end" name="lbl::date_end" replace="#date_end#">date_endlbl</LABEL>
+<LABEL id="lbl::p_category" name="lbl::p_category" replace="#p_category#">p_categorylbl</LABEL>
+<LABEL id="lbl::m_warehause" name="lbl::m_warehause" replace="#m_warehause#">m_warehauselbl</LABEL>
+<LABEL id="lbl::ad_user" name="lbl::ad_user" replace="#ad_user#">ad_userlbl</LABEL>
+<LABEL id="lbl::outputType" name="lbl::outputType" replace="#outputType#">outputTypelbl</LABEL>
+
+</REPORT>

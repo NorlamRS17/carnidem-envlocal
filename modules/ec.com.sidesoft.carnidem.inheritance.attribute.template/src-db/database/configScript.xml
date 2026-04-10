@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnSizeChange tablename="MA_WORKREQUIREMENT" columnname="SECONDARYQTY" newSize="10" newScale="6" oldSize="10" oldScale="0"/>
+    <columnSizeChange tablename="MA_WORKREQUIREMENT" columnname="EM_SSPROD_SECONDQTYSTOP" newSize="10" newScale="6" oldSize="0"/>
+    <columnDataChange tablename="AD_MODEL_OBJECT" columnname="CLASSNAME" pkRow="4FA852C100FE4D03A3E466CA60168792">
+      <oldValue><![CDATA[ec.com.sidesoft.production.ad_actionButton.CreateStandards]]></oldValue>
+      <newValue><![CDATA[ec.com.sidesoft.carnidem.inheritance.attribute.ad_actionButton.CreateStandardsCustom]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="802201">
+      <oldValue><![CDATA[29]]></oldValue>
+      <newValue><![CDATA[22]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="AD_REFERENCE_ID" pkRow="67A6A2EF0B4E48ADA16BAAEF6C85FE43">
+      <oldValue><![CDATA[29]]></oldValue>
+      <newValue><![CDATA[22]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_REF_TABLE" columnname="WHERECLAUSE" pkRow="FF808181329203980132921324270015">
+      <oldValue><![CDATA[MA_SequenceProduct.MA_Sequence_ID = @MA_Sequence_ID@ AND MA_SequenceProduct.Productiontype = '-'  AND MA_SequenceProduct.Line < TO_NUMBER(@Line@)]]></oldValue>
+      <newValue><![CDATA[MA_SequenceProduct.MA_Sequence_ID = @MA_Sequence_ID@ AND MA_SequenceProduct.Productiontype = '-']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="ISDISPLAYED" pkRow="C910054589CA4737B2EE0BB1D201D13C">
+      <oldValue><![CDATA[Y]]></oldValue>
+      <newValue><![CDATA[N]]></newValue>
+    </columnDataChange>
+  </vector>

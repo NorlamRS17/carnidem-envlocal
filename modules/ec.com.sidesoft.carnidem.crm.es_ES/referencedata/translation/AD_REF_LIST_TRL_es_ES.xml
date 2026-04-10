@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="069BB3C3F56F4713B62273C1BF53B891" trl="Y">
+    <value column="Name" isTrl="Y" original="Complaints">Quejas</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="181351F8ED324BF29EBCBAF219670716" trl="Y">
+    <value column="Name" isTrl="Y" original="Labor">Mano de Obra</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="1B92FFBB4FD54CA28AB61D1D48FC912F" trl="N">
+    <value column="Name" isTrl="Y" original="Low">Bajo</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="410E99FE2EC74326B770AE9CADBB3C27" trl="N">
+    <value column="Name" isTrl="Y" original="Medium">Medio</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="53E8DF3E0C6D4D1295A5EE11856D2F49" trl="Y">
+    <value column="Name" isTrl="Y" original="Environment (Surroundings)">Medio Ambiente (Entorno)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="7F41987F21BF4AE5B080807434F6BF47" trl="Y">
+    <value column="Name" isTrl="Y" original="Materials (Raw Materials and Supplies)">Materiales (Materias Primas e Insumos)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="9DDE9F3C358443FD93F844F12A399EDE" trl="Y">
+    <value column="Name" isTrl="Y" original="Machinery">Maquinaria</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B38CE6490766424291A0ED5337823C86" trl="Y">
+    <value column="Name" isTrl="Y" original="Method (Process)">Método (Proceso)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B7A0C2D501E64A28BE2E6DD529316177" trl="Y">
+    <value column="Name" isTrl="Y" original="Measurement (Monitoring and Control)">Medición (Monitoreo y Control)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="BEEC00568BF84F58A481C7CE71B87513" trl="Y">
+    <value column="Name" isTrl="Y" original="Management">Management (Administración)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C98151C831DD47D5900BAE7B428EC553" trl="N">
+    <value column="Name" isTrl="Y" original="Customer Response">Respuesta cliente</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C9A6A2BDAE6941A8A6202379693A4D1C" trl="Y">
+    <value column="Name" isTrl="Y" original="Major">Mayor</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="CB46DD459F9045DA82DF57D6E35A99D3" trl="Y">
+    <value column="Name" isTrl="Y" original="Minor">Menor</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="CE764E6DDDC5476BA1547C093B41C005" trl="Y">
+    <value column="Name" isTrl="Y" original="Critical">Crítica</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="ED76B73E943F48DF9E10A6F751D0A77C" trl="N">
+    <value column="Name" isTrl="Y" original="High">Alto</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="F1720ED9F0DC4D1B9B924E6204A1EFBD" trl="Y">
+    <value column="Name" isTrl="Y" original="Media (Resources)">Medios (Recursos)</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="1E8BE1B4296A473EBB9D02B0A09F92DC" trl="N">
+    <value column="Name" isTrl="Y" original="Commission">Comisión</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="234134FA3EA34A519D3CB978DE0B3D1F" trl="N">
+    <value column="Name" isTrl="Y" original="Income Withholding">Retención Renta</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="9BEBD3E70D164368B3C241CE7AD3A3EB" trl="N">
+    <value column="Name" isTrl="Y" original="VAT withholding">Retención IVA</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="A52D9423D5C94A2290C288D55CA8F59A" trl="N">
+    <value column="Name" isTrl="Y" original="Reconciled">Conciliado</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="B05BC8FED51C41B390713D20BAF70E26" trl="Y">
+    <value column="Name" isTrl="N" original="IVA">IVA</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="C61EFA2C2434463BB9B12228739BAED0" trl="N">
+    <value column="Name" isTrl="Y" original="Draft">Borrador</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+  <row id="E94DD8957CB941E18FAC1BDBCEE30ACB" trl="N">
+    <value column="Name" isTrl="Y" original="Bank">Banco</value>
+    <value column="Description" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

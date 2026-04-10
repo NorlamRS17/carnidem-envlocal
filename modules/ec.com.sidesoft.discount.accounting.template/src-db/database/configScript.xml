@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <removeTriggerChange triggerName="SSFI_SETCURRENCY_TRG"/>
+    <columnDataChange tablename="AD_TAB" columnname="ISACTIVE" pkRow="4F9E1C27F7F040C58C5CA2E6FD5B26CB">
+      <oldValue><![CDATA[N]]></oldValue>
+      <newValue><![CDATA[Y]]></newValue>
+    </columnDataChange>
+  </vector>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_ELEMENT" version="">
+  <row id="01E1080C1F4E4470AA2072D42369CF5C" trl="N">
+    <value column="Name" isTrl="N" original="Scft_Acct_Account_ID">Scft_Acct_Account_ID</value>
+    <value column="PrintName" isTrl="N" original="Scft_Acct_Account_ID">Scft_Acct_Account_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="215954ED7144423DA88D58D600BA97FE" trl="Y">
+    <value column="Name" isTrl="Y" original="Bulk_Upload_Acctaccount">Cargar masiva de cuentas contables</value>
+    <value column="PrintName" isTrl="Y" original="Bulk_Upload_Acctaccount">Cargar masiva de cuentas contables</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="2F573FD7C6C44EFBBFCAC676492088B5" trl="Y">
+    <value column="Name" isTrl="Y" original="Scft_Acctclassif_ID">Clasificación de Cuenta</value>
+    <value column="PrintName" isTrl="Y" original="Scft_Acctclassif_ID">Clasificación de Cuenta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="31B6E12037D64F33BB65A31726077219" trl="Y">
+    <value column="Name" isTrl="Y" original="Scft_Indicatoracct_ID">Tipo de Indicador Financiero Contable</value>
+    <value column="PrintName" isTrl="Y" original="Scft_Indicatoracct_ID">Tipo de Indicador Financiero Contable</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="4A3078820FE44EB8BFA0D06889360C04" trl="N">
+    <value column="Name" isTrl="N" original="Scft_Finan_Acct_Ind_ID">Scft_Finan_Acct_Ind_ID</value>
+    <value column="PrintName" isTrl="N" original="Scft_Finan_Acct_Ind_ID">Scft_Finan_Acct_Ind_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="58E417C50ECB4771B7164E47F76BD382" trl="Y">
+    <value column="Name" isTrl="Y" original="em_scft_account_id">Clasificación de la cuenta</value>
+    <value column="PrintName" isTrl="Y" original="em_scft_account_id">Clasificación de la cuenta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="642A4F3C9F5B4E9DAB5F64A0F60426D3" trl="Y">
+    <value column="Name" isTrl="Y" original="Calculation_Formula">Fórmula de Cálculo</value>
+    <value column="PrintName" isTrl="Y" original="Calculation_Formula">Fórmula de Cálculo</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="74262AA5948C476DBF31355F7486BBF3" trl="N">
+    <value column="Name" isTrl="N" original="Scft_Paramacct_ID">Scft_Paramacct_ID</value>
+    <value column="PrintName" isTrl="N" original="Scft_Paramacct_ID">Scft_Paramacct_ID</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="907515CA142C4785A40F4963A359197E" trl="N">
+    <value column="Name" isTrl="N" original="Accttype">Accttype</value>
+    <value column="PrintName" isTrl="N" original="Accttype">Accttype</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="9648D326D4C845DB9D5251CC4BAAA3FC" trl="Y">
+    <value column="Name" isTrl="Y" original="name acct">Nombre del Indicador Financiero Contable</value>
+    <value column="PrintName" isTrl="Y" original="name acct">Nombre del Indicador Financiero Contable</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="B0B352A433014A1698D1766D8923D14C" trl="Y">
+    <value column="Name" isTrl="Y" original="Account_Type">Tipo de cuenta</value>
+    <value column="PrintName" isTrl="Y" original="Account_Type">Tipo de cuenta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="CCAB9A05AB294B8D8D745DE14D21EEDE" trl="N">
+    <value column="Name" isTrl="N" original="Account_Type">Account_Type</value>
+    <value column="PrintName" isTrl="N" original="Account_Type">Account_Type</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+  <row id="E0388A29FDF34009B21E40CF9973C180" trl="Y">
+    <value column="Name" isTrl="Y" original="Scft_Indicatoracctline_ID">Nombre del Indicador Financiero Contable</value>
+    <value column="PrintName" isTrl="Y" original="Scft_Indicatoracctline_ID">Nombre del Indicador Financiero Contable</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+    <value column="PO_Description" isTrl="N" original=""/>
+    <value column="PO_Help" isTrl="N" original=""/>
+    <value column="PO_Name" isTrl="N" original=""/>
+    <value column="PO_PrintName" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

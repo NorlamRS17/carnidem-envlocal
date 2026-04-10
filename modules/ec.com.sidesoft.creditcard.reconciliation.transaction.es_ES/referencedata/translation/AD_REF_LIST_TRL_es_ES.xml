@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REF_LIST" version="">
+  <row id="2C755E4752144D88BE0AA05430E8CE4C" trl="Y">
+    <value column="Name" isTrl="Y" original="Draft">Borrador</value>
+    <value column="Description" isTrl="Y" original="Draft">Borrador</value>
+  </row>
+  <row id="45C07CCA41664DB0AB68ADD8579FFCAC" trl="Y">
+    <value column="Name" isTrl="Y" original="Completed">Completado</value>
+    <value column="Description" isTrl="Y" original="Completed">Completado</value>
+  </row>
+  <row id="C7053BF579BA45F8A8A724A02F3B442D" trl="Y">
+    <value column="Name" isTrl="Y" original="Generated">Generado</value>
+    <value column="Description" isTrl="N" original="Generated">Generated</value>
+  </row>
+</compiereTrl>

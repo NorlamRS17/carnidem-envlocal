@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+  <vector>
+    <versionInfo version="3.0.34312"/>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="03276FB53CC54CC1829E0AA6EC0F2EE6">
+      <oldValue><![CDATA[@Processed@='Y' & @status@!'RPAE']]></oldValue>
+      <newValue><![CDATA[@Processed@='Y' & (@status@!'RPAE' | @Status@='RPVOID')]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="1050C23BA102443A86AB2AF85D8F098D">
+      <oldValue><![CDATA[@Posted@='Y']]></oldValue>
+      <newValue><![CDATA[@Posted@='Y' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="260DB5AFD2154D6DA6B72BFD78334DEF">
+      <oldValue/>
+      <newValue><![CDATA[@Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="3EDE2FBFD59A44E08CF39C0916687F99">
+      <oldValue><![CDATA[@Processed@='Y' | @Posted@='Y']]></oldValue>
+      <newValue><![CDATA[@Processed@='Y' | @Posted@='Y' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="4028C9BC2DA5C491012DA6832A1003A8">
+      <oldValue><![CDATA[@NotAllowChangeExchange@='Y' | (@Processed@='Y' & @status@!'RPAE' )]]></oldValue>
+      <newValue><![CDATA[@NotAllowChangeExchange@='Y' | (@Processed@='Y' & @status@!'RPAE' ) | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="4028C9BC2DA5C491012DA689D11F03BD">
+      <oldValue><![CDATA[@NotAllowChangeExchange@='Y' | @Processed@='Y' | @status@='RPAE']]></oldValue>
+      <newValue><![CDATA[@NotAllowChangeExchange@='Y' | @Processed@='Y' | @status@='RPAE' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="6A993E2C0191432BBEE30285693F4E9F">
+      <oldValue/>
+      <newValue><![CDATA[@Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="7891269C83D9655DE040007F010155CE">
+      <oldValue><![CDATA[@Processed@='Y']]></oldValue>
+      <newValue><![CDATA[@Processed@='Y' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="7891269C83DB655DE040007F010155CE">
+      <oldValue><![CDATA[@Processed@='Y' & @status@!'RPAE']]></oldValue>
+      <newValue><![CDATA[@Processed@='Y' & (@status@!'RPAE' | @Status@='RPVOID')]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="7891269C83DC655DE040007F010155CE">
+      <oldValue><![CDATA[@IsMultiCurrencyEnabled@!'Y' | @Processed@='Y' | @Status@='RPAE']]></oldValue>
+      <newValue><![CDATA[@IsMultiCurrencyEnabled@!'Y' | @Processed@='Y' | @Status@='RPAE' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="7891269C83DD655DE040007F010155CE">
+      <oldValue><![CDATA[((@Processed@='Y' & @isReceipt@='Y') | @isReceipt@='N') | @Status@='RPAE']]></oldValue>
+      <newValue><![CDATA[((@Processed@='Y' & @isReceipt@='Y') | @isReceipt@='N') | @Status@='RPAE' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="7891269C83E0655DE040007F010155CE">
+      <oldValue><![CDATA[@Processed@='Y']]></oldValue>
+      <newValue><![CDATA[@Processed@='Y' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="7891269C83E1655DE040007F010155CE">
+      <oldValue><![CDATA[@Slcb_ValidateReferenceCheck@='Y']]></oldValue>
+      <newValue><![CDATA[@Slcb_ValidateReferenceCheck@='Y' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="7DC34559B3F1B45BE040007F0100784A">
+      <oldValue><![CDATA[@Processed@='Y' & @status@!'RPAE']]></oldValue>
+      <newValue><![CDATA[@Processed@='Y' & (@status@!'RPAE' | @Status@='RPVOID')]]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8032E178607750D5E040007F01004282">
+      <oldValue/>
+      <newValue><![CDATA[@Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="828EE0AE800D5FA1E040007F010067C7">
+      <oldValue><![CDATA[@Posted@='Y']]></oldValue>
+      <newValue><![CDATA[@Posted@='Y' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="828EE0AE80105FA1E040007F010067C7">
+      <oldValue><![CDATA[@Posted@='Y']]></oldValue>
+      <newValue><![CDATA[@Posted@='Y' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="828EE0AE80115FA1E040007F010067C7">
+      <oldValue><![CDATA[@Posted@='Y']]></oldValue>
+      <newValue><![CDATA[@Posted@='Y' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="8A6DE2B41CB440B7B9C36C9C149192F7">
+      <oldValue><![CDATA[@status@='RPAP'|@status@='PWNC'|@status@='PPM']]></oldValue>
+      <newValue><![CDATA[@status@='RPAP'|@status@='PWNC'|@status@='PPM' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="B1DEC89DD78545879D42A40808874E0D">
+      <oldValue><![CDATA[@Processed@='Y']]></oldValue>
+      <newValue><![CDATA[@Processed@='Y' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="C0B0C57D6210C545E040007F01005E8C">
+      <oldValue/>
+      <newValue><![CDATA[@Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_COLUMN" columnname="READONLYLOGIC" pkRow="E8202D7690E44C2DBDB27DB50088B1DE">
+      <oldValue><![CDATA[@Processed@='Y' | @Posted@='Y']]></oldValue>
+      <newValue><![CDATA[@Processed@='Y' | @Posted@='Y' | @Status@='RPVOID']]></newValue>
+    </columnDataChange>
+    <columnDataChange tablename="AD_FIELD" columnname="DISPLAYLOGIC" pkRow="7FCAAFE989BDA375E040007F01007F0A">
+      <oldValue><![CDATA[@Processed@='N']]></oldValue>
+      <newValue><![CDATA[@Processed@='N' & @Status@!'RPVOID']]></newValue>
+    </columnDataChange>
+  </vector>

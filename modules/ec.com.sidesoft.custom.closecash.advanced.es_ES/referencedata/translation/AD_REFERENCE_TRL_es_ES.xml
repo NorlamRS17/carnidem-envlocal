@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_REFERENCE" version="">
+  <row id="38CDBA2F555547D0AE3A92858B6C6225" trl="Y">
+    <value column="Name" isTrl="Y" original="Scca_Financial_Account">Cuenta financiera</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="51124F668C644216B869F22310883669" trl="Y">
+    <value column="Name" isTrl="Y" original="Card type">Tipo de tarjeta</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="6AB3B836D5374A818AFBC5B0FA1BEB9F" trl="Y">
+    <value column="Name" isTrl="Y" original="Scca_Line_Type">Tipo de línea</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="A6D7FCAC8C09431788E45119F4241FFD" trl="Y">
+    <value column="Name" isTrl="Y" original="Payment type">Tipo de pago/cobro</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="E8DB521059424682BDE4C5C3D755AA6B" trl="N">
+    <value column="Name" isTrl="N" original="Scca_User">Scca_User</value>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>

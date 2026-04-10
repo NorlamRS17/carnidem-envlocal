@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<compiereTrl baseLanguage="en_US" language="es_ES" table="AD_TAB" version="">
+  <row id="3AC97A0368084DE8839C76EC3F24790C" trl="N">
+    <value column="Name" isTrl="Y" original="Values">Valores</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+  <row id="40F2DBE30F664E3DA4001FFBD287C16C" trl="N">
+    <value column="Name" isTrl="Y" original="Check Point Set">Grupo</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="Y" original="Create and edit checkpoints for the related measurement.">Crea y edita los checkpoints para las mediciones relacionadas.</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="Y" original="Create and edit checkpoints for the related measurement.">Crea y edita los checkpoints para las mediciones relacionadas.</value>
+  </row>
+  <row id="467F24D9CEFB4ED2906C0B73DCB8A21B" trl="N">
+    <value column="Name" isTrl="Y" original="Time">Hora</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="Y" original="Create and edit times for related check points.">Crea y edita los horarios de los checkpoints relacionados.</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="Y" original="Create and edit times for related check points.">Crea y edita los horarios de los checkpoints relacionados.</value>
+  </row>
+  <row id="5B9F06B637C0459AB4EFE1C1DEA42220" trl="N">
+    <value column="Name" isTrl="Y" original="Check Point Set">Grupos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="Y" original="Create check point sets and define tests frequencies.">Crea grupos de checkpoints y defina la frecuencia de los tests.</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="Y" original="Create check point sets and define tests frequencies.">Crea grupos de checkpoints y defina la frecuencia de los tests.</value>
+  </row>
+  <row id="7788BE4DB84C4D1EAB239E9090944582" trl="N">
+    <value column="Name" isTrl="Y" original="Shift">Turno</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="Y" original="Define shifts when the tests for a related group will be performed.">Define los turnos en que se han de realizar los tests de un grupo determinado.</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="Y" original="Define shifts when the tests for a related group will be performed.">Define los turnos en que se han de realizar los tests de un grupo determinado.</value>
+  </row>
+  <row id="78B5C273CA6247F2965B4F6503322F2E" trl="N">
+    <value column="Name" isTrl="Y" original="Check Point">Puntos</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="Y" original="Create check points for a related set.">Crea los checkpoints para un grupo determinado.</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="Y" original="Create check points for a related set.">Crea los checkpoints para un grupo determinado.</value>
+  </row>
+  <row id="7E43E189AA504DAFA73E6061FAD3FA10" trl="N">
+    <value column="Name" isTrl="Y" original="Date and Shift">Fecha y  turno</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="Y" original="Create measurements and insert gathered values or a specifc date and shift.">Crea las mediciones e inserte los valores reunidos o un dato y turno específicos.</value>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="Y" original="Create measurements and insert gathered values or a specifc date and shift.">Crea las mediciones e inserte los valores reunidos o un dato y turno específicos.</value>
+  </row>
+  <row id="BEB8220B18584230BE175EC99634BFA6" trl="Y">
+    <value column="Name" isTrl="Y" original="Dimension">Dimensión</value>
+    <value column="CommitWarning" isTrl="N" original=""/>
+    <value column="Description" isTrl="N" original=""/>
+    <value column="Filtername" isTrl="N" original=""/>
+    <value column="Help" isTrl="N" original=""/>
+  </row>
+</compiereTrl>
