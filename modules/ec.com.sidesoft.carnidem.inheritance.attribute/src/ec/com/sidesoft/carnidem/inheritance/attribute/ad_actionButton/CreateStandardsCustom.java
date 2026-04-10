@@ -18,6 +18,8 @@
  */
 package ec.com.sidesoft.carnidem.inheritance.attribute.ad_actionButton;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -31,6 +33,7 @@ import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONObject;
 import org.hibernate.criterion.Restrictions;
 import org.openbravo.base.exception.OBException;
+import org.openbravo.base.provider.OBProvider;
 import org.openbravo.base.secureApp.VariablesSecureApp;
 import org.openbravo.base.session.OBPropertiesProvider;
 import org.openbravo.dal.core.OBContext;
@@ -42,20 +45,27 @@ import org.openbravo.erpCommon.utility.AttributeSetInstanceValue;
 import org.openbravo.erpCommon.utility.OBError;
 import org.openbravo.erpCommon.utility.Utility;
 import org.openbravo.model.ad.process.ProcessInstance;
+import org.openbravo.model.common.plm.Attribute;
 import org.openbravo.model.common.plm.AttributeInstance;
 import org.openbravo.model.common.plm.AttributeSet;
 import org.openbravo.model.common.plm.AttributeSetInstance;
+import org.openbravo.model.common.plm.AttributeUse;
+import org.openbravo.model.common.plm.AttributeValue;
 import org.openbravo.model.manufacturing.processplan.OperationProduct;
 import org.openbravo.model.manufacturing.processplan.OperationProductAttribute;
 import org.openbravo.model.manufacturing.transaction.WorkRequirementProduct;
 import org.openbravo.model.materialmgmt.transaction.ProductionLine;
 import org.openbravo.model.materialmgmt.transaction.ProductionPlan;
+import org.openbravo.base.provider.OBProvider;
 import org.openbravo.scheduling.ProcessBundle;
 import org.openbravo.service.db.CallProcess;
 import org.openbravo.service.db.DalConnectionProvider;
 import org.openbravo.utils.Replace;
 
 public class CreateStandardsCustom implements org.openbravo.scheduling.Process {
+
+  private static final String AD_MESSAGE_NOT_ENOUGH_STOCKED = "@NotEnoughStocked@";
+  private static final String AD_MESSAGE_NOT_ENOUGH_STOCKED_WH_RULE = "@NotEnoughStockedDueWHRule@";
 
   private static final String lotSearchKey = "LOT";
   private static final String serialNoSearchKey = "SNO";
@@ -70,8 +80,7 @@ public class CreateStandardsCustom implements org.openbravo.scheduling.Process {
     final String strMProductionPlanID = (String) bundle.getParams().get("M_ProductionPlan_ID");
     final ConnectionProvider conn = bundle.getConnection();
     final VariablesSecureApp vars = bundle.getContext().toVars();
-    ConnectionProvider connx = new DalConnectionProvider(false);
-    this.connx = connx;
+    this.connx = new DalConnectionProvider(false);
 
     try {
       ProductionPlan productionPlan = OBDal.getInstance().get(ProductionPlan.class,
@@ -84,39 +93,40 @@ public class CreateStandardsCustom implements org.openbravo.scheduling.Process {
         throw new OBException("Los campos Comienzo y Fin son obligatorios");
       }
 
-      CreateStandardsCustom(productionPlan, conn, vars);
+      final ProcessInstance standardsPi = callCreateStandardsProcess(productionPlan, conn, vars);
+
       OBDal.getInstance().save(productionPlan);
       OBDal.getInstance().flush();
 
       copyAttributes(conn, vars, productionPlan);
       createInstanciableAttributes(conn, vars, productionPlan);
 
+      final OBError stdMsg = Utility.getProcessInstanceMessage(conn, vars,
+          PInstanceProcessData.select(new DalConnectionProvider(false), standardsPi.getId()));
       final OBError msg = new OBError();
-
-      msg.setType("Success");
-      msg.setTitle(Utility.messageBD(conn, "Success", bundle.getContext().getLanguage()));
-      msg.setMessage(Utility.messageBD(conn, "Success", bundle.getContext().getLanguage()));
+      final String lang = bundle.getContext().getLanguage();
+      if (standardsPi.getResult() == 2L) {
+        msg.setType("Warning");
+        msg.setTitle("Advertencia de Inventario");
+        msg.setMessage(stdMsg.getMessage());
+      } else {
+        msg.setType("Success");
+        msg.setTitle(Utility.messageBD(conn, "Success", lang));
+        msg.setMessage(Utility.messageBD(conn, "Success", lang));
+      }
       bundle.setResult(msg);
     } catch (final Exception e) {
       OBDal.getInstance().rollbackAndClose();
       log4j.error("Error creating standards", e);
       final OBError msg = new OBError();
       msg.setType("Error");
-      if (e instanceof org.hibernate.exception.GenericJDBCException) {
-        msg.setMessage(((org.hibernate.exception.GenericJDBCException) e).getSQLException()
-            .getNextException().getMessage());
-      } else if (e instanceof org.hibernate.exception.ConstraintViolationException) {
-        msg.setMessage(((org.hibernate.exception.ConstraintViolationException) e).getSQLException()
-            .getNextException().getMessage());
-      } else {
-        msg.setMessage(e.getMessage());
-      }
+      msg.setMessage(e.getMessage());
       msg.setTitle(Utility.messageBD(conn, "Error", bundle.getContext().getLanguage()));
       bundle.setResult(msg);
     }
   }
 
-  private void CreateStandardsCustom(ProductionPlan productionplan, ConnectionProvider conn,
+  private ProcessInstance callCreateStandardsProcess(ProductionPlan productionplan, ConnectionProvider conn,
       VariablesSecureApp vars) throws Exception {
     try {
       OBContext.setAdminMode(true);
@@ -131,13 +141,39 @@ public class CreateStandardsCustom implements org.openbravo.scheduling.Process {
         // error processing
         OBError myMessage = Utility.getProcessInstanceMessage(conn, vars,
             PInstanceProcessData.select(new DalConnectionProvider(), pInstance.getId()));
-        throw new OBException(myMessage.getMessage());
+        if (isInsufficientStockMessageFromProcess(pInstance, myMessage)) {
+        } else {
+          String err = myMessage != null ? myMessage.getMessage() : null;
+          throw new OBException(err != null ? err : "");
+        }
       }
+      return pInstance;
     } finally {
       OBContext.restorePreviousMode();
     }
   }
- 
+
+  private static boolean isInsufficientStockMessageFromProcess(ProcessInstance pInstance,
+      OBError myMessage) {
+    String fromDb = null;
+    if (pInstance != null && pInstance.getId() != null) {
+      ProcessInstance row = OBDal.getInstance().get(ProcessInstance.class, pInstance.getId());
+      if (row != null) {
+        fromDb = row.getErrorMsg();
+      }
+    }
+    String fromUi = myMessage != null ? myMessage.getMessage() : null;
+    return messageIndicatesInsufficientStock(fromDb) || messageIndicatesInsufficientStock(fromUi);
+  }
+
+  private static boolean messageIndicatesInsufficientStock(String text) {
+    if (text == null || text.isEmpty()) {
+      return false;
+    }
+    return text.contains(AD_MESSAGE_NOT_ENOUGH_STOCKED)
+        || text.contains(AD_MESSAGE_NOT_ENOUGH_STOCKED_WH_RULE);
+  }
+
   private void copyAttributes(ConnectionProvider conn, VariablesSecureApp vars,
       ProductionPlan productionPlan) throws Exception {
     try {
@@ -172,7 +208,10 @@ public class CreateStandardsCustom implements org.openbravo.scheduling.Process {
         for (OperationProductAttribute opProductAtt : opProduct
             .getManufacturingOperationProductAttributeList()) {
 
-          // check attFrom exists
+          if (opProductAtt.getProductFrom() == null) {
+            continue;
+          }
+
           AttributeSetInstance attSetInstanceFrom = null;
 
           OBCriteria<ProductionLine> productionLineCriteria = OBDal.getInstance().createCriteria(
@@ -187,49 +226,79 @@ public class CreateStandardsCustom implements org.openbravo.scheduling.Process {
 
           List<ProductionLine> plinesToCopyFrom = productionLineCriteria.list();
           if (!plinesToCopyFrom.isEmpty()) {
-            attSetInstanceFrom = plinesToCopyFrom.get(0).getAttributeSetValue();
+            AttributeSetInstance oldestAsi = null;
+            Integer oldestJd = null;
+            for (ProductionLine fromLine : plinesToCopyFrom) {
+              AttributeSetInstance asi = fromLine.getAttributeSetValue();
+              if (asi == null || "0".equals(asi.getId())) {
+                continue;
+              }
+              //Proceso para obtener el dia juliano de la linea de produccion mas antiguo
+              String jdStr = asi.getCsljDatejulian();
+              Integer jdVal = null;
+              try {
+                if (jdStr != null && !jdStr.isEmpty()) {
+                  jdVal = Integer.valueOf(jdStr);
+                }
+              } catch (NumberFormatException nfe) {
+                jdVal = null;
+              }
+              if (oldestAsi == null) {
+                oldestAsi = asi;
+                oldestJd = jdVal;
+              } else if (jdVal != null && (oldestJd == null || jdVal < oldestJd)) {
+                oldestAsi = asi;
+                oldestJd = jdVal;
+              }
+            }
+            if (oldestAsi != null) {
+              attSetInstanceFrom = oldestAsi;
+            } else {
+              attSetInstanceFrom = plinesToCopyFrom.get(0).getAttributeSetValue();
+            }
           }
 
-         // if (attSetInstanceFrom != null && !attSetInstanceFrom.getId().equals("0")) { 
-            if (opProductAtt.isSpecialatt()) {
-              // special att
-              // lot
+          // a partir de aquí, TODO lo que se copie (lote, serie, fecha, attrs normales)
+          // viene únicamente de attSetInstanceFrom, es decir, del P-
+          if (opProductAtt.isSpecialatt()) {
               if (opProductAtt.getSpecialatt().equals(lotSearchKey)) {
-                if (opProductAtt.isCopySpecialIntoNormal()) {
-                  attValues.put(replace(opProductAtt.getAttributeuseto().getAttribute().getName()),
-                      attSetInstanceFrom.getLotName());
-                } else {
-                  attSetInstanceTo.setLot(attSetInstanceFrom.getLotName());
+                if (attSetInstanceFrom != null && !"0".equals(attSetInstanceFrom.getId())) {
+                  if (opProductAtt.isCopySpecialIntoNormal()) {
+                    attValues.put(replace(opProductAtt.getAttributeuseto().getAttribute().getName()),
+                        attSetInstanceFrom.getLotName());
+                  } else {
+                    attSetInstanceTo.setLot(attSetInstanceFrom.getLotName());
+                  }
                 }
-              }
-              // serNo
-              if (opProductAtt.getSpecialatt().equals(serialNoSearchKey)) {
-                if (opProductAtt.isCopySpecialIntoNormal()) {
-                  attValues.put(replace(opProductAtt.getAttributeuseto().getAttribute().getName()),
-                      attSetInstanceFrom.getSerialNo());
-                } else {
-                  attSetInstanceTo.setSerialNumber(attSetInstanceFrom.getSerialNo());
+              } else if (opProductAtt.getSpecialatt().equals(serialNoSearchKey)) {
+                if (attSetInstanceFrom != null && !"0".equals(attSetInstanceFrom.getId())) {
+                  if (opProductAtt.isCopySpecialIntoNormal()) {
+                    attValues.put(replace(opProductAtt.getAttributeuseto().getAttribute().getName()),
+                        attSetInstanceFrom.getSerialNo());
+                  } else {
+                    attSetInstanceTo.setSerialNumber(attSetInstanceFrom.getSerialNo());
+                  }
                 }
-              }
-              // gDate
-              if (opProductAtt.getSpecialatt().equals(expirationDateSearchKey)) {
-                attSetInstanceTo.setGuaranteeDate(dateToString(attSetInstanceFrom
-                    .getExpirationDate()));
-              }
-              // Julidate  
-              if (opProductAtt.getSpecialatt().equals(julydate)) {
-            	 
-            	  attValues.put(replace(opProductAtt.getAttributeuseto().getAttribute().getName()),
-            			  julyday);
-            	  //attSetInstanceFrom.getJulianDate());
-            	  //attSetInstanceFrom.getCsljDatejulian()
-
-            	 attSetInstanceTo.setJulianDate(julyday);
+              } else if (opProductAtt.getSpecialatt().equals(expirationDateSearchKey)) {
+                if (attSetInstanceFrom != null && !"0".equals(attSetInstanceFrom.getId())) {
+                  attSetInstanceTo.setGuaranteeDate(dateToString(attSetInstanceFrom
+                      .getExpirationDate()));
+                }
+              } else if (opProductAtt.getSpecialatt().equals(julydate)) {
+                String valorAFijar = "";
+                  if (attSetInstanceFrom != null && !"0".equals(attSetInstanceFrom.getId())) {
+                    OBDal.getInstance().getSession().refresh(attSetInstanceFrom);
+                    valorAFijar = attSetInstanceFrom.getCsljDatejulian();
+                  }
+                 if (valorAFijar == null || valorAFijar.isEmpty()) {
+                    valorAFijar = julyday != null ? julyday : "";
+                  }
+                attSetInstanceTo.setJulianDate(valorAFijar);
+                attValues.put(replace(opProductAtt.getAttributeuseto().getAttribute().getName()), valorAFijar);
               }
             } else {
-              // normal att
-              // check attTo exists
-              if (opProductAtt.getAttributeuseto() != null
+              if (attSetInstanceFrom != null && !"0".equals(attSetInstanceFrom.getId())
+                  && opProductAtt.getAttributeuseto() != null
                   && opProductAtt.getAttributeuseto().getAttribute() != null) {
                 // getValue from
                 OBCriteria<AttributeInstance> attributeInstanceCriteria = OBDal.getInstance()
@@ -284,6 +353,7 @@ public class CreateStandardsCustom implements org.openbravo.scheduling.Process {
             int days = attrSet.getGuaranteedDays().intValue();
             attSetInstanceTo.setGuaranteeDate(dateToString(addDays(movementdate, days)));
           }
+          fillMandatoryAttributeDefaults(attrSet, attValues);
           OBError createAttributeInstanceError = attSetInstanceTo.setAttributeInstance(conn, vars,
               opProduct.getProduct().getAttributeSet().getId(), "", "", "Y", opProduct.getProduct()
                   .getId(), attValues);
@@ -308,6 +378,53 @@ public class CreateStandardsCustom implements org.openbravo.scheduling.Process {
     }
   }
  
+  // Obtiene los valores por defecto en caso de que la configuración no exista,
+  // asegurando el cumplimiento cuando el campo está definido como obligatorio.	
+  private void fillMandatoryAttributeDefaults(AttributeSet attrSet, HashMap<String, String> attValues) {
+    if (attrSet == null || attValues == null) {
+      return;
+    }
+    List<AttributeUse> useList = attrSet.getAttributeUseList();
+    if (useList == null) {
+      return;
+    }
+    for (AttributeUse use : useList) {
+      Attribute attr = use.getAttribute();
+      if (attr == null || !Boolean.TRUE.equals(attr.isMandatory())) {
+        continue;
+      }
+      String name = attr.getName();
+      if (name == null) {
+        continue;
+      }
+      String key = replace(name);
+      if (key.isEmpty()) {
+        continue;
+      }
+      String existing = attValues.get(key);
+      if (existing != null && !existing.isEmpty()) {
+        continue;
+      }
+      List<AttributeValue> vals = attr.getAttributeValueList();
+      if (vals != null && !vals.isEmpty()) {
+        AttributeValue first = vals.get(0);
+        if (Boolean.TRUE.equals(attr.isList())) {
+          attValues.put(key, first.getId());
+        } else {
+          String sk = first.getSearchKey();
+          attValues.put(key, sk != null && !sk.isEmpty() ? sk : first.getId());
+        }
+      } else {
+        String fallback = "";
+        String nameUpper = name.toUpperCase();
+        if (nameUpper.contains("LOTE") || nameUpper.contains("CONSTANTE")) {
+          fallback = "L";
+        }
+        attValues.put(key, fallback);
+      }
+    }
+  }
+
   private void createInstanciableAttributes(ConnectionProvider conn, VariablesSecureApp vars,
       ProductionPlan productionPlan) throws Exception {
     try {
@@ -352,14 +469,14 @@ public class CreateStandardsCustom implements org.openbravo.scheduling.Process {
 
             //seccion para dia juliano
             if (attSet.isCsljJuliandate()) {
-                LocalDate today = LocalDate.now();  // Fecha actual
-                int julianDay = today.getDayOfYear();  // Día juliano del año
-                int year = LocalDate.now().getYear();
-                int lastTwoDigits = year % 100;
-                String julyday = String.format("%02d%03d", lastTwoDigits, julianDay);
+                LocalDate today = LocalDate.now();
+                int julianDay = today.getDayOfYear();
+                int year = today.getYear();
+                String julyday = String.format("%02d%03d", year % 100, julianDay);
                 attSetInstance.setJulianDate(julyday);
             }
 
+            fillMandatoryAttributeDefaults(attSet, attValues);
             OBError createAttributeInstanceError = attSetInstance.setAttributeInstance(conn, vars,
                 attSet.getId(), "", "", "N", line.getProduct().getId(), attValues);
             if (!createAttributeInstanceError.getType().equals("Success"))
